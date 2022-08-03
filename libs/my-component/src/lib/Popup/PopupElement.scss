@@ -1,0 +1,22 @@
+.Popup {
+  opacity: 0;
+  transition: opacity 0.25s;
+  z-index: 1020;
+  position: absolute;
+  width: max-content;
+  > .Popup__Content {
+    position: relative;
+    width: max-content;
+    padding: 0.5em;
+
+
+    > .Popup__Arrow {
+      clip-path: polygon(100% 0%, 0% 100%, 100% 100%);
+      position: absolute;
+      background-color: inherit;
+    }
+  }
+  &.showed {
+    opacity: 1;
+  }
+}
