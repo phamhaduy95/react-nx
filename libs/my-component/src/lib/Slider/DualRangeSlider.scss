@@ -1,0 +1,26 @@
+@import "./RangeSlider.scss";
+
+.DualRangeSlider {
+  position: relative;
+}
+
+.DualRangeSlider-default {
+
+  width: 200px;
+
+  >.RangeSlider_Track {
+    width: 100%;
+  }
+
+  >.RangeSlider_Track_ProgressLine {}
+
+  >.RangeSlider_Thumb {
+    &.Lower {
+      z-index: 10;
+    }
+
+    &.Upper {
+      z-index: 20;
+    }
+  }
+}
