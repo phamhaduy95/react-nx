@@ -9,4 +9,7 @@ export default {
 const Template: ComponentStory<typeof Tag> = (args) => <Tag {...args} />;
 
 export const Primary = Template.bind({});
-Primary.args = {};
+Primary.args = {
+  removable:true,
+  text:"123"
+};

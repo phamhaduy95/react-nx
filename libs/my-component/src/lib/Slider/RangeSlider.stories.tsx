@@ -1,9 +1,13 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+
 import RangeSlider from './RangeSlider';
 
 export default {
   component: RangeSlider,
   title: 'RangeSlider',
+  argTypes:{
+    onValueChanged: { action: 'newValue' } 
+  }
 } as ComponentMeta<typeof RangeSlider>;
 
 const Template: ComponentStory<typeof RangeSlider> = (args) => (
@@ -11,4 +15,8 @@ const Template: ComponentStory<typeof RangeSlider> = (args) => (
 );
 
 export const Primary = Template.bind({});
-Primary.args = {};
+Primary.args = {
+  max:150,
+  min:0,
+  step:1,
+};
