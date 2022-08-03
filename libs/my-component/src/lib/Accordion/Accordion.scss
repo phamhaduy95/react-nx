@@ -1,0 +1,67 @@
+.Accordion {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+
+    >.Accordion__Item {
+        margin-bottom: 0.5em;
+    }
+
+}
+
+.Accordion-default {
+    // border: 1px solid hsla(0, 0%, 30%,0.65);
+    border-bottom: 0px;
+    border-radius: 0.2em;
+
+    @at-root .Accordion__Item {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+
+        @at-root .Accordion__Header {
+            border: 1px solid hsla(0, 0%, 60%, 0.65);
+            outline: none;
+            background-color: hsla(0, 0%, 95%,0.9);
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            display: flex;
+            padding: 0.5rem;
+
+            >p {
+                margin-right: auto;
+                margin-left: 0.5em;
+            }
+
+            @at-root .Accordion__Header__ArrowIcon {
+                width: 0.8rem;
+                height: auto;
+                margin-left: auto;
+                margin-right: 0.5em;
+                transition: transform 0.2s ease 0s;
+            }
+
+            &:focus{
+                box-shadow: 0 0 2px 1px hsla(220, 80%, 40%,0.8),
+                            0 0 6px 2px hsla(220, 80%, 60%,0.5),
+            }
+        }
+
+        @at-root .Accordion__Body {
+            border: 1px solid hsla(0, 0%, 60%, 0.65);
+            border-top: 0;
+            transition: height 0.2s ease;
+            overflow: hidden;
+
+            @at-root .Accordion__Body__Content {
+                padding: 1em 0.5em;
+                display: flex;
+                // border-bottom: 0.5px solid hsla(0, 0%, 20%,0.35);
+            }
+
+        }
+
+    }
+
+}
