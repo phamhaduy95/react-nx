@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import ModalBody from "./ModalBody";
-import ModalFooter from "./ModalFooter";
+import ModalFooter, { DefaultFooter } from "./ModalFooter";
 import ModalHeader from "./ModalHeader";
 import ClickOutSideWatcher from "../ClickOutsideWatcher/ClickOutSideWatcher";
 import ReactDOM from "react-dom";
 import ModalState from "./ModalState";
 import "./Modal.scss";
 import ModalContextProvider, { useModalContext } from "./ModalContextProvider";
-
+// ToDo: reimplement Modal using React Portal.
 export type ModalProps = {
   className?: string;
   isOpen: boolean;
@@ -24,7 +24,7 @@ const defaultPropsValue:Required<ModalProps> = {
   className:"Modal--default",
   isOpen:false,
   draggable:false,
-  footer:<></>,
+  footer: <DefaultFooter/>,
   header:"Modal header",
   body:<>Modal body</>,
   onClose:()=>{},

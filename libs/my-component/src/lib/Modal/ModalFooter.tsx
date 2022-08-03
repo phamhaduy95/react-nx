@@ -11,7 +11,7 @@ export default function ModalFooter(props: Props) {
   return <div className="Modal__Footer">{children}</div>;
 }
 
-const DefaultFooter = () => {
+export const DefaultFooter = () => {
   const { state, action } = useModalContext();
 
   const handleOkClick = () => {

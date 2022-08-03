@@ -42,15 +42,13 @@ $transitionDuration: 0.2s;
   @at-root .Modal__Content {
     margin: 10vh auto;
     min-width: 30vw;
-    width: 40vw;
+    width: 50vw;
     background-color: $bgColor;
     border-radius: 4px;
     box-shadow: 0 1px 3px 0 rgba(1, 1, 1, 0.5),
       1px 4px 10px 0 rgba(1, 1, 1, 0.3);
 
     @at-root .Modal__Header {
-      min-height: 3rem;
-      width: 100%;
       border-bottom: 1px solid hsla(0, 0%, 50%, 0.5);
       padding: 0.5em 1em;
       display: flex;
@@ -78,14 +76,11 @@ $transitionDuration: 0.2s;
     }
 
     @at-root .Modal__Body {
-      width: 100%;
       padding: 0.5em 1em;
     }
 
     @at-root .Modal__Footer {
       border-top: 1px solid hsla(0, 0%, 50%, 0.5);
-      min-height: 3rem;
-      width: 100%;
       padding: 0.5em 1em;
 
       > .Modal__Footer__button-box--default {
