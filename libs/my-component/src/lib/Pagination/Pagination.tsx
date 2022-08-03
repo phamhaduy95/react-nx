@@ -7,6 +7,7 @@ import { usePaginationContext } from "./PaginationContextProvider";
 import { PaginationState } from "./PaginationReducer";
 import { useEffect } from "react";
 
+// TODO: fixed problem with wrong number placement when maxNumber changed.
 type PaginationProps = {
   maxNumber: number;
   className?: string;
