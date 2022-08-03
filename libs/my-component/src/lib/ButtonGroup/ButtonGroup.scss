@@ -1,0 +1,32 @@
+.ButtonGroup {
+  display: flex;
+  width: 100%;
+
+  @at-root .ButtonGroup__Item {
+    width: max-content;
+    padding: 0.5em;
+    border: 1px solid hsla(0, 0%, 45%, 0.8);
+    border-right: none;
+    > svg {
+      width: 1em;
+      height: 1em;
+    }
+
+    &.active {
+      background-color: hsl(229, 50%, 60%);
+      color:white;
+      > svg {
+        fill: white;
+      }
+    }
+
+    &:not(.active):hover {
+      background-color: hsl(0, 0%, 80%);
+    }
+    &:last-of-type {
+        border: 1px solid hsla(0, 0%, 45%, 0.8);
+      }
+    }
+  }
+
+  
