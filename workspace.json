@@ -3,6 +3,7 @@
   "version": 2,
   "projects": {
     "my-component": "libs/my-component",
+    "my-component-e2e": "apps/my-component-e2e",
     "todo-app": "apps/todo-app",
     "todo-app-e2e": "apps/todo-app-e2e"
   }
