@@ -1,0 +1,18 @@
+.BreadCrumbs {
+    display: flex;
+
+    @at-root .BreadCrumbs_Separator{
+        margin-right: 0.5rem;
+        
+    }
+    @at-root .BreadCrumbs_ExpansibleNotation{
+        margin: 0 0.5em;
+        cursor: pointer;
+        &:hover{
+            background-color: hsl(0, 0%, 80%);
+        }
+    }
+    @at-root .BreadCrumbs_Item {
+        margin-right: 0.5rem;
+    }
+}
