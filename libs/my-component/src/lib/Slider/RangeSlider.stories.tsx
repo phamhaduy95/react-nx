@@ -4,7 +4,7 @@ import RangeSlider from './RangeSlider';
 
 export default {
   component: RangeSlider,
-  title: 'RangeSlider',
+  title: 'Slider/RangeSlider',
   argTypes:{
     onValueChanged: { action: 'newValue' } 
   }
