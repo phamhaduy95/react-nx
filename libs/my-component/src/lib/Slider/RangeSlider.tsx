@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import "./RangeSlider.scss";
-import RangeSliderHandler from "./RangeSliderHandler";
-import RangeNumber from "./RangeNumber";
+import { useEffect, useRef, useState } from 'react';
+import './RangeSlider.scss';
+import RangeSliderHandler from './RangeSliderHandler';
+import RangeNumber from './RangeNumber';
 
 type Props = {
   className?: string;
@@ -14,7 +14,7 @@ type Props = {
 export default function RangeSlider(props: Props) {
   let { max, min, step, onValueChanged, className } = props;
   step = step === undefined ? 1 : step;
-  className = className === undefined ? "RangeSlider-default" : className;
+  className = className === undefined ? 'RangeSlider-default' : className;
 
   const [value, setValue] = useState<number>(min);
   const sliderRef = useRef(null);
@@ -32,18 +32,17 @@ export default function RangeSlider(props: Props) {
     const thumb = thumbRef.current;
     const progressLine = progressRef.current;
     const rangeNumber = new RangeNumber(min, max, step);
-    if (slider && thumb && progressLine) {
-      const eventHandler = new RangeSliderHandler(
-        slider,
-        progressLine,
-        thumb,
-        rangeNumber,
-        handlerValueChange
-      );
-      return () => {
-        eventHandler.removeEventListener();
-      };
-    }
+    if (!slider || !thumb || !progressLine) return;
+    const eventHandler = new RangeSliderHandler(
+      slider,
+      progressLine,
+      thumb,
+      rangeNumber,
+      handlerValueChange
+    );
+    return () => {
+      eventHandler.removeEventListener();
+    };
   }, [max, min, step]);
 
   return (

@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import "./DualRangeSlider.scss";
-import DualRangeSliderHandler from "./DualRangeSliderHandler";
-import RangeNumber from "./RangeNumber";
-
+import { useEffect, useRef, useState } from 'react';
+import './DualRangeSlider.scss';
+import DualRangeSliderHandler from './DualRangeSliderHandler';
+import RangeNumber from './RangeNumber';
 
 type Props = {
   className?: string;
@@ -24,7 +23,7 @@ export default function DualRangeSlider(props: Props) {
   const { low: initialLow, high: initialHigh } = initialValue;
 
   step = step === undefined ? 1 : step;
-  className = step == undefined ? "DualRangeSlider-default" : className;
+  className = step == undefined ? 'DualRangeSlider-default' : className;
 
   const [value, setValue] = useState<RangeValue>(initialValue);
   const sliderRef = useRef(null);
@@ -47,21 +46,20 @@ export default function DualRangeSlider(props: Props) {
     const upperThumb = upperThumbRef.current;
     const progressLine = progressRef.current;
     const range = new RangeNumber(min, max, step);
-    if (slider && lowerThumb && progressLine && upperThumb) {
-      const handler = new DualRangeSliderHandler(
-        slider,
-        progressLine,
-        lowerThumb,
-        upperThumb,
-        range,
-        handleValueChange,
-        initialValue
-      );
+    if (!slider || !lowerThumb || !progressLine || !upperThumb) return;
+    const handler = new DualRangeSliderHandler(
+      slider,
+      progressLine,
+      lowerThumb,
+      upperThumb,
+      range,
+      handleValueChange,
+      initialValue
+    );
 
-      return () => {
-        handler.removeEventListener();
-      };
-    }
+    return () => {
+      handler.removeEventListener();
+    };
   }, [max, min, initialHigh, initialLow]);
 
   return (
