@@ -4,7 +4,7 @@ import Tag from './Tag';
 
 describe('Tag', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Tag />);
+    const { baseElement } = render(<Tag text='1234'/>);
     expect(baseElement).toBeTruthy();
   });
 });

@@ -1,0 +1,46 @@
+.Tag {
+    width: fit-content ;
+    padding: 0.5em 1em;
+    background-color: hsl(0, 0%, 80%);
+    border: none;
+    position: relative;
+    border-radius: 3px;
+    align-items: center;
+    display: flex;
+    >.Tag__Text{
+        margin: 0;
+        color: hsl(0, 0%, 30%);
+    }
+    >.Tag__Close-icon {
+        display: none;   
+    }
+
+    &.disabled {
+        background-color: hsl(0, 0%, 90%);
+        >.Tag__Text {
+            color: hsl(0, 0%, 40%);
+        }
+        >.Tag__Close-icon {
+            fill: hsl(0, 0%, 40%);    
+        }
+    }
+
+    &.active{
+        border: 1px solid hsl(0, 0%, 30%);
+    }
+
+
+    &.removable {
+        >.Tag__Close-icon {
+            margin-left: 0.6em;
+            display: block;
+            width: 0.8em;
+            height: 0.8em;
+            color: hsl(0, 0%, 30%);
+        }
+    }
+
+    &.clickable:not(.disabled):hover {
+        background-color: hsla(0, 0%, 50%,0.8);
+    }
+}
