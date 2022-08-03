@@ -1,23 +1,29 @@
 import React, { useRef, useState } from "react";
 import "./ToolTips.scss";
-
-import { Placement } from "../../hooks/usePopupPlacement/usePopUpPlacement";
-import usePopupPlacement from "../../hooks/usePopupPlacement/usePopUpPlacement";
-import usePopupPadding from "../../hooks/usePopupPlacement/usePopupPadding";
 import PopupElement from "../Popup/PopupElement";
+import { Placement } from "../usePopupPlacement/usePopUpPlacement";
 
 type Props = {
   children: JSX.Element;
   className?: string;
   text: string;
-  placement: Placement;
-  trigger: "click" | "hover";
+  placement?: Placement;
+  trigger?: "click" | "hover";
+  padding?:number;
 };
 
+const defaultPropsValue:Required<Props> ={
+  children:<></>,
+  className:"Tooltips-default",
+  text:"tooltips",
+  placement:"bottomLeft",
+  padding:5,
+  trigger:"hover"
+}
+
 export default function ToolTips(props: Props) {
-  const { children, text, placement } = props;
-  let { className } = props;
-  className = className === undefined ? "ToolTip-default" : className;
+  const newProps = {...defaultPropsValue,...props};
+  const { children, text, placement,className,padding } = newProps;
   const wrapper = useRef(null);
   const [isShowed, setShowed] = useState(false);
 
@@ -36,7 +42,7 @@ export default function ToolTips(props: Props) {
       onMouseOver={handleMouseOver}
     >
       {children}
-      <PopupElement isShowed={isShowed} placement={placement} 
+      <PopupElement isShowed={isShowed} placement={placement} padding={padding}
         targetRef={wrapper} arrowEnable className="Tooltips__Popup"> 
         {text}
       </PopupElement>

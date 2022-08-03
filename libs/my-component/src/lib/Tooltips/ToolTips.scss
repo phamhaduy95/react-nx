@@ -1,8 +1,7 @@
 $arrow-size : 0.5rem;
 
 .ToolTips_Wrapper {
-    position: relative;
-    width: fit-content;
+    width: max-content;
     @at-root .Tooltips__Popup {
          >.Popup__Content{
             background-color: hsl(0, 0%, 30%, 0.85);
