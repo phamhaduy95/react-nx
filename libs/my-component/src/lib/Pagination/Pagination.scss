@@ -8,7 +8,7 @@ $size: 2rem;
 .Pagination-default {
     width: auto;
 
-    >.Pagination_Icon {
+    @at-root .Pagination__Icon {
 
         &.Previous {
             margin-right: 0.5rem;
@@ -19,7 +19,7 @@ $size: 2rem;
         }
     }
 
-    >.Pagination_Item {
+    @at-root .Pagination__Item {
         width: $size;
         height: $size;
         border-radius: 50%;
@@ -51,14 +51,14 @@ $size: 2rem;
             z-index: 1;
         }
     }
-    >.Pagination_Divider{
+    @at-root .Pagination__Divider{
         cursor: context-menu ;
         margin-right:  0.5rem;
         width:  $size;
     
         text-align: center;
     }
-    >.Pagination_Icon{
+    @at-root .Pagination__Icon{
         cursor: pointer;
         width: 2rem;
         height: 2rem;

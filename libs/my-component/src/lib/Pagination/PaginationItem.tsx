@@ -21,7 +21,7 @@ export default function PaginationItem(props: PaginationItemProps) {
   }
 
   return (
-    <button className={`Pagination_Item ${toggleActive()}`} disabled={disabled} onClick={handleClick}>
+    <button className={`Pagination__Item ${toggleActive()}`} disabled={disabled} onClick={handleClick}>
       {index}
     </button>
   );

@@ -7,7 +7,7 @@ import { usePaginationContext } from "./PaginationContextProvider";
 import { PaginationState } from "./PaginationReducer";
 import { useEffect } from "react";
 
-// TODO: fixed problem with wrong number placement when maxNumber changed.
+// TODO: fixed problem with wrong number placement when maxNumber changed. It is wrong when maxNumber = 6, siblingCount=0, boundaryCount=0, two number 5 exist 
 type PaginationProps = {
   maxNumber: number;
   className?: string;
@@ -55,7 +55,7 @@ function WrappedPagination(props: PaginationProps) {
   return (
     <div className={`Pagination ${className}`}>
       <button
-        className="Pagination_Icon Previous"
+        className="Pagination__Icon Previous"
         disabled={disabled}
         onClick={handlePrevClick}
       >
@@ -63,7 +63,7 @@ function WrappedPagination(props: PaginationProps) {
       </button>
       {ItemList}
       <button
-        className="Pagination_Icon Next"
+        className="Pagination__Icon Next"
         disabled={disabled}
         onClick={handleNextClick}
       >
