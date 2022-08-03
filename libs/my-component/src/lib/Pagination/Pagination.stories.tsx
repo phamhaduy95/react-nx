@@ -3,7 +3,7 @@ import  Pagination  from './Pagination';
 
 export default {
   component: Pagination,
-  title: 'Pagination',
+  title: 'my-component/Pagination',
 } as ComponentMeta<typeof Pagination>;
 
 const Template: ComponentStory<typeof Pagination> = (args) => (

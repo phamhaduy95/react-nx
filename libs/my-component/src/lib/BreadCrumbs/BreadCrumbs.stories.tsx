@@ -3,7 +3,7 @@ import { BreadCrumbs } from './BreadCrumbs';
 
 export default {
   component: BreadCrumbs,
-  title: 'BreadCrumbs',
+  title: 'my-component/BreadCrumbs',
 } as ComponentMeta<typeof BreadCrumbs>;
 
 

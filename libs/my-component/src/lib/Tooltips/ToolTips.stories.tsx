@@ -4,7 +4,7 @@ import style from "./Tooltips.stories.module.scss"
 
 export default {
   component: ToolTips,
-  title: 'ToolTips',
+  title: 'my-component/ToolTips',
 } as ComponentMeta<typeof ToolTips>;
 
 const Template: ComponentStory<typeof ToolTips> = (args) => (

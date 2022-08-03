@@ -3,7 +3,7 @@ import Tag  from './Tag';
 
 export default {
   component: Tag,
-  title: 'Tag',
+  title: 'my-component/Tag',
 } as ComponentMeta<typeof Tag>;
 
 const Template: ComponentStory<typeof Tag> = (args) => <Tag {...args} />;

@@ -4,7 +4,7 @@ import DualRangeSlider from "./DualRangeSlider"
 
 export default {
   component: DualRangeSlider,
-  title: 'Slider/DualRangeSlider',
+  title: 'my-component/Slider/DualRangeSlider',
   argTypes:{
     onValueChanged: { action: 'newValue' } 
   }
