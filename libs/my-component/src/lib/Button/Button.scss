@@ -1,4 +1,5 @@
-@import "../_defaultProps.scss";
+$fontSize: calc(0.5rem + 0.5vw);
+$button-padding:0.5rem 1rem;
 
 @function getHoverColor($colors,$darken:0) {
     $color: map-get($colors, bg-color);
@@ -15,7 +16,7 @@
         &:hover:disabled{
             background-color: getHoverColor($styles)
         }
-    }    
+    }       
 }
 
 $primary: (text-color: #fff, bg-color:#0d6efd, border-color:#0d6efd);
