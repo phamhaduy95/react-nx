@@ -13,7 +13,7 @@ type Props = {
   separator?:string;
 }
 
-export default function BreadCrumbs(props:Props) {
+export function BreadCrumbs(props:Props) {
   const {children} = props;
   let {className,onChange,isExpanded,maxItem,separator} = props;
   className = (className === undefined)?"BreadCrumbs-default":className;
