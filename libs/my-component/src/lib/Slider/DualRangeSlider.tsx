@@ -8,7 +8,7 @@ type Props = {
   max: number;
   min: number;
   step?: number;
-  onValueChanged: (lower: number, upper: number) => void;
+  onValueChanged?: (lower: number, upper: number) => void;
   initialValue: RangeValue;
 };
 
@@ -17,14 +17,19 @@ export type RangeValue = {
   high: number;
 };
 
+const defaultPropsValue:Required<Props> = {
+  className:"DualRangeSlider-default",
+  max:100,
+  min:0,
+  step:1,
+  onValueChanged:(low,high)=>{},
+  initialValue:{low:0,high:100}
+}
+
 export default function DualRangeSlider(props: Props) {
-  const { max, min, initialValue } = props;
-  let { className, onValueChanged, step } = props;
+  const newProps = {...defaultPropsValue,...props};
+  const { max, min, initialValue,className, onValueChanged, step } = newProps;
   const { low: initialLow, high: initialHigh } = initialValue;
-
-  step = step === undefined ? 1 : step;
-  className = step == undefined ? 'DualRangeSlider-default' : className;
-
   const [value, setValue] = useState<RangeValue>(initialValue);
   const sliderRef = useRef(null);
   const lowerThumbRef = useRef(null);
