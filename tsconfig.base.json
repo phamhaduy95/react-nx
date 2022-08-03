@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@pduy-lib/my-component": ["libs/my-component/src/index.ts"]
+      "@phduylib/my-component": ["libs/my-component/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
