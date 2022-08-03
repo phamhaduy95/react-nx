@@ -1,0 +1,102 @@
+$bgColor: hsl(0, 0%, 95%);
+$transitionDuration: 0.2s;
+
+.Modal {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  z-index: 900;
+  background-color: rgba(1, 1, 1, 0.5);
+
+  transition: transform $transitionDuration ease-in-out 0s,
+    opacity $transitionDuration ease-in-out 0s;
+  transform-origin: center center;
+
+  &.open {
+    transform: scale3d(1, 1, 1);
+    opacity: 1;
+
+    > .Modal__Content {
+      transform: scale3d(1, 1, 1);
+    }
+  }
+
+  &:not(.open) {
+    transform: scale3d(0, 0, 1);
+    opacity: 0;
+    transition: transform $transitionDuration ease-in-out 0s,
+      opacity $transitionDuration ease-in-out 0s;
+
+    > .Modal__Content {
+      transition: transform 0.2s ease-out 0.2s;
+      transform-origin: center center;
+      transform: scale3d(0, 0, 1);
+    }
+  }
+}
+
+.Modal--default {
+  @at-root .Modal__Content {
+    margin: 10vh auto;
+    min-width: 30vw;
+    width: 40vw;
+    background-color: $bgColor;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px 0 rgba(1, 1, 1, 0.5),
+      1px 4px 10px 0 rgba(1, 1, 1, 0.3);
+
+    @at-root .Modal__Header {
+      min-height: 3rem;
+      width: 100%;
+      border-bottom: 1px solid hsla(0, 0%, 50%, 0.5);
+      padding: 0.5em 1em;
+      display: flex;
+      align-items: center;
+
+      @at-root .Modal__Close-button {
+        margin-left: auto;
+        width: 2em;
+        height: 2em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: none;
+
+        &:hover {
+          background-color: hsla(220, 50%, 60%, 0.6);
+          transform: scale(1.1);
+          border-radius: 4px;
+        }
+
+        @at-root .Modal__Close-Icon {
+          width: 100%;
+        }
+      }
+    }
+
+    @at-root .Modal__Body {
+      width: 100%;
+      padding: 0.5em 1em;
+    }
+
+    @at-root .Modal__Footer {
+      border-top: 1px solid hsla(0, 0%, 50%, 0.5);
+      min-height: 3rem;
+      width: 100%;
+      padding: 0.5em 1em;
+
+      > .Modal__Footer__button-box--default {
+        display: flex;
+        margin-left: auto;
+        max-width: min-content;
+
+        > * {
+          margin-left: 1em;
+        }
+      }
+    }
+  }
+}
