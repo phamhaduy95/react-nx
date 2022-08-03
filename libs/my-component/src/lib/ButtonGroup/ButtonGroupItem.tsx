@@ -8,7 +8,7 @@ type Props = {
   onClick?:()=>void;
 };
 
-function ButtonGroupItem(props: Props) {
+function WrappedButtonGroupItem(props: Props) {
   let { children, index,active,onClick} = props;
   active = (active == undefined)?false:active;
   const { state, action } = useButtonGroupContext();
@@ -71,7 +71,7 @@ type WrapperProps ={
   onClick?:()=>void;
 }
 
-export default function ButtonGroupItemWrapper(props:WrapperProps){
+export default function ButtonGroupItem(props:WrapperProps){
   const {children} = props;
   return <>
     {children}
@@ -83,9 +83,9 @@ export function giveIndexToGroupItems(Items:JSX.Element[]|JSX.Element){
     if (Items instanceof Array){
         return Items.map((item,index)=>{
           const {props} = item;
-            return <ButtonGroupItem {...props}  key={index} index={index}/>
+            return <WrappedButtonGroupItem {...props}  key={index} index={index}/>
         })
     }
     const {props} = Items;
-    return <ButtonGroupItem {...props}/>
+    return <WrappedButtonGroupItem {...props}/>
 }

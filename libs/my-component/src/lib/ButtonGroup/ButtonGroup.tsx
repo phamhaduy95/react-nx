@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { ButtonGroupContextProvider } from "./ButtonGroupContext";
 import { ButtonGroupState } from "./ButtonGroupReducer";
 import useButtonGroupContext from "./ButtonGroupContext";
-import ButtonGroupItemWrapper, { giveIndexToGroupItems } from "./ButtonGroupItem";
+import ButtonGroupItem, { giveIndexToGroupItems } from "./ButtonGroupItem";
 import "./ButtonGroup.scss"
 type Props = {
   children: JSX.Element[]|JSX.Element;
@@ -60,4 +60,3 @@ export default function ButtonGroup(props: Props) {
   );
 }
 
-ButtonGroup["Item"] = ButtonGroupItemWrapper;
