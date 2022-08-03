@@ -11,4 +11,9 @@ const Template: ComponentStory<typeof Pagination> = (args) => (
 );
 
 export const Primary = Template.bind({});
-Primary.args = {};
+Primary.args = {
+  maxNumber:7,
+  boundaryCount:0,
+  siblingCount:0,
+  onActiveChange:()=>{console.log("active")}
+};
