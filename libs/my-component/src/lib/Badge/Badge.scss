@@ -1,0 +1,32 @@
+.Badge {
+    position: relative;
+    width: max-content;
+
+    @at-root .Badge__Notification{
+        font-size: 0.8em;
+        position: absolute;
+        bottom: 50%;
+        left: 50%;
+        height: 1.6em;
+        width: max-content;
+        padding: 0 0.3em;
+        min-width: 1.6em;
+        border-radius: 10px;
+        background-color: hsla(214, 90%, 50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        transition: visibility 0.1s, transform 0.1s;
+        transform: scale3d(1,1,1);
+        
+
+        &.hide {
+            visibility: hidden;
+            transform: scale3d(0,0,0)
+            
+        }
+    }
+
+
+}
