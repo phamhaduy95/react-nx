@@ -2,8 +2,8 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "chart": "libs/chart",
     "my-component": "libs/my-component",
-    "my-component-e2e": "apps/my-component-e2e",
     "todo-app": "apps/todo-app",
     "todo-app-e2e": "apps/todo-app-e2e"
   }

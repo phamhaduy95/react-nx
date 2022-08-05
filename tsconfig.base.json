@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@phduylib/charts": ["libs/chart/src/index.ts"],
       "@phduylib/my-component": ["libs/my-component/src/index.ts"]
     }
   },
