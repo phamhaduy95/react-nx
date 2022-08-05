@@ -3,7 +3,7 @@ import  TestWaveEffect  from './TestWaveEffect';
 
 export default {
   component: TestWaveEffect,
-  title: 'Wave Effect',
+  title: 'my component/hooks/useWaveEffect',
 } as ComponentMeta<typeof TestWaveEffect>;
 
 const Template: ComponentStory<typeof TestWaveEffect> = (args) => (
