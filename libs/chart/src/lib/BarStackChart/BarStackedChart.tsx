@@ -11,8 +11,8 @@ import {
   getAllKeyStringFromDataSet,
 } from "./utils";
 import StackRect from "./StackedRect";
-import { D3Axis } from "../ChartComponent/Axis";
-import { AxisSettings } from "../ChartComponent/Axis/type";
+import { D3Axis } from "../ChartComponent";
+import { AxisSettings } from "../ChartComponent";
 
 export default function BarStackedChart(props: BarStackChartProps) {
   const { dataSet, settings } = props;
