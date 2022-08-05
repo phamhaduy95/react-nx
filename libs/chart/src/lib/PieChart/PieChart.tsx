@@ -1,8 +1,8 @@
-import * as d3 from "d3";
-import { useRef } from "react";
-import PieArc from "./PieArc";
-import { PieDataSetType } from "./type";
-import { getColorString } from "./utils";
+import * as d3 from 'd3';
+import { useRef } from 'react';
+import PieArc from './PieArc';
+import { PieDataSetType } from './type';
+import { getColorString } from './utils';
 
 /** The PieChart version 2 was designed with the initial intention to have the React as the main approach to manage elements while using several utilities api from d3 to process the data or prepare value for some svg-only attribute such as d from path element. This approach seems tp be bigger in code size but enables some React powerful feature for managing component and performance efficiency. */
 

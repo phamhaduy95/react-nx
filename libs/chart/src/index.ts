@@ -1,1 +1,1 @@
-export * from './lib/Chart';
+export * from "./lib/PieChart"
