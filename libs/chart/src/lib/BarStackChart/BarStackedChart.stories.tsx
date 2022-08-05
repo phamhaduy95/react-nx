@@ -3,7 +3,7 @@ import  BarStackedChart  from './BarStackedChart';
 
 export default {
   component: BarStackedChart,
-  title: 'BarStackedChart',
+  title: 'Chart/BarStackedChart',
 } as ComponentMeta<typeof BarStackedChart>;
 
 const Template: ComponentStory<typeof BarStackedChart> = (args) => (
