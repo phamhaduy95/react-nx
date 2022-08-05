@@ -1,0 +1,66 @@
+.stack-chart {
+  display: flex;
+  flex-direction: column;
+  width: min-content;
+  color: hsl(0, 0, 15%);
+  > .stack-chart__svg-view {
+    .bottom-axis,
+    .left-axis {
+      path,
+      line {
+        stroke: hsla(210, 70%, 50%, 0.8);
+      }
+      text {
+        color: inherit;
+        font-size: 0.75rem;
+      }
+    }
+  }
+
+  > .stack-chart__legends-section {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+    > .legend {
+      display: flex;
+      > .legend__text {
+        margin: 0;
+        margin-right: 0.5rem;
+      }
+      > .legend__color-indicator {
+        width: 50px;
+        height: 20px;
+      }
+      margin: 0.5rem;
+    }
+   
+  }
+
+  &.--top {
+    flex-direction: column-reverse;
+  }
+
+  &.--left, &.--right {
+    align-items: flex-start;
+  
+    > .stack-chart__legends-section {
+        flex-wrap: nowrap;
+        flex-direction: column;
+        >.legend{
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+  }
+
+  &.--right {
+    flex-direction: row;
+  }
+  &.--left {
+    flex-direction: row-reverse;
+  }
+
+
+}
