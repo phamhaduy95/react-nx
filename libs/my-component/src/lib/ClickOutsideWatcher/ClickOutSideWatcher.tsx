@@ -15,7 +15,7 @@ const ClickOutSideWatcher = forwardRef((props: Props, ref: any) => {
   useEffect(() => {
     const element = ref.current;
     console.log(element)
-    if (element !== null) {
+    if (element === null) return;
       const clickOutSideHandler = new ClickOutSideHandler(
         element,
         onClickOutSide
@@ -23,7 +23,6 @@ const ClickOutSideWatcher = forwardRef((props: Props, ref: any) => {
       return () => {
         clickOutSideHandler.removeEventHandler();
       };
-    }
   }, [ref.current]);
 
   return <>{children}</>;

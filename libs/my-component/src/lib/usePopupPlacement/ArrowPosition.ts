@@ -58,7 +58,7 @@ const sideOffset = "var(--arrow-size)";
 const offset = "calc(100% - var(--haft-arrow-size))"
 
 export class BottomLeftArrowPosition extends ArrowPosition {
-  setPosition() {
+  override setPosition() {
     this.arrow.style.bottom =  offset;
     this.arrow.style.left = sideOffset;
     return this;
@@ -66,7 +66,7 @@ export class BottomLeftArrowPosition extends ArrowPosition {
 }
 
 export class BottomCenterArrowPosition extends ArrowPosition {
-  setPosition() {
+  override setPosition() {
     this.arrow.style.bottom =  offset;
     this.arrow.style.left = centerOffSet;
     return this;
@@ -74,7 +74,7 @@ export class BottomCenterArrowPosition extends ArrowPosition {
 }
 
 export class BottomRightArrowPosition extends ArrowPosition {
-  setPosition() {
+  override setPosition() {
     this.arrow.style.bottom =  offset;
     this.arrow.style.right = sideOffset;
     return this;
@@ -82,7 +82,7 @@ export class BottomRightArrowPosition extends ArrowPosition {
 }
 
 export class TopLeftArrowPosition extends ArrowPosition {
-  setPosition() {
+  override setPosition() {
     this.arrow.style.top =  offset;
     this.arrow.style.left = sideOffset;
     return this;
@@ -90,7 +90,7 @@ export class TopLeftArrowPosition extends ArrowPosition {
 }
 
 export class TopCenterArrowPosition extends ArrowPosition {
-  setPosition() {
+  override setPosition() {
     this.arrow.style.top =  offset;
     this.arrow.style.left = centerOffSet;
     return this;
@@ -98,7 +98,7 @@ export class TopCenterArrowPosition extends ArrowPosition {
 }
 
 export class TopRightArrowPosition extends ArrowPosition {
-  setPosition() {
+  override setPosition() {
     this.arrow.style.top =  offset;
     this.arrow.style.right = sideOffset;
     return this;
@@ -106,7 +106,7 @@ export class TopRightArrowPosition extends ArrowPosition {
 }
 
 export class LeftTopArrowPosition extends ArrowPosition {
-  setPosition() {
+  override setPosition() {
     this.arrow.style.top = sideOffset;
     this.arrow.style.left = offset;
     return this;
@@ -114,7 +114,7 @@ export class LeftTopArrowPosition extends ArrowPosition {
 }
 
 export class LeftCenterArrowPosition extends ArrowPosition {
-  setPosition() {
+  override setPosition() {
     this.arrow.style.top = centerOffSet;
     this.arrow.style.left = offset;
     return this;
@@ -122,7 +122,7 @@ export class LeftCenterArrowPosition extends ArrowPosition {
 }
 
 export class LeftBottomArrowPosition extends ArrowPosition {
-  setPosition() {
+  override setPosition() {
     this.arrow.style.bottom = sideOffset;
     this.arrow.style.left = offset;
     return this;
@@ -130,7 +130,7 @@ export class LeftBottomArrowPosition extends ArrowPosition {
 }
 
 export class RightTopArrowPosition extends ArrowPosition {
-  setPosition() {
+  override setPosition() {
     this.arrow.style.top = sideOffset;
     this.arrow.style.right = offset;
     return this;
@@ -138,7 +138,7 @@ export class RightTopArrowPosition extends ArrowPosition {
 }
 
 export class RightCenterArrowPosition extends ArrowPosition {
-  setPosition() {
+  override setPosition() {
     this.arrow.style.top = centerOffSet;
     this.arrow.style.right = offset;
     return this;
@@ -146,7 +146,7 @@ export class RightCenterArrowPosition extends ArrowPosition {
 }
 
 export class RightBottomArrowPosition extends ArrowPosition {
-  setPosition() {
+  override setPosition() {
     this.arrow.style.bottom = sideOffset;
     this.arrow.style.right = offset;
     return this;

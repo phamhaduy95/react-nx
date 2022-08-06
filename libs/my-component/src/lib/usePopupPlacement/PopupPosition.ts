@@ -50,114 +50,114 @@ export default class PopupPosition {
 }
 
 export class TopCenterPopupPosition extends PopupPosition {
-  protected calculateTopCoordinate(): number {
+  protected override calculateTopCoordinate(): number {
     return this.wrapperPosition().top - this.popupSize().height;
   }
 
-  protected calculateLeftCoordinate(): number {
+  protected override calculateLeftCoordinate(): number {
     return this.widthDiff() / 2 + this.wrapperPosition().left;
   }
 }
 
 export class TopRightPopupPosition extends PopupPosition {
-  protected calculateTopCoordinate(): number {
+  protected override calculateTopCoordinate(): number {
     return this.wrapperPosition().top - this.popupSize().height;
   }
 
-  protected calculateLeftCoordinate(): number {
+  protected override calculateLeftCoordinate(): number {
     return this.wrapperPosition().left + this.widthDiff();
   }
 }
 
 export class TopLeftPopupPosition extends PopupPosition {
-  protected calculateTopCoordinate(): number {
+  protected override calculateTopCoordinate(): number {
     return this.wrapperPosition().top - this.popupSize().height;
   }
 
-  protected calculateLeftCoordinate(): number {
+  protected override calculateLeftCoordinate(): number {
     return this.wrapperPosition().left;
   }
 }
 
 export class BottomCenterPopupPosition extends PopupPosition {
-  protected calculateTopCoordinate(): number {
+  protected override calculateTopCoordinate(): number {
     return this.wrapperPosition().top + this.wrapperSize().height;
   }
 
-  protected calculateLeftCoordinate(): number {
+  protected override calculateLeftCoordinate(): number {
     return this.widthDiff() / 2 + this.wrapperPosition().left;
   }
 }
 
 export class BottomRightPopupPosition extends PopupPosition {
-  protected calculateTopCoordinate(): number {
+  protected override calculateTopCoordinate(): number {
     return this.wrapperPosition().top + this.wrapperSize().height;
   }
 
-  protected calculateLeftCoordinate(): number {
+  protected override calculateLeftCoordinate(): number {
     return this.wrapperPosition().left + this.widthDiff();
   }
 }
 export class BottomLeftPopupPosition extends PopupPosition {
-  protected calculateTopCoordinate(): number {
+  protected override calculateTopCoordinate(): number {
     return this.wrapperPosition().top + this.wrapperSize().height;
   }
 
-  protected calculateLeftCoordinate(): number {
+  protected override calculateLeftCoordinate(): number {
     return this.wrapperPosition().left;
   }
 }
 
 export class LeftTopPopupPosition extends PopupPosition {
-  protected calculateTopCoordinate(): number {
+  protected override calculateTopCoordinate(): number {
     return this.wrapperPosition().top;
   }
-  protected calculateLeftCoordinate(): number {
+  protected override calculateLeftCoordinate(): number {
     return this.wrapperPosition().left - this.popupSize().width;
   }
 }
 
 export class LeftCenterPopupPosition extends PopupPosition {
-  protected calculateTopCoordinate(): number {
+  protected override calculateTopCoordinate(): number {
     return this.wrapperPosition().top + this.heightDiff() / 2;
   }
-  protected calculateLeftCoordinate(): number {
+  protected override calculateLeftCoordinate(): number {
     return this.wrapperPosition().left - this.popupSize().width;
   }
 }
 
 export class LeftBottomPopupPosition extends PopupPosition {
-  protected calculateTopCoordinate(): number {
+  protected override calculateTopCoordinate(): number {
     return this.wrapperPosition().top + this.heightDiff();
   }
-  protected calculateLeftCoordinate(): number {
+  protected override calculateLeftCoordinate(): number {
     return this.wrapperPosition().left - this.popupSize().width;
   }
 }
 
 export class RightTopPopupPosition extends PopupPosition {
-  protected calculateTopCoordinate(): number {
+  protected override calculateTopCoordinate(): number {
     return this.wrapperPosition().top;
   }
-  protected calculateLeftCoordinate(): number {
+  protected override calculateLeftCoordinate(): number {
     return this.wrapperPosition().left + this.wrapperSize().width;
   }
 }
 
 export class RightCenterPopupPosition extends PopupPosition {
-  protected calculateTopCoordinate(): number {
+  protected override calculateTopCoordinate(): number {
     return this.wrapperPosition().top + this.heightDiff() / 2;
   }
-  protected calculateLeftCoordinate(): number {
+  protected override calculateLeftCoordinate(): number {
     return this.wrapperPosition().left + this.wrapperSize().width;
   }
 }
 
 export class RightBottomPopupPosition extends PopupPosition {
-  protected calculateTopCoordinate(): number {
+  protected override calculateTopCoordinate(): number {
     return this.wrapperPosition().top + this.heightDiff();
   }
-  protected calculateLeftCoordinate(): number {
+  protected override calculateLeftCoordinate(): number {
     return this.wrapperPosition().left + this.wrapperSize().width;
   }
 }

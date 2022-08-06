@@ -1,5 +1,4 @@
 import { ActionObject } from "./PaginationAction";
-import { initialState } from '../Carousel/useCarouselStateManagerHook';
 import {useReducer} from 'react';
 
 export type PaginationState = {
