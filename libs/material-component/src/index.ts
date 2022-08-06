@@ -1,1 +1,2 @@
-export * from './lib/MaterialComponent';
+export * from './lib/MaterialSideBar/MaterialSideBar';
+
