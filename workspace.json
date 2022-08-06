@@ -3,6 +3,7 @@
   "version": 2,
   "projects": {
     "chart": "libs/chart",
+    "material-component": "libs/material-component",
     "my-component": "libs/my-component",
     "todo-app": "apps/todo-app",
     "todo-app-e2e": "apps/todo-app-e2e"
