@@ -1,0 +1,268 @@
+$border: 1px solid rgba(76, 78, 100, 0.3);
+$IconColor: hsla(0, 0%, 20%, 0.8);
+
+@mixin ListItemStyle {
+  display: flex;
+  cursor: pointer;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.5rem 0;
+  margin-bottom: 0.5rem;
+  border-radius: 5px;
+  &:hover {
+    background-color: hsla(0, 0%, 90%, 0.5);
+  }
+}
+
+@mixin ItemIconStyle() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 0.4rem;
+  margin-right: 1rem;
+  > * {
+    width: 2rem;
+    height: 2rem;
+    fill: $IconColor;
+  }
+}
+
+@mixin ItemTextStyle {
+  text-overflow: ellipsis;
+  font-size: 1.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.1s ease-in 0s;
+  color: hsl(0, 0%, 35%);
+  user-select: none;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+.SideBar {
+  position: relative;
+  width: 68px;
+  height: 100vh;
+  overflow-x: hidden;
+
+  @at-root .SideBar__Container {
+    position: fixed;
+    width: 260px;
+    top: 0;
+    left: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    z-index: 1200;
+    border: $border;
+    overflow-x: hidden;
+    transition: width 0.3s ease-in;
+
+    @at-root .SideBar__Header {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin: 1rem 0;
+      > .SideBar__Header__Icon {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        margin-right: 0.5rem;
+        margin-left: 0.5rem;
+        > * {
+          width: 2.8rem;
+          height: 2.8rem;
+        }
+      }
+      > .SideBar__Header__Text {
+        font-size: 1.25rem;
+        user-select: none;
+        cursor: pointer;
+        font-weight: 600;
+        color: rgba(76, 78, 100, 0.87);
+        transition: opacity 0.3s ease-in;
+      }
+    }
+    @at-root .SideBar__Content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      @at-root .SideBar__List {
+        margin: unset;
+        display: flex;
+        flex-direction: column;
+        padding: 0em 0.5rem;
+        width: 100%;
+        margin: 0.5rem 0;
+        > li {
+          list-style: none;
+        }
+
+        > .SideBar__List__SubHeader {
+          margin-left: 0;
+          margin-bottom: 0.5rem;
+          overflow: hidden;
+          white-space: nowrap;
+          > .SubHeader__Line {
+            display: inline-block;
+            width: 100%;
+            height: 1px;
+            border-top: 1px dotted hsl(0, 0%, 40%);
+            margin-left: -100%;
+            opacity: 1;
+            transition: opacity 0.3s ease-in, margin-left 0.2s ease-in;
+          }
+
+          > .SubHeader__Text {
+            color: hsl(0, 0%, 50%);
+            font-weight: 550;
+            text-transform: uppercase;
+
+            transition: opacity 0.3s ease-in;
+          }
+        }
+
+        @at-root .SideBar__Item {
+          @include ListItemStyle();
+          > .SideBar__Item__Icon {
+            @include ItemIconStyle();
+          }
+          > .SideBar__Item__Text {
+            @include ItemTextStyle();
+            transition: opacity 0.3s ease-in;
+          }
+        }
+        > .SideBar__List__Divider {
+          border-top: 1px solid hsla(0, 0%, 50%, 0.6);
+          width: 100%;
+          margin: 0.5rem 0;
+          height: 1px;
+        }
+        @at-root .SideBar__SubList {
+          display: flex;
+          width: 100%;
+          flex-direction: column;
+          cursor: pointer;
+          align-items: flex-start;
+          > .SideBar__SubList__Header {
+            @include ListItemStyle();
+
+            > .SidBar__SubList__HeaderIcon {
+              @include ItemIconStyle();
+            }
+            > .SideBar__SubList__HeaderText {
+              @include ItemTextStyle();
+            }
+            > .SideBar__SubList__HeaderArrow {
+              margin-left: auto;
+              margin-right: 1rem;
+              fill: $IconColor;
+              width: 1.25rem;
+              height: 1.25rem;
+              transition: transform 0.2s ease-in, opacity 0.3s ease;
+            }
+          }
+          @at-root .SideBar__SubList__List {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+
+            > .collapsible {
+              width: 100%;
+              padding: unset;
+              overflow: hidden;
+            }
+            .SideBar__SubList__ListItem {
+              list-style: none;
+              @include ItemTextStyle();
+              margin-bottom: 0.5rem;
+              width: 100%;
+              padding: 0.5rem 0;
+              padding-left: 2.5rem;
+              border-radius: 5px;
+              &:not(.selected):hover {
+                background-color: hsla(0, 0%, 90%, 0.5);
+              }
+
+              &.selected {
+                background-color: hsla(210, 80%, 40%);
+                color: white !important;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+.SideBar__Item.selected {
+  background-color: hsla(210, 80%, 40%);
+  > .SideBar__Item__Icon {
+    > svg {
+      fill: white;
+    }
+  }
+  > .SideBar__Item__Text {
+    color: white;
+  }
+}
+
+
+// define style when subList is selected
+.SideBar__SubList.selected {
+  > .SideBar__SubList__Header {
+    background-color: hsla(0, 0%, 80%, 0.5);
+    > .SideBar__SubList__HeaderArrow {
+      transform: rotateZ(90deg);
+    }
+  }
+}
+
+// declare style for whole sidebar when it is expanded
+.SideBar__Container:not(.expanded) {
+  width: 62px;
+  .SideBar__Header {
+    > .SideBar__Header__Text {
+      opacity: 0;
+    }
+  }
+  .SideBar__List {
+    > .SideBar__List__SubHeader {
+      > .SubHeader__Line {
+        margin-left: 0;
+        opacity: 1;
+      }
+      > .SubHeader__Text {
+        opacity: 0;
+      }
+    }
+
+    > .SideBar__Item {
+      > .SideBar__Item__Text {
+        opacity: 0;
+      }
+    }
+
+    > .SideBar__SubList {
+      > .SideBar__SubList__Header {
+        > .SideBar__SubList__HeaderArrow {
+          opacity: 0;
+        }
+      }
+      > .SideBar__SubList__List {
+        height: 0;
+      }
+    }
+  }
+}
