@@ -17,15 +17,20 @@ export const Example: ComponentStory<typeof Collapsible> = (args) => {
   const handleClick = (e:React.MouseEvent)=>{
     setOpen(prev=>!prev);
   }
+  const {direction} = args;
 
   return (
     <>
       <button onClick={handleClick}>Show collapsible area</button>
-      <Collapsible {...args}>
+      <Collapsible direction={direction} showed={open}>
             Item
       </Collapsible>
     </>
   ) 
 };
+
+Example.args = {
+  direction:"vertical"
+}
 
 
