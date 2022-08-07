@@ -6,12 +6,14 @@ export type CollapsibleProps = {
   children?: JSX.Element[] | JSX.Element|string;
   direction?: "horizontal" | "vertical";
   showed?: boolean;
+  className?:string;
 };
 
 const defaultPropsValue: Required<CollapsibleProps> = {
   children: <></>,
   direction: "vertical",
   showed: true,
+  className:"",
 };
 
 function supplyDefaultValueWhenUndefineOrNull<T extends Object>(
@@ -27,7 +29,7 @@ export function Collapsible(props: CollapsibleProps) {
     props,
     defaultPropsValue
   );
-  const { children, direction, showed } = newProps;
+  const { children, direction, showed,className } = newProps;
   const ref = useRef(null);
 
   useControlElementCollapsingState(ref,newProps);
@@ -40,7 +42,7 @@ export function Collapsible(props: CollapsibleProps) {
 
   return (
     <div
-      className={`collapsible ${makeShowed()}`}
+      className={`collapsible ${className} ${makeShowed()}`}
       ref={ref}
     >
       {children}
