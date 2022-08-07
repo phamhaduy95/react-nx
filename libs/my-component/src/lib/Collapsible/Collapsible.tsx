@@ -32,13 +32,6 @@ export function Collapsible(props: CollapsibleProps) {
 
   useControlElementCollapsingState(ref,newProps);
 
-  useEffect(() => {
-    const el = ref.current;
-    if (el === null) return;
-    if (showed) {
-        
-    }
-  }, [showed]);
 
   const makeShowed = () => {
     if (showed) return "showed";

@@ -10,14 +10,14 @@ export function useControlElementCollapsingState(
     const el = ref.current;
     if (el === null) return;
     if (showed) {
-      setElementToMaxHeight(el, direction);
+      setElementToMaxSize(el, direction);
       return;
     }
-    setElementToMinHeight(el, direction);
-  }, [showed]);
+    setElementToMinSize(el, direction);
+  }, [showed,direction]);
 }
 
-function setElementToMaxHeight(
+function setElementToMaxSize(
   el: HTMLElement,
   direction: Required<CollapsibleProps>['direction']
 ) {
@@ -34,7 +34,7 @@ function setElementToMaxHeight(
     }
   }
 }
-function setElementToMinHeight(
+function setElementToMinSize(
   el: HTMLElement,
   direction: Required<CollapsibleProps>['direction']
 ) {
