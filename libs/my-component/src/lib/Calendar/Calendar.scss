@@ -1,0 +1,103 @@
+$text-color: hsl(0, 0%, 30%, 0.9);
+
+@mixin centerElement {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin addCircleHooverEffect {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2%;
+    left: -2%;
+    bottom: -2%;
+    right: -2%;
+    background-color: hsla(0, 0%, 70%, 0.2);
+    border-radius: 50%;
+    visibility: hidden;
+  }
+  &:hover {
+    &::before {
+      visibility: visible;
+    }
+  }
+}
+
+.Calendar {
+  padding: 0.75rem;
+  width: max-content;
+  min-width: 250px;
+  height: min-content;
+  display: flex;
+  flex-direction: column;
+ 
+  color: $text-color;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  @at-root .Calendar__DatePicker {
+    display: flex;
+    align-items: center;
+    margin: 0.75rem 0;
+    > .Calendar__DatePicker__BackwardArrow {
+      margin-right: auto;
+      padding: 0.25rem;
+      cursor: pointer;  
+      @include centerElement();
+
+      @include addCircleHooverEffect();
+      > svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+
+    @at-root .Calendar__DatePicker__DateBrowser {
+      margin: auto;
+      font-size: 1.25rem;
+      font-weight: 600;
+      user-select: none;
+    
+    }
+    > .Calendar__DatePicker__ForwardArrow {
+      margin-left: auto;
+      padding: 0.25rem;
+      cursor: pointer;  
+      @include centerElement();
+      @include addCircleHooverEffect();
+      > svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+  }
+  @at-root .Calendar_Table {
+    @at-root .Calendar__Table__HeaderRow {
+      th {
+        text-align: center;
+        padding: 0.5rem 0;
+        user-select: none;
+      }
+    }
+  }
+
+  @at-root .Calendar__Table__Body {
+    > .Calendar__Table__Row {
+      > .Calendar__Table__DateCell {
+        user-select: none;
+        cursor: pointer;
+        text-align: center;
+        vertical-align: middle;
+        min-width: 2rem;
+        height: 2rem;
+
+        @include addCircleHooverEffect();
+        &.blurred {
+          color: hsla(0, 0%, 60%, 0.8);
+        }
+      }
+    }
+  }
+}
