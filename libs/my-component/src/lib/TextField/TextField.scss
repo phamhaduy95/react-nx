@@ -1,0 +1,94 @@
+$text-color:hsl(0, 0%, 20%);
+
+@mixin centerElement {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin setChildElementsSize($height: 1rem, $width: 1rem) {
+  > * {
+    height: $height;
+    width: $width;
+  }
+}
+
+.TextField {
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  @at-root .TextField__Label {
+    margin-bottom: 0.25rem;
+    margin-left: 0.25rem;
+    font-size: 0.75rem;
+    color: $text-color;
+    font-size: 1rem;
+  }
+  @at-root .TextField__InputContainer {
+    width: auto;
+    display: flex;
+    @at-root .TextField__AddonBefore {
+      background: hsl(0, 0%, 90%);
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      width: max-content;
+      padding:0 0.5rem; 
+      border: 1px solid grey;
+      color: $text-color;
+      border-right:unset;
+      @include centerElement();
+      @include setChildElementsSize(1.25rem, 1.25rem);
+    }
+
+    @at-root .TextField__InputField {
+      width: max-content;
+      border: 1px solid grey;
+      padding: 0.5rem 0;
+      border-radius: 5px;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+
+      @at-root .TextField__InputPrefix,
+        .TextField__InputSuffix {
+        @include centerElement();
+        margin: 0 0.5rem;
+        font-size: 1rem;
+        color:  $text-color;
+        @include setChildElementsSize(1.25rem, 1.25rem);
+      }
+
+      @at-root .TextField__Input {
+        outline: none;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        color: $text-color;
+        border: none;
+        font-size: 1rem;
+      }
+
+      &.has-addon-before {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      &.has-addon-after {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      &:focus-within {
+        border-color: hsla(220, 80%, 50%, 0.9);
+        box-shadow: 0 0 2px 2px hsla(220, 80%, 50%, 0.5);
+      }
+    }
+  }
+  @at-root .TextField__HelperText {
+    color: hsl(0, 0%, 50%);
+    font-size: 1rem;
+    margin-left: 0.25rem;
+    user-select: none;
+    margin-top: 0.25rem;
+  }
+}
