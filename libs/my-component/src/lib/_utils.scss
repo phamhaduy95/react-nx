@@ -1,0 +1,12 @@
+@mixin centerElement {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin setChildElementsSize($height: 1rem, $width: 1rem) {
+  > * {
+    height: $height;
+    width: $width;
+  }
+}
