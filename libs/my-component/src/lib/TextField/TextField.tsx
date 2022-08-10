@@ -13,7 +13,7 @@ export interface TextFieldProps {
   addOnAfter?: React.ReactNode | false;
   suffix?: React.ReactNode | false;
   onChange?: (value: string) => void;
-  onEnterPressed: (value: string) => void;
+  onEnterPressed?: (value: string) => void;
 }
 
 const defaultProps: Required<TextFieldProps> = {
