@@ -77,7 +77,7 @@ function useInitialPosition(
  * the utility method for setting the absolute position of the popup by provide the value in pixel to left and top CSS properties.
  *
  */
-function positionPopup(
+export function positionPopup(
   button: HTMLElement,
   menu: HTMLElement,
   placement: Placement
