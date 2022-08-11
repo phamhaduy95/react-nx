@@ -4,6 +4,7 @@ import { useReducer } from 'react';
 export type CalendarState = {
   selectedDate: Date;
   currentMonth: { year: number; month: number };
+  selectable:boolean;
 };
 
 type SelectNewDateAction = {
@@ -12,6 +13,13 @@ type SelectNewDateAction = {
     newDate: string;
   };
 };
+
+type MakeSelectableAction = {
+  type: 'MAKE_SELECTABLE';
+  payload: {
+    selectable:boolean
+  }
+}
 
 type GoToNextMonthAction = {
   type: 'GO_TO_NEXT_MONTH';
@@ -24,7 +32,8 @@ type GoToPreviousMonthAction = {
 export type CalendarAction =
   | SelectNewDateAction
   | GoToNextMonthAction
-  | GoToPreviousMonthAction;
+  | GoToPreviousMonthAction
+  | MakeSelectableAction
 
 type Dispatcher = React.Dispatch<CalendarAction>;
 
@@ -32,6 +41,7 @@ export type CalendarActionMethod = {
   selectNewDate: (newDate: string) => void;
   goToNextMonth: () => void;
   goToPreviousMonth: () => void;
+  makeSelectable:(selectable:boolean)=>void
 };
 
 function getActionMethod(dispatch: Dispatcher): CalendarActionMethod {
@@ -45,6 +55,9 @@ function getActionMethod(dispatch: Dispatcher): CalendarActionMethod {
     goToPreviousMonth() {
       dispatch({ type: 'GO_TO_PREVIOUS_MONTH' });
     },
+    makeSelectable(selectable) {
+        dispatch({type:"MAKE_SELECTABLE",payload:{selectable}})
+    },
   };
 }
 
@@ -55,6 +68,7 @@ const reducer = (
   switch (action.type) {
     case 'SELECT_NEW_DATE': {
       const newDateStr = action.payload.newDate;
+      if (newDateStr === state.selectedDate.toDateString()) return state;
       const newDate = new Date(newDateStr);
       return { ...state, selectedDate: newDate };
     }
@@ -78,6 +92,12 @@ const reducer = (
       };
       return { ...state, currentMonth: newMonth };
     }
+    case "MAKE_SELECTABLE":{
+      const selectable = action.payload.selectable;
+      if (selectable === state.selectable) return state;
+      return {...state,selectable}
+    }
+
     default: {
       return state;
     }
@@ -85,7 +105,7 @@ const reducer = (
 };
 
 export function useCalendarReducer(initialState: CalendarState) {
-    const [state,dispatch] = useReducer(reducer,initialState);
-    const action = getActionMethod(dispatch);
-    return {state,action}
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const action = getActionMethod(dispatch);
+  return { state, action };
 }

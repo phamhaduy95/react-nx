@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useGenerateCalendarData } from './useGenerateCalendarData';
@@ -30,14 +30,16 @@ const defaultCalendarProps: Required<CalendarProps> = {
 
 export function Calendar(props: CalendarProps) {
   const newProps = { ...defaultCalendarProps, ...props };
-  const { date } = newProps;
+  const { date, selectable } = newProps;
   const currentMonth = dayjs(date);
+  const dateSrt = date.toDateString();
   const initialState: CalendarState = {
     currentMonth: {
       year: currentMonth.year(),
       month: currentMonth.month(),
     },
     selectedDate: dayjs().toDate(),
+    selectable: selectable,
   };
 
   return (
@@ -48,7 +50,8 @@ export function Calendar(props: CalendarProps) {
 }
 
 function WrappedCalendar(props: CalendarProps) {
-  const { onSelect } = props;
+  const newProps = { ...defaultCalendarProps, ...props };
+  const { onSelect } = newProps;
   const { state, action } = useCalendarContext();
   const { year, month } = state.currentMonth;
 
@@ -58,6 +61,11 @@ function WrappedCalendar(props: CalendarProps) {
       return <CalendarTableRow rowData={rowData} key={index} />;
     });
   }, [year, month]);
+
+  const dateStr = state.selectedDate.toDateString();
+  useEffect(() => {
+    onSelect(state.selectedDate);
+  }, [dateStr]);
 
   const handleClickNextMonth = () => {
     action.goToNextMonth();
