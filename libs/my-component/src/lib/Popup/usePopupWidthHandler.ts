@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { positionPopup } from '../usePopupPlacement/usePopUpPlacement';
 import { PopupElementProps } from './PopupElement';
 export default function usePopupWidthHandler(
-  targetRef: React.MutableRefObject<HTMLElement>,
-  popupRef: React.MutableRefObject<HTMLElement>,
+  targetRef: React.MutableRefObject<HTMLElement|null>,
+  popupRef: React.MutableRefObject<HTMLElement|null>,
   widthType: PopupElementProps['width'],
   placement: PopupElementProps['placement']
 ) {
