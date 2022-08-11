@@ -1,45 +1,51 @@
-import React, {  MutableRefObject, useEffect, useRef } from "react";
-import ReactDOM from "react-dom";
-import usePopupArrowPosition from "../usePopupPlacement/usePopupArrowPosition";
-import usePopupPadding from "../usePopupPlacement/usePopupPadding";
-import usePopupPlacement from "../usePopupPlacement/usePopUpPlacement";
-import "./PopupElement.scss"
+import classNames from 'classnames';
+import React, { MutableRefObject, useEffect, useRef } from 'react';
+import ReactDOM from 'react-dom';
+import usePopupArrowPosition from '../usePopupPlacement/usePopupArrowPosition';
+import usePopupPadding from '../usePopupPlacement/usePopupPadding';
+import usePopupPlacement from '../usePopupPlacement/usePopUpPlacement';
+import './PopupElement.scss';
+import usePopupWidthHandler from './usePopupWidthHandler';
 
 type Placement =
-  | "bottomRight"
-  | "bottomLeft"
-  | "bottomCenter"
-  | "topLeft"
-  | "topRight"
-  | "topCenter"
-  | "leftTop"
-  | "leftCenter"
-  | "leftBottom"
-  | "rightTop"
-  | "rightCenter"
-  | "rightBottom";
+  | 'bottomRight'
+  | 'bottomLeft'
+  | 'bottomCenter'
+  | 'topLeft'
+  | 'topRight'
+  | 'topCenter'
+  | 'leftTop'
+  | 'leftCenter'
+  | 'leftBottom'
+  | 'rightTop'
+  | 'rightCenter'
+  | 'rightBottom';
 
-type Props = {
-  className?: string;
-  children: JSX.Element[] | JSX.Element | string;
-  padding?: number;
-  placement: Placement;
-  arrowEnable?: boolean;
-  isShowed: boolean;
-  targetRef:MutableRefObject<any>;
+export type PopupElementProps = {
+  className?: string,
+  children: JSX.Element[] | JSX.Element | string,
+  padding?: number,
+  placement: Placement,
+  arrowEnable?: boolean,
+  isShowed: boolean,
+  targetRef: MutableRefObject<any>,
+  width?: 'auto' | 'fit-content' | number,
 };
 
-const defaultPropsValue: Required<Props> = {
-  className: "",
+const defaultProps: Required<PopupElementProps> = {
+  className: '',
   children: <></>,
   padding: 5,
-  placement: "topCenter",
+  placement: 'topCenter',
   arrowEnable: true,
   isShowed: false,
   targetRef: React.createRef(),
+  width: 'fit-content',
 };
 
-const PopupElement =(props: Props) => {
+const PopupElement = (props: PopupElementProps) => {
+  const newProps = { ...defaultProps, ...props };
+
   const {
     isShowed,
     className,
@@ -47,36 +53,37 @@ const PopupElement =(props: Props) => {
     padding,
     placement,
     arrowEnable,
-    targetRef
-  }: Required<Props> = {
-    ...defaultPropsValue,
-    ...props
-  };
+    targetRef,
+    width
+  } = newProps;
 
   const arrowRef = useRef<HTMLDivElement>(null);
-  const popupRef = useRef<HTMLDivElement>(null);
+  const popupRef = useRef<any>(null);
+  usePopupWidthHandler(targetRef,popupRef,width,placement)
+  usePopupPlacement(targetRef, popupRef, placement);
+  usePopupPadding(popupRef, placement, padding);
 
-  usePopupPlacement(targetRef,popupRef,placement);
-  usePopupPadding(popupRef,placement,padding);
-  usePopupArrowPosition(arrowRef,placement);
+  // usePopupArrowPosition(arrowRef,placement);
 
-  console.log(arrowEnable,padding,targetRef.current)
+  const rootClassName = classNames('Popup', {
+    
+    showed: isShowed,
+  });
 
-  const makeShow = () => {
-    if (isShowed) return "showed";
-    return "";
-  };
+  const PopupContentClassName = classNames("Popup__Content",{
+ [`${className}`]: className,
+  })
 
   return ReactDOM.createPortal(
-    <div className={`Popup ${className} ${makeShow()}`} ref={popupRef}>
-      <div className="Popup__Content">
+    <div className={rootClassName} ref={popupRef}>
+       <div className={PopupContentClassName}>
         <div className="Popup__Arrow" ref={arrowRef} hidden={!arrowEnable} />
         {children}
       </div>
     </div>,
     document.body
   );
-}
+};
 
 export default PopupElement;
 
