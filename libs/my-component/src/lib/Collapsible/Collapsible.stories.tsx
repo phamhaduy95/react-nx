@@ -23,7 +23,7 @@ export const Example: ComponentStory<typeof Collapsible> = (args) => {
     <>
       <button onClick={handleClick}>Show collapsible area</button>
       <Collapsible direction={direction} showed={open}>
-            <span></span>
+            <span>Ok</span>
       </Collapsible>
     </>
   ) 
