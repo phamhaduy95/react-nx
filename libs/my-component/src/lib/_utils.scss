@@ -10,3 +10,9 @@
     width: $width;
   }
 }
+
+@mixin hideOverflowText {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
