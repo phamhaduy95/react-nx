@@ -1,6 +1,6 @@
 @import '../_utils.scss';
 
-$text-color: hsla(0, 0%, 20%,1);
+$text-color: hsla(0, 0%, 20%, 1);
 
 .Select {
   width: auto;
@@ -48,24 +48,35 @@ $text-color: hsla(0, 0%, 20%,1);
   @at-root .Select__Popup {
     color: $text-color;
     display: flex;
-    border:1px solid grey;
+    border: 1px solid grey;
     border-radius: 5px;
+
+    > .Select__SubHeader {
+      padding: 0.5rem;
+      width: 100%;
+      user-select: none;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      color: hsl(0,0%,50%,0.8);
+    }
 
     > .Select__Option {
       padding: 0.5rem;
       width: 100%;
       user-select: none;
       cursor: pointer;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
 
       &:not(.selected):hover {
         background-color: hsla(0, 0%, 90%);
-
       }
 
       &.selected {
         background-color: hsla(210, 80%, 50%);
         color: hsla(0, 0%, 90%);
-        
       }
     }
   }
