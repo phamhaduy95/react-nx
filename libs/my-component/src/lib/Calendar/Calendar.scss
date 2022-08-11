@@ -97,6 +97,16 @@ $text-color: hsl(0, 0%, 30%, 0.9);
         &.blurred {
           color: hsla(0, 0%, 60%, 0.8);
         }
+
+        &.selected {
+          color : white;
+          &::before {
+            background-color: hsla(210, 80%, 50%);
+            visibility: visible;
+            z-index: -1;
+          }
+        }
+
       }
     }
   }
