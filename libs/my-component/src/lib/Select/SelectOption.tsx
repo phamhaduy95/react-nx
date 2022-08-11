@@ -1,4 +1,11 @@
 import React from 'react';
+import { useMemo } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { useGenerateUUID } from '../SideBar/hooks';
+import useEffect from 'react';
+import { useSelectContext } from './SelectContextProvider';
+import { SelectState } from './reducer';
+import classNames from 'classnames';
 export interface SelectOption {
   value: string | number | boolean;
   children?: React.ReactNode | false;
@@ -14,10 +21,31 @@ const defaultProps: SelectOption = {
 export function SelectOption(props: SelectOption) {
   const newProps = { ...defaultProps, ...props };
   const { children, label, value } = newProps;
+  const { state, action } = useSelectContext();
+  const id = useMemo(() => {
+    return uuidv4();
+  }, []);
+
   const renderInnerContent = () => {
     if (children) return children;
-    return <div className="Select__OptionLabel">{label}</div>;
+    return label;
   };
 
-  return <div className="Select__Option">{renderInnerContent()}</div>;
+  const handleSelectItem = (e: React.MouseEvent) => {
+    const newItem: SelectState['selectedItem'] = {
+      id: id,
+      value: value.toString(),
+    };
+    action.selectItem(newItem);
+  };
+
+  const isSelected = id === state.selectedItem.id;
+
+  const className = classNames('Select__Option', { selected: isSelected });
+
+  return (
+    <div className={className} tabIndex={-1} onClick={handleSelectItem}>
+      {renderInnerContent()}
+    </div>
+  );
 }

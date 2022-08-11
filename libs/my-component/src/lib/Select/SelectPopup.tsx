@@ -11,10 +11,12 @@ export const SelectPopup = (props: SelectPopupProps) => {
   const { children, isShowed, targetRef } = props;
   return (
     <PopupElement
+      className='Select__Popup'
       targetRef={targetRef}
       placement="bottomCenter"
-      padding={5}
+      padding={8}
       isShowed={isShowed}
+      width="auto"
     >
       {children}
     </PopupElement>
