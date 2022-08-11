@@ -14,7 +14,6 @@ const ClickOutSideWatcher = forwardRef((props: Props, ref: any) => {
   const { children, onClickOutSide } = props;
   useEffect(() => {
     const element = ref.current;
-    console.log(element)
     if (element === null) return;
       const clickOutSideHandler = new ClickOutSideHandler(
         element,
