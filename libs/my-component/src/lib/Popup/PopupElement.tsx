@@ -22,14 +22,14 @@ type Placement =
   | 'rightBottom';
 
 export type PopupElementProps = {
-  className?: string,
-  children: JSX.Element[] | JSX.Element | string,
-  padding?: number,
-  placement: Placement,
-  arrowEnable?: boolean,
-  isShowed: boolean,
-  targetRef: MutableRefObject<any>,
-  width?: 'auto' | 'fit-content' | number,
+  className?: string;
+  children: JSX.Element[] | JSX.Element | string;
+  padding?: number;
+  placement: Placement;
+  arrowEnable?: boolean;
+  isShowed: boolean;
+  targetRef: MutableRefObject<any>;
+  width?: 'auto' | 'fit-content' | number;
 };
 
 const defaultProps: Required<PopupElementProps> = {
@@ -54,29 +54,28 @@ const PopupElement = (props: PopupElementProps) => {
     placement,
     arrowEnable,
     targetRef,
-    width
+    width,
   } = newProps;
 
   const arrowRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<any>(null);
-  usePopupWidthHandler(targetRef,popupRef,width,placement)
+  usePopupWidthHandler(targetRef, popupRef, width, placement);
   usePopupPlacement(targetRef, popupRef, placement);
   usePopupPadding(popupRef, placement, padding);
 
   // usePopupArrowPosition(arrowRef,placement);
 
   const rootClassName = classNames('Popup', {
-    
     showed: isShowed,
   });
 
-  const PopupContentClassName = classNames("Popup__Content",{
- [`${className}`]: className,
-  })
+  const PopupContentClassName = classNames('Popup__Content', {
+    [`${className}`]: className,
+  });
 
   return ReactDOM.createPortal(
     <div className={rootClassName} ref={popupRef}>
-       <div className={PopupContentClassName}>
+      <div className={PopupContentClassName}>
         <div className="Popup__Arrow" ref={arrowRef} hidden={!arrowEnable} />
         {children}
       </div>
@@ -86,5 +85,3 @@ const PopupElement = (props: PopupElementProps) => {
 };
 
 export default PopupElement;
-
-
