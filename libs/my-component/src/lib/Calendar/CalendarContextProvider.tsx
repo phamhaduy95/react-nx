@@ -23,14 +23,16 @@ export default function CalendarContextProvider(
   const { children, initialState } = props;
   const { state, action } = useCalendarReducer(initialState);
   const contextValue = { state, action };
-  const dateStr = initialState.selectedDate.toDateString();   
+  const date = initialState.selectedDate;
 
   useEffect(() => {
+    const dateStr = date.toDateString();
     action.selectNewDate(dateStr);
-  }, [dateStr]);
+    action.selectNewMonth(date.getFullYear(),date.getMonth());
+  }, [date.toDateString()]);
   
   useEffect(()=>{
-    console.log(initialState.selectable)
+
     action.makeSelectable(initialState.selectable)
   },[initialState.selectable])
 

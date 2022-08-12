@@ -33,6 +33,7 @@ $text-color: hsl(0, 0%, 30%, 0.9);
   height: min-content;
   display: flex;
   flex-direction: column;
+  caret-color: transparent;
  
   color: $text-color;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

@@ -32,13 +32,12 @@ export function Calendar(props: CalendarProps) {
   const newProps = { ...defaultCalendarProps, ...props };
   const { date, selectable } = newProps;
   const currentMonth = dayjs(date);
-  const dateSrt = date.toDateString();
   const initialState: CalendarState = {
     currentMonth: {
       year: currentMonth.year(),
       month: currentMonth.month(),
     },
-    selectedDate: dayjs().toDate(),
+    selectedDate: dayjs(date).toDate(),
     selectable: selectable,
   };
 

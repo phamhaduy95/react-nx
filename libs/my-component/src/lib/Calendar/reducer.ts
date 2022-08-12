@@ -4,7 +4,7 @@ import { useReducer } from 'react';
 export type CalendarState = {
   selectedDate: Date;
   currentMonth: { year: number; month: number };
-  selectable:boolean;
+  selectable: boolean;
 };
 
 type SelectNewDateAction = {
@@ -17,9 +17,9 @@ type SelectNewDateAction = {
 type MakeSelectableAction = {
   type: 'MAKE_SELECTABLE';
   payload: {
-    selectable:boolean
-  }
-}
+    selectable: boolean;
+  };
+};
 
 type GoToNextMonthAction = {
   type: 'GO_TO_NEXT_MONTH';
@@ -29,11 +29,20 @@ type GoToPreviousMonthAction = {
   type: 'GO_TO_PREVIOUS_MONTH';
 };
 
+type SelectNewMonthAction = {
+  type: 'SELECT_NEW_MONTH';
+  payload: {
+    month: number;
+    year: number;
+  };
+};
+
 export type CalendarAction =
   | SelectNewDateAction
   | GoToNextMonthAction
   | GoToPreviousMonthAction
   | MakeSelectableAction
+  | SelectNewMonthAction;
 
 type Dispatcher = React.Dispatch<CalendarAction>;
 
@@ -41,7 +50,8 @@ export type CalendarActionMethod = {
   selectNewDate: (newDate: string) => void;
   goToNextMonth: () => void;
   goToPreviousMonth: () => void;
-  makeSelectable:(selectable:boolean)=>void
+  makeSelectable: (selectable: boolean) => void;
+  selectNewMonth: (year: number, month: number) => void;
 };
 
 function getActionMethod(dispatch: Dispatcher): CalendarActionMethod {
@@ -56,7 +66,10 @@ function getActionMethod(dispatch: Dispatcher): CalendarActionMethod {
       dispatch({ type: 'GO_TO_PREVIOUS_MONTH' });
     },
     makeSelectable(selectable) {
-        dispatch({type:"MAKE_SELECTABLE",payload:{selectable}})
+      dispatch({ type: 'MAKE_SELECTABLE', payload: { selectable } });
+    },
+    selectNewMonth(year: number, month: number) {
+      dispatch({ type: 'SELECT_NEW_MONTH', payload: { year, month } });
     },
   };
 }
@@ -92,10 +105,19 @@ const reducer = (
       };
       return { ...state, currentMonth: newMonth };
     }
-    case "MAKE_SELECTABLE":{
+    case 'MAKE_SELECTABLE': {
       const selectable = action.payload.selectable;
       if (selectable === state.selectable) return state;
-      return {...state,selectable}
+      return { ...state, selectable };
+    }
+    case 'SELECT_NEW_MONTH': {
+      const { month, year } = action.payload;
+      if (
+        year === state.currentMonth.year &&
+        month === state.currentMonth.month
+      )
+        return state;
+      return { ...state, currentMonth: { year, month } };
     }
 
     default: {
