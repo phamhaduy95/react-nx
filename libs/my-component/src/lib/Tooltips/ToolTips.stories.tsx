@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import  ToolTips  from './ToolTips';
-import style from "./Tooltips.stories.module.scss"
+import "./Tooltips.stories.scss"
 
 export default {
   component: ToolTips,
@@ -13,7 +13,7 @@ const Template: ComponentStory<typeof ToolTips> = (args) => (
 
 export const Example = Template.bind({});
 Example.args = {
-    children:<div className={style["child"]}>Hover Me</div>,
+    children:<div className={".child"}>Hover Me</div>,
     text:"tooltips",
     placement:"bottomCenter",
     trigger:"hover",

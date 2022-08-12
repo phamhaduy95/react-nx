@@ -3,9 +3,9 @@ $arrow-size : 0.5rem;
 .ToolTips_Wrapper {
     width: max-content;
     @at-root .Tooltips__Popup {
-         >.Popup__Content{
-            background-color: hsl(0, 0%, 30%, 0.85);
-            color:white
-         }
+            background-color: hsl(0, 0%, 30%, 0.75);
+            color:hsl(0, 0%, 90%);
+            padding: 0.5rem;
+            border-radius: 5px;
     }
 }
