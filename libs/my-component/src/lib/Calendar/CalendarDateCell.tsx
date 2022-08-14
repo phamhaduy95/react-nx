@@ -2,6 +2,7 @@ import React from 'react';
 import { CalendarTableData } from './useGenerateCalendarData';
 import { useCalendarContext } from './CalendarContextProvider';
 import classNames from 'classnames';
+import { useCalendarSettings } from './CalendarSettingsContextProvider';
 
 type CalendarDateCellProps = {
   data: CalendarTableData[number][number];
@@ -13,11 +14,7 @@ export function CalendarDateCell(props: CalendarDateCellProps) {
   const { date, isDayWithinMonth } = data;
 
   const { state, action } = useCalendarContext();
-  const applyStyleForNonMonthDay = () => {
-    if (!isDayWithinMonth) return 'blurred';
-    return '';
-  };
-
+ 
   const isSelected = state.selectedDate.toDateString() === date.toDateString();
 
   const className = classNames('Calendar__Table__DateCell', {
@@ -25,15 +22,17 @@ export function CalendarDateCell(props: CalendarDateCellProps) {
     selected: isSelected,
   });
 
+  const {onSelect} = useCalendarSettings();
+
   const handleSelectDate = (e: React.MouseEvent) => {
     if (!state.selectable) return;
-    console.log(state.selectable)
     if (!isDayWithinMonth) {
       const result = compareMonthFor2DateObject(date, state.selectedDate);
       if (result === 1) action.goToNextMonth();
       else if (result === -1) action.goToPreviousMonth();
     }
     action.selectNewDate(date.toDateString());
+    if (onSelect) onSelect(date);
   };
 
   return (

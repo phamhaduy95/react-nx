@@ -8,6 +8,7 @@ import './Calendar.scss';
 import CalendarContextProvider from './CalendarContextProvider';
 import { CalendarState } from './reducer';
 import { useCalendarContext } from './CalendarContextProvider';
+import {CalendarSettingsContextProvider} from './CalendarSettingsContextProvider';
 
 function getDateString(year: number, month: number) {
   const date = dayjs().year(year).month(month);
@@ -30,7 +31,7 @@ const defaultCalendarProps: Required<CalendarProps> = {
 
 export function Calendar(props: CalendarProps) {
   const newProps = { ...defaultCalendarProps, ...props };
-  const { date, selectable } = newProps;
+  const { date, selectable,onSelect } = newProps;
   const currentMonth = dayjs(date);
   const initialState: CalendarState = {
     currentMonth: {
@@ -42,9 +43,11 @@ export function Calendar(props: CalendarProps) {
   };
 
   return (
+    <CalendarSettingsContextProvider onSelect={onSelect}>
     <CalendarContextProvider initialState={initialState}>
       <WrappedCalendar {...newProps} />
     </CalendarContextProvider>
+    </CalendarSettingsContextProvider>
   );
 }
 
@@ -61,10 +64,6 @@ function WrappedCalendar(props: CalendarProps) {
     });
   }, [year, month]);
 
-  const dateStr = state.selectedDate.toDateString();
-  useEffect(() => {
-    onSelect(state.selectedDate);
-  }, [dateStr]);
 
   const handleClickNextMonth = () => {
     action.goToNextMonth();
