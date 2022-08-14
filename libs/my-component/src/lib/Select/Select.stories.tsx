@@ -13,7 +13,7 @@ export default {
 } as ComponentMeta<typeof Select>;
 
 
-export const Example: ComponentStory<typeof Select> =(args)=>{
+export const Example: ComponentStory<typeof Select> = (args)=>{
    const {autoWidth,defaultValue,label} = args;
     return (
       <Select label={label} autoWidth={autoWidth} defaultValue={defaultValue}>
@@ -23,7 +23,7 @@ export const Example: ComponentStory<typeof Select> =(args)=>{
         <SelectOption value={60000} label={'60000'}></SelectOption>
       </Select>
     )
-}
+};
 Example.args = {
   autoWidth:true,
   defaultValue: "12",
