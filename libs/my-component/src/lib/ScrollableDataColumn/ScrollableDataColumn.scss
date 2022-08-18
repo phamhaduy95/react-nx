@@ -1,0 +1,34 @@
+.ScrollableDataColumn {
+  overflow-y: scroll;
+  border: 1px solid grey;
+  > .ScrollableDataColumn__Container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    > .ScrollableDataColumn__Row {
+      font-size: 1rem;
+      padding: 0.25rem 0.5rem;
+      color: hsl(0, 0%, 20%);
+      text-align: center;
+      &:not(.selected):not(.disabled):hover {
+        background-color: hsl(0, 0%, 90%);
+      }
+
+      &.selected {
+        background-color: hsl(220, 80%, 50%);
+        color: hsl(0, 0%, 90%);
+      }
+
+      &.disabled {
+        color: hsl(0, 0%, 80%);
+      }
+    }
+
+    > .ScrollableDataColumn__DummyRow {
+      font-size: 1rem;
+      padding: 0.25rem 0.5rem;
+      color: transparent;
+    }
+  }
+}
