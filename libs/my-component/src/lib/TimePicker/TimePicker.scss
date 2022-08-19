@@ -3,9 +3,8 @@ $text-color: hsl(0, 0%, 20%);
 
 .TimePicker {
   @at-root .TimePicker__InputField {
-    .TextField__Input {
-      max-width: 7rem;
-    }
+    width: inherit;
+   
     .TimePicker__InputIcon {
       cursor: pointer;
       margin-right: 0.25rem;
@@ -18,6 +17,7 @@ $text-color: hsl(0, 0%, 20%);
     }
   }
   @at-root .TimePicker__Popup {
+    background-color: white;
     .TimePicker__Popup__TimeColumns {
       border: 1px solid hsla(0, 0%, 80%, 0.8);
       display: flex;
