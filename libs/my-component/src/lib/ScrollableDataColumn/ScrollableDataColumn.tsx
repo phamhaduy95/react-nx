@@ -13,6 +13,7 @@ import {
   SharedDataType,
   useSharedData,
 } from './SharedDataContext';
+import { DataColumnRow } from './ScrollableDateColumnRow';
 
 type ColumnDataType = {
   value: number | string;
@@ -24,7 +25,7 @@ export type ScrollableDataColumnProps = {
   /** must be odd number so that the selected one will be in the middle */
   numberShowedItem?: number;
   className?: string;
-  initialSelected?: number | string;
+  initialSelected?: number | string | null;
   onSelect?: (value: number | string) => void;
 };
 
@@ -32,7 +33,7 @@ const defaultProps: Required<ScrollableDataColumnProps> = {
   dataSet: [],
   className: '',
   numberShowedItem: 3,
-  initialSelected: 0,
+  initialSelected: null,
   onSelect: (value) => {},
 };
 
@@ -62,7 +63,18 @@ export function WrappedDataColumn(props: ScrollableDataColumnProps) {
   const { dataSet, numberShowedItem, initialSelected, onSelect, className } =
     newProps;
   const rootRef = useRef(null);
+  const { state, action } = useDataColumnsContext();
   useSetDataColumnHeight(rootRef, numberShowedItem);
+  useEffect(() => {
+    if (initialSelected === null) return;
+    
+    const pos = dataSet
+      .map((e) => e.value)
+      .findIndex((e) => e.toString() === initialSelected.toString());
+  
+    if (pos === -1) return;
+    action.selectItem(pos.toString());
+  }, [initialSelected]);
 
   const renderRows = () => {
     const rows = dataSet.map((e, i) => {
@@ -70,17 +82,18 @@ export function WrappedDataColumn(props: ScrollableDataColumnProps) {
       disabled = disabled === undefined ? false : disabled;
       return (
         <DataColumnRow
-          key={i}
+          key={`regularRow-${i}`}
           disabled={disabled}
           data={value}
           rootRef={rootRef}
+          index={i}
         />
       );
     });
 
     const numberOfDummyRow = numberShowedItem - 1;
     for (let i = 0; i < numberOfDummyRow; i++) {
-      const dummyRow = <div className="ScrollableDataColumn__DummyRow">1</div>;
+      const dummyRow = <div className="ScrollableDataColumn__DummyRow" key={`dummy-${i}`}>1</div>;
       rows.push(dummyRow);
     }
 
@@ -89,54 +102,12 @@ export function WrappedDataColumn(props: ScrollableDataColumnProps) {
 
   const rootClassName = classNames('ScrollableDataColumn', {
     [`${className}`]: className,
+    show: true,
   });
 
   return (
     <div className={rootClassName} ref={rootRef}>
-      <div className="ScrollableDataColumn__Container">{renderRows()}</div>
-    </div>
-  );
-}
-
-type DataColumnRowProps = {
-  data: number | string;
-  disabled: boolean;
-  rootRef: React.MutableRefObject<null | HTMLElement>;
-};
-
-function DataColumnRow(props: DataColumnRowProps) {
-  const { data, disabled, rootRef } = props;
-  const { state, action } = useDataColumnsContext();
-  const id = useGenerateUUID();
-
-  const className = classNames('ScrollableDataColumn__Row', {
-    selected: state.selectedItem.id === id,
-    disabled: disabled,
-  });
-  const sharedData = useSharedData();
-
-  const handleSelectItemClick = (e: React.MouseEvent) => {
-    if (disabled) return;
-
-    const rowEl = e.target as HTMLElement;
-    const pos = {
-      top: rowEl.offsetTop,
-      left: rowEl.offsetLeft,
-    };
-
-    const rootEl = rootRef.current;
-    if (rootEl === null) return;
-    rootEl.scrollTo({
-      top: pos.top,
-      left: pos.left,
-      behavior: 'smooth',
-    });
-    action.selectItem(id);
-    sharedData.onSelect(data);
-  };
-  return (
-    <div className={className} onClick={handleSelectItemClick}>
-      {data}
+      {renderRows()}
     </div>
   );
 }

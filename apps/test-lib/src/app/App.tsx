@@ -1,14 +1,16 @@
 import styled from '@emotion/styled';
-import NxWelcome from './nx-welcome';
+import {
+  TimePicker,
+} from '@phduylib/my-component';
 
-const StyledApp = styled.div`
-  // Your style here
-`;
+import { StyledApp } from './App.styled';
+
+
 
 export function App() {
   return (
     <StyledApp>
-      <NxWelcome title="test-lib" />
+      <TimePicker delimiter=':' isSecondIncluded={false}/>
     </StyledApp>
   );
 }
