@@ -80,8 +80,8 @@ function WrappedTimePicker(props: TimePickerProps) {
   };
 
   return (
-    <div className="TimePicker" onClick={handleClickToOpenPopup}>
-      <div className="TimePicker__InputField" ref={ref}>
+    <div className="TimePicker" >
+      <div className="TimePicker__InputField" ref={ref} onClick={handleClickToOpenPopup}>
         <input
           className="TimePicker__Input"
           type={'tel'}
