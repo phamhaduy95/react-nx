@@ -113,14 +113,12 @@ export const TextField = React.forwardRef<any, TextFieldProps>((props, ref) => {
     }
   };
 
-  console.log(type);
-
   return (
-    <div className={rootClassName} ref={ref}>
+    <div className={rootClassName}>
       <label className="TextField__Label">{label}</label>
       <div className="TextField__InputContainer">
         {renderAddonBefore()}
-        <div className={inputFieldClassName} onClick={onClick}>
+        <div className={inputFieldClassName} onClick={onClick} ref={ref}>
           {renderPrefix()}
           <input
             className="TextField__Input"

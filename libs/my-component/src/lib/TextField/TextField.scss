@@ -26,8 +26,8 @@ $text-color: hsl(0, 0%, 20%);
     font-size: 1rem;
   }
   @at-root .TextField__InputContainer {
-    width: max-content;
     display: flex;
+    width: inherit;
     @at-root .TextField__AddonBefore {
       border-top-left-radius: 5px;
       border-bottom-left-radius: 5px;
@@ -48,15 +48,18 @@ $text-color: hsl(0, 0%, 20%);
     }
 
     @at-root .TextField__InputField {
+      width: inherit;
       border: 1px solid grey;
       padding: 0.5rem 0;
       border-radius: 5px;
       user-select: none;
-      display: inline-flex;
+      display: flex;
       align-items: center;
 
       @at-root .TextField__InputPrefix,
         .TextField__InputSuffix {
+        flex-grow: 0;
+        flex-shrink: 0;
         @include centerElement();
         margin: 0 0.5rem;
         font-size: 1rem;
@@ -65,6 +68,8 @@ $text-color: hsl(0, 0%, 20%);
       }
 
       @at-root .TextField__Input {
+        flex-shrink: 1;
+        flex-grow: 1;
         outline: none;
         overflow: hidden;
         white-space: nowrap;
@@ -73,6 +78,7 @@ $text-color: hsl(0, 0%, 20%);
         border: none;
         font-size: 1rem;
         margin-left: 0.25rem;
+        
       }
 
       &.has-addon-before {
