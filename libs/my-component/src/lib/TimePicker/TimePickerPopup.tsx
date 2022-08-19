@@ -40,9 +40,6 @@ export default function TimePickerPopup(props: TimePickerPopupProps) {
         <TimePickerMinuteColumn  />
         {renderColumnForSecond()}
       </div>
-      <div className="TimePicker__Popup__Control">
-
-      </div>
     </PopupElement>
   );
 }

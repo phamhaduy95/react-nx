@@ -88,6 +88,7 @@ function WrappedTimePicker(props: TimePickerProps) {
           autoComplete="hidden"
           onChange={handleInputChange}
           value={inputValue}
+          placeholder={timeFormat}
         />
         <div className="TimePicker__InputIcon">
           <AvTimerIcon />
