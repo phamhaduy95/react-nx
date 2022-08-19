@@ -11,11 +11,15 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);
 import './TimePicker.scss';
 import TextField from '../TextField/TextField';
+import { TextFieldProps } from '../TextField/TextField';
 
 export type TimePickerProps = {
   className?: string;
   isSecondIncluded?: boolean;
   delimiter?: string;
+  disabled?: boolean;
+  label?: TextFieldProps['label'];
+  helperText?: TextFieldProps['helperText'];
   onTimeSelect?: (hour: number, minute: number, second: number) => void;
 };
 
@@ -24,6 +28,9 @@ const DefaultProps: Required<TimePickerProps> = {
   isSecondIncluded: true,
   delimiter: ':',
   onTimeSelect(hour, minute, second) {},
+  disabled: false,
+  label: '',
+  helperText: null,
 };
 
 export function TimePicker(props: TimePickerProps) {
@@ -45,7 +52,14 @@ export function TimePicker(props: TimePickerProps) {
 
 function WrappedTimePicker(props: TimePickerProps) {
   const newProps = { ...DefaultProps, ...props };
-  const { className, delimiter, isSecondIncluded, onTimeSelect } = newProps;
+  const {
+    className,
+    delimiter,
+    isSecondIncluded,
+    onTimeSelect,
+    label,
+    helperText,
+  } = newProps;
   const timeFormat = getTimeFormat(isSecondIncluded, delimiter);
 
   const ref = useRef(null);
@@ -63,7 +77,7 @@ function WrappedTimePicker(props: TimePickerProps) {
     onTimeSelect(hour, minute, second);
   }, [state.selectTime]);
 
-  const handleInputChange = (value:string) => {
+  const handleInputChange = (value: string) => {
     setInputValue(value);
     const time = dayjs(value, timeFormat, true);
     if (!time.isValid()) return;
@@ -77,43 +91,27 @@ function WrappedTimePicker(props: TimePickerProps) {
     action.togglePopup(true);
   };
 
-  const IconField = ()=>{
+  const IconField = () => {
     return (
       <div className="TimePicker__InputIcon">
-      <AvTimerIcon />
-    </div>
-    )
-  }
+        <AvTimerIcon />
+      </div>
+    );
+  };
 
   return (
     <div className="TimePicker">
-      <TextField className="TimePicker__InputField" value={inputValue}  
-          placeHolder={timeFormat}
-          label=""
-          onChange={handleInputChange}
-          ref={ref}
-          onClick={handleClickToOpenPopup}
-          suffix={<IconField/>}
-        />
-
-
-      {/* <div
+      <TextField
         className="TimePicker__InputField"
+        value={inputValue}
+        placeHolder={timeFormat}
+        label={label}
+        onChange={handleInputChange}
         ref={ref}
         onClick={handleClickToOpenPopup}
-      >
-        <input
-          className="TimePicker__Input"
-          type={'tel'}
-          autoComplete="hidden"
-          onChange={handleInputChange}
-          value={inputValue}
-          placeholder={timeFormat}
-        />
-        <div className="TimePicker__InputIcon">
-          <AvTimerIcon />
-        </div>
-      </div> */}
+        suffix={<IconField />}
+        helperText={helperText}
+      />
       <TimePickerPopup targetRef={ref} isSecondInCluded={isSecondIncluded} />
     </div>
   );
