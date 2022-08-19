@@ -3,6 +3,8 @@ import React from 'react';
 import './TextField.scss';
 
 export interface TextFieldProps {
+  className?: string | false;
+  placeHolder?: string | false;
   required?: boolean;
   disabled?: boolean;
   label: string;
@@ -14,9 +16,13 @@ export interface TextFieldProps {
   suffix?: React.ReactNode | false;
   onChange?: (value: string) => void;
   onEnterPressed?: (value: string) => void;
+  onClick?: (e: React.MouseEvent) => void;
+  onFocus?: (e: React.FormEvent) => void;
 }
 
 const defaultProps: Required<TextFieldProps> = {
+  placeHolder: false,
+  className: false,
   required: false,
   disabled: false,
   label: '',
@@ -28,11 +34,15 @@ const defaultProps: Required<TextFieldProps> = {
   addOnAfter: false,
   onChange: (value) => {},
   onEnterPressed: (value) => {},
+  onClick: (e) => {},
+  onFocus: (e) => {},
 };
 
-export function TextField(props: TextFieldProps) {
+export const TextField = React.forwardRef<any, TextFieldProps>((props, ref) => {
   const newProps = { ...defaultProps, ...props };
   const {
+    className,
+    placeHolder,
     label,
     helperText,
     prefix,
@@ -41,16 +51,25 @@ export function TextField(props: TextFieldProps) {
     addOnAfter,
     onChange,
     onEnterPressed,
+    onClick,
+    onFocus,
   } = newProps;
 
   const InputFieldClassName = classNames('TextField__InputField', {
     'has-addon-before': addOnBefore,
     'has-addon-after': addOnAfter,
+    [`${className}`]: className,
   });
 
   const renderAddonBefore = () => {
     if (addOnBefore)
       return <div className="TextField__AddonBefore">{addOnBefore}</div>;
+    return <></>;
+  };
+
+  const renderAddonAfter = () => {
+    if (addOnAfter)
+      return <div className="TextField__AddonAfter">{addOnAfter}</div>;
     return <></>;
   };
 
@@ -60,7 +79,7 @@ export function TextField(props: TextFieldProps) {
   };
 
   const renderSuffix = () => {
-    if (suffix) return <div className="TextField__InputSuffix">{prefix}</div>;
+    if (suffix) return <div className="TextField__InputSuffix">{suffix}</div>;
     return <></>;
   };
 
@@ -85,9 +104,9 @@ export function TextField(props: TextFieldProps) {
   };
 
   return (
-    <div className={'TextField'}>
+    <div className={'TextField'} ref={ref}>
       <label className="TextField__Label">{label}</label>
-      <div className="TextField__InputContainer">
+      <div className="TextField__InputContainer" onClick={onClick}>
         {renderAddonBefore()}
         <div className={InputFieldClassName}>
           {renderPrefix()}
@@ -95,16 +114,18 @@ export function TextField(props: TextFieldProps) {
             className="TextField__Input"
             autoComplete="hidden"
             type="text"
-            placeholder="input text"
+            placeholder={placeHolder ? placeHolder : ''}
             onChange={handleInputChange}
             onKeyDown={handleEnterPress}
+            onFocus={onFocus}
           />
           {renderSuffix()}
         </div>
+        {renderAddonAfter()}
       </div>
       {renderHelpText()}
     </div>
   );
-}
+});
 
 export default TextField;
