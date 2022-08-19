@@ -3,7 +3,7 @@
 $text-color: hsla(0, 0%, 20%, 1);
 
 .Select {
-  width: auto;
+  width: 180px;
   display: flex;
   flex-direction: column;
   color: $text-color;
@@ -13,36 +13,25 @@ $text-color: hsla(0, 0%, 20%, 1);
     @include hideOverflowText();
   }
 
-  > .Select__Field {
-    display: inline-flex;
-    border: 1px solid grey;
-    width: max-content;
-    border-radius: 5px;
-    > .Select__Value {
-      min-width: 4rem;
-      min-height: 2rem;
-      font-size: 1rem;
-      padding: 0.5rem;
-      width: max-content;
-      margin: 0;
+  > .Select__TextField {
+    width: inherit;
+    > .TextField__InputContainer {
+      width: inherit;
+      > .TextField__InputField {
+        width: inherit;
+        .TextField__Input {
+          width: auto;
+         caret-color: transparent
 
-      &:not(.auto-width) {
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        width: unset;
+        }
       }
     }
-    > .Select__ArrowIcon {
+    .Select__ArrowIcon {
       @include centerElement();
       @include setChildElementsSize(1.5rem, 1.5rem);
     }
   }
-  > .Select__HelperText {
-    margin-left: 0.25rem;
-    margin-top: 0.25rem;
-    @include hideOverflowText();
-  }
+
   @at-root .Select__Popup {
     padding: 0.5rem 0;
     color: $text-color;

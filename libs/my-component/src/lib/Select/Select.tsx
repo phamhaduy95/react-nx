@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { SelectPopup } from './SelectPopup';
 import './Select.scss';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -10,6 +10,7 @@ import {
   useSelectContext,
 } from './SelectContextProvider';
 import ClickOutSideWatcher from '../ClickOutsideWatcher/ClickOutSideWatcher';
+import { TextField } from '../TextField';
 
 export interface SelectProps {
   children: JSX.Element[] | JSX.Element;
@@ -55,57 +56,51 @@ export function Select(props: SelectProps) {
 
 function WrappedSelect(props: SelectProps) {
   const newProps = { ...defaultPropsValue, ...props };
-  const { children, autoWidth, label, helperText } = newProps;
+  const { children, autoWidth, label, helperText,onSelect } = newProps;
   const rootRef = useRef<HTMLDivElement>(null);
   const { state, action } = useSelectContext();
   const { selectedItem, isPopupOpen } = state;
-
-  const renderLabel = () => {
-    if (label) return <div className="Select__Label">{label}</div>;
-    return <></>;
-  };
-
-  const renderHelperText = () => {
-    if (helperText)
-      return <div className="Select__HelperText">{helperText}</div>;
-    return <></>;
-  };
-
-  const SelectValueClassName = classNames('Select__Value', {
+  useEffect(()=>{
+    onSelect(selectedItem.value);
+    action.togglePopup(false)
+  },[selectedItem.id])
+ 
+  const rootClassName = classNames('Select', {
     'auto-width': autoWidth,
   });
 
-  const handleClickToTogglePopup = () => {
-    action.togglePopup(!isPopupOpen);
+
+
+  const IconField = () => {
+    return (
+      <div className="Select__ArrowIcon">
+        <KeyboardArrowDownIcon />
+      </div>
+    );
   };
 
-  const handleClickOutSide = ()=>{
-    action.togglePopup(false)
-  }
+  const handleClickToTogglePopup = () => {
+    action.togglePopup(true);
+  };
+
+
+
 
   return (
-    <ClickOutSideWatcher ref={rootRef} onClickOutSide={handleClickOutSide } >
-    <div className="Select">
-      {renderLabel()}
-     
-      <div
-        className="Select__Field"
-        ref={rootRef}
-        tabIndex={0}
+    <div className={rootClassName}>
+      <TextField
+        className={'Select__TextField'}
+        label=""
         onClick={handleClickToTogglePopup}
-      >
-        {/* <div className="Select__Prefix"></div> */}
-        <div className={SelectValueClassName}>{selectedItem.value}</div>
-        <div className="Select__ArrowIcon">
-          <KeyboardArrowDownIcon />
-        </div>
-      </div>
-      {renderHelperText()}
-      <SelectPopup targetRef={rootRef} isShowed={isPopupOpen}>
+        value={selectedItem.value}
+        ref={rootRef}
+        suffix={<IconField/>}
+      />
+
+      <SelectPopup targetRef={rootRef} isShowed={state.isPopupOpen}>
         {children}
       </SelectPopup>
     </div>
-    </ClickOutSideWatcher>
   );
 }
 

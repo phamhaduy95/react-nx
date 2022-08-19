@@ -1,5 +1,6 @@
 import React from 'react';
 import PopupElement from '../Popup/PopupElement';
+import { useSelectContext } from './SelectContextProvider';
 
 interface SelectPopupProps {
   children: JSX.Element[] | JSX.Element;
@@ -9,6 +10,11 @@ interface SelectPopupProps {
 
 export const SelectPopup = (props: SelectPopupProps) => {
   const { children, isShowed, targetRef } = props;
+  const {state,action} = useSelectContext();
+  const handleClickOutSide = ()=>{
+    action.togglePopup(false)
+  }
+
   return (
     <PopupElement
       className='Select__Popup'
@@ -17,6 +23,7 @@ export const SelectPopup = (props: SelectPopupProps) => {
       padding={8}
       isShowed={isShowed}
       width="auto"
+      onClickOutside={handleClickOutSide}
     >
       {children}
     </PopupElement>
