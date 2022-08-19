@@ -45,13 +45,24 @@ $text-color: hsl(0, 0%, 20%);
   }
   @at-root .TimePicker__Popup {
 
-    border-radius: 5px;
-
     .TimePicker__Popup__TimeColumns {
+      border: 1px solid hsla(0, 0%, 80%,0.8);
       display: flex;
       >.TimePicker__HourColumn{
-         border-right: none; 
+         border:none;
       }
+      >.TimePicker__MinuteColumn {
+         border-right: none;
+         border-top: none;
+         border-bottom: none;
+      }
+      >.TimePicker__SecondColumn {
+        border-right: none;
+        border-top: none;
+        border-bottom: none;
+      }
+
+
     }
   }
 }
