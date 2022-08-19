@@ -9,6 +9,7 @@ import DatePickerContextProvider, {
 import { DatePickerState } from './reducer';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { TextField } from '../TextField';
 dayjs.extend(customParseFormat);
 
 export interface DatePickerProps {
@@ -16,14 +17,14 @@ export interface DatePickerProps {
   dateFormat?: string;
   minDate?: Date | null;
   maxDate?: Date | null;
-  label?: string | false;
+  label?: string;
 }
 const defaultPropsValue: Required<DatePickerProps> = {
   className: false,
   dateFormat: 'DD/MM/YYYY',
   minDate: null,
   maxDate: null,
-  label: false,
+  label: '',
 };
 
 export function DatePicker(props: DatePickerProps) {
@@ -40,15 +41,21 @@ export function DatePicker(props: DatePickerProps) {
 }
 
 function WrappedDatePicker(props: DatePickerProps) {
-  const newProps = { ...defaultPropsValue, props };
-  const { dateFormat } = newProps;
+  const newProps = { ...defaultPropsValue, ...props };
+  const { dateFormat, className, label } = newProps;
+
+  const rootClassName = classNames('DatePicker', {
+    [`${className}`]: className,
+  });
   const targetRef = useRef(null);
+
   const { state, action } = useDatePickerContext();
   const { selectedDate } = state;
   const [inputValue, setInputValue] = useState('');
   useEffect(() => {
     const newValue = dayjs(selectedDate).format(dateFormat);
     setInputValue(newValue);
+    console.log(newValue)
   }, [selectedDate.toDateString()]);
 
   useEffect(() => {
@@ -59,35 +66,34 @@ function WrappedDatePicker(props: DatePickerProps) {
     }
   }, [inputValue]);
 
-  const handleInputChanged = (e: React.FormEvent) => {
-    const target = e.target as HTMLInputElement;
-    const newValue = target.value;
-    setInputValue(newValue);
+  const handleInputChanged = (value: string) => {
+    setInputValue(value);
   };
 
   const handleClickToTogglePopup = () => {
     action.togglePopup(!state.isPopupOpen);
   };
 
-  return (
-    <div className="DatePicker" ref={targetRef}>
-      <label className="DatePicker__Label"></label>
-      <div
-        className="DatePicker__InputField"
-        onClick={handleClickToTogglePopup}
-      >
-        <input
-          className="DatePicker__Input"
-          type={'tel'}
-          autoComplete="hidden"
-          placeholder={dateFormat}
-          value={inputValue}
-          onChange={handleInputChanged}
-        />
-        <div className="DatePicker__InputIcon">
-          <CalendarMonthIcon />
-        </div>
+  const IconField = () => {
+    return (
+      <div className="DatePicker__InputIcon">
+        <CalendarMonthIcon />
       </div>
+    );
+  };
+
+  return (
+    <div className={rootClassName} ref={targetRef}>
+      <TextField
+        className="DatePicker__TextField"
+        label={label}
+        onClick={handleClickToTogglePopup}
+        placeHolder={dateFormat}
+        onChange={handleInputChanged}
+        type={'tel'}
+        value={inputValue}
+        suffix={<IconField />}
+      />
       <CalendarPopup targetRef={targetRef} isShowed={state.isPopupOpen} />
     </div>
   );

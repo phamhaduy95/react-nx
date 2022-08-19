@@ -3,31 +3,10 @@ $text-color: hsl(0, 0%, 20%);
 
 .DatePicker {
   width: max-content;
-  display: flex;
-  color: $text-color;
-  flex-direction: column;
-  @at-root .DatePicker__Label {
-    margin-left: 0.25rem;
-    margin-bottom: 0.25rem;
-    @include hideOverflowText();
-  }
-  @at-root .DatePicker__InputField {
-    display: flex;
-    border: 1px solid grey;
-    border-radius: 5px;
-    padding: 0.5rem 0;
+  >.DatePicker__TextField {
+    width: inherit;
 
-    > .DatePicker__Input {
-      margin-left: 0.25rem;
-      outline: none;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      color: $text-color;
-      border: none;
-      font-size: 1rem;
-    }
-    > .DatePicker__InputIcon {
+  .DatePicker__InputIcon {
       cursor: pointer;
       margin-right: 0.25rem;
       margin-left: auto;
@@ -36,11 +15,6 @@ $text-color: hsl(0, 0%, 20%);
       > svg {
         fill: $text-color;
       }
-    }
-    &:focus-within {
-        border-color: hsla(220, 80%, 50%, 0.9);
-        box-shadow: 0 0 2px 2px hsla(220, 80%, 50%, 0.5);
-    
     }
   }
   @at-root .DatePicker__Popup {
