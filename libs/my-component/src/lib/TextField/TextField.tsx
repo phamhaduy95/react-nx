@@ -1,37 +1,41 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { HTMLInputTypeAttribute } from 'react';
 import './TextField.scss';
 
 export interface TextFieldProps {
-  className?: string | false;
-  placeHolder?: string | false;
+  className?: string | null;
+  placeHolder?: string | null;
+  value?: string | number;
   required?: boolean;
   disabled?: boolean;
   label: string;
   labelPosition?: 'top' | 'inline' | 'hidden';
-  helperText?: string | false;
-  prefix?: React.ReactNode | false;
-  addOnBefore?: React.ReactNode | false;
-  addOnAfter?: React.ReactNode | false;
-  suffix?: React.ReactNode | false;
+  helperText?: string | null;
+  prefix?: React.ReactNode | null;
+  addOnBefore?: React.ReactNode | null;
+  addOnAfter?: React.ReactNode | null;
+  suffix?: React.ReactNode | null;
   onChange?: (value: string) => void;
   onEnterPressed?: (value: string) => void;
   onClick?: (e: React.MouseEvent) => void;
   onFocus?: (e: React.FormEvent) => void;
+  type?: HTMLInputTypeAttribute;
 }
 
 const defaultProps: Required<TextFieldProps> = {
-  placeHolder: false,
-  className: false,
+  placeHolder: null,
+  value: '',
+  type: 'text',
+  className: null,
   required: false,
   disabled: false,
   label: '',
   labelPosition: 'top',
-  helperText: false,
-  prefix: false,
-  suffix: false,
-  addOnBefore: false,
-  addOnAfter: false,
+  helperText: null,
+  prefix: null,
+  suffix: null,
+  addOnBefore: null,
+  addOnAfter: null,
   onChange: (value) => {},
   onEnterPressed: (value) => {},
   onClick: (e) => {},
@@ -53,12 +57,18 @@ export const TextField = React.forwardRef<any, TextFieldProps>((props, ref) => {
     onEnterPressed,
     onClick,
     onFocus,
+    type,
+    disabled,
   } = newProps;
 
-  const InputFieldClassName = classNames('TextField__InputField', {
+  const rootClassName = classNames('TextField', {
+    [`${className}`]: className,
+    disabled: disabled,
+  });
+
+  const inputFieldClassName = classNames('TextField__InputField', {
     'has-addon-before': addOnBefore,
     'has-addon-after': addOnAfter,
-    [`${className}`]: className,
   });
 
   const renderAddonBefore = () => {
@@ -103,21 +113,25 @@ export const TextField = React.forwardRef<any, TextFieldProps>((props, ref) => {
     }
   };
 
+  console.log(type);
+
   return (
-    <div className={'TextField'} ref={ref}>
+    <div className={rootClassName} ref={ref}>
       <label className="TextField__Label">{label}</label>
-      <div className="TextField__InputContainer" onClick={onClick}>
+      <div className="TextField__InputContainer">
         {renderAddonBefore()}
-        <div className={InputFieldClassName}>
+        <div className={inputFieldClassName} onClick={onClick}>
           {renderPrefix()}
           <input
             className="TextField__Input"
             autoComplete="hidden"
-            type="text"
+            type="tel"
             placeholder={placeHolder ? placeHolder : ''}
             onChange={handleInputChange}
             onKeyDown={handleEnterPress}
             onFocus={onFocus}
+            value={props.value}
+            disabled={disabled}
           />
           {renderSuffix()}
         </div>

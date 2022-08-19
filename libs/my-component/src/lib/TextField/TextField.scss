@@ -1,4 +1,4 @@
-$text-color:hsl(0, 0%, 20%);
+$text-color: hsl(0, 0%, 20%);
 
 @mixin centerElement {
   display: flex;
@@ -32,24 +32,22 @@ $text-color:hsl(0, 0%, 20%);
       border-top-left-radius: 5px;
       border-bottom-left-radius: 5px;
       width: max-content;
-      padding:0 0.5rem; 
+      padding: 0 0.5rem;
       border: 1px solid grey;
       color: $text-color;
-      border-right:unset;
+      border-right: unset;
     }
 
     @at-root .TextField__AddonAfter {
       border-top-right-radius: 5px;
       border-bottom-right-radius: 5px;
       width: max-content;
-      padding:0 0.5rem; 
+      padding: 0 0.5rem;
       border: 1px solid grey;
-      border-left:unset;
-    } 
-
+      border-left: unset;
+    }
 
     @at-root .TextField__InputField {
- 
       border: 1px solid grey;
       padding: 0.5rem 0;
       border-radius: 5px;
@@ -62,29 +60,29 @@ $text-color:hsl(0, 0%, 20%);
         @include centerElement();
         margin: 0 0.5rem;
         font-size: 1rem;
-        color:  $text-color;
+        color: $text-color;
         @include setChildElementsSize(1.25rem, 1.25rem);
       }
 
       @at-root .TextField__Input {
         outline: none;
+        overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
         color: $text-color;
         border: none;
         font-size: 1rem;
+        margin-left: 0.25rem;
       }
 
       &.has-addon-before {
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
-
       }
 
       &.has-addon-after {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
-
       }
 
       &:focus-within {
@@ -100,4 +98,27 @@ $text-color:hsl(0, 0%, 20%);
     user-select: none;
     margin-top: 0.25rem;
   }
+
+  &.disabled {
+
+    >.TextField__InputContainer {
+     
+      >.TextField__InputField {
+        border-color: hsl(0, 0% ,75%);
+         background-color: hsl(0, 0% ,95%);
+        
+         >.TextField__InputPrefix{
+          color:hsl(0, 0%, 50%);
+         }
+         >.TextField__InputSuffix {
+          color:hsl(0, 0%, 50%);
+         }
+         >.TextField__Input {
+          color:hsl(0, 0%, 50%);
+          caret-color: transparent;
+         }
+      }
+    }
+  }
+
 }
