@@ -15,12 +15,14 @@ export type TimePickerProps = {
   className?: string;
   isSecondIncluded?: boolean;
   delimiter?: string;
+  onTimeSelect?:(hour:number,minute:number,second:number)=>void
 };
 
 const DefaultProps: Required<TimePickerProps> = {
   className: '',
   isSecondIncluded: true,
   delimiter: ':',
+  onTimeSelect(hour, minute, second){}
 };
 
 export function TimePicker(props: TimePickerProps) {
@@ -42,7 +44,7 @@ export function TimePicker(props: TimePickerProps) {
 
 function WrappedTimePicker(props: TimePickerProps) {
   const newProps = { ...DefaultProps, ...props };
-  const { className, delimiter, isSecondIncluded } = newProps;
+  const { className, delimiter, isSecondIncluded,onTimeSelect } = newProps;
   const timeFormat = getTimeFormat(isSecondIncluded, delimiter);
 
   const ref = useRef(null);
@@ -54,6 +56,12 @@ function WrappedTimePicker(props: TimePickerProps) {
     const timeStr = time.format(timeFormat);
     setInputValue(timeStr);
   }, [state.selectTime, delimiter, isSecondIncluded]);
+
+  useEffect(()=>{
+    const { hour, minute, second } = state.selectTime;
+    onTimeSelect(hour,minute,second);
+  },[state.selectTime])
+
 
   const handleInputChange = (e: React.FormEvent) => {
     const input = e.target as HTMLInputElement;
