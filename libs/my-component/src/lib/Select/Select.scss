@@ -3,7 +3,7 @@
 $text-color: hsla(0, 0%, 20%, 1);
 
 .Select {
-  width: 180px;
+  width: max-content;
   display: flex;
   flex-direction: column;
   color: $text-color;
@@ -15,23 +15,16 @@ $text-color: hsla(0, 0%, 20%, 1);
 
   > .Select__TextField {
     width: inherit;
-    > .TextField__InputContainer {
-      width: inherit;
-      > .TextField__InputField {
-        width: inherit;
-        .TextField__Input {
-          width: auto;
-         caret-color: transparent
-
-        }
-      }
+    .TextField__Input {
+      width: auto;
+      caret-color: transparent;
     }
+
     .Select__ArrowIcon {
       @include centerElement();
       @include setChildElementsSize(1.5rem, 1.5rem);
     }
   }
-
   @at-root .Select__Popup {
     padding: 0.5rem 0;
     color: $text-color;
