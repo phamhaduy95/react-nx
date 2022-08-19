@@ -1,4 +1,5 @@
 .Popup {
+  visibility: hidden;
   opacity: 0;
   transition: opacity 0.25s ease-in 0s;
   z-index: 1020;
@@ -18,5 +19,6 @@
   }
   &.showed {
     opacity: 1;
+    visibility: visible;
   }
 }
