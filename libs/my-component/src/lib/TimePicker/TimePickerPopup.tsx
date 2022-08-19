@@ -30,7 +30,7 @@ export default function TimePickerPopup(props: TimePickerPopupProps) {
     <PopupElement
       targetRef={targetRef}
       isShowed={state.isPopupOpen}
-      placement="bottomCenter"
+      placement="bottomLeft"
       width="fit-content"
       className="TimePicker__Popup"
       onClickOutside={handleClickOutsidePopup}
