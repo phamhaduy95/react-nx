@@ -10,19 +10,20 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);
 import './TimePicker.scss';
+import TextField from '../TextField/TextField';
 
 export type TimePickerProps = {
   className?: string;
   isSecondIncluded?: boolean;
   delimiter?: string;
-  onTimeSelect?:(hour:number,minute:number,second:number)=>void
+  onTimeSelect?: (hour: number, minute: number, second: number) => void;
 };
 
 const DefaultProps: Required<TimePickerProps> = {
   className: '',
   isSecondIncluded: true,
   delimiter: ':',
-  onTimeSelect(hour, minute, second){}
+  onTimeSelect(hour, minute, second) {},
 };
 
 export function TimePicker(props: TimePickerProps) {
@@ -44,7 +45,7 @@ export function TimePicker(props: TimePickerProps) {
 
 function WrappedTimePicker(props: TimePickerProps) {
   const newProps = { ...DefaultProps, ...props };
-  const { className, delimiter, isSecondIncluded,onTimeSelect } = newProps;
+  const { className, delimiter, isSecondIncluded, onTimeSelect } = newProps;
   const timeFormat = getTimeFormat(isSecondIncluded, delimiter);
 
   const ref = useRef(null);
@@ -57,15 +58,12 @@ function WrappedTimePicker(props: TimePickerProps) {
     setInputValue(timeStr);
   }, [state.selectTime, delimiter, isSecondIncluded]);
 
-  useEffect(()=>{
+  useEffect(() => {
     const { hour, minute, second } = state.selectTime;
-    onTimeSelect(hour,minute,second);
-  },[state.selectTime])
+    onTimeSelect(hour, minute, second);
+  }, [state.selectTime]);
 
-
-  const handleInputChange = (e: React.FormEvent) => {
-    const input = e.target as HTMLInputElement;
-    const value = input.value;
+  const handleInputChange = (value:string) => {
     setInputValue(value);
     const time = dayjs(value, timeFormat, true);
     if (!time.isValid()) return;
@@ -79,9 +77,31 @@ function WrappedTimePicker(props: TimePickerProps) {
     action.togglePopup(true);
   };
 
+  const IconField = ()=>{
+    return (
+      <div className="TimePicker__InputIcon">
+      <AvTimerIcon />
+    </div>
+    )
+  }
+
   return (
-    <div className="TimePicker" >
-      <div className="TimePicker__InputField" ref={ref} onClick={handleClickToOpenPopup}>
+    <div className="TimePicker">
+      <TextField className="TimePicker__InputField" value={inputValue}  
+          placeHolder={timeFormat}
+          label=""
+          onChange={handleInputChange}
+          ref={ref}
+          onClick={handleClickToOpenPopup}
+          suffix={<IconField/>}
+        />
+
+
+      {/* <div
+        className="TimePicker__InputField"
+        ref={ref}
+        onClick={handleClickToOpenPopup}
+      >
         <input
           className="TimePicker__Input"
           type={'tel'}
@@ -93,7 +113,7 @@ function WrappedTimePicker(props: TimePickerProps) {
         <div className="TimePicker__InputIcon">
           <AvTimerIcon />
         </div>
-      </div>
+      </div> */}
       <TimePickerPopup targetRef={ref} isSecondInCluded={isSecondIncluded} />
     </div>
   );

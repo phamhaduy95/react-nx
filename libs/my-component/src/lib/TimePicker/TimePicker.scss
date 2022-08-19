@@ -2,33 +2,11 @@
 $text-color: hsl(0, 0%, 20%);
 
 .TimePicker {
-  width: max-content;
-  display: flex;
-  color: $text-color;
-  flex-direction: column;
-  @at-root .TimePicker__Label {
-    margin-left: 0.25rem;
-    margin-bottom: 0.25rem;
-    @include hideOverflowText();
-  }
   @at-root .TimePicker__InputField {
-    display: flex;
-    border: 1px solid grey;
-    border-radius: 5px;
-    padding: 0.5rem 0;
-
-    > .TimePicker__Input {
+    .TextField__Input {
       max-width: 7rem;
-      margin-left: 0.25rem;
-      outline: none;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      color: $text-color;
-      border: none;
-      font-size: 1rem;
     }
-    > .TimePicker__InputIcon {
+    .TimePicker__InputIcon {
       cursor: pointer;
       margin-right: 0.25rem;
       margin-left: auto;
@@ -38,31 +16,24 @@ $text-color: hsl(0, 0%, 20%);
         fill: $text-color;
       }
     }
-    &:focus-within {
-      border-color: hsla(220, 80%, 50%, 0.9);
-      box-shadow: 0 0 2px 2px hsla(220, 80%, 50%, 0.5);
-    }
   }
   @at-root .TimePicker__Popup {
-
     .TimePicker__Popup__TimeColumns {
-      border: 1px solid hsla(0, 0%, 80%,0.8);
+      border: 1px solid hsla(0, 0%, 80%, 0.8);
       display: flex;
-      >.TimePicker__HourColumn{
-         border:none;
+      > .TimePicker__HourColumn {
+        border: none;
       }
-      >.TimePicker__MinuteColumn {
-         border-right: none;
-         border-top: none;
-         border-bottom: none;
-      }
-      >.TimePicker__SecondColumn {
+      > .TimePicker__MinuteColumn {
         border-right: none;
         border-top: none;
         border-bottom: none;
       }
-
-
+      > .TimePicker__SecondColumn {
+        border-right: none;
+        border-top: none;
+        border-bottom: none;
+      }
     }
   }
 }
