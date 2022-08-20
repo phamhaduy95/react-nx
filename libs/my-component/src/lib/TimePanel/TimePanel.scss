@@ -1,0 +1,50 @@
+@import '../_utils.scss';
+@import "../sharedStyle.scss";
+
+.TimePanel {
+  border: $border;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  height: 300px;
+  width: 120px;
+  @at-root .TimePanel__Header {
+    height: 15%;
+    border-bottom:$border;
+    @include centerElement();
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: $text-color;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  @at-root .TimePanel__Container {
+    display: flex;
+    height: 85%;
+
+
+    >.ScrollableDataColumn {
+        width: 33%;
+        height: auto;
+        border-right: none;
+        border-top: none;
+        border-bottom: none;
+        &:first-child {
+            border: none;
+        }
+        &:last-child {
+            border-right: none;
+            border-top: none;
+            border-bottom: none;
+        }
+        
+    }
+  }
+  &:not(.isSecondIncluded) {
+    width: 100px;
+     >.TimePanel__Container {
+       >.ScrollableDataColumn {
+        width:50%;
+       }
+     }
+  }
+}
