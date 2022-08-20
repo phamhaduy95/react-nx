@@ -2,6 +2,8 @@ import classNames from 'classnames';
 import { useEffect, useRef } from 'react';
 import { useDataColumnsContext } from './DataColumnContext';
 import { useSharedData } from './SharedDataContext';
+import { useRowHeight } from './hooks';
+
 
 
 type DataColumnRowProps = {
@@ -9,9 +11,11 @@ type DataColumnRowProps = {
   disabled: boolean;
   rootRef: React.MutableRefObject<null | HTMLElement>;
   index: number;
+  height:number;
+  
 };
 export function DataColumnRow(props: DataColumnRowProps) {
-  const { data, disabled, rootRef, index } = props;
+  const { data, disabled, rootRef, index,height } = props;
   const { state, action } = useDataColumnsContext();
   const id = index.toString();
 
@@ -22,7 +26,7 @@ export function DataColumnRow(props: DataColumnRowProps) {
 
   const rowRef = useRef<HTMLDivElement>(null);
   const sharedData = useSharedData();
-  
+  useRowHeight(rowRef,height)
 
   useEffect(()=>{
     if (state.selectedItem.id !== id) return; 

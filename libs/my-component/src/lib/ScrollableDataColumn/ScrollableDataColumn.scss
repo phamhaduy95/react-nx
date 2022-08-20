@@ -1,16 +1,23 @@
+@import '../_utils.scss';
+@import "../sharedStyle.scss";
+
 .ScrollableDataColumn {
-  overflow: hidden;
-  border: 1px solid hsla(0, 0%, 80%,0.8);
+  overflow-y: hidden;
+  border: $border;
   position: relative;
   display: flex;
   width: 56px;
   flex-direction: column;
   padding-right: 0;
+  height: 150px;
 
   > .ScrollableDataColumn__Row {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
     font-size: 1rem;
     padding: 0.25rem 0.25rem;
-    color: hsl(0, 0%, 20%);
+    color: $text-color;
     text-align: left;
     text-indent: 0.3rem;
     user-select: none;
@@ -20,8 +27,8 @@
     }
 
     &.selected {
-      background-color: hsla(210, 80%, 50%,0.8);
-      color: hsl(0, 0%, 90%);
+      background-color: $primary-color;
+      color: $text-color-dark;
     }
 
     &.disabled {
@@ -30,9 +37,10 @@
   }
 
   > .ScrollableDataColumn__DummyRow {
-    font-size: 1rem;
-    padding: 0.25rem 0.5rem;
+    height: auto;
     color: transparent;
+    flex-shrink: 0;
+    user-select: none;
   }
 
   /* Works on Chrome, Edge, and Safari */

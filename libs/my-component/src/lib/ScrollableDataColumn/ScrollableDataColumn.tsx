@@ -1,19 +1,19 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   DataColumnContextProvider,
   useDataColumnsContext,
 } from './DataColumnContext';
 import classNames from 'classnames';
-import { useGenerateUUID } from '../SideBar/hooks';
-import { useSetDataColumnHeight } from './hooks';
+import { useRowHeightCalculator, useSetContainerInitialHeight } from './hooks';
 import { DataColumnState } from './reducer';
 import './ScrollableDataColumn.scss';
 import {
   SharedDataContextProvider,
   SharedDataType,
-  useSharedData,
 } from './SharedDataContext';
 import { DataColumnRow } from './ScrollableDateColumnRow';
+import { DummyRow } from './ScrollableColumnDummyRow';
+
 
 type ColumnDataType = {
   value: number | string;
@@ -64,14 +64,16 @@ export function WrappedDataColumn(props: ScrollableDataColumnProps) {
     newProps;
   const rootRef = useRef(null);
   const { state, action } = useDataColumnsContext();
-  useSetDataColumnHeight(rootRef, numberShowedItem);
+
+  useSetContainerInitialHeight(rootRef)
+  const rowHeight = useRowHeightCalculator(rootRef, numberShowedItem);
   useEffect(() => {
     if (initialSelected === null) return;
-    
+
     const pos = dataSet
       .map((e) => e.value)
       .findIndex((e) => e.toString() === initialSelected.toString());
-  
+
     if (pos === -1) return;
     action.selectItem(pos.toString());
   }, [initialSelected]);
@@ -87,14 +89,14 @@ export function WrappedDataColumn(props: ScrollableDataColumnProps) {
           data={value}
           rootRef={rootRef}
           index={i}
+          height={rowHeight}
         />
       );
     });
 
     const numberOfDummyRow = numberShowedItem - 1;
     for (let i = 0; i < numberOfDummyRow; i++) {
-      const dummyRow = <div className="ScrollableDataColumn__DummyRow" key={`dummy-${i}`}>1</div>;
-      rows.push(dummyRow);
+      rows.push(<DummyRow height={rowHeight}/>);
     }
 
     return rows;
