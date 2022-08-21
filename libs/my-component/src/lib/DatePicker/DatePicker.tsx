@@ -55,7 +55,6 @@ function WrappedDatePicker(props: DatePickerProps) {
   useEffect(() => {
     const newValue = dayjs(selectedDate).format(dateFormat);
     setInputValue(newValue);
-    console.log(newValue)
   }, [selectedDate.toDateString()]);
 
   useEffect(() => {

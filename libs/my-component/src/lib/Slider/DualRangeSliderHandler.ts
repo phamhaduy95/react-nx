@@ -132,7 +132,6 @@ export default class DualRangeSliderHandler {
     const temp = this.calculateStepDistance(pointerPositionOnSlider);
     const upperLimit = sliderWidth;
     const newThumbPosition = minMax(temp, 0, upperLimit);
-    // console.log(newThumbPosition,upperLimit)
     return newThumbPosition;
   }
 

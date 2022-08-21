@@ -20,7 +20,6 @@ export default function buttonGroupReducer (
       return { ...state, numberOfItems };
     }
     case "UNSUBSCRIBE_ITEM": {
-      console.log("unsubscribe")
       const numberOfItems = state.numberOfItems - 1;
       let activeIndex =state.activeIndex;
       if (activeIndex >= numberOfItems ) activeIndex = numberOfItems-1;   

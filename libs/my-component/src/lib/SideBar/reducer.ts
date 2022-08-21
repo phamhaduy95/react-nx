@@ -16,7 +16,6 @@ export default function reducer(
     }
     case 'CHANGE_SELECT_ITEM': {
       const newItemId = action.payload.newId;
-      console.log("reducer "+ newItemId);
       return { ...state, selectedItemId: newItemId };
     }
     default:

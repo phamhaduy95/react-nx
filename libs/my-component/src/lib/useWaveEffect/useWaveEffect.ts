@@ -85,7 +85,6 @@ function createTheWaveElement(pos: { x: number; y: number; }, el: any) {
 
 function getWaveMaxLength<T extends HTMLElement>(el: T) {
   const { width, height } = el.getBoundingClientRect();
-  console.log(width, height);
   const waveMaxLength = Math.sqrt(width * width + height * height);
   return Math.floor(waveMaxLength);
 }

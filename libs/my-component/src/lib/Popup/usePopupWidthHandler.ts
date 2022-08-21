@@ -23,7 +23,6 @@ export default function usePopupWidthHandler(
     const observer = new ResizeObserver((entries, observer) => {
       for (let entry of entries) {
         const newWidth = entry.borderBoxSize[0].inlineSize;
-        console.log(newWidth);
         popupEl.style.width = `${newWidth}px`;
         positionPopup(targetEl, popupEl, placement);
       }

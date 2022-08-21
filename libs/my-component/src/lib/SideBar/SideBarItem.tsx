@@ -15,7 +15,6 @@ export  function SideBarItem(props:SideBarItemProps) {
   }
 
   const applySelect =()=>{
-    console.log(state.selectedItemId);
     if (state.selectedItemId === id) return "selected";
     return ""
   }
