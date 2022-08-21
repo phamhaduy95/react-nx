@@ -10,7 +10,7 @@ import DateTimePickerPopup from './DateTimePickerPopup';
 import { DateTimePickerState } from './reducer';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import "./DateTimePicker.scss"
-import { useEventCallback } from '../utils/useEventCallback';
+import { useEffectSkipFirstRender } from '../utils/useEventCallback';
 
 export interface DateTimePickerProps {
   className?: string;
@@ -62,7 +62,7 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
   });
   const targetRef = useRef(null);
   const { state, action } = useDateTimePickerContext();
-  useEventCallback(()=>{
+  useEffectSkipFirstRender(()=>{
     const date = state.selectedDateTime; 
     onSelect(date); 
   },[state.selectedDateTime.toString()])

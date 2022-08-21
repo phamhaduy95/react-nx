@@ -8,6 +8,7 @@ import { useColumnDataGenerator } from './utils';
 import classNames from 'classnames';
 import { useEffect } from 'react';
 import './TimePanel.scss';
+import { useEffectSkipFirstRender } from '../utils/useEventCallback';
 
 type Time = {
   hour: number;
@@ -70,13 +71,14 @@ export function WrappedTimePanel(props: TimePanelProps) {
   const { hour, minute, second } = selectTime;
   
   useEffect(() => {
+    console.log(value)
     if (value === null) return;
     action.selectHour(value.hour);
     action.selectMinute(value.minute);
     action.selectSecond(value.second);
   }, [value?.hour, value?.minute, value?.second]);
 
-  useEffect(() => {
+  useEffectSkipFirstRender(()=>{
     onTimeSelect(state.selectTime);
   }, [hour, minute, second]);
 

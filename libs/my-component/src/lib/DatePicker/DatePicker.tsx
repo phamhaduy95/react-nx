@@ -10,6 +10,7 @@ import { DatePickerState } from './reducer';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { TextField } from '../TextField';
+import { useEffectSkipFirstRender } from '../utils/useEventCallback';
 dayjs.extend(customParseFormat);
 
 export interface DatePickerProps {
@@ -18,6 +19,7 @@ export interface DatePickerProps {
   minDate?: Date | null;
   maxDate?: Date | null;
   label?: string;
+  onSelect?:(date:Date)=>void;
 }
 const defaultPropsValue: Required<DatePickerProps> = {
   className: false,
@@ -25,6 +27,7 @@ const defaultPropsValue: Required<DatePickerProps> = {
   minDate: null,
   maxDate: null,
   label: '',
+  onSelect(date){},
 };
 
 export function DatePicker(props: DatePickerProps) {
@@ -42,7 +45,7 @@ export function DatePicker(props: DatePickerProps) {
 
 function WrappedDatePicker(props: DatePickerProps) {
   const newProps = { ...defaultPropsValue, ...props };
-  const { dateFormat, className, label } = newProps;
+  const { dateFormat, className, label ,onSelect} = newProps;
 
   const rootClassName = classNames('DatePicker', {
     [`${className}`]: className,
@@ -52,6 +55,11 @@ function WrappedDatePicker(props: DatePickerProps) {
   const { state, action } = useDatePickerContext();
   const { selectedDate } = state;
   const [inputValue, setInputValue] = useState('');
+
+  useEffectSkipFirstRender(()=>{
+    onSelect(state.selectedDate);
+  },[state.selectedDate.toDateString()])
+
   useEffect(() => {
     const newValue = dayjs(selectedDate).format(dateFormat);
     setInputValue(newValue);
