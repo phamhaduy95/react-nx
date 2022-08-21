@@ -14,6 +14,7 @@ import TextField from '../TextField/TextField';
 import { TextFieldProps } from '../TextField/TextField';
 import classNames from 'classnames';
 import { TimePanelProps } from '../TimePanel';
+import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 
 export type TimePickerProps = {
   className?: string;
@@ -74,13 +75,13 @@ function WrappedTimePicker(props: TimePickerProps) {
   const ref = useRef(null);
   const [inputValue, setInputValue] = useState('');
   const { state, action } = useTimePickerContext();
-  useEffect(() => {
+  useEffectSkipFirstRender(() => {
     const time = dayjs(state.selectTime);
     const timeStr = time.format(timeFormat);
     setInputValue(timeStr);
   }, [state.selectTime, delimiter, isSecondIncluded]);
 
-  useEffect(() => {
+  useEffectSkipFirstRender(() => {
     onTimeSelect(state.selectTime);
   }, [state.selectTime]);
 
