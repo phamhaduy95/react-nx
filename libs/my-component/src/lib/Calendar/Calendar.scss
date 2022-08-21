@@ -1,5 +1,5 @@
-$text-color: hsl(0, 0%, 30%, 0.9);
-
+@import '../_utils.scss';
+@import "../sharedStyle.scss";
 @mixin centerElement {
   display: flex;
   justify-content: center;
@@ -27,54 +27,57 @@ $text-color: hsl(0, 0%, 30%, 0.9);
 }
 
 .Calendar {
-  padding: 0.75rem;
   width: max-content;
-  min-width: 250px;
-  height: min-content;
+  width: 250px;
+  height: 300px;
   display: flex;
   flex-direction: column;
   caret-color: transparent;
- 
+  border: $border;
   color: $text-color;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
   @at-root .Calendar__DatePicker {
     display: flex;
     align-items: center;
-    margin: 0.75rem 0;
+    padding: 0.5rem 0;
+    border-bottom: $border;
+    height: 15%;
     > .Calendar__DatePicker__BackwardArrow {
       margin-right: auto;
+      margin-left: 0.2rem;
       padding: 0.25rem;
-      cursor: pointer;  
+      cursor: pointer;
       @include centerElement();
 
       @include addCircleHooverEffect();
       > svg {
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 1.25rem;
+        height: 1.25rem;
       }
     }
 
     @at-root .Calendar__DatePicker__DateBrowser {
       margin: auto;
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       font-weight: 600;
       user-select: none;
-    
     }
     > .Calendar__DatePicker__ForwardArrow {
       margin-left: auto;
+      margin-right: 0.2rem;
       padding: 0.25rem;
-      cursor: pointer;  
+      cursor: pointer;
       @include centerElement();
       @include addCircleHooverEffect();
       > svg {
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 1.25rem;
+        height: 1.25rem;
       }
     }
   }
   @at-root .Calendar_Table {
+    padding: 0.25rem;
     @at-root .Calendar__Table__HeaderRow {
       th {
         text-align: center;
@@ -96,18 +99,18 @@ $text-color: hsl(0, 0%, 30%, 0.9);
 
         @include addCircleHooverEffect();
         &.blurred {
-          color: hsla(0, 0%, 60%, 0.8);
+          color: hsla(0, 0%, 50%, 0.8);
         }
 
         &.selected {
-          color : white;
+          color: white;
+          z-index: 2;
           &::before {
-            background-color: hsla(210, 80%, 50%);
+            background-color: $primary-color;
             visibility: visible;
             z-index: -1;
           }
         }
-
       }
     }
   }

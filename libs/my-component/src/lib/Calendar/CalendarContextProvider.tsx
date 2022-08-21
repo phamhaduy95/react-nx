@@ -28,13 +28,12 @@ export default function CalendarContextProvider(
   useEffect(() => {
     const dateStr = date.toDateString();
     action.selectNewDate(dateStr);
-    action.selectNewMonth(date.getFullYear(),date.getMonth());
+    action.selectNewMonth(date.getFullYear(), date.getMonth());
   }, [date.toDateString()]);
-  
-  useEffect(()=>{
 
-    action.makeSelectable(initialState.selectable)
-  },[initialState.selectable])
+  useEffect(() => {
+    action.makeSelectable(initialState.selectable);
+  }, [initialState.selectable]);
 
   return (
     <CalendarContext.Provider value={contextValue}>
