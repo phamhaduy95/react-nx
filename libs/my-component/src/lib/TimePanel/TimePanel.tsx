@@ -71,7 +71,6 @@ export function WrappedTimePanel(props: TimePanelProps) {
   const { hour, minute, second } = selectTime;
   
   useEffect(() => {
-    console.log(value)
     if (value === null) return;
     action.selectHour(value.hour);
     action.selectMinute(value.minute);
