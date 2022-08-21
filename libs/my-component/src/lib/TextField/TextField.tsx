@@ -1,6 +1,7 @@
 import classNames from 'classnames';
-import React, { HTMLInputTypeAttribute } from 'react';
+import React, { HTMLInputTypeAttribute, useEffect, useRef } from 'react';
 import './TextField.scss';
+import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 
 export interface TextFieldProps {
   className?: string | null;
@@ -20,6 +21,7 @@ export interface TextFieldProps {
   onClick?: (e: React.MouseEvent) => void;
   onFocus?: (e: React.FormEvent) => void;
   type?: HTMLInputTypeAttribute;
+  autoFocusWhenChanged?:boolean;
 }
 
 const defaultProps: Required<TextFieldProps> = {
@@ -36,10 +38,12 @@ const defaultProps: Required<TextFieldProps> = {
   suffix: null,
   addOnBefore: null,
   addOnAfter: null,
+  autoFocusWhenChanged:false,
   onChange: (value) => {},
   onEnterPressed: (value) => {},
   onClick: (e) => {},
   onFocus: (e) => {},
+
 };
 
 export const TextField = React.forwardRef<any, TextFieldProps>((props, ref) => {
@@ -59,7 +63,18 @@ export const TextField = React.forwardRef<any, TextFieldProps>((props, ref) => {
     onFocus,
     type,
     disabled,
+    autoFocusWhenChanged,
   } = newProps;
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffectSkipFirstRender(()=>{
+    if (!autoFocusWhenChanged) return;
+    const input = inputRef.current as HTMLInputElement;
+    if (input === null) return;
+    input.focus();
+  },[props.value])
+
 
   const rootClassName = classNames('TextField', {
     [`${className}`]: className,
@@ -113,6 +128,9 @@ export const TextField = React.forwardRef<any, TextFieldProps>((props, ref) => {
     }
   };
 
+
+
+
   return (
     <div className={rootClassName}>
       <label className="TextField__Label">{label}</label>
@@ -130,6 +148,7 @@ export const TextField = React.forwardRef<any, TextFieldProps>((props, ref) => {
             onFocus={onFocus}
             value={props.value}
             disabled={disabled}
+            ref={inputRef}
           />
           {renderSuffix()}
         </div>
