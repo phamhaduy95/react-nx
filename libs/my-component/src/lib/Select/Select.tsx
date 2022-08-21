@@ -1,22 +1,21 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { SelectPopup } from './SelectPopup';
 import './Select.scss';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import classNames from 'classnames';
-
 import { SelectState } from './reducer';
 import {
   SelectContextProvider,
   useSelectContext,
 } from './SelectContextProvider';
-import ClickOutSideWatcher from '../ClickOutsideWatcher/ClickOutSideWatcher';
-import { TextField } from '../TextField';
+import { TextField, TextFieldProps } from '../TextField';
+import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 
 export interface SelectProps {
   children: JSX.Element[] | JSX.Element;
   onSelect?: (value: string) => void;
-  label?: string | false;
-  helperText?: string | false;
+  label?: TextFieldProps['label'];
+  helperText?: TextFieldProps['helperText'];
   error?: string | false;
   valid?: string | false;
   autoWidth?: boolean;
@@ -26,8 +25,8 @@ export interface SelectProps {
 const defaultPropsValue: Required<SelectProps> = {
   children: <></>,
   onSelect: (value) => {},
-  label: false,
-  helperText: false,
+  label: '',
+  helperText: null,
   error: false,
   valid: false,
   autoWidth: false,
@@ -56,20 +55,18 @@ export function Select(props: SelectProps) {
 
 function WrappedSelect(props: SelectProps) {
   const newProps = { ...defaultPropsValue, ...props };
-  const { children, autoWidth, label, helperText,onSelect } = newProps;
+  const { children, autoWidth, label, helperText, onSelect } = newProps;
   const rootRef = useRef<HTMLDivElement>(null);
   const { state, action } = useSelectContext();
   const { selectedItem, isPopupOpen } = state;
-  useEffect(()=>{
+  useEffectSkipFirstRender(() => {
     onSelect(selectedItem.value);
-    action.togglePopup(false)
-  },[selectedItem.id])
- 
+    action.togglePopup(false);
+  }, [selectedItem.id]);
+
   const rootClassName = classNames('Select', {
     'auto-width': autoWidth,
   });
-
-
 
   const IconField = () => {
     return (
@@ -83,20 +80,18 @@ function WrappedSelect(props: SelectProps) {
     action.togglePopup(true);
   };
 
-
-
-
   return (
     <div className={rootClassName}>
       <TextField
         className={'Select__TextField'}
-        label=""
+        label={label}
         onClick={handleClickToTogglePopup}
         value={selectedItem.value}
         ref={rootRef}
-        suffix={<IconField/>}
+        suffix={<IconField />}
+        autoFocusWhenChanged
+        helperText={helperText}
       />
-
       <SelectPopup targetRef={rootRef} isShowed={state.isPopupOpen}>
         {children}
       </SelectPopup>

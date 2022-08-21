@@ -16,13 +16,6 @@ export interface SelectContextProviderProps {
 export function SelectContextProvider(props: SelectContextProviderProps) {
   const { children, initialState } = props;
   const { state, action } = useSelectReducer(initialState);
-
-  // update the default value when defaultValue for the Select from initialState is changed
-  useEffect(() => {
-    const selectedItem = initialState.selectedItem;
-    action.selectItem(selectedItem);
-  }, [initialState]);
-
   return (
     <SelectContext.Provider value={{ state, action }}>
       {children}
