@@ -10,7 +10,7 @@ import DateTimePickerPopup from './DateTimePickerPopup';
 import { DateTimePickerState } from './reducer';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import "./DateTimePicker.scss"
-import { useEffectSkipFirstRender } from '../utils/useEventCallback';
+import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 
 export interface DateTimePickerProps {
   className?: string;

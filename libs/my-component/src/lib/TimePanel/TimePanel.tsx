@@ -8,7 +8,7 @@ import { useColumnDataGenerator } from './utils';
 import classNames from 'classnames';
 import { useEffect } from 'react';
 import './TimePanel.scss';
-import { useEffectSkipFirstRender } from '../utils/useEventCallback';
+import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 
 type Time = {
   hour: number;

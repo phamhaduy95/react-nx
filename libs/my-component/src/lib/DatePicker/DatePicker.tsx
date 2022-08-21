@@ -10,7 +10,7 @@ import { DatePickerState } from './reducer';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { TextField } from '../TextField';
-import { useEffectSkipFirstRender } from '../utils/useEventCallback';
+import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 dayjs.extend(customParseFormat);
 
 export interface DatePickerProps {
