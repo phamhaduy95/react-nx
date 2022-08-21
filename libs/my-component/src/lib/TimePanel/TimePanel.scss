@@ -21,9 +21,9 @@
     display: flex;
     height: 85%;
 
-
     >.ScrollableDataColumn {
-        width: 33%;
+        width: 30%;
+        flex-grow: 1;
         height: auto;
         border-right: none;
         border-top: none;
