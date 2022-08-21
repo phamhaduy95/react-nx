@@ -19,9 +19,4 @@ export function useColumnDataGenerator(dataType:DataType,disabledRange:number[])
     return data;
   }
   
-  export function extractTimeFromDate(date:Date):{hour:number,minute:number,second:number}{
-      const hour = date.getHours();
-      const minute = date.getMinutes();
-      const second = date.getSeconds();
-      return {hour,minute,second}
-  }
+ 

@@ -1,6 +1,7 @@
 import { NumberArray } from 'd3';
 import dayjs from 'dayjs';
 import { useReducer } from 'react';
+import { extractTimeFromDate } from '../utils/dateTime';
 
 export type DateTimePickerState = {
   selectedDateTime: Date;
@@ -15,15 +16,15 @@ type SelectDateAction = {
 };
 
 type SelectTimeAction = {
-  type : "SELECT_TIME",
+  type: 'SELECT_TIME';
   payload: {
     time: {
-      hour:number;
-      minute:number;
-      second:number;
-    }
-  }
-}
+      hour: number;
+      minute: number;
+      second: number;
+    };
+  };
+};
 
 type TogglePopupAction = {
   type: 'TOGGLE_POPUP';
@@ -32,15 +33,12 @@ type TogglePopupAction = {
   };
 };
 
-type DatePickerAction =
-  | SelectDateAction
-  | TogglePopupAction|SelectTimeAction;
+type DatePickerAction = SelectDateAction | TogglePopupAction | SelectTimeAction;
 
 export type DateTimePickerActionMethod = {
   selectDate: (newDate: DateTimePickerState['selectedDateTime']) => void;
   togglePopup: (isPopupOpen: boolean) => void;
-  selectTime: (time:SelectTimeAction["payload"]["time"])=>void;
-  
+  selectTime: (time: SelectTimeAction['payload']['time']) => void;
 };
 
 type Dispatcher = React.Dispatch<DatePickerAction>;
@@ -54,7 +52,7 @@ function getActionMethod(dispatch: Dispatcher): DateTimePickerActionMethod {
       dispatch({ type: 'TOGGLE_POPUP', payload: { isPopupOpen } });
     },
     selectTime(time) {
-      dispatch({type:"SELECT_TIME",payload:{time}})
+      dispatch({ type: 'SELECT_TIME', payload: { time } });
     },
   };
 }
@@ -65,16 +63,23 @@ const reducer = (
 ): DateTimePickerState => {
   switch (action.type) {
     case 'SELECT_DATE': {
-      const newDate = action.payload.newDate;
-      const currDate = state.selectedDateTime;
-      if (newDate.toString() === currDate.toString()) return state;
+      const newDate = action.payload.newDate;       
+      if (
+        newDate.toString() === state.selectedDateTime.toString()
+      )
+        return state;
       return { ...state, selectedDateTime: newDate };
     }
-    case "SELECT_TIME":{
-      const {hour,second,minute} = action.payload.time;
-      const date = dayjs(state.selectedDateTime).hour(hour).second(second).minute(minute).toDate();
-      if (date.toTimeString() === state.selectedDateTime.toTimeString()) return state;
-      return {...state,selectedDateTime:date};
+    case 'SELECT_TIME': {
+      const { hour, second, minute } = action.payload.time;
+      const date = dayjs(state.selectedDateTime)
+        .hour(hour)
+        .second(second)
+        .minute(minute)
+        .toDate();
+      if (date.toTimeString() === state.selectedDateTime.toTimeString())
+        return state;
+      return { ...state, selectedDateTime: date };
     }
 
     case 'TOGGLE_POPUP': {

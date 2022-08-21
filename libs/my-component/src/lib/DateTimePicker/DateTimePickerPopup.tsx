@@ -2,7 +2,9 @@ import React, { useMemo, useRef } from 'react';
 import { Calendar } from '../Calendar';
 import PopupElement from '../Popup/PopupElement';
 import { TimePanel, TimePanelProps } from '../TimePanel';
+import { extractTimeFromDate } from '../utils/dateTime';
 import { useDateTimePickerContext } from './DatePickerContextProvider';
+import dayjs from 'dayjs';
 
 
 interface DateTimePickerPopupProps {
@@ -16,8 +18,9 @@ export default function DateTimePickerPopup(props: DateTimePickerPopupProps) {
   const { state, action } = useDateTimePickerContext();
   const ref = useRef(null);
   const handleDateChanged = (date: Date) => {
-    action.selectDate(date);
-    action.togglePopup(false);
+    const {hour,minute,second} = extractTimeFromDate(state.selectedDateTime);
+    const newDay = dayjs(date).hour(hour).minute(minute).second(second).toDate(); 
+    action.selectDate(newDay);
   };
 
   const nowDate = useMemo(() => {
@@ -47,16 +50,10 @@ export default function DateTimePickerPopup(props: DateTimePickerPopupProps) {
           numberOfShowedItem={7} 
           isSecondInclude={false}  
           onTimeSelect={handleTimeSelect}
-          value = {getTimeFormDate(state.selectedDateTime)}
+          value = {extractTimeFromDate(state.selectedDateTime)}
           />
       </div>
     </PopupElement>
   );
 }
 
-function getTimeFormDate(date: Date) {
-  const hour = date.getHours();
-  const second = date.getSeconds();
-  const minute = date.getMinutes();
-  return { hour, second, minute };
-}
