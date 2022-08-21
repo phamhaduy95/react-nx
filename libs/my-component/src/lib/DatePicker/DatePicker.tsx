@@ -100,6 +100,7 @@ function WrappedDatePicker(props: DatePickerProps) {
         type={'tel'}
         value={inputValue}
         suffix={<IconField />}
+        autoFocusWhenChanged
       />
       <CalendarPopup targetRef={targetRef} isShowed={state.isPopupOpen} />
     </div>
