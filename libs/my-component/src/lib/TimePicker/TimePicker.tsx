@@ -117,6 +117,7 @@ function WrappedTimePicker(props: TimePickerProps) {
         onClick={handleClickToOpenPopup}
         suffix={<IconField />}
         helperText={helperText}
+        autoFocusWhenChanged
       />
       <TimePickerPopup
         targetRef={ref}
