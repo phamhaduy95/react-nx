@@ -7,13 +7,9 @@ import classNames from 'classnames';
 import { useRowHeightCalculator, useSetContainerInitialHeight } from './hooks';
 import { DataColumnState } from './reducer';
 import './ScrollableDataColumn.scss';
-import {
-  SharedDataContextProvider,
-  SharedDataType,
-} from './SharedDataContext';
+import { SharedDataContextProvider, SharedDataType } from './SharedDataContext';
 import { DataColumnRow } from './ScrollableDateColumnRow';
 import { DummyRow } from './ScrollableColumnDummyRow';
-
 
 type ColumnDataType = {
   value: number | string;
@@ -65,7 +61,7 @@ export function WrappedDataColumn(props: ScrollableDataColumnProps) {
   const rootRef = useRef(null);
   const { state, action } = useDataColumnsContext();
 
-  useSetContainerInitialHeight(rootRef)
+  useSetContainerInitialHeight(rootRef);
   const rowHeight = useRowHeightCalculator(rootRef, numberShowedItem);
   useEffect(() => {
     if (initialSelected === null) return;
@@ -96,7 +92,7 @@ export function WrappedDataColumn(props: ScrollableDataColumnProps) {
 
     const numberOfDummyRow = numberShowedItem - 1;
     for (let i = 0; i < numberOfDummyRow; i++) {
-      rows.push(<DummyRow height={rowHeight}/>);
+      rows.push(<DummyRow height={rowHeight} key={`dummy-${i}`} />);
     }
 
     return rows;
