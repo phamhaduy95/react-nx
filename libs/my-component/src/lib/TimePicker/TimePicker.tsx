@@ -12,6 +12,8 @@ dayjs.extend(customParseFormat);
 import './TimePicker.scss';
 import TextField from '../TextField/TextField';
 import { TextFieldProps } from '../TextField/TextField';
+import classNames from 'classnames';
+import { TimePanelProps } from '../TimePanel';
 
 export type TimePickerProps = {
   className?: string;
@@ -20,27 +22,29 @@ export type TimePickerProps = {
   disabled?: boolean;
   label?: TextFieldProps['label'];
   helperText?: TextFieldProps['helperText'];
-  onTimeSelect?: (hour: number, minute: number, second: number) => void;
+  onTimeSelect?: (time: Date) => void;
+  disabledHour?: TimePanelProps['disabledHour'];
+  disabledMinute?: TimePanelProps['disabledMinute'];
+  disabledSecond?: TimePanelProps['disabledSecond'];
 };
 
 const DefaultProps: Required<TimePickerProps> = {
   className: '',
-  isSecondIncluded: true,
+  isSecondIncluded: false,
   delimiter: ':',
-  onTimeSelect(hour, minute, second) {},
+  onTimeSelect(time) {},
   disabled: false,
   label: '',
   helperText: null,
+  disabledHour: [],
+  disabledMinute: [],
+  disabledSecond: [],
 };
 
 export function TimePicker(props: TimePickerProps) {
   const initialState: TimePickerState = {
     isPopupOpen: false,
-    selectTime: {
-      hour: 0,
-      minute: 0,
-      second: 0,
-    },
+    selectTime: dayjs().hour(0).minute(0).second(0).toDate(),
   };
 
   return (
@@ -59,32 +63,33 @@ function WrappedTimePicker(props: TimePickerProps) {
     onTimeSelect,
     label,
     helperText,
+    disabledHour,
+    disabledMinute,
+    disabledSecond,
   } = newProps;
+  const rootClassName = classNames('TimePicker', className);
+
   const timeFormat = getTimeFormat(isSecondIncluded, delimiter);
 
   const ref = useRef(null);
   const [inputValue, setInputValue] = useState('');
   const { state, action } = useTimePickerContext();
   useEffect(() => {
-    const { hour, minute, second } = state.selectTime;
-    const time = dayjs().hour(hour).minute(minute).second(second);
+    const time = dayjs(state.selectTime);
     const timeStr = time.format(timeFormat);
     setInputValue(timeStr);
   }, [state.selectTime, delimiter, isSecondIncluded]);
 
   useEffect(() => {
-    const { hour, minute, second } = state.selectTime;
-    onTimeSelect(hour, minute, second);
+    onTimeSelect(state.selectTime);
   }, [state.selectTime]);
 
   const handleInputChange = (value: string) => {
     setInputValue(value);
     const time = dayjs(value, timeFormat, true);
     if (!time.isValid()) return;
-    const hour = time.hour();
-    action.selectHour(hour);
-    const minute = time.minute();
-    action.selectMinute(minute);
+    const dateObj = time.toDate();
+    action.selectTime(dateObj);
   };
 
   const handleClickToOpenPopup = () => {
@@ -100,7 +105,7 @@ function WrappedTimePicker(props: TimePickerProps) {
   };
 
   return (
-    <div className="TimePicker">
+    <div className={rootClassName}>
       <TextField
         className="TimePicker__InputField"
         value={inputValue}
@@ -112,7 +117,13 @@ function WrappedTimePicker(props: TimePickerProps) {
         suffix={<IconField />}
         helperText={helperText}
       />
-      <TimePickerPopup targetRef={ref} isSecondInCluded={isSecondIncluded} />
+      <TimePickerPopup
+        targetRef={ref}
+        isSecondInCluded={isSecondIncluded}
+        disabledHour={disabledHour}
+        disabledMinute={disabledMinute}
+        disabledSecond={disabledSecond}
+      />
     </div>
   );
 }

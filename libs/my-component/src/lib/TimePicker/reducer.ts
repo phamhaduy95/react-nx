@@ -1,34 +1,18 @@
 import { useReducer } from 'react';
+import dayjs from 'dayjs';
 
 export type TimePickerState = {
-  selectTime: {
-    hour:number,
-    minute:number,
-    second:number,
-  },
+  selectTime: Date;
   isPopupOpen:boolean,
 };
 
-type SelectHourAction = {
-  type: 'SELECT_HOUR';
+type SelectTimeAction = {
+  type: 'SELECT_TIME';
   payload: {
-     hour:number,
+     time:Date;
   };
 };
 
-type SelectMinuteAction = {
-    type:"SELECT_MINUTE",
-    payload: {
-        minute: number
-    }
-}
-
-type SelectSecondAction = {
-  type:"SELECT_SECOND",
-  payload: {
-    second : number;
-  }
-}
 
 type TogglePopupAction = {
     type:"TOGGLE_POPUP",
@@ -37,12 +21,11 @@ type TogglePopupAction = {
     }
 }
 
-type ActionType = SelectHourAction|SelectMinuteAction|TogglePopupAction|SelectSecondAction;
+type ActionType =SelectTimeAction|TogglePopupAction;
 
 export type TimePickerActionMethod = {
-  selectHour: (hour: number) => void;
-  selectMinute:(min:number)=>void,
-  selectSecond:(second:number)=>void,
+  selectTime: (time: Date) => void;
+  
   togglePopup: (state:boolean)=>void
 };
 
@@ -50,14 +33,8 @@ type Dispatcher = React.Dispatch<ActionType>;
 
 function getActionMethod(dispatch: Dispatcher): TimePickerActionMethod {
   return {
-    selectHour(hour) {
-      dispatch({ type: 'SELECT_HOUR', payload: {  hour} });
-    },
-    selectMinute(minute) {
-        dispatch({type:"SELECT_MINUTE",payload:{minute}})
-    },
-    selectSecond(second){
-      dispatch({type:"SELECT_SECOND",payload:{second}})
+    selectTime(time) {
+      dispatch({ type: 'SELECT_TIME', payload: {  time} });
     },
     togglePopup(state) {
         dispatch({type:"TOGGLE_POPUP",payload:{state}})
@@ -70,26 +47,11 @@ const reducer = (
   action: ActionType
 ): TimePickerState => {
   switch (action.type) {
-    case 'SELECT_HOUR': {
-        const hour = action.payload.hour;
-        if (state.selectTime.hour === hour) return state;
-        const selectTime = {...state.selectTime,hour}
-        return {...state,selectTime} 
+    case "SELECT_TIME":{
+      const newTime = action.payload.time; 
+      if (compareTwoDateObject(newTime,state.selectTime) === 0 ) return state;
+      return {...state,selectTime:newTime};
     }
-    case "SELECT_MINUTE":{
-        const minute = action.payload.minute;
-        if (state.selectTime.minute === minute) return state;
-        const selectTime = {...state.selectTime,minute}
-        return {...state,selectTime}
-    }
-
-    case "SELECT_SECOND":{
-      const second = action.payload.second;
-      if (state.selectTime.second === second) return state;
-      const selectTime = {...state.selectTime,second}
-      return {...state,selectTime}
-    }
-
     case "TOGGLE_POPUP":{
         const isOpen = action.payload.state;
         if (isOpen === state.isPopupOpen) return state;
@@ -106,3 +68,11 @@ export const useTimePickerReducer = (initialState: TimePickerState) => {
   const action = getActionMethod(dispatch);
   return { state, action };
 };
+
+function compareTwoDateObject(date1:Date,date2:Date){
+    const day1 = dayjs(date1);
+    const day2 = dayjs(date2);
+    if (day1.isSame(day2)) return 0;
+    if (day1.isAfter(day2)) return 1;
+    return -1;
+}
