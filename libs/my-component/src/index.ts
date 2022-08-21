@@ -12,3 +12,5 @@ export * from './lib/Select';
 export * from './lib/DatePicker';
 export * from './lib/TimePicker';
 export * from './lib/TextField';
+export * from './lib/DateTimePicker';
+export * from './lib/TimePanel';
