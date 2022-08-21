@@ -70,10 +70,17 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
 
   const { selectedDateTime: selectedDate } = state;
   const [inputValue, setInputValue] = useState('');
-  useEffect(() => {
+  // useEffect(() => {
+  //   const newValue = dayjs(selectedDate).format(dateTimeFormat);
+  //   setInputValue(newValue);
+  // }, [selectedDate.toString()]);
+
+  useEffectSkipFirstRender(() => {
     const newValue = dayjs(selectedDate).format(dateTimeFormat);
     setInputValue(newValue);
   }, [selectedDate.toString()]);
+
+
 
   useEffect(() => {
     if (isDateInputValid(inputValue, dateTimeFormat)) {
@@ -99,6 +106,7 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
     );
   };
 
+
   return (
     <div className={rootClassName} >
       <TextField
@@ -111,6 +119,7 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
         value={inputValue}
         suffix={<IconField />}
         ref={targetRef}
+        autoFocusWhenChanged={true}
       />
       <DateTimePickerPopup
         isSecondIncluded={isSecondIncluded}
