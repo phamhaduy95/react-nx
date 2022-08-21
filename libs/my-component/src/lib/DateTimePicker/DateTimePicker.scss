@@ -1,0 +1,34 @@
+@import '../_utils.scss';
+@import '../sharedStyle.scss';
+
+$text-color: hsl(0, 0%, 20%);
+
+.DateTimePicker {
+  @at-root .DateTimePicker__TextField {
+    width: inherit;
+    .DateTimePicker__InputIcon {
+      cursor: pointer;
+      margin-right: 0.25rem;
+      margin-left: auto;
+      @include centerElement();
+      @include setChildElementsSize(1.5rem, 1.5rem);
+      > svg {
+        fill: $text-color;
+      }
+    }
+  }
+  @at-root .DateTimePicker__Popup {
+    @at-root .DateTimePicker__Popup__Container {
+      border: $border;
+      border-radius: 5px;
+      display: flex;
+      >.Calendar {
+        border: none;
+        border-right: $border;
+      }
+      >.TimePanel {
+        border: none;
+      }
+    }
+  }
+}
