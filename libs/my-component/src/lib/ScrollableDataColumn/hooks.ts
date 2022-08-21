@@ -56,7 +56,7 @@ export function useSetContainerInitialHeight(containerRef:React.MutableRefObject
     useEffect(()=>{
       const containerEl = containerRef.current;
       if (containerEl === null) return;
-      console.log(containerEl.clientHeight)
+
     },[])
 
 }
