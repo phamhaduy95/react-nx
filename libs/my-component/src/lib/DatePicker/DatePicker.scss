@@ -1,8 +1,10 @@
 @import '../_utils.scss';
+@import "../sharedStyle.scss";
 $text-color: hsl(0, 0%, 20%);
 
 .DatePicker {
   width: max-content;
+  height: max-content;
   >.DatePicker__TextField {
     width: inherit;
 
@@ -18,8 +20,11 @@ $text-color: hsl(0, 0%, 20%);
     }
   }
   @at-root .DatePicker__Popup {
-        border: 1px solid gray;
-        border-radius: 5px;
+    border: $border;
+    border-radius: 5px; 
+    .Calendar {
+      border: none;
+     }
   }
 
   

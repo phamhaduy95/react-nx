@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import './DatePicker.scss';
-import CalendarPopup from './CalendarPopup';
+import CalendarPopup from './DatePickerPopup';
 import DatePickerContextProvider, {
   useDatePickerContext,
 } from './DatePickerContextProvider';
@@ -19,7 +19,7 @@ export interface DatePickerProps {
   minDate?: Date | null;
   maxDate?: Date | null;
   label?: string;
-  onSelect?:(date:Date)=>void;
+  onSelect?: (date: Date) => void;
 }
 const defaultPropsValue: Required<DatePickerProps> = {
   className: false,
@@ -27,7 +27,7 @@ const defaultPropsValue: Required<DatePickerProps> = {
   minDate: null,
   maxDate: null,
   label: '',
-  onSelect(date){},
+  onSelect(date) {},
 };
 
 export function DatePicker(props: DatePickerProps) {
@@ -45,7 +45,7 @@ export function DatePicker(props: DatePickerProps) {
 
 function WrappedDatePicker(props: DatePickerProps) {
   const newProps = { ...defaultPropsValue, ...props };
-  const { dateFormat, className, label ,onSelect} = newProps;
+  const { dateFormat, className, label, onSelect } = newProps;
 
   const rootClassName = classNames('DatePicker', {
     [`${className}`]: className,
@@ -56,9 +56,9 @@ function WrappedDatePicker(props: DatePickerProps) {
   const { selectedDate } = state;
   const [inputValue, setInputValue] = useState('');
 
-  useEffectSkipFirstRender(()=>{
+  useEffectSkipFirstRender(() => {
     onSelect(state.selectedDate);
-  },[state.selectedDate.toDateString()])
+  }, [state.selectedDate.toDateString()]);
 
   useEffect(() => {
     const newValue = dayjs(selectedDate).format(dateFormat);
@@ -78,7 +78,7 @@ function WrappedDatePicker(props: DatePickerProps) {
   };
 
   const handleClickToTogglePopup = () => {
-    action.togglePopup(!state.isPopupOpen);
+    action.togglePopup(true);
   };
 
   const IconField = () => {
@@ -90,7 +90,7 @@ function WrappedDatePicker(props: DatePickerProps) {
   };
 
   return (
-    <div className={rootClassName} ref={targetRef}>
+    <div className={rootClassName} tabIndex={1}>
       <TextField
         className="DatePicker__TextField"
         label={label}
@@ -101,6 +101,7 @@ function WrappedDatePicker(props: DatePickerProps) {
         value={inputValue}
         suffix={<IconField />}
         autoFocusWhenChanged
+        ref={targetRef}
       />
       <CalendarPopup targetRef={targetRef} isShowed={state.isPopupOpen} />
     </div>
