@@ -17,23 +17,13 @@ type CalendarContextProviderProps = {
   initialState: CalendarState;
 };
 
+
 export default function CalendarContextProvider(
   props: CalendarContextProviderProps
 ) {
   const { children, initialState } = props;
   const { state, action } = useCalendarReducer(initialState);
   const contextValue = { state, action };
-  const date = initialState.selectedDate;
-
-  useEffect(() => {
-    const dateStr = date.toDateString();
-    action.selectNewDate(dateStr);
-    action.selectNewMonth(date.getFullYear(), date.getMonth());
-  }, [date.toDateString()]);
-
-  useEffect(() => {
-    action.makeSelectable(initialState.selectable);
-  }, [initialState.selectable]);
 
   return (
     <CalendarContext.Provider value={contextValue}>

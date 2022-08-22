@@ -1,14 +1,19 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useGenerateCalendarData } from './useGenerateCalendarData';
-import { CalendarTableRow } from './CalendarDateCell';
 import dayjs from 'dayjs';
 import './Calendar.scss';
 import CalendarContextProvider from './CalendarContextProvider';
-import { CalendarState } from './reducer';
+import { prepareInitialState } from './reducer';
 import { useCalendarContext } from './CalendarContextProvider';
-import {CalendarSettingsContextProvider} from './CalendarSettingsContextProvider';
+import {
+  CalendarSharedDataContextProvider,
+  extractSharedDataFromProps,
+} from './CalendarSharedDataContext';
+import { CalendarTableRow } from './CalendarTableRow';
+import { CalendarDateCell, CalendarDateCellProps } from './CalendarDateCell';
+import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 
 function getDateString(year: number, month: number) {
   const date = dayjs().year(year).month(month);
@@ -18,44 +23,49 @@ function getDateString(year: number, month: number) {
 export interface CalendarProps {
   className?: string;
   selectable?: boolean;
-  date?: Date;
-  onSelect?: (date: Date) => void;
+  disabledDate?: (currentDate: Date) => boolean;
+  CellComponent?:(props:CalendarDateCellProps)=>JSX.Element;
+  dateValue?:Date;
 }
 
 const defaultCalendarProps: Required<CalendarProps> = {
   className: '',
   selectable: false,
-  date: new Date(Date.now()),
-  onSelect(date) {},
+  disabledDate(currentDate) {
+    return false;
+  },
+  CellComponent(props) {
+      return <CalendarDateCell {...props}/>
+  },
+  dateValue:new Date(Date.now())
 };
 
 export function Calendar(props: CalendarProps) {
   const newProps = { ...defaultCalendarProps, ...props };
-  const { date, selectable,onSelect } = newProps;
-  const currentMonth = dayjs(date);
-  const initialState: CalendarState = {
-    currentMonth: {
-      year: currentMonth.year(),
-      month: currentMonth.month(),
-    },
-    selectedDate: dayjs(date).toDate(),
-    selectable: selectable,
-  };
+  const sharedData = extractSharedDataFromProps(newProps);
+  const initialState = prepareInitialState();
 
   return (
-    <CalendarSettingsContextProvider onSelect={onSelect}>
-    <CalendarContextProvider initialState={initialState}>
-      <WrappedCalendar {...newProps} />
-    </CalendarContextProvider>
-    </CalendarSettingsContextProvider>
+    <CalendarSharedDataContextProvider {...sharedData}>
+      <CalendarContextProvider initialState={initialState}>
+        <WrappedCalendar {...newProps} />
+      </CalendarContextProvider>
+    </CalendarSharedDataContextProvider>
   );
 }
 
 function WrappedCalendar(props: CalendarProps) {
-  const newProps = { ...defaultCalendarProps, ...props };
-  const { onSelect } = newProps;
+  const newProps = {...defaultCalendarProps,...props};
+  const {dateValue} = newProps;
   const { state, action } = useCalendarContext();
   const { year, month } = state.currentMonth;
+
+  useEffectSkipFirstRender(()=>{
+      const month = dateValue.getMonth();
+      const year = dateValue.getFullYear();
+      action.selectNewMonth(year,month);
+  },[dateValue.getMonth(),dateValue.getFullYear()])
+
 
   const calendarData = useGenerateCalendarData(year, month);
   const CalendarRows = useMemo(() => {
@@ -63,7 +73,6 @@ function WrappedCalendar(props: CalendarProps) {
       return <CalendarTableRow rowData={rowData} key={index} />;
     });
   }, [year, month]);
-
 
   const handleClickNextMonth = () => {
     action.goToNextMonth();

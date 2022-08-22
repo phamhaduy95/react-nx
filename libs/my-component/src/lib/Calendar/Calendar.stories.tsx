@@ -1,5 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Calendar } from './Calendar';
+import Calendar from './Calendar';
+
 
 export default {
   component: Calendar,
@@ -17,5 +18,4 @@ export const Example = Template.bind({});
 Example.args = {
   className: '',
   selectable: false,
-  date: new Date(Date.now())
 };

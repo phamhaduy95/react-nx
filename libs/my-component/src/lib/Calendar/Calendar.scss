@@ -6,15 +6,15 @@
   align-items: center;
 }
 
-@mixin addCircleHooverEffect {
+@mixin addCircleHooverEffect($circle-size:100%) {
   position: relative;
   &::before {
     content: '';
     position: absolute;
-    top: -2%;
-    left: -2%;
-    bottom: -2%;
-    right: -2%;
+    top: calc(100% - $circle-size);
+    left: calc(100% - $circle-size);
+    bottom: calc(100% - $circle-size);
+    right: calc(100% - $circle-size);
     background-color: hsla(0, 0%, 70%, 0.2);
     border-radius: 50%;
     visibility: hidden;
@@ -49,7 +49,7 @@
       cursor: pointer;
       @include centerElement();
 
-      @include addCircleHooverEffect();
+      @include addCircleHooverEffect(105%);
       > svg {
         width: 1.25rem;
         height: 1.25rem;
@@ -68,7 +68,7 @@
       padding: 0.25rem;
       cursor: pointer;
       @include centerElement();
-      @include addCircleHooverEffect();
+      @include addCircleHooverEffect(105%);
       > svg {
         width: 1.25rem;
         height: 1.25rem;
@@ -96,7 +96,7 @@
         min-width: 2rem;
         height: 2rem;
 
-        @include addCircleHooverEffect();
+        @include addCircleHooverEffect(100%);
         &.blurred {
           color: hsla(0, 0%, 50%, 0.8);
         }
@@ -110,6 +110,17 @@
             z-index: -1;
           }
         }
+
+        &.disabled {
+          color: hsla(0, 0%, 70%);
+          z-index: 2;
+          &::before {
+            background-color: hsla(0, 0%, 90%,0.6);
+            visibility: visible;
+            z-index: -1;
+          }
+        }
+
       }
     }
   }
