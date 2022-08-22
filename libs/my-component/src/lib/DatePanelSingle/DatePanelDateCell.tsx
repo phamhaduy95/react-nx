@@ -4,15 +4,17 @@ import classNames from 'classnames';
 import { CalendarTableData } from '../Calendar/useGenerateCalendarData';
 import { useDatePanelSingleContext } from './DataPanelContextProvider';
 import { useCalendarContext } from '../Calendar/CalendarContextProvider';
-import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
+import { DatePanelSingleProps } from './DatePanelSingle';
+
 
 export type CalendarDateCellProps = {
   data: CalendarTableData[number][number];
   isDisabled?: boolean;
+  onClickToSelect:NonNullable<DatePanelSingleProps["onClickToSelect"]>
 };
 
 export function DatePanelDateCell(props: CalendarDateCellProps) {
-  const { data, isDisabled } = props;
+  const { data, isDisabled,onClickToSelect } = props;
   const dayNumber = data.date.getDate();
   const { isDayWithinMonth,date } = data;
   const {state,action} = useDatePanelSingleContext();
@@ -27,7 +29,9 @@ export function DatePanelDateCell(props: CalendarDateCellProps) {
   });
 
   const handleClickToSelectDate = ()=>{
+    if (isDisabled) return;
     action.selectNewDate(date);
+    onClickToSelect(data.date);
   }
 
   return (
