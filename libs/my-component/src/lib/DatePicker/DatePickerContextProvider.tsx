@@ -17,11 +17,6 @@ type Props = {
 export default function DatePickerContextProvider(props:Props) {
     const {children,initialState} = props;
     const {state,action} = useDatePickerReducer(initialState);
-    const dateStr = initialState.selectedDate.toDateString();
-    // change selectedDate when the external initial value is renewed. 
-    useEffect(()=>{
-        action.selectDate(initialState.selectedDate);
-    },[dateStr])
 
     return (
     <DatePickerContext.Provider value={{state,action}}>

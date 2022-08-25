@@ -1,14 +1,14 @@
 import { useReducer } from "react";
 
 export type DatePickerState = {
-    selectedDate : Date;
+    selectedDate : Date|null;
     isPopupOpen:boolean,
 }
 
 type SelectDateAction = {
     type:"SELECT_DATE",
     payload:{
-        newDate:Date,
+        newDate:DatePickerState["selectedDate"],
     }
 }
 
@@ -45,7 +45,7 @@ const reducer = (state:DatePickerState,action:DatePickerAction):DatePickerState=
         case"SELECT_DATE":{
             const newDate = action.payload.newDate;
             const currDate = state.selectedDate;
-            if (newDate.toDateString() === currDate.toDateString()) return state;
+            if (newDate?.toDateString() === currDate?.toDateString()) return state;
             return {...state,selectedDate:newDate}
         }
         case "TOGGLE_POPUP":{
