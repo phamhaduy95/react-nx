@@ -9,29 +9,33 @@ import {
 import DateTimePickerPopup from './DateTimePickerPopup';
 import { DateTimePickerState } from './reducer';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import "./DateTimePicker.scss"
+import './DateTimePicker.scss';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
+import {
+  DatePanelSingle,
+  DatePanelSingleProps,
+} from '../DatePanelSingle/DatePanelSingle';
 
 export interface DateTimePickerProps {
   className?: string;
   dateFormat?: string;
   isSecondIncluded?: boolean;
-  minDate?: Date | null;
-  maxDate?: Date | null;
   label?: string;
   timeDelimiters?: string;
-  onSelect?:(dateTime:Date)=>void;
+  onSelect?: (dateTime: Date) => void;
+  DatePanel?: (props: DatePanelSingleProps) => JSX.Element;
 }
 
 const defaultProps: Required<DateTimePickerProps> = {
   className: '',
   dateFormat: 'DD/MM/YYYY',
   isSecondIncluded: false,
-  minDate: null,
-  maxDate: null,
   label: '',
   timeDelimiters: ':',
-  onSelect:()=>{}  
+  onSelect: () => {},
+  DatePanel(props) {
+    return <DatePanelSingle {...props} />;
+  },
 };
 
 export function DateTimePicker(props: DateTimePickerProps) {
@@ -49,24 +53,30 @@ export function DateTimePicker(props: DateTimePickerProps) {
 
 function WrappedDateTimePicker(props: DateTimePickerProps) {
   const newProps = { ...defaultProps, ...props };
-  const { dateFormat, className, label, timeDelimiters, isSecondIncluded,onSelect } =
-    newProps;
+  const {
+    dateFormat,
+    className,
+    label,
+    timeDelimiters,
+    isSecondIncluded,
+    onSelect,
+    DatePanel,
+  } = newProps;
   const dateTimeFormat = getDateTimeFormat(
     dateFormat,
     isSecondIncluded,
     timeDelimiters
   );
- 
+
   const rootClassName = classNames('DateTimePicker', {
     [`${className}`]: className,
   });
   const targetRef = useRef(null);
   const { state, action } = useDateTimePickerContext();
-  useEffectSkipFirstRender(()=>{
-    const date = state.selectedDateTime; 
-    onSelect(date); 
-  },[state.selectedDateTime.toString()])
-
+  useEffectSkipFirstRender(() => {
+    const date = state.selectedDateTime;
+    onSelect(date);
+  }, [state.selectedDateTime.toString()]);
 
   const { selectedDateTime: selectedDate } = state;
   const [inputValue, setInputValue] = useState('');
@@ -79,8 +89,6 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
     const newValue = dayjs(selectedDate).format(dateTimeFormat);
     setInputValue(newValue);
   }, [selectedDate.toString()]);
-
-
 
   useEffect(() => {
     if (isDateInputValid(inputValue, dateTimeFormat)) {
@@ -106,9 +114,8 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
     );
   };
 
-
   return (
-    <div className={rootClassName} >
+    <div className={rootClassName}>
       <TextField
         className="DateTimePicker__TextField"
         label={label}
@@ -125,6 +132,7 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
         isSecondIncluded={isSecondIncluded}
         targetRef={targetRef}
         isShowed={state.isPopupOpen}
+        DatePanel={DatePanel}
       />
     </div>
   );

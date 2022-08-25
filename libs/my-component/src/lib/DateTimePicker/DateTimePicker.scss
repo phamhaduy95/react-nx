@@ -22,9 +22,12 @@ $text-color: hsl(0, 0%, 20%);
       border: $border;
       border-radius: 5px;
       display: flex;
-      >.Calendar {
+      >.DatePanelSingle {
         border: none;
         border-right: $border;
+        >.Calendar {
+          border: none;
+        }
       }
       >.TimePanel {
         border: none;

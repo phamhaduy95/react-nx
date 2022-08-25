@@ -1,20 +1,23 @@
 import React, { useMemo, useRef } from 'react';
-import { Calendar } from '../Calendar';
+import { Calendar } from '../Calendar'
 import PopupElement from '../Popup/PopupElement';
 import { TimePanel, TimePanelProps } from '../TimePanel';
 import { extractTimeFromDate } from '../utils/dateTime';
 import { useDateTimePickerContext } from './DatePickerContextProvider';
 import dayjs from 'dayjs';
+import { DateTimePickerProps } from './DateTimePicker';
+import { DatePanelSingleProps } from '../DatePanelSingle/DatePanelSingle';
 
 
 interface DateTimePickerPopupProps {
   isShowed: boolean;
   targetRef: React.MutableRefObject<HTMLElement | null>;
   isSecondIncluded: boolean;
+  DatePanel:NonNullable<DateTimePickerProps["DatePanel"]>,
 }
 
 export default function DateTimePickerPopup(props: DateTimePickerPopupProps) {
-  const { targetRef, isShowed } = props;
+  const { targetRef, isShowed,DatePanel } = props;
   const { state, action } = useDateTimePickerContext();
   const ref = useRef(null);
   const handleDateChanged = (date: Date) => {
@@ -34,6 +37,11 @@ export default function DateTimePickerPopup(props: DateTimePickerPopupProps) {
     action.selectTime(time);
   }
 
+  const handleDateSelect:DatePanelSingleProps["onSelect"] = (date)=>{
+    if (date === null) return;
+    action.selectDate(date)
+  }
+
   return (
     <PopupElement
       targetRef={targetRef}
@@ -45,7 +53,8 @@ export default function DateTimePickerPopup(props: DateTimePickerPopupProps) {
       onClickOutside={handleClickOutsidePopup}
     >
       <div className="DateTimePicker__Popup__Container">
-        <Calendar selectable date={nowDate} onSelect={handleDateChanged} />
+        {/* <Calendar selectable date={nowDate} onSelect={handleDateChanged} /> */}
+        {DatePanel({dateValue:nowDate,onSelect:handleDateSelect})}
         <TimePanel 
           numberOfShowedItem={7} 
           isSecondInclude={false}  
