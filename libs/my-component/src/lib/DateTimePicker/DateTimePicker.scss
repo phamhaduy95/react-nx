@@ -18,15 +18,16 @@ $text-color: hsl(0, 0%, 20%);
     }
   }
   @at-root .DateTimePicker__Popup {
-    @at-root .DateTimePicker__Popup__Container {
+    background-color: white;
+    > .DateTimePicker__Popup__Container {
       border: $border;
       border-radius: 5px;
       display: flex;
-      >.DatePanelSingle {
+      >.DateTimePicker__Panel {
         border: none;
         border-right: $border;
         >.Calendar {
-          border: none;
+          border: 0;
         }
       }
       >.TimePanel {

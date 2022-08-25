@@ -1,17 +1,16 @@
-import { NumberArray } from 'd3';
 import dayjs from 'dayjs';
 import { useReducer } from 'react';
 import { extractTimeFromDate } from '../utils/dateTime';
 
 export type DateTimePickerState = {
-  selectedDateTime: Date;
+  selectedDateTime: Date | null;
   isPopupOpen: boolean;
 };
 
 type SelectDateAction = {
   type: 'SELECT_DATE';
   payload: {
-    newDate: Date;
+    newDate: Date | null;
   };
 };
 
@@ -63,15 +62,22 @@ const reducer = (
 ): DateTimePickerState => {
   switch (action.type) {
     case 'SELECT_DATE': {
-      const newDate = action.payload.newDate;       
-      if (
-        newDate.toString() === state.selectedDateTime.toString()
-      )
+      const newDate = action.payload.newDate;
+      if (newDate?.toString() === state.selectedDateTime?.toString())
         return state;
-      return { ...state, selectedDateTime: newDate };
+      const { hour, second, minute } = extractTimeFromDate(
+        state.selectedDateTime
+      );
+      const selectedDateTime = dayjs(newDate)
+        .hour(hour)
+        .minute(minute)
+        .second(second)
+        .toDate();
+      return { ...state, selectedDateTime };
     }
     case 'SELECT_TIME': {
       const { hour, second, minute } = action.payload.time;
+      if (state.selectedDateTime === null) return state;
       const date = dayjs(state.selectedDateTime)
         .hour(hour)
         .second(second)

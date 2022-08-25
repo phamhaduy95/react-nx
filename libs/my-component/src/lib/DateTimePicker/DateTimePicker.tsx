@@ -6,15 +6,17 @@ import {
   DateTimePickerContextProvider,
   useDateTimePickerContext,
 } from './DatePickerContextProvider';
-import DateTimePickerPopup from './DateTimePickerPopup';
 import { DateTimePickerState } from './reducer';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import './DateTimePicker.scss';
+
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import {
   DatePanelSingle,
   DatePanelSingleProps,
 } from '../DatePanelSingle/DatePanelSingle';
+import { CalendarProps } from '../Calendar';
+import { DateTimePickerPopup } from './DateTimePickerPopup';
+import './DateTimePicker.scss';
 
 export interface DateTimePickerProps {
   className?: string;
@@ -22,8 +24,9 @@ export interface DateTimePickerProps {
   isSecondIncluded?: boolean;
   label?: string;
   timeDelimiters?: string;
-  onSelect?: (dateTime: Date) => void;
+  onSelect?: (dateTime: Date | null) => void;
   DatePanel?: (props: DatePanelSingleProps) => JSX.Element;
+  disabledDate?: CalendarProps['disabledDate'];
 }
 
 const defaultProps: Required<DateTimePickerProps> = {
@@ -32,6 +35,9 @@ const defaultProps: Required<DateTimePickerProps> = {
   isSecondIncluded: false,
   label: '',
   timeDelimiters: ':',
+  disabledDate(currentDate) {
+    return false;
+  },
   onSelect: () => {},
   DatePanel(props) {
     return <DatePanelSingle {...props} />;
@@ -41,7 +47,7 @@ const defaultProps: Required<DateTimePickerProps> = {
 export function DateTimePicker(props: DateTimePickerProps) {
   const initialState: DateTimePickerState = {
     isPopupOpen: false,
-    selectedDateTime: new Date(Date.now()),
+    selectedDateTime: null,
   };
 
   return (
@@ -61,6 +67,7 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
     isSecondIncluded,
     onSelect,
     DatePanel,
+    disabledDate,
   } = newProps;
   const dateTimeFormat = getDateTimeFormat(
     dateFormat,
@@ -76,19 +83,15 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
   useEffectSkipFirstRender(() => {
     const date = state.selectedDateTime;
     onSelect(date);
-  }, [state.selectedDateTime.toString()]);
+  }, [state.selectedDateTime?.toString()]);
 
   const { selectedDateTime: selectedDate } = state;
   const [inputValue, setInputValue] = useState('');
-  // useEffect(() => {
-  //   const newValue = dayjs(selectedDate).format(dateTimeFormat);
-  //   setInputValue(newValue);
-  // }, [selectedDate.toString()]);
 
   useEffectSkipFirstRender(() => {
     const newValue = dayjs(selectedDate).format(dateTimeFormat);
     setInputValue(newValue);
-  }, [selectedDate.toString()]);
+  }, [selectedDate?.toString()]);
 
   useEffect(() => {
     if (isDateInputValid(inputValue, dateTimeFormat)) {
@@ -133,6 +136,7 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
         targetRef={targetRef}
         isShowed={state.isPopupOpen}
         DatePanel={DatePanel}
+        disabledDate={disabledDate}
       />
     </div>
   );

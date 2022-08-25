@@ -1,46 +1,48 @@
 import React, { useMemo, useRef } from 'react';
-import { Calendar } from '../Calendar'
 import PopupElement from '../Popup/PopupElement';
 import { TimePanel, TimePanelProps } from '../TimePanel';
 import { extractTimeFromDate } from '../utils/dateTime';
 import { useDateTimePickerContext } from './DatePickerContextProvider';
-import dayjs from 'dayjs';
 import { DateTimePickerProps } from './DateTimePicker';
 import { DatePanelSingleProps } from '../DatePanelSingle/DatePanelSingle';
-
+import { CalendarProps } from '../Calendar/Calendar';
 
 interface DateTimePickerPopupProps {
   isShowed: boolean;
   targetRef: React.MutableRefObject<HTMLElement | null>;
   isSecondIncluded: boolean;
-  DatePanel:NonNullable<DateTimePickerProps["DatePanel"]>,
+  DatePanel: NonNullable<DateTimePickerProps['DatePanel']>;
+  disabledDate: CalendarProps['disabledDate'];
 }
 
-export default function DateTimePickerPopup(props: DateTimePickerPopupProps) {
-  const { targetRef, isShowed,DatePanel } = props;
+export function DateTimePickerPopup(props: DateTimePickerPopupProps) {
+  const { targetRef, isShowed, DatePanel, disabledDate } = props;
   const { state, action } = useDateTimePickerContext();
   const ref = useRef(null);
-  const handleDateChanged = (date: Date) => {
-    const {hour,minute,second} = extractTimeFromDate(state.selectedDateTime);
-    const newDay = dayjs(date).hour(hour).minute(minute).second(second).toDate(); 
-    action.selectDate(newDay);
-  };
 
   const nowDate = useMemo(() => {
     return state.selectedDateTime;
-  }, [state.selectedDateTime.toDateString()]);
+  }, [state.selectedDateTime?.toDateString()]);
 
   const handleClickOutsidePopup = () => {
     action.togglePopup(false);
   };
-  const handleTimeSelect:TimePanelProps["onTimeSelect"] = (time)=>{
+  const handleTimeSelect: TimePanelProps['onTimeSelect'] = (time) => {
     action.selectTime(time);
-  }
+  };
 
-  const handleDateSelect:DatePanelSingleProps["onSelect"] = (date)=>{
+  const handleDateSelect: DatePanelSingleProps['onSelect'] = (date) => {
     if (date === null) return;
-    action.selectDate(date)
-  }
+    action.selectDate(date);
+  };
+
+  const getValueForTimePanel = () => {
+    if (state.selectedDateTime === null) return null;
+    const { hour, minute, second } = extractTimeFromDate(
+      state.selectedDateTime
+    );
+    return { hour, minute, second };
+  };
 
   return (
     <PopupElement
@@ -54,15 +56,19 @@ export default function DateTimePickerPopup(props: DateTimePickerPopupProps) {
     >
       <div className="DateTimePicker__Popup__Container">
         {/* <Calendar selectable date={nowDate} onSelect={handleDateChanged} /> */}
-        {DatePanel({dateValue:nowDate,onSelect:handleDateSelect})}
-        <TimePanel 
-          numberOfShowedItem={7} 
-          isSecondInclude={false}  
+        {DatePanel({
+          dateValue: nowDate,
+          onSelect: handleDateSelect,
+          disabledDate: disabledDate,
+          className: 'DateTimePicker__Panel',
+        })}
+        <TimePanel
+          numberOfShowedItem={7}
+          isSecondInclude={false}
           onTimeSelect={handleTimeSelect}
-          value = {extractTimeFromDate(state.selectedDateTime)}
-          />
+          value={getValueForTimePanel()}
+        />
       </div>
     </PopupElement>
   );
 }
-
