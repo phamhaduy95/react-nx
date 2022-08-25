@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react'
-
 import classNames from 'classnames';
 import { CalendarTableData } from '../Calendar/useGenerateCalendarData';
 import { useDatePanelSingleContext } from './DataPanelContextProvider';
-import { useCalendarContext } from '../Calendar/CalendarContextProvider';
 import { DatePanelSingleProps } from './DatePanelSingle';
 
 
@@ -18,10 +16,9 @@ export function DatePanelDateCell(props: CalendarDateCellProps) {
   const dayNumber = data.date.getDate();
   const { isDayWithinMonth,date } = data;
   const {state,action} = useDatePanelSingleContext();
-  const calendarContext = useCalendarContext();
-  
-  const isSelected = state.selectedDate.toDateString() ===  date.toDateString();
+  const isSelected = state.selectedDate?.toDateString() ===  date.toDateString();
 
+  
   const className = classNames('Calendar__Table__DateCell', {
     blurred: !isDayWithinMonth,
     disabled: isDisabled,

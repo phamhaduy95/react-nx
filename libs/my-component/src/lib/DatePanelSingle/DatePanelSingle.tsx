@@ -8,15 +8,15 @@ import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 
 export type DatePanelSingleProps = {
   className?: string;
-  dateValue?: Date;
-  onSelect?: (date: Date) => void;
+  dateValue?: Date|null;
+  onSelect?: (date: Date|null) => void;
   disabledDate?: CalendarProps['disabledDate'];
-  onClickToSelect?: (date: Date) => void;
+  onClickToSelect?: (date: Date|null) => void;
 };
 
 const defaultProps: Required<DatePanelSingleProps> = {
   className: '',
-  dateValue: new Date(Date.now()),
+  dateValue: null,
   onSelect(date) {},
   disabledDate(currentDate) {
     return false;
@@ -44,11 +44,10 @@ function WrappedDatePanelSingle(props: DatePanelSingleProps) {
   const { state, action } = useDatePanelSingleContext();
   useEffectSkipFirstRender(() => {
     onSelect(state.selectedDate);
-  }, [state.selectedDate.toDateString()]);
-
+  }, [state.selectedDate?.toDateString()]);
   useEffectSkipFirstRender(() => {
     action.selectNewDate(dateValue);
-  }, [dateValue.toDateString()]);
+  }, [dateValue?.toDateString()]);
 
   return (
     <div className={rootClassName}>

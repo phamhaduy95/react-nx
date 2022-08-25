@@ -23,11 +23,6 @@ export default function DatePanelSingleContextProvider(
   const { children, initialState } = props;
   const { state, action } = useDatePanelReducer(initialState);
   const contextValue = { state, action };
-  const date = initialState.selectedDate;
-
-  useEffect(() => {
-    action.selectNewDate(date);
-  }, [date.toDateString()]);
 
   return <Calendar.Provider value={contextValue}>{children}</Calendar.Provider>;
 }
