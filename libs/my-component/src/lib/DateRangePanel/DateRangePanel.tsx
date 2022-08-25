@@ -7,19 +7,19 @@ import { DateRangePanelSharedDataContext } from './DateRangePanelSharedDataConte
 import { useDateRangePanelSingleContext } from './DataRangePanelContextProvider';
 import './DateRangePanel.scss';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
-
+import { useEffect } from 'react';
 
 export interface DateRangePanelProps {
   range?: Pick<DateRangePanelState, 'endDate' | 'startDate'>;
   className?: string;
-  showedMonth?: Date;
+  showedMonth?: Date|null;
   mode?: 'selectStart' | 'selectEnd';
   onSelect?: (type: 'selectStart' | 'selectEnd', value: Date | null) => void;
   onClickToSelect?: (
     type: 'selectStart' | 'selectEnd',
     value: Date | null
   ) => void;
-  disabledDate?:CalendarProps["disabledDate"],
+  disabledDate?: CalendarProps['disabledDate'];
 }
 
 const defaultProps: Required<DateRangePanelProps> = {
@@ -33,21 +33,22 @@ const defaultProps: Required<DateRangePanelProps> = {
   onSelect(type, value) {},
   onClickToSelect(type, value) {},
   disabledDate(currentDate) {
-      return false;
+    return false;
   },
 };
 
-export  function DateRangePanel(props: DateRangePanelProps) {
+export function DateRangePanel(props: DateRangePanelProps) {
   const newProps = { ...defaultProps, ...props };
   const initialState: DateRangePanelState = {
     endDate: newProps.range.endDate,
     startDate: newProps.range.startDate,
   };
 
+
   return (
     <DatePanelRangeContextProvider initialState={initialState}>
       <DateRangePanelSharedDataContext {...newProps}>
-        <WrappedElement {...newProps} />
+        <WrappedElement {...props} />
       </DateRangePanelSharedDataContext>
     </DatePanelRangeContextProvider>
   );
@@ -55,8 +56,9 @@ export  function DateRangePanel(props: DateRangePanelProps) {
 
 function WrappedElement(props: DateRangePanelProps) {
   const newProps = { ...defaultProps, ...props };
-  const { range, mode,disabledDate } = newProps;
-  const { className, showedMonth, onSelect } = newProps;
+  const { range, mode, disabledDate,className, showedMonth, onSelect } = newProps;
+
+ 
   const rootClassName = classNames('DateRangePanel', className);
   const { state, action } = useDateRangePanelSingleContext();
   useEffectSkipFirstRender(() => {
@@ -68,15 +70,15 @@ function WrappedElement(props: DateRangePanelProps) {
 
   useEffectSkipFirstRender(() => {
     const startDate = state.startDate;
-    onSelect(mode, startDate);
+    onSelect("selectStart", startDate);
   }, [state.startDate?.toDateString()]);
 
   useEffectSkipFirstRender(() => {
     const endDate = state.endDate;
-    onSelect(mode, endDate);
+    onSelect("selectEnd", endDate);
   }, [state.endDate?.toDateString()]);
 
-  
+  useEffect(()=>{console.log("ss")},[])
 
   return (
     <div className={rootClassName}>
