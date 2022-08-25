@@ -25,7 +25,7 @@ export interface CalendarProps {
   selectable?: boolean;
   disabledDate?: (currentDate: Date) => boolean;
   CellComponent?:(props:CalendarDateCellProps)=>JSX.Element;
-  dateValue?:Date;
+  dateValue?:Date|null;
 }
 
 const defaultCalendarProps: Required<CalendarProps> = {
@@ -61,10 +61,11 @@ function WrappedCalendar(props: CalendarProps) {
   const { year, month } = state.currentMonth;
 
   useEffectSkipFirstRender(()=>{
+    if (dateValue === null) return;
       const month = dateValue.getMonth();
       const year = dateValue.getFullYear();
       action.selectNewMonth(year,month);
-  },[dateValue.getMonth(),dateValue.getFullYear()])
+  },[dateValue?.getMonth(),dateValue?.getFullYear()])
 
 
   const calendarData = useGenerateCalendarData(year, month);
