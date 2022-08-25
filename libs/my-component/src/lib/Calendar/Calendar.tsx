@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useGenerateCalendarData } from './useGenerateCalendarData';
@@ -13,7 +13,6 @@ import {
 } from './CalendarSharedDataContext';
 import { CalendarTableRow } from './CalendarTableRow';
 import { CalendarDateCell, CalendarDateCellProps } from './CalendarDateCell';
-import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 
 function getDateString(year: number, month: number) {
   const date = dayjs().year(year).month(month);
@@ -48,7 +47,7 @@ export function Calendar(props: CalendarProps) {
   return (
     <CalendarSharedDataContextProvider {...sharedData}>
       <CalendarContextProvider initialState={initialState}>
-        <WrappedCalendar {...newProps} />
+        <WrappedCalendar {...props} />
       </CalendarContextProvider>
     </CalendarSharedDataContextProvider>
   );
@@ -59,13 +58,13 @@ function WrappedCalendar(props: CalendarProps) {
   const {dateValue} = newProps;
   const { state, action } = useCalendarContext();
   const { year, month } = state.currentMonth;
-
-  useEffectSkipFirstRender(()=>{
+  useEffect(()=>{
     if (dateValue === null) return;
       const month = dateValue.getMonth();
       const year = dateValue.getFullYear();
       action.selectNewMonth(year,month);
   },[dateValue?.getMonth(),dateValue?.getFullYear()])
+
 
 
   const calendarData = useGenerateCalendarData(year, month);
