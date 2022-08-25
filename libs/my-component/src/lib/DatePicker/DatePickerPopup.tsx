@@ -3,16 +3,16 @@ import PopupElement from '../Popup/PopupElement';
 import { useDatePickerContext } from './DatePickerContextProvider';
 import { DatePickerProps } from './DatePicker';
 
-interface CalendarPopupProps {
-  isShowed: boolean;
-  targetRef: React.MutableRefObject<HTMLElement | null>;
-  PanelComponent: NonNullable<DatePickerProps['PanelComponent']>;
+interface DatePickerPopup {
+  isShowed: boolean,
+  targetRef: React.MutableRefObject<HTMLElement | null>,
+  PanelComponent: NonNullable<DatePickerProps['PanelComponent']>,
+  disabledDate:NonNullable<DatePickerProps["disabledDate"]>,
 }
 
-export default function CalendarPopup(props: CalendarPopupProps) {
-  const { targetRef, isShowed, PanelComponent } = props;
+export default function DatePickerPopup(props: DatePickerPopup) {
+  const { targetRef, isShowed, PanelComponent,disabledDate } = props;
   const { state, action } = useDatePickerContext();
-  const ref = useRef(null);
   const handleDateChanged = (date: Date|null) => {
     action.selectDate(date);
     action.togglePopup(false);
@@ -38,7 +38,7 @@ export default function CalendarPopup(props: CalendarPopupProps) {
       onClickOutside={handleClickOutsidePopup}
       padding={8}
     >
-      <PanelComponent dateValue={nowDate} onSelect={handleDateChanged} />
+      {PanelComponent({dateValue:nowDate,onSelect:handleDateChanged,disabledDate})}
     </PopupElement>
   );
 }

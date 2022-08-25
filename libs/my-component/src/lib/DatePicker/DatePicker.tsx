@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import './DatePicker.scss';
-import CalendarPopup from './DatePickerPopup';
+import DatePickerPopup from './DatePickerPopup';
 import DatePickerContextProvider, {
   useDatePickerContext,
 } from './DatePickerContextProvider';
@@ -12,22 +12,28 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { TextField } from '../TextField';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import { DatePanelSingle } from '../DatePanelSingle/DatePanelSingle';
+import { CalendarProps } from '../Calendar';
 dayjs.extend(customParseFormat);
 
 export interface DatePickerProps {
   className?: string | false;
   dateFormat?: string;
   label?: string;
+  disabledDate?: CalendarProps['disabledDate'];
   onSelect?: (date: Date | null) => void;
   PanelComponent?: (props: {
     dateValue: Date | null;
     onSelect: (date: Date | null) => void;
+    disabledDate?:CalendarProps["disabledDate"]
   }) => JSX.Element;
 }
 const defaultPropsValue: Required<DatePickerProps> = {
   className: false,
   dateFormat: 'DD/MM/YYYY',
   label: '',
+  disabledDate(currentDate) {
+    return false;
+  },
   onSelect(date) {},
   PanelComponent(props) {
     return <DatePanelSingle {...props} />;
@@ -49,7 +55,14 @@ export function DatePicker(props: DatePickerProps) {
 
 function WrappedDatePicker(props: DatePickerProps) {
   const newProps = { ...defaultPropsValue, ...props };
-  const { dateFormat, className, label, onSelect, PanelComponent } = newProps;
+  const {
+    dateFormat,
+    className,
+    label,
+    onSelect,
+    PanelComponent,
+    disabledDate,
+  } = newProps;
 
   const rootClassName = classNames('DatePicker', {
     [`${className}`]: className,
@@ -66,7 +79,7 @@ function WrappedDatePicker(props: DatePickerProps) {
 
   useEffect(() => {
     if (selectedDate === null) {
-      setInputValue("");
+      setInputValue('');
       return;
     }
     const newValue = dayjs(selectedDate).format(dateFormat);
@@ -74,7 +87,7 @@ function WrappedDatePicker(props: DatePickerProps) {
   }, [selectedDate?.toDateString()]);
 
   useEffect(() => {
-    if (inputValue === "") {
+    if (inputValue === '') {
       action.selectDate(null);
       return;
     }
@@ -115,9 +128,10 @@ function WrappedDatePicker(props: DatePickerProps) {
         autoFocusWhenChanged
         ref={targetRef}
       />
-      <CalendarPopup
+      <DatePickerPopup
         targetRef={targetRef}
         isShowed={state.isPopupOpen}
+        disabledDate={disabledDate}
         PanelComponent={PanelComponent}
       />
     </div>

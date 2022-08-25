@@ -20,6 +20,7 @@ $text-color: hsl(0, 0%, 20%);
     }
   }
   @at-root .DatePicker__Popup {
+    background-color: white;
     border: $border;
     border-radius: 5px; 
     .Calendar {
