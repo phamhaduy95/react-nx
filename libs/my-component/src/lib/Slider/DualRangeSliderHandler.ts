@@ -1,12 +1,12 @@
-import Slider from "./Slider";
-import SliderThumb from "./SliderThumb";
-import { MouseHandler } from "./RangeSliderHandler";
-import SliderProgressLine from "./SliderProgressLine";
-import minMax from "./minMax";
-import RangeNumber from "./RangeNumber";
-import { RangeValue } from "./DualRangeSlider";
+import Slider from './Slider';
+import SliderThumb from './SliderThumb';
+import { MouseHandler } from './RangeSliderHandler';
+import SliderProgressLine from './SliderProgressLine';
+import minMax from './minMax';
+import RangeNumber from './RangeNumber';
+import { RangeValue } from './DualRangeSlider';
 
-type WhichThumb = "lower" | "upper";
+type WhichThumb = 'lower' | 'upper';
 
 type Handlers = {
   handleSliderClick: MouseHandler;
@@ -65,11 +65,11 @@ export default class DualRangeSliderHandler {
       const lowerThumbPosition = ref.lowerThumb.getCurrentPosition();
       const middlePoint = (upperThumbPosition + lowerThumbPosition) / 2;
       if (newThumbPosition < middlePoint) {
-        ref.updateThumbPosition("lower", newThumbPosition);
-        ref.updateValueForThumb("lower", newThumbPosition);
+        ref.updateThumbPosition('lower', newThumbPosition);
+        ref.updateValueForThumb('lower', newThumbPosition);
       } else {
-        ref.updateThumbPosition("upper", newThumbPosition);
-        ref.updateValueForThumb("upper", newThumbPosition);
+        ref.updateThumbPosition('upper', newThumbPosition);
+        ref.updateValueForThumb('upper', newThumbPosition);
       }
       ref.resizeProgressLine();
     };
@@ -81,11 +81,11 @@ export default class DualRangeSliderHandler {
       const newThumbPosition = ref.calculateNewThumbPosition(pointerX);
 
       if (ref.lowerThumb.isActive) {
-        ref.updateThumbPosition("lower", newThumbPosition);
-        ref.updateValueForThumb("lower", newThumbPosition);
+        ref.updateThumbPosition('lower', newThumbPosition);
+        ref.updateValueForThumb('lower', newThumbPosition);
       } else if (ref.upperThumb.isActive) {
-        ref.updateThumbPosition("upper", newThumbPosition);
-        ref.updateValueForThumb("upper", newThumbPosition);
+        ref.updateThumbPosition('upper', newThumbPosition);
+        ref.updateValueForThumb('upper', newThumbPosition);
       }
       ref.resizeProgressLine();
     };
@@ -99,28 +99,40 @@ export default class DualRangeSliderHandler {
     this.progressLine.setWidth(lowerThumbPosition, upperThumbPosition);
   }
 
-  private updateThumbPosition(whichThumb: "upper" | "lower", newThumbPosition: number) {
+  private updateThumbPosition(
+    whichThumb: 'upper' | 'lower',
+    newThumbPosition: number
+  ) {
     switch (whichThumb) {
-      case "upper": {
-        const limitedPosition = this.limitThumbMovement("upper", newThumbPosition);
+      case 'upper': {
+        const limitedPosition = this.limitThumbMovement(
+          'upper',
+          newThumbPosition
+        );
         this.upperThumb.moveThumbTo(limitedPosition);
         break;
       }
-      case "lower": {
-        const limitedPosition = this.limitThumbMovement("lower", newThumbPosition);
+      case 'lower': {
+        const limitedPosition = this.limitThumbMovement(
+          'lower',
+          newThumbPosition
+        );
         this.lowerThumb.moveThumbTo(limitedPosition);
         break;
       }
     }
   }
 
-  private limitThumbMovement(whichThumb: "upper" | "lower", newThumbPosition: number) {
+  private limitThumbMovement(
+    whichThumb: 'upper' | 'lower',
+    newThumbPosition: number
+  ) {
     const lowerThumbPosition = this.lowerThumb.getCurrentPosition();
     const upperThumbPosition = this.upperThumb.getCurrentPosition();
     switch (whichThumb) {
-      case "upper":
+      case 'upper':
         return Math.max(newThumbPosition, lowerThumbPosition);
-      case "lower":
+      case 'lower':
         return Math.min(newThumbPosition, upperThumbPosition);
     }
   }
@@ -140,16 +152,17 @@ export default class DualRangeSliderHandler {
     const sliderWidth = right - left;
     const ratio = this.rangeNumber.getRatio();
     const stepSize = this.rangeNumber.getStep();
-    const absoluteValue = Math.floor((position / sliderWidth) * ratio * stepSize);
+    const absoluteValue = Math.floor(
+      (position / sliderWidth) * ratio * stepSize
+    );
     const offsetValue = absoluteValue + this.rangeNumber.getMin();
     switch (whichThumb) {
-      case "lower":
+      case 'lower':
         this.value = { ...this.value, low: offsetValue };
         break;
-      case "upper":
+      case 'upper':
         this.value = { ...this.value, high: offsetValue };
     }
-    // console.log(this.value);
     this.onValueChanged(this.value);
   }
 
@@ -167,7 +180,7 @@ export default class DualRangeSliderHandler {
     this.slider.addClickEventListener(handleSliderClick);
     this.lowerThumb.addEventListener();
     this.upperThumb.addEventListener();
-    document.addEventListener("mousemove", handleGlobalMouseMove);
+    document.addEventListener('mousemove', handleGlobalMouseMove);
   }
 
   removeEventListener() {
@@ -175,6 +188,6 @@ export default class DualRangeSliderHandler {
     this.slider.removeEventListener();
     this.lowerThumb.removeEventListener();
     this.upperThumb.removeEventListener();
-    document.removeEventListener("mousemove", handleGlobalMouseMove);
+    document.removeEventListener('mousemove', handleGlobalMouseMove);
   }
 }
