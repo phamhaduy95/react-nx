@@ -7,18 +7,13 @@ import dayjs from 'dayjs';
 interface TimePickerPopupProps {
   targetRef: React.MutableRefObject<HTMLElement | null>;
   isSecondInCluded: boolean;
-  disabledHour: TimePanelProps['disabledHour'];
-  disabledMinute: TimePanelProps['disabledMinute'];
-  disabledSecond: TimePanelProps['disabledSecond'];
+
 }
 
 export default function TimePickerPopup(props: TimePickerPopupProps) {
   const {
     targetRef,
     isSecondInCluded,
-    disabledHour,
-    disabledMinute,
-    disabledSecond,
   } = props;
   const { state, action } = useTimePickerContext();
 
@@ -53,9 +48,6 @@ export default function TimePickerPopup(props: TimePickerPopupProps) {
         numberOfShowedItem={7}
         onTimeSelect={handleTimeSelect}
         value={value}
-        disabledHour={disabledHour}
-        disabledMinute={disabledMinute}
-        disabledSecond={disabledSecond}
       ></TimePanel>
     </PopupElement>
   );

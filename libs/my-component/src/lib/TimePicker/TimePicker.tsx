@@ -24,9 +24,6 @@ export type TimePickerProps = {
   label?: TextFieldProps['label'];
   helperText?: TextFieldProps['helperText'];
   onTimeSelect?: (time: Date) => void;
-  disabledHour?: TimePanelProps['disabledHour'];
-  disabledMinute?: TimePanelProps['disabledMinute'];
-  disabledSecond?: TimePanelProps['disabledSecond'];
 };
 
 const DefaultProps: Required<TimePickerProps> = {
@@ -37,9 +34,6 @@ const DefaultProps: Required<TimePickerProps> = {
   disabled: false,
   label: '',
   helperText: null,
-  disabledHour: [],
-  disabledMinute: [],
-  disabledSecond: [],
 };
 
 export function TimePicker(props: TimePickerProps) {
@@ -64,9 +58,6 @@ function WrappedTimePicker(props: TimePickerProps) {
     onTimeSelect,
     label,
     helperText,
-    disabledHour,
-    disabledMinute,
-    disabledSecond,
   } = newProps;
   const rootClassName = classNames('TimePicker', className);
 
@@ -122,9 +113,6 @@ function WrappedTimePicker(props: TimePickerProps) {
       <TimePickerPopup
         targetRef={ref}
         isSecondInCluded={isSecondIncluded}
-        disabledHour={disabledHour}
-        disabledMinute={disabledMinute}
-        disabledSecond={disabledSecond}
       />
     </div>
   );

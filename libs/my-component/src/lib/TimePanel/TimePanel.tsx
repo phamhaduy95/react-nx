@@ -6,9 +6,12 @@ import {
 import TimePanelDataColumn from './TimePanelDataColumn';
 import { useColumnDataGenerator } from './utils';
 import classNames from 'classnames';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import './TimePanel.scss';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
+import { range } from '../utils/range';
+import { extractTimeFromDate } from '../utils/dateTime';
+import dayjs from 'dayjs';
 
 type Time = {
   hour: number;
@@ -22,9 +25,8 @@ export type TimePanelProps = {
   isSecondInclude?: boolean;
   numberOfShowedItem?: number;
   onTimeSelect?: (time: Time) => void;
-  disabledHour?: number[];
-  disabledMinute?: number[];
-  disabledSecond?: number[];
+  maxTime?: Date | null;
+  minTime?: Date | null;
 };
 
 const defaultProps: Required<TimePanelProps> = {
@@ -33,9 +35,8 @@ const defaultProps: Required<TimePanelProps> = {
   isSecondInclude: true,
   numberOfShowedItem: 7,
   onTimeSelect: () => {},
-  disabledHour: [],
-  disabledMinute: [],
-  disabledSecond: [],
+  maxTime: null,
+  minTime: null,
 };
 
 export function TimePanel(props: TimePanelProps) {
@@ -62,14 +63,13 @@ export function WrappedTimePanel(props: TimePanelProps) {
     numberOfShowedItem,
     onTimeSelect,
     value,
-    disabledHour,
-    disabledMinute,
-    disabledSecond,
+    maxTime,
+    minTime,
   } = newProps;
   const { state, action } = useTimePanelContext();
   const { selectTime } = state;
   const { hour, minute, second } = selectTime;
-  
+
   useEffect(() => {
     if (value === null) return;
     action.selectHour(value.hour);
@@ -77,16 +77,20 @@ export function WrappedTimePanel(props: TimePanelProps) {
     action.selectSecond(value.second);
   }, [value?.hour, value?.minute, value?.second]);
 
-  useEffectSkipFirstRender(()=>{
+  useEffectSkipFirstRender(() => {
     onTimeSelect(state.selectTime);
   }, [hour, minute, second]);
 
   const rootClassName = classNames('TimePanel', className, {
     isSecondIncluded: isSecondInclude,
   });
-  const hourData = useColumnDataGenerator('hour',disabledHour);
-  const secondData = useColumnDataGenerator('second',disabledMinute);
-  const minuteData = useColumnDataGenerator('minute',disabledSecond);
+
+  const disabledHour = computeDisableHour(maxTime,minTime);
+  console.log(disabledHour)
+
+  const hourData = useColumnDataGenerator('hour', []);
+  const secondData = useColumnDataGenerator('second', []);
+  const minuteData = useColumnDataGenerator('minute', []);
 
   const handleHourSelect = (value: any) => {
     action.selectHour(value);
@@ -136,4 +140,36 @@ export function WrappedTimePanel(props: TimePanelProps) {
       </div>
     </div>
   );
+}
+
+function computeDisableHour(
+  maxTime: Required<TimePanelProps>['maxTime'],
+  minTime: Required<TimePanelProps>['minTime']
+) {
+  const hourArray = range(0,23);
+  const upperLimit = normalizeDateTime(maxTime);
+  const lowerLimit = normalizeDateTime(minTime);
+
+  if (upperLimit === null && lowerLimit === null) return [];
+     const filteredArray =  hourArray.filter((e)=>{
+        const day = dayjs().hour(e).minute(0).second(0);
+        if (upperLimit === null) 
+        return day.isBefore(lowerLimit);
+        if (lowerLimit === null)
+          return day.isAfter(upperLimit);
+        return (day.isBefore(lowerLimit)||day.isAfter(upperLimit));
+    });
+    return filteredArray;
+  }
+/**
+ * ensure result datetime will have the same date which is Date.now();
+ * */
+function normalizeDateTime(dateTime: Date | null) {
+  if (dateTime === null) return null;
+  const time = extractTimeFromDate(dateTime);
+  return dayjs()
+    .hour(time.hour)
+    .minute(time.minute)
+    .second(time.second)
+    .toDate();
 }
