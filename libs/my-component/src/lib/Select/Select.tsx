@@ -81,11 +81,11 @@ function WrappedSelect(props: SelectProps) {
   };
 
   return (
-    <div className={rootClassName}>
+    <div className={rootClassName} >
       <TextField
         className={'Select__TextField'}
-        label={label}
         onClick={handleClickToTogglePopup}
+        label={label}
         value={selectedItem.value}
         ref={rootRef}
         suffix={<IconField />}

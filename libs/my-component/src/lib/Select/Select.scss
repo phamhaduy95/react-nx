@@ -8,18 +8,10 @@ $text-color: hsla(0, 0%, 20%, 1);
   display: flex;
   flex-direction: column;
   color: $text-color;
-  > .Select__Label {
-    margin-left: 0.25rem;
-    margin-bottom: 0.25rem;
-    @include hideOverflowText();
-  }
+ 
 
   > .Select__TextField {
     width: inherit;
-    .TextField__Input {
-      width: auto;
-      caret-color: transparent;
-    }
 
     .Select__ArrowIcon {
       @include centerElement();
