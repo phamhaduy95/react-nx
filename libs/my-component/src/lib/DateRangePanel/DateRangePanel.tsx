@@ -12,7 +12,7 @@ import { useEffect } from 'react';
 export interface DateRangePanelProps {
   range?: Pick<DateRangePanelState, 'endDate' | 'startDate'>;
   className?: string;
-  showedMonth?: Date|null;
+  showedMonth?: Date | null;
   mode?: 'selectStart' | 'selectEnd';
   onSelect?: (type: 'selectStart' | 'selectEnd', value: Date | null) => void;
   onClickToSelect?: (
@@ -44,7 +44,6 @@ export function DateRangePanel(props: DateRangePanelProps) {
     startDate: newProps.range.startDate,
   };
 
-
   return (
     <DatePanelRangeContextProvider initialState={initialState}>
       <DateRangePanelSharedDataContext {...newProps}>
@@ -56,29 +55,33 @@ export function DateRangePanel(props: DateRangePanelProps) {
 
 function WrappedElement(props: DateRangePanelProps) {
   const newProps = { ...defaultProps, ...props };
-  const { range, mode, disabledDate,className, showedMonth, onSelect } = newProps;
+  const { range, mode, disabledDate, className, showedMonth, onSelect } =
+    newProps;
 
- 
   const rootClassName = classNames('DateRangePanel', className);
   const { state, action } = useDateRangePanelSingleContext();
   useEffectSkipFirstRender(() => {
+    if (checkIsDateInputDisabled(range.endDate, disabledDate)) return;
     action.selectEndDate(range.endDate);
   }, [range.endDate?.toDateString()]);
   useEffectSkipFirstRender(() => {
+    if (checkIsDateInputDisabled(range.startDate, disabledDate)) return;
     action.selectStartDate(range.startDate);
   }, [range.startDate?.toDateString()]);
 
   useEffectSkipFirstRender(() => {
     const startDate = state.startDate;
-    onSelect("selectStart", startDate);
+    onSelect('selectStart', startDate);
   }, [state.startDate?.toDateString()]);
 
   useEffectSkipFirstRender(() => {
     const endDate = state.endDate;
-    onSelect("selectEnd", endDate);
+    onSelect('selectEnd', endDate);
   }, [state.endDate?.toDateString()]);
 
-  useEffect(()=>{console.log("ss")},[])
+  useEffect(() => {
+    console.log('ss');
+  }, []);
 
   return (
     <div className={rootClassName}>
@@ -91,4 +94,13 @@ function WrappedElement(props: DateRangePanelProps) {
       />
     </div>
   );
+}
+
+function checkIsDateInputDisabled(
+  date: Date | null,
+  disabledCheck: NonNullable<CalendarProps['disabledDate']>
+): boolean {
+  if (date === null) return false;
+  if (disabledCheck(date)) return true;
+  return false;
 }
