@@ -1,0 +1,12 @@
+.CountDown {
+    width: 100px;
+    @at-root .CountDown__Value {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+}
+
