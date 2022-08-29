@@ -6,7 +6,6 @@
     "material-component": "libs/material-component",
     "my-component": "libs/my-component",
     "test-lib": "apps/test-lib",
-    "todo-app": "apps/todo-app",
-    "todo-app-e2e": "apps/todo-app-e2e"
+    "todo-app": "apps/todo-app"
   }
 }
