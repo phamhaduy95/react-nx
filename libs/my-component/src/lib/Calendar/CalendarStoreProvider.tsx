@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import { useStore, createStore, StoreApi } from 'zustand';
+;
 
 export type CalendarStore = {
   currentMonth: { year: number; month: number };
@@ -23,7 +24,7 @@ type StoreContextProps = {
 
 export  function CalendarStoreProvider(props: StoreContextProps) {
     const {children} = props;
-  const store = createStore<CalendarStore>((set) => ({
+  const store = useMemo(()=> createStore<CalendarStore>((set) => ({
     currentMonth: { month: dayjs().month(), year: dayjs().year() },
     action: {
       gotoNextMonth() {
@@ -62,7 +63,8 @@ export  function CalendarStoreProvider(props: StoreContextProps) {
         });
       },
     },
-  }));
+  })),[]);
+
 
   return (
     <StoreContext.Provider value={{store}}>
