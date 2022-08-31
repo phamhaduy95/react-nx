@@ -18,6 +18,7 @@ export interface SelectProps {
   valid?: string | false;
   autoWidth?: boolean;
 }
+
 const defaultPropsValue: Required<SelectProps> = {
   children: <></>,
   onSelect: (value) => {},
@@ -50,7 +51,6 @@ function WrappedSelect(props: SelectProps) {
     (a, b) => a?.id === b?.id
   );
 
-  console.log("render")
 
   useEffectSkipFirstRender(() => {
     if (selectedItem === null) return;
@@ -74,13 +74,33 @@ function WrappedSelect(props: SelectProps) {
     action.togglePopup(true);
   };
 
-  const getInputValue = ()=>{
-    if (selectedItem?.value === undefined) return "";
+  const getInputValue = () => {
+    if (selectedItem?.value === undefined) return '';
     return selectedItem.value;
-  }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    const keyPressed = e.key;
+    e.preventDefault();
+    switch (keyPressed) {
+      case 'ArrowDown': {
+        action.togglePopup(true);
+        action.hightLightFirstItem();
+        return;
+      }
+      case 'Enter': {
+        action.togglePopup(true);
+        return;
+      }
+      case 'Escape': {
+        action.togglePopup(false);
+        return;
+      }
+    }
+  };
 
   return (
-    <div className={rootClassName}>
+    <div className={rootClassName} >
       <TextField
         className={'Select__TextField'}
         onClick={handleClickToTogglePopup}
@@ -88,14 +108,14 @@ function WrappedSelect(props: SelectProps) {
         value={getInputValue()}
         ref={rootRef}
         suffix={<IconField />}
-        autoFocusWhenChanged
+        // autoFocusWhenChanged
         helperText={helperText}
+        onKeyDown={handleKeyDown}
       />
-      <SelectPopup targetRef={rootRef}>
-        {children}
-      </SelectPopup>
+      <SelectPopup targetRef={rootRef}>{children}</SelectPopup>
     </div>
   );
 }
 
 export default Select;
+

@@ -14,9 +14,9 @@ export default {
 
 
 export const Example: ComponentStory<typeof Select> = (args)=>{
-   const {autoWidth,defaultValue,label} = args;
+   const {autoWidth,label} = args;
     return (
-      <Select label={label} autoWidth={autoWidth} defaultValue={defaultValue}>
+      <Select label={label} autoWidth={autoWidth}>
         <SelectSubHeader>Section1</SelectSubHeader>
         <SelectOption value={12} label={'12'}></SelectOption>
         <SelectOption value={40} label={'40'}></SelectOption>
@@ -26,6 +26,5 @@ export const Example: ComponentStory<typeof Select> = (args)=>{
 };
 Example.args = {
   autoWidth:true,
-  defaultValue: "12",
   label:"choose",
 };

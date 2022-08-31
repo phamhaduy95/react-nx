@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useEffect, useMemo } from 'react';
 import { createStore, StoreApi } from 'zustand';
 
 export type SelectState = {
@@ -33,66 +33,75 @@ type StoreContextProps = {
 
 export function SelectStoreProvider(props: StoreContextProps) {
   const { children } = props;
-  const store = createStore<SelectState>((set) => ({
-    selectedItem: null,
-    isPopupOpen: false,
-    itemList: [],
-    highLightedItem: null,
-    action: {
-      subscribe(id) {
-        set((state) => {
-          const newList = [...state.itemList];
-          newList.push(id);
-          return { itemList: newList };
-        });
+
+  
+  useEffect(()=>{
+    console.log("mount")
+  },[])
+  const store = useMemo(() => {
+    return createStore<SelectState>((set) => ({
+      selectedItem: null,
+      isPopupOpen: false,
+      itemList: [],
+      highLightedItem: null,
+      action: {
+        subscribe(id) {
+          set((state) => {
+            const newList = [...state.itemList];
+            newList.push(id);
+            return { itemList: newList };
+          });
+        },
+        unsubscribe(id) {
+          set((state) => {
+            const newList = [...state.itemList];
+            newList.filter((e) => e !== id);
+            return { itemList: newList };
+          });
+        },
+        selectItem(item) {
+          set((state) => {
+            if (item?.id === state.selectedItem?.id) return state;
+            return { selectedItem: item };
+          });
+        },
+        togglePopup(isOpen) {
+          set({ isPopupOpen: isOpen });
+        },
+        hightLightFirstItem() {
+          set((state) => {
+            const firstItemId = state.itemList[0];
+            return { highLightedItem: firstItemId };
+          });
+        },
+        hightLightItem(id) {
+          set({ highLightedItem: id });
+        },
+        hightLightNextItem() {
+          set((state) => {
+            const currItem = state.highLightedItem;
+            if (currItem === null)
+              return { highLightedItem: state.itemList[0] };
+            const currPos = state.itemList.findIndex((e) => e === currItem);
+            const nextPos =
+              currPos + 1 > state.itemList.length - 1 ? 0 : currPos + 1;
+            return { highLightedItem: state.itemList[nextPos] };
+          });
+        },
+        hightLightPreviousItem() {
+          set((state) => {
+            const currItem = state.highLightedItem;
+            if (currItem === null)
+              return { highLightedItem: state.itemList[0] };
+            const currPos = state.itemList.findIndex((e) => e === currItem);
+            const previousPos =
+              currPos - 1 < 0 ? state.itemList.length - 1 : currPos - 1;
+            return { highLightedItem: state.itemList[previousPos] };
+          });
+        },
       },
-      unsubscribe(id) {
-        set((state) => {
-          const newList = [...state.itemList];
-          newList.filter((e) => e !== id);
-          return { itemList: newList };
-        });
-      },
-      selectItem(item) {
-        set((state) => {
-          if (item?.id === state.selectedItem?.id) return state;
-          return { selectedItem: item };
-        });
-      },
-      togglePopup(isOpen) {
-        set({ isPopupOpen: isOpen });
-      },
-      hightLightFirstItem() {
-        set((state) => {
-          const firstItemId = state.itemList[0];
-          return { highLightedItem: firstItemId };
-        });
-      },
-      hightLightItem(id) {
-        set({ highLightedItem: id });
-      },
-      hightLightNextItem() {
-        set((state) => {
-          const currItem = state.highLightedItem;
-          if (currItem === null) return state;
-          const currPos = state.itemList.findIndex((e) => e === currItem);
-          const nextPos =
-            currPos + 1 > state.itemList.length - 1 ? 0 : currPos + 1;
-          return { highLightedItem: state.itemList[nextPos] };
-        });
-      },
-      hightLightPreviousItem() {
-        set((state) => {
-          const currItem = state.highLightedItem;
-          if (currItem === null) return state;
-          const currPos = state.itemList.findIndex((e) => e === currItem);
-          const previousPos =
-            currPos - 1 < 0 ? state.itemList.length - 1 : currPos - 1;
-          return { highLightedItem: state.itemList[previousPos] };
-        });
-      },
-    },
-  }));
+    }));
+  }, []);
 
   return (
     <StoreContext.Provider value={{ store }}>{children}</StoreContext.Provider>
