@@ -1,15 +1,12 @@
 import { useEffect, useRef } from 'react';
-import {
-  DataColumnContextProvider,
-  useDataColumnsContext,
-} from './DataColumnContext';
 import classNames from 'classnames';
-import { useRowHeightCalculator, useSetContainerInitialHeight } from './hooks';
-import { DataColumnState } from './reducer';
+import { useRowHeightCalculator } from './hooks';
 import './ScrollableDataColumn.scss';
 import { SharedDataContextProvider, SharedDataType } from './SharedDataContext';
-import { DataColumnRow } from './ScrollableDateColumnRow';
 import { DummyRow } from './ScrollableColumnDummyRow';
+import DataColumnStoreProvider from './DataColumnStoreProvider';
+import { useDataColumnStore } from './DataColumnStoreProvider';
+import { DataColumnRow } from './ScrollableDateColumnRow';
 
 type ColumnDataType = {
   value: number | string;
@@ -34,44 +31,37 @@ const defaultProps: Required<ScrollableDataColumnProps> = {
 };
 
 export function ScrollableDataColumn(props: ScrollableDataColumnProps) {
-  const initialState: DataColumnState = {
-    selectedItem: { id: '' },
-  };
-
-  const onSelect =
-    props.onSelect === undefined ? defaultProps.onSelect : props.onSelect;
-
+  const newProps = { ...defaultProps, ...props };
+  const { onSelect } = newProps;
   const sharedData: SharedDataType = {
     onSelect: onSelect,
   };
 
   return (
     <SharedDataContextProvider sharedData={sharedData}>
-      <DataColumnContextProvider initialState={initialState}>
+      <DataColumnStoreProvider>
         <WrappedDataColumn {...props} />
-      </DataColumnContextProvider>
+      </DataColumnStoreProvider>
     </SharedDataContextProvider>
   );
 }
 
 export function WrappedDataColumn(props: ScrollableDataColumnProps) {
   const newProps = { ...defaultProps, ...props };
-  const { dataSet, numberShowedItem, initialSelected, onSelect, className } =
+  const { dataSet, numberShowedItem, initialSelected, className } =
     newProps;
   const rootRef = useRef(null);
-  const { state, action } = useDataColumnsContext();
+  const action = useDataColumnStore((state) => state.action);
 
-  useSetContainerInitialHeight(rootRef);
   const rowHeight = useRowHeightCalculator(rootRef, numberShowedItem);
   useEffect(() => {
     if (initialSelected === null) return;
-
     const pos = dataSet
       .map((e) => e.value)
       .findIndex((e) => e.toString() === initialSelected.toString());
-
     if (pos === -1) return;
-    action.selectItem(pos.toString());
+    const itemId = pos.toString();
+    action.selectItem({ id: itemId });
   }, [initialSelected]);
 
   const renderRows = () => {

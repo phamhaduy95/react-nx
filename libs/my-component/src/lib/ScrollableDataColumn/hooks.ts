@@ -46,17 +46,9 @@ export function useRowHeightCalculator(
     return () => {
       resizeObserver.disconnect();
     };
-  }, []);
+  }, [numberOfShowedItem]);
   return rowHeight;
 }
 
 const MIN_CONTAINER_HEIGHT = 120; // in pixel
 
-export function useSetContainerInitialHeight(containerRef:React.MutableRefObject<HTMLElement|null>){
-    useEffect(()=>{
-      const containerEl = containerRef.current;
-      if (containerEl === null) return;
-
-    },[])
-
-}

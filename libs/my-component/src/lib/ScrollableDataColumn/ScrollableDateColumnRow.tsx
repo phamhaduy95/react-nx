@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import { useEffect, useRef } from 'react';
-import { useDataColumnsContext } from './DataColumnContext';
+import { memo, useEffect, useRef } from 'react';
 import { useSharedData } from './SharedDataContext';
 import { useRowHeight } from './hooks';
+import { useDataColumnStore } from './DataColumnStoreProvider';
 
 
 
@@ -14,13 +14,16 @@ type DataColumnRowProps = {
   height:number;
   
 };
-export function DataColumnRow(props: DataColumnRowProps) {
+export const  DataColumnRow= (props: DataColumnRowProps)=>{
   const { data, disabled, rootRef, index,height } = props;
-  const { state, action } = useDataColumnsContext();
+  console.log(height)
   const id = index.toString();
+  const action = useDataColumnStore((state)=>(state.action));
+  const isSelected = useDataColumnStore((state)=>(state.selectedItem?.id === id));
+
 
   const className = classNames('ScrollableDataColumn__Row', {
-    selected: state.selectedItem.id === id,
+    selected: isSelected,
     disabled: disabled,
   });
 
@@ -29,17 +32,17 @@ export function DataColumnRow(props: DataColumnRowProps) {
   useRowHeight(rowRef,height)
 
   useEffect(()=>{
-    if (state.selectedItem.id !== id) return; 
+    if (!isSelected) return; 
     const rootEl = rootRef.current as HTMLElement;
     const rowEl = rowRef.current as HTMLElement; 
     scrollToRow(rootEl, rowEl);
 
-  },[state.selectedItem])
+  },[isSelected])
 
 
   const handleSelectItemClick = (e: React.MouseEvent) => {
     if (disabled) return;
-    action.selectItem(id);
+    action.selectItem({id:id.toString()});
     sharedData.onSelect(data);
   };
   return (
@@ -47,7 +50,7 @@ export function DataColumnRow(props: DataColumnRowProps) {
       {data}
     </div>
   );
-}
+};
 
 function scrollToRow(rootEl: HTMLElement, rowEl: HTMLElement) {
   const pos = {
@@ -62,3 +65,4 @@ function scrollToRow(rootEl: HTMLElement, rowEl: HTMLElement) {
     behavior: 'smooth',
   });
 }
+
