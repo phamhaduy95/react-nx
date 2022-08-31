@@ -20,8 +20,9 @@ export interface TextFieldProps {
   onEnterPressed?: (value: string) => void;
   onClick?: (e: React.MouseEvent) => void;
   onFocus?: (e: React.FormEvent) => void;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
   type?: HTMLInputTypeAttribute;
-  autoFocusWhenChanged?:boolean;
+  autoFocusWhenChanged?: boolean;
 }
 
 const defaultProps: Required<TextFieldProps> = {
@@ -38,12 +39,12 @@ const defaultProps: Required<TextFieldProps> = {
   suffix: null,
   addOnBefore: null,
   addOnAfter: null,
-  autoFocusWhenChanged:false,
+  autoFocusWhenChanged: false,
   onChange: (value) => {},
   onEnterPressed: (value) => {},
   onClick: (e) => {},
   onFocus: (e) => {},
-
+  onKeyDown(e) {},
 };
 
 export const TextField = React.forwardRef<any, TextFieldProps>((props, ref) => {
@@ -64,17 +65,17 @@ export const TextField = React.forwardRef<any, TextFieldProps>((props, ref) => {
     type,
     disabled,
     autoFocusWhenChanged,
+    onKeyDown,
   } = newProps;
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffectSkipFirstRender(()=>{
+  useEffectSkipFirstRender(() => {
     if (!autoFocusWhenChanged) return;
     const input = inputRef.current as HTMLInputElement;
     if (input === null) return;
     input.focus();
-  },[props.value])
-
+  }, [props.value]);
 
   const rootClassName = classNames('TextField', {
     [`${className}`]: className,
@@ -126,17 +127,21 @@ export const TextField = React.forwardRef<any, TextFieldProps>((props, ref) => {
       const value = target.value;
       onEnterPressed(value);
     }
+    onKeyDown(e);
   };
-
-
-
 
   return (
     <div className={rootClassName}>
       <label className="TextField__Label">{label}</label>
       <div className="TextField__InputContainer">
         {renderAddonBefore()}
-        <div className={inputFieldClassName} onClick={onClick} ref={ref}>
+        <div
+          className={inputFieldClassName}
+          onClick={onClick}
+          ref={ref}
+          tabIndex={0}
+          onKeyDown={handleEnterPress}
+        >
           {renderPrefix()}
           <input
             className="TextField__Input"
@@ -144,7 +149,6 @@ export const TextField = React.forwardRef<any, TextFieldProps>((props, ref) => {
             type="tel"
             placeholder={placeHolder ? placeHolder : ''}
             onChange={handleInputChange}
-            onKeyDown={handleEnterPress}
             onFocus={onFocus}
             value={props.value}
             disabled={disabled}
