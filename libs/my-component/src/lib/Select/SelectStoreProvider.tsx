@@ -61,7 +61,7 @@ export function SelectStoreProvider(props: StoreContextProps) {
         },
         selectItem(item) {
           set((state) => {
-            if (item?.id === state.selectedItem?.id) return state;
+            if (item?.id === state.selectedItem?.id) return {};
             return { selectedItem: item };
           });
         },
