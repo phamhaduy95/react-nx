@@ -16,3 +16,9 @@
     white-space: nowrap;
     overflow: hidden;
 }
+
+@mixin useFocusStyle {
+  outline: none;
+  border-color: hsla(220, 80%, 50%, 0.9);
+  box-shadow: 0 0 2px 2px hsla(220, 80%, 50%, 0.5);
+}
