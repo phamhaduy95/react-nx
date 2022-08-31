@@ -3,13 +3,11 @@ import { SelectPopup } from './SelectPopup';
 import './Select.scss';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import classNames from 'classnames';
-import { SelectState } from './reducer';
-import {
-  SelectContextProvider,
-  useSelectContext,
-} from './SelectContextProvider';
+
 import { TextField, TextFieldProps } from '../TextField';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
+import { SelectStoreProvider, useSelectStore } from './SelectStoreProvider';
+import { useStore } from 'zustand';
 
 export interface SelectProps {
   children: JSX.Element[] | JSX.Element;
@@ -19,9 +17,7 @@ export interface SelectProps {
   error?: string | false;
   valid?: string | false;
   autoWidth?: boolean;
-  defaultValue?: string;
 }
-
 const defaultPropsValue: Required<SelectProps> = {
   children: <></>,
   onSelect: (value) => {},
@@ -30,26 +26,15 @@ const defaultPropsValue: Required<SelectProps> = {
   error: false,
   valid: false,
   autoWidth: false,
-  defaultValue: '',
 };
 
 export function Select(props: SelectProps) {
   const newProps = { ...defaultPropsValue, ...props };
-  const { defaultValue } = newProps;
-  const initialState: SelectState = useMemo(() => {
-    return {
-      isPopupOpen: false,
-      selectedItem: {
-        id: '',
-        value: defaultValue,
-      },
-    };
-  }, [defaultValue]);
 
   return (
-    <SelectContextProvider initialState={initialState}>
+    <SelectStoreProvider>
       <WrappedSelect {...props} />
-    </SelectContextProvider>
+    </SelectStoreProvider>
   );
 }
 
@@ -57,12 +42,21 @@ function WrappedSelect(props: SelectProps) {
   const newProps = { ...defaultPropsValue, ...props };
   const { children, autoWidth, label, helperText, onSelect } = newProps;
   const rootRef = useRef<HTMLDivElement>(null);
-  const { state, action } = useSelectContext();
-  const { selectedItem, isPopupOpen } = state;
+  const store = useSelectStore();
+  const action = useStore(store, (state) => state.action);
+  const selectedItem = useStore(
+    store,
+    (state) => state.selectedItem,
+    (a, b) => a?.id === b?.id
+  );
+
+  console.log("render")
+
   useEffectSkipFirstRender(() => {
+    if (selectedItem === null) return;
     onSelect(selectedItem.value);
     action.togglePopup(false);
-  }, [selectedItem.id]);
+  }, [selectedItem?.id]);
 
   const rootClassName = classNames('Select', {
     'auto-width': autoWidth,
@@ -80,19 +74,24 @@ function WrappedSelect(props: SelectProps) {
     action.togglePopup(true);
   };
 
+  const getInputValue = ()=>{
+    if (selectedItem?.value === undefined) return "";
+    return selectedItem.value;
+  }
+
   return (
-    <div className={rootClassName} >
+    <div className={rootClassName}>
       <TextField
         className={'Select__TextField'}
         onClick={handleClickToTogglePopup}
         label={label}
-        value={selectedItem.value}
+        value={getInputValue()}
         ref={rootRef}
         suffix={<IconField />}
         autoFocusWhenChanged
         helperText={helperText}
       />
-      <SelectPopup targetRef={rootRef} isShowed={state.isPopupOpen}>
+      <SelectPopup targetRef={rootRef}>
         {children}
       </SelectPopup>
     </div>
