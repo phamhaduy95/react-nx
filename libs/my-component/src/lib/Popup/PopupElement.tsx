@@ -1,8 +1,7 @@
 import classNames from 'classnames';
-import React, { MutableRefObject, useEffect, useRef } from 'react';
+import React, { MutableRefObject, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import ClickOutSideWatcher from '../ClickOutsideWatcher/ClickOutSideWatcher';
-import usePopupArrowPosition from '../usePopupPlacement/usePopupArrowPosition';
 import usePopupPadding from '../usePopupPlacement/usePopupPadding';
 import usePopupPlacement from '../usePopupPlacement/usePopUpPlacement';
 import './PopupElement.scss';
@@ -62,12 +61,10 @@ const PopupElement = (props: PopupElementProps) => {
   } = newProps;
 
   const arrowRef = useRef<HTMLDivElement>(null);
-  const popupRef = useRef<any>(null);
+  const popupRef = useRef<HTMLDivElement>(null);
   usePopupWidthHandler(targetRef, popupRef, width, placement);
   usePopupPlacement(targetRef, popupRef, placement);
   usePopupPadding(popupRef, placement, padding);
-
-  // usePopupArrowPosition(arrowRef,placement);
 
   const rootClassName = classNames('Popup', {
     showed: isShowed,
@@ -79,10 +76,9 @@ const PopupElement = (props: PopupElementProps) => {
 
 
 
-
   return ReactDOM.createPortal(
    <ClickOutSideWatcher ref={popupRef} onClickOutSide={onClickOutside}>
-    <div className={rootClassName} ref={popupRef}>
+    <div className={rootClassName} ref={popupRef} >
       <div className={PopupContentClassName}>
         <div className="Popup__Arrow" ref={arrowRef} hidden={!arrowEnable} />
         {children}

@@ -1,8 +1,7 @@
 .Popup {
-  visibility: collapse;
   opacity: 0;
-
-  transition: opacity 0.2s ease-in 0s, visibility 0.2s;
+  visibility: collapse;
+  transition: opacity 0.2s ease-in 0s;
   z-index: 1020;
   position: absolute;
   width: max-content;
@@ -22,4 +21,5 @@
     opacity: 1;
     visibility: visible;
   }
+
 }
