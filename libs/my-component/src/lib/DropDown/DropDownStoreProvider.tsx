@@ -6,13 +6,13 @@ type DropDownState = {
   itemList: string[];
   isPopupOpen: boolean;
   action: {
-    changeHighLightItem: (id: DropDownState["highLightedItem"]) => void;
+    changeHighLightItem: (id: DropDownState['highLightedItem']) => void;
     togglePopup: (isOpen: DropDownState['isPopupOpen']) => void;
     subscribe: (id: string) => void;
     unsubscribe: (id: string) => void;
-    hightLightNextItem:()=>void;
-    hightLightPreviousItem:()=>void;
-    hightLightFirstItem:()=>void;
+    hightLightNextItem: () => void;
+    hightLightPreviousItem: () => void;
+    hightLightFirstItem: () => void;
   };
 };
 
@@ -39,6 +39,7 @@ export function DropDownStoreProvider(props: DropDownStoreProviderProps) {
         changeHighLightItem(id) {
           set({ highLightedItem: id });
         },
+
         subscribe(id) {
           set((state) => {
             const newList = [...state.itemList];
@@ -54,31 +55,35 @@ export function DropDownStoreProvider(props: DropDownStoreProviderProps) {
           });
         },
         hightLightNextItem() {
-            set((state)=>{
-              const currItem = state.highLightedItem;
-              if (currItem === null) return state;
-              const currPos = state.itemList.findIndex(e=>e === currItem);
-              const nextPos = (currPos+1>state.itemList.length-1)?0:currPos+1;
-    
-              return { highLightedItem:state.itemList[nextPos]}
-            })
+          set((state) => {
+            const currItem = state.highLightedItem;
+            if (currItem === null)
+              return { highLightedItem: state.itemList[0] };
+            const currPos = state.itemList.findIndex((e) => e === currItem);
+            const nextPos =
+              currPos + 1 > state.itemList.length - 1 ? 0 : currPos + 1;
+
+            return { highLightedItem: state.itemList[nextPos] };
+          });
         },
         hightLightPreviousItem() {
-          set((state)=>{
+          set((state) => {
             const currItem = state.highLightedItem;
-            if (currItem === null) return state;
-            const currPos = state.itemList.findIndex(e=>e === currItem);
-            const previousPos = (currPos-1<0)?state.itemList.length-1:currPos-1;
-       
-            return { highLightedItem:state.itemList[previousPos]}
-          })
+            if (currItem === null)
+              return { highLightedItem: state.itemList[0] };
+            const currPos = state.itemList.findIndex((e) => e === currItem);
+            const previousPos =
+              currPos - 1 < 0 ? state.itemList.length - 1 : currPos - 1;
+
+            return { highLightedItem: state.itemList[previousPos] };
+          });
         },
         hightLightFirstItem() {
-          set((state)=>{
+          set((state) => {
             const firstItemId = state.itemList[0];
-            return {highLightedItem:firstItemId}
-          })
-        },  
+            return { highLightedItem: firstItemId };
+          });
+        },
       },
     }));
   }, []);

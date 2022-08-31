@@ -3,8 +3,7 @@ import { memo, useEffect, useMemo, useRef } from 'react';
 import { useStore } from 'zustand';
 import { useDropDownStore } from './DropDownStoreProvider';
 import { v4 as uuidv4 } from 'uuid';
-import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
-import { useSwitchFocus } from './hooks';
+import { useSwitchFocus } from '../utils/hooks';
 
 export type DropDownItemProps = {
   className?: string;
@@ -23,12 +22,12 @@ const defaultProps: Required<DropDownItemProps> = {
 };
 export const DropDownItem = (props: DropDownItemProps) => {
   const newProps = { ...defaultProps, ...props };
-  const { className, suffix, prefix, children,onSelect } = newProps;
+  const { className, suffix, prefix, children, onSelect } = newProps;
   const id = useMemo(() => {
     return uuidv4();
   }, []);
   const store = useDropDownStore();
-  
+
   const action = useStore(store, (state) => state.action);
   useEffect(() => {
     action.subscribe(id);
@@ -41,17 +40,14 @@ export const DropDownItem = (props: DropDownItemProps) => {
     return id === state.highLightedItem;
   });
 
-  // console.log(id," rendered")
-
   const itemRef = useRef<HTMLDivElement>(null);
-
 
   const itemClassName = classNames('DropDown__Item', {
     className,
     ['is-selected']: isSelected,
   });
 
-  useSwitchFocus(itemRef,isSelected)
+  useSwitchFocus(itemRef, isSelected);
 
   const renderSuffix = () => {
     if (suffix) return <div className="DropDown__Item__Suffix">{suffix}</div>;
@@ -65,31 +61,22 @@ export const DropDownItem = (props: DropDownItemProps) => {
 
   const handleClickItem = () => {
     onSelect();
+    action.togglePopup(false);
   };
 
-  const handleMouseEnter = ()=>{
+  const handleMouseEnter = () => {
     action.changeHighLightItem(id);
-  }
-  const handleMouseLeave = ()=>{
-    action.changeHighLightItem(null)
-  }
+  };
+  const handleMouseLeave = () => {
+    action.changeHighLightItem(null);
+  };
 
   const handleKeyPressed = (e: React.KeyboardEvent) => {
-    e.stopPropagation();
     e.preventDefault();
     const key = e.key;
     switch (key) {
-      case 'ArrowDown': {
-         action.hightLightNextItem();
-         return;
-      }
-      case "ArrowUp":{
-        action.hightLightPreviousItem();
-        return;
-      }
-      case "Enter":{
+      case 'Enter': {
         onSelect();
-        action.togglePopup(false);
         return;
       }
     }
@@ -100,8 +87,8 @@ export const DropDownItem = (props: DropDownItemProps) => {
       tabIndex={-1}
       onClick={handleClickItem}
       ref={itemRef}
-      onMouseEnter = {handleMouseEnter}
-      onMouseLeave= {handleMouseLeave}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       onKeyDown={handleKeyPressed}
     >
       {renderPrefix()}

@@ -5,17 +5,25 @@
   width: max-content;
   height: max-content;
   
+  &:focus,&:focus-visible {
+     @include useFocusStyle();
+  }
+
   .DropDown__Trigger {
     width: 100%;
     border: $border;
     padding: 0.5rem;
   }
-  @at-root .DropDown__PopUp {
 
+  @at-root .DropDown__PopUp {
+   
     @at-root .DropDown__Menu {
         padding: 0.25rem;
         border: $border;
         border-radius: 5px;
+        &:focus-visible {
+          outline: none;
+        }
         @at-root .DropDown__Item {
             min-width: 90px;
             padding: 0.25rem 0;
