@@ -1,6 +1,5 @@
 import { ReactComponent as Arrow } from './assets/angle-down.svg';
 import { useAccordionStore } from './AccordionStoreProvider';
-import { useAccordionSharedData } from './AccordionSharedDataContext';
 
 
 /* Define ItemHeader */
