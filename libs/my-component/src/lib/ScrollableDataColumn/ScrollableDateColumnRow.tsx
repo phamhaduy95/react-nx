@@ -14,7 +14,7 @@ type DataColumnRowProps = {
   height:number;
   
 };
-export const  DataColumnRow= (props: DataColumnRowProps)=>{
+export const  DataColumnRow= memo((props: DataColumnRowProps)=>{
   const { data, disabled, rootRef, index,height } = props;
   console.log(height)
   const id = index.toString();
@@ -50,7 +50,7 @@ export const  DataColumnRow= (props: DataColumnRowProps)=>{
       {data}
     </div>
   );
-};
+});
 
 function scrollToRow(rootEl: HTMLElement, rowEl: HTMLElement) {
   const pos = {
