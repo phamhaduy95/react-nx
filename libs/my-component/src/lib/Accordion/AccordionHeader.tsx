@@ -1,39 +1,56 @@
-import { useContext,useEffect } from "react";
-import { ReactComponent as Arrow } from "./assets/angle-down.svg";
-import { AccordionContext, useAccordionContext } from './AccordionContextProvider';
-import { useAccordionItemContext } from './AccordionItemContext';
+import { ReactComponent as Arrow } from './assets/angle-down.svg';
+import { useAccordionStore } from './AccordionStoreProvider';
+import { useAccordionSharedData } from './AccordionSharedDataContext';
 
 
 /* Define ItemHeader */
 type ItemHeaderProps = {
-  header: ()=>React.ReactNode;
+  header: JSX.Element | string;
+  id: string;
+  isOpen:boolean;
 };
 
 export function AccordionHeader(props: ItemHeaderProps) {
-  const { header } = props;
-  const {isItemActive,setItemActive} = useAccordionItemContext();
-  const handleClick = (e?: any) => {
-    setItemActive(!isItemActive);
+  const { header, id,isOpen } = props;
+  const action = useAccordionStore((state) => state.action);
+  console.log(isOpen)
+  const handleClick = () => {
+       action.toggleItem({id,isOpen:!isOpen});
   };
 
-  const rotateArrow = (isActive: boolean) => {
-    if (isActive)
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    const key = e.key;
+    switch (key) {
+      case 'Enter': {
+        action.toggleItem({id,isOpen:!isOpen});
+        return
+      }
+      case 'Escape': {
+        action.toggleItem({id,isOpen:false});
+        return;
+      }
+    }
+  };
+
+  const rotateArrow = () => {
+    if (isOpen)
       return {
-        transform: "rotateX(180deg)",
+        transform: 'rotateX(180deg)',
       };
     return {
-      transform: "rotateX(0deg)",
+      transform: 'rotateX(0deg)',
     };
   };
 
- 
   return (
-    <button className={`Accordion__Header`} onClick={handleClick}>
-      {header()}
-      <Arrow
-        className="Accordion__Header__Arrow-icon"
-        style={rotateArrow(isItemActive)}
-      />
-    </button>
+    <div
+      className={`Accordion__Header`}
+      onClick={handleClick}
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+    >
+      {header}
+      <Arrow className="Accordion__Header__Arrow-icon" style={rotateArrow()} />
+    </div>
   );
 }

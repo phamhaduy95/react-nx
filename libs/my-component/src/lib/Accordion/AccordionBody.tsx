@@ -1,17 +1,16 @@
-import { useRef, useCallback } from "react";
-import { useAccordionItemContext } from "./AccordionItemContext";
-import useHeightRecalculateHook from "./useHeightRecalculateHook";
+import { useRef } from 'react';
+import useHeightRecalculateHook from './useHeightRecalculateHook';
 
 type ItemBodyProps = {
-  content: () => React.ReactNode;
+  content: JSX.Element;
+  isOpen: boolean;
 };
 export default function AccordionBody(props: ItemBodyProps) {
-  const { content } = props;
-  const { isItemActive } = useAccordionItemContext();
+  const { content, isOpen } = props;
   const ref = useRef(null);
-  const height = useHeightRecalculateHook(isItemActive, ref);
-  const makeShow = (isActive: boolean) => {
-    if (isActive)
+  const height = useHeightRecalculateHook(isOpen, ref);
+  const makeShow = () => {
+    if (isOpen)
       return {
         height: height,
       };
@@ -21,9 +20,9 @@ export default function AccordionBody(props: ItemBodyProps) {
   };
 
   return (
-    <div className={`Accordion__Body`} style={makeShow(isItemActive)}>
+    <div className={`Accordion__Body`} style={makeShow()}>
       <div className="Accordion__Body__Content" ref={ref}>
-        {content()}
+        {content}
       </div>
     </div>
   );

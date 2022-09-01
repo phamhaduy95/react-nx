@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import Accordion  from './Accordion';
-import AccordionItem from './AccordionItem';
+import {Accordion}  from './Accordion';
+import {AccordionItem} from './AccordionItem';
 
 export default {
   component: Accordion,
@@ -8,34 +8,23 @@ export default {
   subcomponents:{AccordionItem}
 } as ComponentMeta<typeof Accordion>;
 
-
+const message = " Lorem ipsum dolor sit amet consectetur adipisicing elit. Error harum in sit quam ea sequi, deserunt obcaecati hic repudiandae! Magnam, explicabo debitis temporibus nostrum minus optio molestias inventore libero quaerat!";
 
 export const Example:ComponentStory<typeof Accordion> = (args)=>{
   return (
   <Accordion {...args} >
         <AccordionItem
-          header={() => {
-            return <>Item 1</>;
-          }}
-          content={() => {
-            return <p>This is the content of item1</p>;
-          }}
+          header="Item 1"
+          content={<p>{message}</p>
+          }
         />
         <AccordionItem
-          header={() => {
-            return <>Item 2</>;
-          }}
-          content={() => {
-            return <p>This is the content of item 2</p>;
-          }}
+        header="Item 2"
+        content={<p>{message}</p>}
         />
         <AccordionItem
-          header={() => {
-            return <>Item 3</>;
-          }}
-          content={() => {
-            return <p>This is the content of item 3</p>;
-          }}
+          header="Item 3"
+          content={<p>{message}</p>}
         />
       </Accordion>
   )

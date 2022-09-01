@@ -1,75 +1,42 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from 'react';
+import { AccordionHeader } from './AccordionHeader';
+import AccordionBody from './AccordionBody';
+import { v4 as uuidv4 } from 'uuid';
+import { useAccordionStore } from './AccordionStoreProvider';
+import classNames from 'classnames';
 
-import { useAccordionContext } from "./AccordionContextProvider";
-import AccordionItemContextProvider from "./AccordionItemContext";
-import { AccordionHeader } from "./AccordionHeader";
-import AccordionBody from "./AccordionBody";
-
-type IndexedItemProps = {
-  index: number;
-  header: () => React.ReactNode;
-  content: () => React.ReactNode;
+export type AccordionItemProps = {
+  header: string | JSX.Element;
+  content: JSX.Element;
 };
 
-function IndexedItem(props: IndexedItemProps) {
-  const { index, header, content } = props;
-  const [isActive, setActive] = useState(false);
-  const { state, action } = useAccordionContext();
-
-  useEffect(() => {
-    action.subscribeItem();
-    return () => {
-      action.unsubscribeItem();
-    };
+export function AccordionItem(props: AccordionItemProps) {
+  const { header, content } = props;
+  const id = useMemo(() => {
+    return uuidv4();
   }, []);
 
-  useEffect(() => {
-    if (state.isAlwaysOpen) return;
-    if (state.activeItem !== index) {
-      setActive(false);
+  const action = useAccordionStore((state)=>state.action);
+  useEffect(()=>{
+    action.subscribe(id);
+    return ()=>{
+      action.unsubscribe(id);
     }
-  }, [state.activeItem]);
+  },[])
 
-  useEffect(() => {
-    if (state.isAlwaysOpen) return;
-    if (isActive) action.selectItem(index);
-  }, [isActive]);
-
-  const applyActive = ()=>{
-    if (isActive)
-      return "active";
-    return ""
-  }
-
+  const isOpen = useAccordionStore((state) =>{ 
+     const item = state.itemList.find(e=>e.id === id);
+      return (item === undefined)?false:item.isOpen;
+    });
+  
+  const itemClassName = classNames(`Accordion__Item`, {
+    ['is-open']: isOpen,
+  });
 
   return (
-    <AccordionItemContextProvider
-      isItemActive={isActive}
-      setItemActive={setActive}
-    >
-      <div className={`Accordion__Item ${applyActive()}`}>
-        <AccordionHeader header={header} />
-        <AccordionBody content={content} />
-      </div>
-    </AccordionItemContextProvider>
+    <div className={itemClassName}>
+      <AccordionHeader header={header} id={id} isOpen={isOpen} />
+      <AccordionBody content={content} isOpen={isOpen} />
+    </div>
   );
-}
-
-type AccordionItemProps = Omit<IndexedItemProps, "index">;
-/** the public dummy AccordionItem, in which user will put the properties */
-export default function AccordionItem(props: AccordionItemProps) {
-  return <></>;
-}
-
-export function addIndexToAccordionItems(
-  AccordionItems: JSX.Element[] | JSX.Element
-) {
-  if (AccordionItems instanceof Array) {
-    return AccordionItems.map((element, index) => {
-      const props: IndexedItemProps = { ...element.props, index: index };
-      return React.createElement(IndexedItem, props);
-    });
-  }
-  const props: IndexedItemProps = { ...AccordionItems.props, index: 0 };
-  return <IndexedItem {...props} />;
 }
