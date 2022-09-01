@@ -1,21 +1,24 @@
 import React from 'react';
 import PopupElement from '../Popup/PopupElement';
-import { useTimePickerContext } from './TimePickerContext';
 import { TimePanel, TimePanelProps } from '../TimePanel';
 import dayjs from 'dayjs';
+import { useTimePickerStore } from './TimePickerStoreProvider';
 
 interface TimePickerPopupProps {
   targetRef: React.MutableRefObject<HTMLElement | null>;
   isSecondInCluded: boolean;
-
+  selectedTime:Date;
 }
 
 export default function TimePickerPopup(props: TimePickerPopupProps) {
   const {
     targetRef,
     isSecondInCluded,
+    selectedTime
   } = props;
-  const { state, action } = useTimePickerContext();
+
+  const action = useTimePickerStore((state)=>(state.action));
+  const isPopupOpen = useTimePickerStore((state)=>(state.isPopupOpen));
 
   const handleClickOutsidePopup = () => {
     action.togglePopup(false);
@@ -31,12 +34,12 @@ export default function TimePickerPopup(props: TimePickerPopupProps) {
     action.selectTime(selectedTime);
   };
 
-  const value = getTimeFormDate(state.selectTime);
+  const value = getTimeFormDate(selectedTime);
 
   return (
     <PopupElement
       targetRef={targetRef}
-      isShowed={state.isPopupOpen}
+      isShowed={isPopupOpen}
       placement="bottomLeft"
       width="fit-content"
       className="TimePicker__Popup"
