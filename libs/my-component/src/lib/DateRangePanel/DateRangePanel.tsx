@@ -1,13 +1,11 @@
-import { DateRangePanelState } from './reducer';
-import DatePanelRangeContextProvider from './DataRangePanelContextProvider';
+
 import classNames from 'classnames';
 import { Calendar, CalendarProps } from '../Calendar';
 import { DateRangePanelDateCell } from './DateRangePanelDateCell';
 import { DateRangePanelSharedDataContext } from './DateRangePanelSharedDataContext';
-import { useDateRangePanelSingleContext } from './DataRangePanelContextProvider';
 import './DateRangePanel.scss';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
-import { useEffect } from 'react';
+import { DateRangePanelState, DateRangePanelStoreProvider, useDateRangePanelStore } from './DateRangePanelStoreProvider';
 
 export interface DateRangePanelProps {
   range?: Pick<DateRangePanelState, 'endDate' | 'startDate'>;
@@ -39,17 +37,16 @@ const defaultProps: Required<DateRangePanelProps> = {
 
 export function DateRangePanel(props: DateRangePanelProps) {
   const newProps = { ...defaultProps, ...props };
-  const initialState: DateRangePanelState = {
-    endDate: newProps.range.endDate,
-    startDate: newProps.range.startDate,
-  };
+
 
   return (
-    <DatePanelRangeContextProvider initialState={initialState}>
+ 
       <DateRangePanelSharedDataContext {...newProps}>
+        <DateRangePanelStoreProvider>
         <WrappedElement {...props} />
+        </DateRangePanelStoreProvider>
       </DateRangePanelSharedDataContext>
-    </DatePanelRangeContextProvider>
+ 
   );
 }
 
@@ -59,7 +56,14 @@ function WrappedElement(props: DateRangePanelProps) {
     newProps;
 
   const rootClassName = classNames('DateRangePanel', className);
-  const { state, action } = useDateRangePanelSingleContext();
+  const action = useDateRangePanelStore((state)=>(state.action));
+  const startDate = useDateRangePanelStore((state) => state.startDate,(a,b)=>{
+    return a?.toDateString() === b?.toDateString()
+  });
+  const endDate =useDateRangePanelStore((state) => state.endDate,(a,b)=>{
+    return a?.toDateString() === b?.toDateString()
+  });
+  // update startDate and endDate when the props value is changed 
   useEffectSkipFirstRender(() => {
     if (checkIsDateInputDisabled(range.endDate, disabledDate)) return;
     action.selectEndDate(range.endDate);
@@ -70,18 +74,13 @@ function WrappedElement(props: DateRangePanelProps) {
   }, [range.startDate?.toDateString()]);
 
   useEffectSkipFirstRender(() => {
-    const startDate = state.startDate;
     onSelect('selectStart', startDate);
-  }, [state.startDate?.toDateString()]);
+  }, [startDate?.toDateString()]);
 
   useEffectSkipFirstRender(() => {
-    const endDate = state.endDate;
     onSelect('selectEnd', endDate);
-  }, [state.endDate?.toDateString()]);
+  }, [endDate?.toDateString()]);
 
-  useEffect(() => {
-    console.log('ss');
-  }, []);
 
   return (
     <div className={rootClassName}>
