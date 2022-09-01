@@ -1,18 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import './DatePicker.scss';
 import DatePickerPopup from './DatePickerPopup';
-import DatePickerContextProvider, {
-  useDatePickerContext,
-} from './DatePickerContextProvider';
-import { DatePickerState } from './reducer';
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { TextField } from '../TextField';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import { DatePanelSingle } from '../DatePanelSingle/DatePanelSingle';
 import { CalendarProps } from '../Calendar';
+import {
+  DatePickerStoreProvider,
+  useDatePickerStore,
+} from './DatePickerStoreProvider';
+import './DatePicker.scss';
+
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);
 
 export interface DatePickerProps {
@@ -24,7 +25,7 @@ export interface DatePickerProps {
   PanelComponent?: (props: {
     dateValue: Date | null;
     onSelect: (date: Date | null) => void;
-    disabledDate?:CalendarProps["disabledDate"]
+    disabledDate?: CalendarProps['disabledDate'];
   }) => JSX.Element;
 }
 const defaultPropsValue: Required<DatePickerProps> = {
@@ -41,15 +42,10 @@ const defaultPropsValue: Required<DatePickerProps> = {
 };
 
 export function DatePicker(props: DatePickerProps) {
-  const initialState: DatePickerState = {
-    isPopupOpen: false,
-    selectedDate: null,
-  };
-
   return (
-    <DatePickerContextProvider initialState={initialState}>
+    <DatePickerStoreProvider>
       <WrappedDatePicker {...props} />
-    </DatePickerContextProvider>
+    </DatePickerStoreProvider>
   );
 }
 
@@ -69,14 +65,20 @@ function WrappedDatePicker(props: DatePickerProps) {
   });
   const targetRef = useRef(null);
 
-  const { state, action } = useDatePickerContext();
-  const { selectedDate } = state;
+  const selectedDate = useDatePickerStore((state) => state.selectedDate,(a,b)=>{
+    return a?.toDateString() === b?.toDateString()
+  });
+
+  const action = useDatePickerStore((state) => state.action);
+
   const [inputValue, setInputValue] = useState('');
 
+  // trigger onSelect when the selectedDate is updated
   useEffectSkipFirstRender(() => {
-    onSelect(state.selectedDate);
-  }, [state.selectedDate?.toDateString()]);
+    onSelect(selectedDate);
+  }, [selectedDate?.toDateString()]);
 
+ // change the inputValue when the selectedDate in store is updated
   useEffect(() => {
     if (selectedDate === null) {
       setInputValue('');
@@ -115,7 +117,7 @@ function WrappedDatePicker(props: DatePickerProps) {
   };
 
   return (
-    <div className={rootClassName} tabIndex={1}>
+    <div className={rootClassName}>
       <TextField
         className="DatePicker__TextField"
         label={label}
@@ -130,7 +132,6 @@ function WrappedDatePicker(props: DatePickerProps) {
       />
       <DatePickerPopup
         targetRef={targetRef}
-        isShowed={state.isPopupOpen}
         disabledDate={disabledDate}
         PanelComponent={PanelComponent}
       />
