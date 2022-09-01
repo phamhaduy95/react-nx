@@ -1,12 +1,14 @@
 import { CalendarTableData } from './useGenerateCalendarData';
 import classNames from 'classnames';
+import { memo } from 'react';
+
 
 export type CalendarDateCellProps = {
   data: CalendarTableData[number][number];
   isDisabled?: boolean;
 };
 
-export function CalendarDateCell(props: CalendarDateCellProps) {
+export const CalendarDateCell = memo((props: CalendarDateCellProps)=>{
   const { data, isDisabled } = props;
   const dayNumber = data.date.getDate();
   const {  isDayWithinMonth } = data;
@@ -21,4 +23,4 @@ export function CalendarDateCell(props: CalendarDateCellProps) {
       {dayNumber}
     </td>
   );
-}
+});
