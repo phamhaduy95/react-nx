@@ -1,0 +1,69 @@
+.Carousel {
+  width: 400px;
+  height: 400px;
+  position: relative;
+
+  > .Carousel__Viewport {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
+
+    > .Carousel__Slide {
+      flex-shrink: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  > .Carousel__IndicatorBox {
+    display: flex;
+    width: max-content;
+    position: absolute;
+    bottom: 15%;
+    width: 100%;
+    left: 0;
+    right: 0;
+    justify-content: center;
+    z-index: 2;
+    > .Carousel__Indicator {
+      width: 30px;
+      height: 5px;
+      user-select: none;
+      margin: 0 0.25rem;
+      background-color: hsl(0, 0%, 80%, 0.5);
+      cursor: pointer;
+      &.is-selected {
+        background-color: hsl(0, 0%, 90%, 1);
+      }
+    }
+  }
+  > .Carousel__Arrow-forward,
+  > .Carousel__Arrow-backward {
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  > .Carousel__Arrow-forward {
+    right: 0;
+  }
+
+  > .Carousel__Arrow-backward {
+    left: 0;
+  }
+
+  .Carousel__ArrowIcon {
+    width: 1.5rem;
+    height: 2rem;
+    color: hsl(0, 0%, 90%, 1);
+  }
+}
