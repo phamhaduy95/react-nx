@@ -3,6 +3,8 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import classNames from 'classnames';
 import { useTabStore } from './TabStoreProvider';
+import { useScrollOnTouchMove } from './hooks';
+
 
 type TabListProps = {
   children: React.ReactNode[];
@@ -12,6 +14,8 @@ export function TabList(props: TabListProps) {
   const { children } = props;
   const ref = useRef<HTMLDivElement>(null);
  
+  useScrollOnTouchMove(ref);
+
   return (
     <div className="Tabs__TabList">
       <TabsControlBackWard viewRef={ref} />
