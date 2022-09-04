@@ -1,91 +1,116 @@
-import React, { useEffect, useState } from "react";
-import useButtonGroupContext from "./ButtonGroupContext";
+import React, { useEffect, useRef } from 'react';
+import { ensureElementsListAsArray } from '../utils/ReactElementProcessor';
+import { useButtonGroupStore } from './ButtonGroupStoreProvider';
+import classNames from 'classnames';
+import { useSwitchFocus } from '../utils/hooks';
+import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
+import { useButtonGroupSharedData } from './SharedDataContextProvider';
 
-type Props = {
-  children: JSX.Element[]|JSX.Element|string;
-  index: number;
-  active?:boolean;
-  onClick?:()=>void;
+export type ButtonGroupItemProps = {
+  children: JSX.Element | string;
+  value: string;
+  disabled?: boolean;
 };
 
-function WrappedButtonGroupItem(props: Props) {
-  let { children, index,active,onClick} = props;
-  active = (active == undefined)?false:active;
-  const { state, action } = useButtonGroupContext();
-  const [isActive,setActive] = useState(false);
-  const { activeIndex,mandatory,multiple,disabled } = state;
- 
-  useEffect(()=>{
-    if (activeIndex === index) setActive(true);
-    else setActive(false)
+export function ButtonGroupItem(props: ButtonGroupItemProps) {
+  return <></>;
+}
 
-  },[activeIndex])
+type IndexedButtonGroupItemProps = ButtonGroupItemProps & { index: number };
 
+const defaultProps: Required<IndexedButtonGroupItemProps> = {
+  children: <></>,
+  value: '',
+  disabled: false,
+  index: 0,
+};
+
+function IndexedButtonGroupItem(props: IndexedButtonGroupItemProps) {
+  const newProps = { ...defaultProps, ...props };
+  const { index, value, disabled, children } = newProps;
+  const itemRef = useRef<HTMLButtonElement>(null);
+  const {onChange} = useButtonGroupSharedData();
+  const action = useButtonGroupStore((state) => state.action);
+  const isSelected = useButtonGroupStore((state) => {
+    const id = state.itemList.findIndex(
+      (e) => e.isSelected && e.index === index
+    );
+    return id === -1 ? false : true;
+  });
+
+  const isFocus = useButtonGroupStore(
+    (state) => state.highLightedItem?.index === index
+  );
+
+  useEffectSkipFirstRender(()=>{
+   if (isSelected) onChange(value)
+  },[isSelected])
+
+
+  useSwitchFocus(itemRef, isFocus);
 
   useEffect(() => {
-    action.subscribeItem();
+    action.subscribe({index,disabled,isSelected});
     return () => {
-      action.unsubscribeItem();
+      action.unsubscribe(index);
     };
   }, []);
 
+  useEffectSkipFirstRender(()=>{
+    if (disabled) action.disableItem(index);
+  },[disabled])
 
-  /** This pice of code controls how the buttonGroupItem is set active by default. If mandatory flag is true but no active flag found in any component then the first button will be automatically make active */
-  useEffect(()=>{
-    if (!mandatory) return; 
-    if (active) {
-      action.selectItem(index);
-      return
-    }
-    if (index === 0) {
-      action.selectItem(0);
-    }
-
-  },[active])
-  /**End of section */ 
-
-
-  const applyActive = () => {
-    if (isActive) return "active";
-    return "";
-  };
+  const className = classNames('ButtonGroup__Item', {
+    ['is-selected']: isSelected,
+  });
 
   const handleClick = (event: React.MouseEvent) => {
-    /** if multiple is true then the item is independently set active without being managed by reducer*/
-    if (!multiple) action.selectItem(index);
-    else setActive(prev=>!prev);
-    if (onClick) onClick(); 
+    action.toggleItem({ index, isSelected: !isSelected });
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    const key = e.key;
+    switch (key) {
+      case 'ArrowRight':
+      case 'ArrowDown': {
+        e.preventDefault();
+        action.highlightNext();
+        return;
+      }
+      case "ArrowLeft":
+      case 'ArrowUp': {
+        e.preventDefault();
+        action.highlightPrev();
+        return;
+      }
+    }
+  };
+
+  const handleButtonFocused = () => {
+    action.highlightOne(index);
   };
 
   return (
-    <button disabled={disabled} className={`ButtonGroup__Item ${applyActive()}`} onClick={handleClick}>
+    <button
+      disabled={disabled}
+      className={className}
+      onClick={handleClick}
+      ref={itemRef}
+      onFocus={handleButtonFocused}
+      onKeyDown={handleKeyDown}
+    >
       {children}
     </button>
   );
 }
 
-type WrapperProps ={
-  /** if true, then this item will be active by default. When no multiple property is given, the last item that is manually set active, will be made default */
-  active?:boolean;
-  children: JSX.Element[]|JSX.Element|string;
-  onClick?:()=>void;
-}
-
-export default function ButtonGroupItem(props:WrapperProps){
-  const {children} = props;
-  return <>
-    {children}
-    </>
-}
-
-/** Convert  ButtonGroupItemWrapper components to Real ButtonGroupItem  components with correct order of indices */
-export function giveIndexToGroupItems(Items:JSX.Element[]|JSX.Element){
-    if (Items instanceof Array){
-        return Items.map((item,index)=>{
-          const {props} = item;
-            return <WrappedButtonGroupItem {...props}  key={index} index={index}/>
-        })
-    }
-    const {props} = Items;
-    return <WrappedButtonGroupItem {...props}/>
+export function giveIndexToGroupItems(children: JSX.Element[] | JSX.Element) {
+  const childrenArray = ensureElementsListAsArray(children);
+  return childrenArray
+    .filter((e) => e.type.name === ButtonGroupItem.name)
+    .map((e, i) => {
+      const props = e.props as ButtonGroupItemProps;
+      const newProps = { ...props, index: i };
+      return <IndexedButtonGroupItem {...newProps} key={i} />;
+    });
 }

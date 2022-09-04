@@ -1,32 +1,48 @@
+@import '../_sharedStyle.scss';
+@import '../_utils.scss';
+
 .ButtonGroup {
   display: flex;
   width: 100%;
+  height: max-content;
 
   @at-root .ButtonGroup__Item {
     width: max-content;
-    padding: 0.5em;
-    border: 1px solid hsla(0, 0%, 45%, 0.8);
-    border-right: none;
+    padding: 0.5rem;
+    border: $border;
+    user-select: none;
+    cursor: pointer;
     > svg {
       width: 1em;
       height: 1em;
     }
 
-    &.active {
-      background-color: hsl(229, 50%, 60%);
-      color:white;
-      > svg {
-        fill: white;
-      }
+    &:first-child {
+      border-right: unset;
+      border-top-left-radius: 2px;
+      border-bottom-left-radius: 2px;
     }
 
-    &:not(.active):hover {
-      background-color: hsl(0, 0%, 80%);
+    &:last-child {
+      border-left: unset;
+      border-bottom-right-radius: 2px;
+      border-top-right-radius: 2px;
     }
-    &:last-of-type {
-        border: 1px solid hsla(0, 0%, 45%, 0.8);
-      }
+
+    &.is-selected {
+      background-color: hsla(220, 80%, 90%, 0.8);
+      color: $text-color;
+      // > svg {
+      //   fill: white;
+      // }
+    }
+
+    &:not(.is-selected):not(:disabled):hover {
+      background-color: hsla(0, 0%, 80%, 0.7);
+    }
+
+    &:disabled {
+      cursor: no-drop;
     }
   }
-
-  
+}
