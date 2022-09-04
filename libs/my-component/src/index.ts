@@ -20,3 +20,4 @@ export * from './lib/CountDown';
 export * from './lib/DropDown';
 export * from "./lib/Accordion";
 export * from "./lib/Carousel";
+export * from "./lib/Tabs";

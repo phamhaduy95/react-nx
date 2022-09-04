@@ -1,0 +1,55 @@
+@import '../_sharedStyle.scss';
+@import '../_utils.scss';
+.Tabs__Container {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  border: $border;
+  border-radius: 5px;
+  @at-root .Tabs__TabList {
+    width: 100%;
+    display: flex;
+    user-select: none;
+    >.Tabs__Control-backward,>.Tabs__Control-forward {
+        flex-shrink: 0;
+        @include centerElement();
+        @include setChildElementsSize(1rem,1rem);
+        color:$text-color;
+        padding: 0.5rem;
+        cursor: pointer;
+        opacity: 1;
+        transition: opacity 0.2s ease-in;
+        &:not(.is-showed) {
+            visibility: hidden;
+            opacity: 0;
+        }
+    }
+   
+
+    > .Tabs__TabListView {
+        flex-grow: 1;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+      @at-root .Tabs__Trigger {
+        padding: 0.5rem ;
+        user-select: none;
+        white-space: nowrap;
+        cursor: pointer;
+        color: $text-color;
+        &.is-selected {
+          color: $primary-color;
+          border-bottom: 2px solid $primary-color;
+        }
+
+        &:focus-visible {
+          background-color: hsl(220, 80%, 90%, 0.4);
+          outline: none;
+        }
+      }
+    }
+  }
+  > .Tabs__ContainerView {
+    height: 200px;
+  }
+}
