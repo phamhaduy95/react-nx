@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useRef } from 'react';
 import { DropDownMenu } from './DropDownMenu';
 import { useStore } from 'zustand';
 import {
@@ -6,13 +6,13 @@ import {
   useDropDownStore,
 } from './DropDownStoreProvider';
 import './DropDown.scss';
-import { v4 as uuidv4 } from 'uuid';
 
 
 export type DropDownProps = {
   children: JSX.Element | JSX.Element[];
   className?: string;
 };
+
 const DropDownDefaultProps: Required<DropDownProps> = {
   className: '',
   children: <></>,
