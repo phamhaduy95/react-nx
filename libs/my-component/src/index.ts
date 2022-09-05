@@ -3,7 +3,7 @@ export * from './lib/Tag/Tag';
 export * from './lib/BreadCrumbs';
 export * from './lib/Pagination/Pagination';
 export * from './lib/Badge';
-export * from './lib/ButtonGroup';
+export * from './lib/ToggleGroup';
 export * from './lib/Slider/DualRangeSlider';
 export * from './lib/Slider/RangeSlider';
 export * from './lib/Tooltips';

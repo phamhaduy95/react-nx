@@ -1,44 +1,44 @@
 import React, { useEffect, useRef } from 'react';
 import { ensureElementsListAsArray } from '../utils/ReactElementProcessor';
-import { useButtonGroupStore } from './ButtonGroupStoreProvider';
+import { useToggleGroupStore } from './ToggleGroupStoreProvider';
 import classNames from 'classnames';
 import { useSwitchFocus } from '../utils/hooks';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
-import { useButtonGroupSharedData } from './SharedDataContextProvider';
+import { useToggleGroupSharedData } from './SharedDataContextProvider';
 
-export type ButtonGroupItemProps = {
+export type ToggleGroupItemProps = {
   children: JSX.Element | string;
   value: string;
   disabled?: boolean;
 };
 
-export function ButtonGroupItem(props: ButtonGroupItemProps) {
+export function ToggleGroupItem(props: ToggleGroupItemProps) {
   return <></>;
 }
 
-type IndexedButtonGroupItemProps = ButtonGroupItemProps & { index: number };
+type IndexedToggleGroupItemProps = ToggleGroupItemProps & { index: number };
 
-const defaultProps: Required<IndexedButtonGroupItemProps> = {
+const defaultProps: Required<IndexedToggleGroupItemProps> = {
   children: <></>,
   value: '',
   disabled: false,
   index: 0,
 };
 
-function IndexedButtonGroupItem(props: IndexedButtonGroupItemProps) {
+function IndexedToggleGroupItem(props: IndexedToggleGroupItemProps) {
   const newProps = { ...defaultProps, ...props };
   const { index, value, disabled, children } = newProps;
   const itemRef = useRef<HTMLButtonElement>(null);
-  const { onChange } = useButtonGroupSharedData();
-  const action = useButtonGroupStore((state) => state.action);
-  const isSelected = useButtonGroupStore((state) => {
+  const { onChange } = useToggleGroupSharedData();
+  const action = useToggleGroupStore((state) => state.action);
+  const isSelected = useToggleGroupStore((state) => {
     const id = state.itemList.findIndex(
       (e) => e.isSelected && e.index === index
     );
     return id === -1 ? false : true;
   });
 
-  const isFocus = useButtonGroupStore(
+  const isFocus = useToggleGroupStore(
     (state) => state.highLightedItem?.index === index
   );
 
@@ -60,7 +60,7 @@ function IndexedButtonGroupItem(props: IndexedButtonGroupItemProps) {
     else action.unDisableItem(index);
   }, [disabled]);
 
-  const className = classNames('ButtonGroup__Item', {
+  const className = classNames('ToggleGroup__Item', {
     ['is-selected']: isSelected,
   });
 
@@ -107,10 +107,10 @@ function IndexedButtonGroupItem(props: IndexedButtonGroupItemProps) {
 export function giveIndexToGroupItems(children: JSX.Element[] | JSX.Element) {
   const childrenArray = ensureElementsListAsArray(children);
   return childrenArray
-    .filter((e) => e.type.name === ButtonGroupItem.name)
+    .filter((e) => e.type.name === ToggleGroupItem.name)
     .map((e, i) => {
-      const props = e.props as ButtonGroupItemProps;
+      const props = e.props as ToggleGroupItemProps;
       const newProps = { ...props, index: i };
-      return <IndexedButtonGroupItem {...newProps} key={i} />;
+      return <IndexedToggleGroupItem {...newProps} key={i} />;
     });
 }

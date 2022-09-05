@@ -1,9 +1,9 @@
 import { createContext, useContext } from 'react'
-import { ButtonGroupProps } from './ButtonGroup';
+import { ToggleGroupProps } from './ToggleGroup';
 
 
 type SharedDataType = {
-    onChange:Required<ButtonGroupProps>["onChange"];
+    onChange:Required<ToggleGroupProps>["onChange"];
   }
   
   type SharedDataContextValue = {sharedData:SharedDataType}|null;
@@ -14,7 +14,7 @@ type Props = {
     children:JSX.Element;
 }
 
-export function ButtonGroupSharedDataContextProvider(props:Props) {
+export function ToggleGroupSharedDataContextProvider(props:Props) {
     const {onChange,children} = props;
   return (
     <SharedDataContext.Provider value={{sharedData:{onChange}}}>
@@ -23,7 +23,7 @@ export function ButtonGroupSharedDataContextProvider(props:Props) {
   )
 }
 
-export function useButtonGroupSharedData(){
+export function useToggleGroupSharedData(){
     const value = useContext(SharedDataContext);
     if (value === null) throw new Error("shared Data context is null");
     return value.sharedData;

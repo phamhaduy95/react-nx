@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 
-import { giveIndexToGroupItems } from './ButtonGroupItem';
-import './ButtonGroup.scss';
-import { ButtonGroupStoreProvider, useButtonGroupStore } from './ButtonGroupStoreProvider';
-import { ButtonGroupSharedDataContextProvider } from './SharedDataContextProvider';
-export type ButtonGroupProps = {
+import { giveIndexToGroupItems } from './ToggleGroupItem';
+import './ToggleGroup.scss';
+import { ToggleGroupStoreProvider, useToggleGroupStore } from './ToggleGroupStoreProvider';
+import { ToggleGroupSharedDataContextProvider } from './SharedDataContextProvider';
+export type ToggleGroupProps = {
   children: JSX.Element[] | JSX.Element;
   className?: string;
   /** the callback function triggered when there is new active item. It wont triggered when multiple is set true */
@@ -14,7 +14,7 @@ export type ButtonGroupProps = {
   disabled?: boolean;
 };
 
-const defaultProps: Required<ButtonGroupProps> = {
+const defaultProps: Required<ToggleGroupProps> = {
   children: <></>,
   className: '',
   onChange(activeIndex) {},
@@ -22,30 +22,30 @@ const defaultProps: Required<ButtonGroupProps> = {
   disabled: false,
 };
 
-export function ButtonGroup(props: ButtonGroupProps) {
+export function ToggleGroup(props: ToggleGroupProps) {
   const newProps = {...defaultProps,...props};
   const { onChange } = newProps;
   return (
-    <ButtonGroupStoreProvider>
-      <ButtonGroupSharedDataContextProvider onChange={onChange}>
-      <WrappedButtonGroup {...props}/>
-      </ButtonGroupSharedDataContextProvider>
-    </ButtonGroupStoreProvider>
+    <ToggleGroupStoreProvider>
+      <ToggleGroupSharedDataContextProvider onChange={onChange}>
+      <WrappedToggleGroup {...props}/>
+      </ToggleGroupSharedDataContextProvider>
+    </ToggleGroupStoreProvider>
   );
 }
 
 /**
  * The Wrapped component for ButtonBox so that it can access to the context value of ComboBoxContext.
  */
-function WrappedButtonGroup(props: ButtonGroupProps) {
+function WrappedToggleGroup(props: ToggleGroupProps) {
   const newProps = {...defaultProps,...props};
   const { children, className, onChange, disabled,mode } = newProps;
-  const action = useButtonGroupStore((state)=>state.action);
+  const action = useToggleGroupStore((state)=>state.action);
   useEffect(()=>{
     action.changeSettings({mode});
   },[mode])
   const indexItems = giveIndexToGroupItems(children);
-  return <div className={`ButtonGroup ${className}`}>{indexItems}</div>;
+  return <div className={`ToggleGroup ${className}`}>{indexItems}</div>;
 }
 
 

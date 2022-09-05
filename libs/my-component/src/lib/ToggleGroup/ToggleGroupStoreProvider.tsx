@@ -2,7 +2,7 @@ import React, { createContext, useContext, useMemo } from 'react';
 import { createStore, StoreApi, useStore } from 'zustand';
 import shallow from 'zustand/shallow';
 
-type ButtonGroupState = {
+type ToggleGroupState = {
   itemList: { index: number; isSelected: boolean; disabled: boolean }[];
   highLightedItem: { index: number } | null;
   settings: {
@@ -15,14 +15,14 @@ type ButtonGroupState = {
     highlightNext: () => void;
     highlightPrev: () => void;
     highlightOne: (index: number | null) => void;
-    subscribe: (index: ButtonGroupState['itemList'][number]) => void;
+    subscribe: (index: ToggleGroupState['itemList'][number]) => void;
     unsubscribe: (index: number) => void;
-    changeSettings: (setting: ButtonGroupState['settings']) => void;
+    changeSettings: (setting: ToggleGroupState['settings']) => void;
   };
 };
 
 type StoreContextValue = {
-  store: StoreApi<ButtonGroupState>;
+  store: StoreApi<ToggleGroupState>;
 } | null;
 
 const StoreContext = createContext<StoreContextValue>(null);
@@ -31,10 +31,10 @@ type Props = {
   children: JSX.Element[] | JSX.Element;
 };
 
-export function ButtonGroupStoreProvider(props: Props) {
+export function ToggleGroupStoreProvider(props: Props) {
   const { children } = props;
   const store = useMemo(() => {
-    return createStore<ButtonGroupState>((set) => ({
+    return createStore<ToggleGroupState>((set) => ({
       itemList: [],
       highLightedItem: null,
       settings: {
@@ -139,18 +139,18 @@ export function ButtonGroupStoreProvider(props: Props) {
   );
 }
 
-export function useButtonGroupStore<U>(
-  selector: (state: ButtonGroupState) => U,
+export function useToggleGroupStore<U>(
+  selector: (state: ToggleGroupState) => U,
   equalFunc?: (a: U, b: U) => boolean
 ): U {
   const value = useContext(StoreContext);
-  if (value === null) throw new Error('ButtonGroup Store context is null');
+  if (value === null) throw new Error('ToggleGroupStore context is null');
   const { store } = value;
   return useStore(store, selector, equalFunc);
 }
 
 function closeAllButOpenOneItem(
-  itemList: ButtonGroupState['itemList'],
+  itemList: ToggleGroupState['itemList'],
   openItemId: number
 ) {
   for (let item of itemList) {
@@ -163,7 +163,7 @@ function closeAllButOpenOneItem(
 }
 
 function toggleOneItemSeparately(
-  itemList: ButtonGroupState['itemList'],
+  itemList: ToggleGroupState['itemList'],
   openItemId: number,
   isOpen: boolean
 ) {
@@ -175,7 +175,7 @@ function toggleOneItemSeparately(
 }
 
 function searchForNextNonDisableItem(
-  itemList: ButtonGroupState['itemList'],
+  itemList: ToggleGroupState['itemList'],
   startPos: number,
   dir: 'des' | 'acs'
 ) {

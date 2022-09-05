@@ -1,12 +1,12 @@
 @import '../_sharedStyle.scss';
 @import '../_utils.scss';
 
-.ButtonGroup {
+.ToggleGroup {
   display: flex;
   width: 100%;
   height: max-content;
 
-  @at-root .ButtonGroup__Item {
+  @at-root .ToggleGroup__Item {
     width: max-content;
     padding: 0.5rem;
     border: $border;
