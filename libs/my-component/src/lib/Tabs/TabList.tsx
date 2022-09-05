@@ -3,7 +3,8 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import classNames from 'classnames';
 import { useTabStore } from './TabStoreProvider';
-import { useScrollOnTouchMove } from './hooks';
+import { useScrollOnTouchMove } from '../utils/hooks';
+
 
 
 type TabListProps = {
