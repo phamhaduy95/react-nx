@@ -29,7 +29,7 @@ function IndexedButtonGroupItem(props: IndexedButtonGroupItemProps) {
   const newProps = { ...defaultProps, ...props };
   const { index, value, disabled, children } = newProps;
   const itemRef = useRef<HTMLButtonElement>(null);
-  const {onChange} = useButtonGroupSharedData();
+  const { onChange } = useButtonGroupSharedData();
   const action = useButtonGroupStore((state) => state.action);
   const isSelected = useButtonGroupStore((state) => {
     const id = state.itemList.findIndex(
@@ -42,23 +42,23 @@ function IndexedButtonGroupItem(props: IndexedButtonGroupItemProps) {
     (state) => state.highLightedItem?.index === index
   );
 
-  useEffectSkipFirstRender(()=>{
-   if (isSelected) onChange(value)
-  },[isSelected])
-
+  useEffectSkipFirstRender(() => {
+    if (isSelected) onChange(value);
+  }, [isSelected]);
 
   useSwitchFocus(itemRef, isFocus);
 
   useEffect(() => {
-    action.subscribe({index,disabled,isSelected});
+    action.subscribe({ index, disabled, isSelected });
     return () => {
       action.unsubscribe(index);
     };
   }, []);
 
-  useEffectSkipFirstRender(()=>{
+  useEffectSkipFirstRender(() => {
     if (disabled) action.disableItem(index);
-  },[disabled])
+    else action.unDisableItem(index);
+  }, [disabled]);
 
   const className = classNames('ButtonGroup__Item', {
     ['is-selected']: isSelected,
@@ -77,7 +77,7 @@ function IndexedButtonGroupItem(props: IndexedButtonGroupItemProps) {
         action.highlightNext();
         return;
       }
-      case "ArrowLeft":
+      case 'ArrowLeft':
       case 'ArrowUp': {
         e.preventDefault();
         action.highlightPrev();

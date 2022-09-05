@@ -9,11 +9,12 @@ type ButtonGroupState = {
     mode: 'single' | 'multi';
   };
   action: {
-    toggleItem: (item: {index:number,isSelected:boolean}) => void;
-    disableItem:(index:number)=>void;
+    toggleItem: (item: { index: number; isSelected: boolean }) => void;
+    disableItem: (index: number) => void;
+    unDisableItem:(index:number)=>void;
     highlightNext: () => void;
     highlightPrev: () => void;
-    highlightOne: (index: number) => void;
+    highlightOne: (index: number | null) => void;
     subscribe: (index: ButtonGroupState['itemList'][number]) => void;
     unsubscribe: (index: number) => void;
     changeSettings: (setting: ButtonGroupState['settings']) => void;
@@ -27,7 +28,7 @@ type StoreContextValue = {
 const StoreContext = createContext<StoreContextValue>(null);
 
 type Props = {
-  children: JSX.Element[]|JSX.Element;
+  children: JSX.Element[] | JSX.Element;
 };
 
 export function ButtonGroupStoreProvider(props: Props) {
@@ -55,12 +56,26 @@ export function ButtonGroupStoreProvider(props: Props) {
           });
         },
         disableItem(index) {
-            set((state) => {
-                  const itemList = [...state.itemList];
-                  const item = itemList[index];
-                  item.disabled = true;
-                  return {itemList:itemList};
-              });
+          set((state) => {
+            const itemList = [...state.itemList];
+            const item = itemList[index];
+            item.disabled = true;
+            item.isSelected = false;
+            let newState = { itemList: itemList };
+            if (state.highLightedItem?.index === index) {
+              return { ...newState, highLightedItem: null };
+            }
+            return newState;
+          });
+        },
+        unDisableItem(index) {
+          set((state) => {
+            const itemList = [...state.itemList];
+            const item = itemList[index];
+            item.disabled = false;
+            item.isSelected = false;
+            return { itemList: itemList };
+          });
         },
         changeSettings(setting) {
           set((state) => {
@@ -86,30 +101,32 @@ export function ButtonGroupStoreProvider(props: Props) {
           set((state) => {
             if (state.highLightedItem === null) return {};
             const oldPos = state.highLightedItem.index;
-            const numberOfItem = state.itemList.length;
-            const newPos = limitNumberInRange(oldPos + 1, {
-              min: 0,
-              max: numberOfItem - 1,
-            });
-            if (state.itemList[newPos].disabled) return {};
+            const newPos = searchForNextNonDisableItem(
+              state.itemList,
+              oldPos,
+              'acs'
+            );
             return { highLightedItem: { index: newPos } };
           });
         },
         highlightPrev() {
           set((state) => {
             if (state.highLightedItem === null) return {};
-            const numberOfItem = state.itemList.length;
             const oldPos = state.highLightedItem.index;
-            const newPos = limitNumberInRange(oldPos - 1, {
-              min: 0,
-              max: numberOfItem - 1,
-            });
-            if (state.itemList[newPos].disabled) return {};
+            const newPos = searchForNextNonDisableItem(
+              state.itemList,
+              oldPos,
+              'des'
+            );
             return { highLightedItem: { index: newPos } };
           });
         },
         highlightOne(index) {
           set((state) => {
+            if (index === null)
+              return {
+                highLightedItem: null,
+              };
             return { highLightedItem: { index: index } };
           });
         },
@@ -157,13 +174,23 @@ function toggleOneItemSeparately(
   }
 }
 
-/** make input number equal to min when it is larger than max and equal to max when it is smaller than min, otherwise keep its value */
-function limitNumberInRange(
-  number: number,
-  range: { min: number; max: number }
+function searchForNextNonDisableItem(
+  itemList: ButtonGroupState['itemList'],
+  startPos: number,
+  dir: 'des' | 'acs'
 ) {
-  const { max, min } = range;
-  if (number > max) return max;
-  if (number < min) return min;
-  return number;
+  debugger
+  if (dir === 'acs') {
+    for (let i = startPos + 1; i < itemList.length; i++) {
+      console.assert(itemList[i] !== undefined, itemList, i);
+      if (itemList[i].disabled) continue;
+      return i;
+    }
+  } else {
+    for (let i = startPos - 1; i >= 0; i--) {
+      if (itemList[i].disabled) continue;
+      return i;
+    }
+  }
+  return startPos;
 }
