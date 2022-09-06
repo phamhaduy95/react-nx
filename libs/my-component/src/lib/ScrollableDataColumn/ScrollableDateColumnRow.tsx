@@ -16,7 +16,6 @@ type DataColumnRowProps = {
 };
 export const  DataColumnRow= memo((props: DataColumnRowProps)=>{
   const { data, disabled, rootRef, index,height } = props;
-  console.log(height)
   const id = index.toString();
   const action = useDataColumnStore((state)=>(state.action));
   const isSelected = useDataColumnStore((state)=>(state.selectedItem?.id === id));
