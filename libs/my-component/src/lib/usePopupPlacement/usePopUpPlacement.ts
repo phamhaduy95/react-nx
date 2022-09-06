@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect as useLayoutEffect } from 'react';
+import { MutableRefObject, useEffect, useEffect as useLayoutEffect } from 'react';
 import PopupPositionCalculator from './PopupPositionCalculator';
 import { OnResizeObserver } from './OnResizeObserver';
 import { transformToPixel } from './utilities';
@@ -64,7 +64,7 @@ function useInitialPosition(
   popup: ElementRef,
   placement: Placement
 ) {
-  useLayoutEffect(() => {
+  useEffect(() => {
     const button = wrapper.current;
     const menu = popup.current;
     if (button && menu) {
@@ -90,3 +90,5 @@ export function positionPopup(
   menu.style.top = transformToPixel(position.top);
   menu.style.left = transformToPixel(position.left);
 }
+
+
