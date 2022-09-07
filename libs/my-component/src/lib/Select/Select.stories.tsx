@@ -18,9 +18,10 @@ export const Example: ComponentStory<typeof Select> = (args)=>{
     return (
       <Select label={label} autoWidth={autoWidth}>
         <SelectSubHeader>Section1</SelectSubHeader>
-        <SelectOption value={12} label={'12'}></SelectOption>
-        <SelectOption value={40} label={'40'}></SelectOption>
-        <SelectOption value={60000} label={'60000'}></SelectOption>
+        <SelectOption value="12" label={'12'}></SelectOption>
+        <SelectOption value="40" label={'40'}></SelectOption>
+        <SelectOption value="60" label={'60'}></SelectOption>
+        <SelectOption value="70" label={'70'}></SelectOption>
       </Select>
     )
 };

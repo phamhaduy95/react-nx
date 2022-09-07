@@ -1,23 +1,22 @@
 import { createContext, useContext, useEffect, useMemo } from 'react';
 import { createStore, StoreApi } from 'zustand';
+import { searchForNextNonDisableItem } from '../utils/highLightedItemState';
 
 export type SelectState = {
-  selectedItem: {
-    value: string;
-    id: string;
-  } | null;
-  itemList: string[];
-  highLightedItem: string | null;
+  itemList: { index: number; disabled: boolean }[];
+  selectedItem: { index: number,value:string } | null;
+  highLightedItem: { index: number } | null;
   isPopupOpen: boolean;
   action: {
-    subscribe: (id: string) => void;
-    unsubscribe: (id: string) => void;
+    disableItem: (index: number) => void;
+    unDisableItem: (index: number) => void;
+    subscribe: (index: number) => void;
+    unsubscribe: (index: number) => void;
     selectItem: (item: SelectState['selectedItem']) => void;
     togglePopup: (isOpen: boolean) => void;
-    hightLightItem: (id: SelectState['highLightedItem']) => void;
-    hightLightNextItem: () => void;
-    hightLightPreviousItem: () => void;
-    hightLightFirstItem: () => void;
+    hightLightItem: (index: SelectState['highLightedItem']) => void;
+    highlightNext: () => void;
+    highlightPrev: () => void;
   };
 };
 
@@ -34,10 +33,6 @@ type StoreContextProps = {
 export function SelectStoreProvider(props: StoreContextProps) {
   const { children } = props;
 
-  
-  useEffect(()=>{
-    console.log("mount")
-  },[])
   const store = useMemo(() => {
     return createStore<SelectState>((set) => ({
       selectedItem: null,
@@ -45,58 +40,94 @@ export function SelectStoreProvider(props: StoreContextProps) {
       itemList: [],
       highLightedItem: null,
       action: {
-        subscribe(id) {
+        subscribe(index) {
           set((state) => {
-            const newList = [...state.itemList];
-            newList.push(id);
-            return { itemList: newList };
+            const itemList = [...state.itemList];
+            const item: SelectState['itemList'][number] = {
+              index,
+              disabled: false,
+            };
+            itemList.push(item);
+            return { itemList: itemList };
           });
         },
+        disableItem(index) {
+          set((state) => {
+            const itemList = [...state.itemList];
+            const item = itemList[index];
+            item.disabled = true;
+            let newState = { itemList: itemList };
+            if (state.highLightedItem?.index === index) {
+              return { ...newState, highLightedItem: null };
+            }
+            return newState;
+          });
+        },
+        unDisableItem(index) {
+          set((state) => {
+            const itemList = [...state.itemList];
+            const item = itemList[index];
+            item.disabled = false;
+            return { itemList: itemList };
+          });
+        },
+
         unsubscribe(id) {
           set((state) => {
-            const newList = [...state.itemList];
-            newList.filter((e) => e !== id);
-            return { itemList: newList };
+            const itemList = [...state.itemList];
+            itemList.filter((item) => item.index !== id);
+            return { itemList: itemList };
           });
         },
         selectItem(item) {
           set((state) => {
-            if (item?.id === state.selectedItem?.id) return {};
             return { selectedItem: item };
           });
         },
         togglePopup(isOpen) {
           set({ isPopupOpen: isOpen });
         },
-        hightLightFirstItem() {
+        highlightNext() {
           set((state) => {
-            const firstItemId = state.itemList[0];
-            return { highLightedItem: firstItemId };
+            if (state.highLightedItem === null) {
+              const newPos = searchForNextNonDisableItem(
+                state.itemList,
+                -1,
+                'acs'
+              );
+              return { highLightedItem: { index: newPos } };
+            }
+            const oldPos = state.highLightedItem.index;
+            const newPos = searchForNextNonDisableItem(
+              state.itemList,
+              oldPos,
+              'acs'
+            );
+            return { highLightedItem: { index: newPos } };
           });
         },
         hightLightItem(id) {
           set({ highLightedItem: id });
         },
-        hightLightNextItem() {
+
+        highlightPrev() {
           set((state) => {
-            const currItem = state.highLightedItem;
-            if (currItem === null)
-              return { highLightedItem: state.itemList[0] };
-            const currPos = state.itemList.findIndex((e) => e === currItem);
-            const nextPos =
-              currPos + 1 > state.itemList.length - 1 ? 0 : currPos + 1;
-            return { highLightedItem: state.itemList[nextPos] };
-          });
-        },
-        hightLightPreviousItem() {
-          set((state) => {
-            const currItem = state.highLightedItem;
-            if (currItem === null)
-              return { highLightedItem: state.itemList[0] };
-            const currPos = state.itemList.findIndex((e) => e === currItem);
-            const previousPos =
-              currPos - 1 < 0 ? state.itemList.length - 1 : currPos - 1;
-            return { highLightedItem: state.itemList[previousPos] };
+            if (state.highLightedItem === null) {
+              const oldPos = state.itemList.length;
+              const newPos = searchForNextNonDisableItem(
+                state.itemList,
+                oldPos,
+                'des'
+              );
+              return { highLightedItem: { index: newPos } };
+            }
+            const oldPos = state.highLightedItem.index;
+            const newPos = searchForNextNonDisableItem(
+              state.itemList,
+              oldPos,
+              'des'
+            );
+            return { highLightedItem: { index: newPos } };
           });
         },
       },

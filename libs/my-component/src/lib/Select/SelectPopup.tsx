@@ -25,7 +25,7 @@ export const SelectPopup = (props: SelectPopupProps) => {
   };
 
   useSwitchFocus(menuRef, isMenuFocused);
-
+  // when popup is closed, reset the highlightedItem in store and move focus back to TextField
   useEffect(() => {
     if (isShowed) return;
     action.hightLightItem(null);
@@ -37,12 +37,12 @@ export const SelectPopup = (props: SelectPopupProps) => {
     switch (key) {
       case 'ArrowDown': {
         e.preventDefault();
-        action.hightLightNextItem();
+        action.highlightNext();
         return;
       }
       case 'ArrowUp': {
         e.preventDefault();
-        action.hightLightPreviousItem();
+        action.highlightPrev();
         return;
       }
       case 'Enter': {
