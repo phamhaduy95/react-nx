@@ -32,7 +32,7 @@ type IndexedContextMenuItemProps = ContextMenuItemProps & { index: number };
 function IndexedContextMenuItem(props: IndexedContextMenuItemProps) {
   const newProps = { ...defaultProps, ...props };
   const { children, suffix, prefix, onSelect, index, disabled } = newProps;
-  const itemRef = useRef<HTMLButtonElement>(null);
+  const itemRef = useRef<HTMLDivElement>(null);
   const action = useContextMenuStore((state) => state.action);
   const isFocus = useContextMenuStore(
     (state) => state.highLightedItem?.index === index
@@ -97,13 +97,13 @@ function IndexedContextMenuItem(props: IndexedContextMenuItemProps) {
   };
 
   const renderSuffix = () => {
-    if (prefix)
+    if (suffix)
       return <span className="ContextMenu__Item__Suffix">{suffix}</span>;
     return <></>;
   };
 
   return (
-    <button
+    <div
       className={className}
       tabIndex={-1}
       ref={itemRef}
@@ -113,12 +113,12 @@ function IndexedContextMenuItem(props: IndexedContextMenuItemProps) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <>
+    
         {renderPrefix()}
         <span className="ContextMenu__Item__Content">{children}</span>
         {renderSuffix()}
-      </>
-    </button>
+   
+    </div>
   );
 }
 

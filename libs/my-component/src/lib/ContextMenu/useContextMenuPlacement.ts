@@ -13,8 +13,6 @@ export function useContextMenuPlacement(
   ref: ElementRef,
   popupRef: ElementRef,
   initialPlacement: Placement,
-  // the callback whose purpose is to set highlight Item is null
-  focusCallback: () => void
 ) {
   // ensure the position style for popup is fixed
   useEffect(() => {
@@ -36,7 +34,7 @@ export function useContextMenuPlacement(
         basePoint
       );
       positionPopup(popupEl, newPlacement, basePoint);
-      hideThenShowAgain(popupEl, focusCallback);
+      hideThenShowAgain(popupEl);
     };
     el.addEventListener('contextmenu', callback);
     return () => {
@@ -102,8 +100,7 @@ function getViewPortSize() {
   };
 }
 
-function hideThenShowAgain(popupEl: HTMLElement, focusCallback: () => void) {
-  focusCallback();
+function hideThenShowAgain(popupEl: HTMLElement) {
   popupEl.classList.remove('is-showed');
   const timeOut = setTimeout(() => {
     popupEl.classList.add('is-showed');

@@ -75,7 +75,7 @@ export function ContextMenuStoreProvider(props: Props) {
         highlightNext() {
           set((state) => {
             if (state.highLightedItem === null) {
-              const newPos = searchForNextNonDisableItem(state.itemList,0,"acs");
+              const newPos = searchForNextNonDisableItem(state.itemList,-1,"acs");
               return {highLightedItem:{index:newPos}}
             }
             
@@ -92,7 +92,7 @@ export function ContextMenuStoreProvider(props: Props) {
           set((state) => {
      
             if (state.highLightedItem === null) {
-              const oldPos = state.itemList.length-1;
+              const oldPos = state.itemList.length;
               const newPos = searchForNextNonDisableItem(state.itemList,oldPos,"des");
               return {highLightedItem:{index:newPos}}
             }

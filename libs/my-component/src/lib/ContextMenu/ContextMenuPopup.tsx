@@ -17,9 +17,7 @@ export function ContextMenuPopup(props: ContextMenuPopupProps) {
   const action = useContextMenuStore((state) => state.action);
   const isOpen = useContextMenuStore((state) => state.isPopupOpen);
   const popupRef = useRef<HTMLDivElement>(null);
-  useContextMenuPlacement(targetRef, popupRef, initialPlacement,()=>{
-    action.highlightOne(null);
-  });
+  useContextMenuPlacement(targetRef, popupRef, initialPlacement);
   // hide the context menu when window is scrolling
   useEffect(() => {
     const popupEl = popupRef.current;
@@ -38,6 +36,7 @@ export function ContextMenuPopup(props: ContextMenuPopupProps) {
     if (targetEl === null) return;
     const callback = () => {
       action.togglePopup(true);
+      action.highlightOne(null);
     };
     targetEl.addEventListener('contextmenu', callback);
     return () => {
@@ -50,7 +49,7 @@ export function ContextMenuPopup(props: ContextMenuPopupProps) {
     action.highlightOne(null);
   }, [isOpen]);
 
-  const PopupClassName = classNames('ContextMenu', { [`is-showed`]: isOpen });
+  const PopupClassName = classNames('ContextMenu',{ [`is-showed`]: isOpen });
 
   const handleClickOutSide = () => {
     action.togglePopup(false);
