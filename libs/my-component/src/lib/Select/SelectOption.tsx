@@ -1,10 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { useMemo } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-
 import classNames from 'classnames';
 import { useSelectStore } from './SelectStoreProvider';
-import { useStore } from 'zustand';
 import { useSwitchFocus } from '../utils/hooks';
 import { ensureElementsListAsArray } from '../utils/ReactElementProcessor';
 export interface SelectOption {
@@ -32,14 +28,12 @@ type IndexedSelectOption = SelectOption & { index: number };
 function IndexedSelectOption(props: IndexedSelectOption) {
   const newProps = { ...defaultProps, ...props };
   const { children, label, value, isDefault, index, disabled } = newProps;
-  const store = useSelectStore();
-  const action = useStore(store, (state) => state.action);
-  const isSelected = useStore(
-    store,
+
+  const action = useSelectStore((state) => state.action);
+  const isSelected = useSelectStore(
     (state) => state.selectedItem?.index === index
   );
-  const isHighLighted = useStore(
-    store,
+  const isHighLighted = useSelectStore(
     (state) => state.highLightedItem?.index === index
   );
 
@@ -84,7 +78,6 @@ function IndexedSelectOption(props: IndexedSelectOption) {
   });
 
   const handleKeyPressed = (e: React.KeyboardEvent) => {
-
     const key = e.key;
     switch (key) {
       case 'Enter': {

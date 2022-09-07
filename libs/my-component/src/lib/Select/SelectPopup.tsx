@@ -13,10 +13,10 @@ interface SelectPopupProps {
 export const SelectPopup = (props: SelectPopupProps) => {
   const { children, targetRef } = props;
   const menuRef = useRef<HTMLDivElement>(null);
-  const store = useSelectStore();
-  const isShowed = useStore(store, (state) => state.isPopupOpen);
-  const action = useStore(store, (state) => state.action);
-  const isMenuFocused = useStore(store, (state) => {
+
+  const isShowed = useSelectStore((state) => state.isPopupOpen);
+  const action = useSelectStore( (state) => state.action);
+  const isMenuFocused = useSelectStore((state) => {
     return state.isPopupOpen === true && state.highLightedItem === null;
   });
 

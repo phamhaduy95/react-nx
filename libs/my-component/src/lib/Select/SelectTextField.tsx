@@ -1,6 +1,5 @@
 import React, { forwardRef } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { useStore } from 'zustand';
 import { useSelectStore } from './SelectStoreProvider';
 import { SelectProps } from './Select';
 import { TextField, TextFieldProps } from '../TextField';
@@ -17,10 +16,8 @@ export const SelectTextField = forwardRef<
   SelectTextFieldProps
 >((props, ref) => {
   const { helperText, label, onSelect } = props;
-  const store = useSelectStore();
-  const action = useStore(store, (state) => state.action);
-  const selectedItem = useStore(
-    store,
+  const action = useSelectStore((state) => state.action);
+  const selectedItem = useSelectStore(
     (state) => state.selectedItem,
     (a, b) => a?.index === b?.index
   );
