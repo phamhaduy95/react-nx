@@ -1,6 +1,4 @@
-import { range } from 'd3';
 import React, { useEffect, useRef } from 'react';
-import { useStore } from 'zustand';
 import PopupElement from '../Popup/PopupElement';
 import { useDropDownStore } from './DropDownStoreProvider';
 import { useSwitchFocus } from '../utils/hooks';
@@ -13,42 +11,38 @@ type DropDownMenuProps = {
 export function DropDownMenu(props: DropDownMenuProps) {
   const { targetRef, children } = props;
   const menuRef = useRef<HTMLDivElement>(null);
-  const store = useDropDownStore();
-  const action = useStore(store, (state) => state.action);
-  const isPopupOpen = useStore(store, (state) => state.isPopupOpen);
+  const action = useDropDownStore((state) => state.action);
+  const isPopupOpen = useDropDownStore((state) => state.isPopupOpen);
   const handleClickOutSidePopup = () => {
     action.togglePopup(false);
   };
-
-  const isPopupFocus = useStore(store, (state) => {
-    return state.highLightedItem === null && state.isPopupOpen === true;
+  const isMenuFocused = useDropDownStore((state) => {
+    return state.isPopupOpen === true && state.highLightedItem === null;
   });
 
-  useSwitchFocus(menuRef, isPopupFocus);
+  useSwitchFocus(menuRef, isMenuFocused);
 
   useEffect(() => {
     if (isPopupOpen) return;
-    action.changeHighLightItem(null);
-    switchFocus(targetRef,true);
+    action.hightLightItem(null);
+    switchFocus(targetRef, true);
   }, [isPopupOpen]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    e.stopPropagation();
     e.preventDefault();
     const key = e.key;
     switch (key) {
       case 'ArrowDown': {
-        action.hightLightNextItem();
+        action.highlightNext();
         return;
       }
       case 'ArrowUp': {
-        action.hightLightPreviousItem();
+        action.highlightPrev();
         return;
       }
-      case "Escape":
-      case "Enter":{
+      case 'Escape':
+      case 'Enter': {
         action.togglePopup(false);
-  
       }
     }
   };
@@ -74,7 +68,10 @@ export function DropDownMenu(props: DropDownMenuProps) {
   );
 }
 
-function switchFocus(ref:React.MutableRefObject<HTMLElement|null>,isFocus:boolean){
+function switchFocus(
+  ref: React.MutableRefObject<HTMLElement | null>,
+  isFocus: boolean
+) {
   const el = ref.current;
   if (el === null) return;
   if (isFocus) {

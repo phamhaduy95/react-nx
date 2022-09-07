@@ -1,9 +1,8 @@
 import classNames from 'classnames';
-import { memo, useEffect, useMemo, useRef } from 'react';
-import { useStore } from 'zustand';
+import { useEffect, useRef } from 'react';
 import { useDropDownStore } from './DropDownStoreProvider';
-import { v4 as uuidv4 } from 'uuid';
 import { useSwitchFocus } from '../utils/hooks';
+import { ensureElementsListAsArray } from '../utils/ReactElementProcessor';
 
 export type DropDownItemProps = {
   className?: string;
@@ -20,34 +19,36 @@ const defaultProps: Required<DropDownItemProps> = {
   children: <></>,
   onSelect() {},
 };
-export const DropDownItem = (props: DropDownItemProps) => {
-  const newProps = { ...defaultProps, ...props };
-  const { className, suffix, prefix, children, onSelect } = newProps;
-  const id = useMemo(() => {
-    return uuidv4();
-  }, []);
-  const store = useDropDownStore();
 
-  const action = useStore(store, (state) => state.action);
+export function DropDownItem(props: DropDownItemProps) {
+  return <></>;
+}
+
+type IndexedDropDownItemProps = DropDownItemProps & { index: number };
+
+const IndexedDropDownItem = (props: IndexedDropDownItemProps) => {
+  const newProps = { ...defaultProps, ...props };
+  const { className, suffix, prefix, children, onSelect, index } = newProps;
+  const itemRef = useRef<HTMLDivElement>(null);
+  const action = useDropDownStore((state) => state.action);
   useEffect(() => {
-    action.subscribe(id);
+    action.subscribe(index);
     return () => {
-      action.unsubscribe(id);
+      action.unsubscribe(index);
     };
   }, []);
 
-  const isSelected = useStore(store, (state) => {
-    return id === state.highLightedItem;
-  });
+  const isHighLighted = useDropDownStore((state)=>{
+    return state.highLightedItem?.index === index
+  })
 
-  const itemRef = useRef<HTMLDivElement>(null);
+  useSwitchFocus(itemRef,isHighLighted)
 
-  const itemClassName = classNames('DropDown__Item', {
-    className,
-    ['is-selected']: isSelected,
-  });
 
-  useSwitchFocus(itemRef, isSelected);
+
+  const itemClassName = classNames('DropDown__Item', 
+    className,);
+
 
   const renderSuffix = () => {
     if (suffix) return <div className="DropDown__Item__Suffix">{suffix}</div>;
@@ -65,10 +66,10 @@ export const DropDownItem = (props: DropDownItemProps) => {
   };
 
   const handleMouseEnter = () => {
-    action.changeHighLightItem(id);
+    action.hightLightItem({ index });
   };
   const handleMouseLeave = () => {
-    action.changeHighLightItem(null);
+    action.hightLightItem(null);
   };
 
   const handleKeyPressed = (e: React.KeyboardEvent) => {
@@ -97,3 +98,14 @@ export const DropDownItem = (props: DropDownItemProps) => {
     </div>
   );
 };
+
+export function giveIndexToDropDownItem(children: JSX.Element[] | JSX.Element) {
+  const childrenArray = ensureElementsListAsArray(children);
+  return childrenArray
+    .filter((e) => e.type.name === DropDownItem.name)
+    .map((e, i) => {
+      const props = e.props;
+      const newProps = { ...props, index: i };
+      return <IndexedDropDownItem {...newProps} key={i} />;
+    });
+}

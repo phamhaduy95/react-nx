@@ -1,82 +1,82 @@
-@import "../_sharedStyle.scss";
-@import "../_utils.scss";
+@import '../_sharedStyle.scss';
+@import '../_utils.scss';
 
 .DropDown {
   width: max-content;
   height: max-content;
-  
-  &:focus,&:focus-visible {
-     @include useFocusStyle();
-  }
 
   .DropDown__Trigger {
+    color: $text-color;
     width: 100%;
     border: $border;
     padding: 0.5rem;
+    user-select: none;
+    &:focus,
+    &:focus-visible {
+      @include useFocusStyle();
+    }
   }
 
   @at-root .DropDown__PopUp {
-   
     @at-root .DropDown__Menu {
-        padding: 0.25rem;
-        border: $border;
+      padding: 0.25rem;
+      border: $border;
+      border-radius: 5px;
+      &:focus-visible {
+        outline: none;
+      }
+      @at-root .DropDown__Item {
+        min-width: 90px;
+        padding: 0.25rem 0;
         border-radius: 5px;
-        &:focus-visible {
+        user-select: none;
+        cursor: pointer;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        color: $text-color;
+        white-space: nowrap;
+
+        &:focus-visible,
+        &:focus {
           outline: none;
+          background-color: hsl(0, 0%, 90%);
         }
-        @at-root .DropDown__Item {
-            min-width: 90px;
-            padding: 0.25rem 0;
-            border-radius: 5px;
-            user-select: none;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            color: $text-color;
-            white-space: nowrap;
 
-            &:focus-visible {
-              outline: none;
-            }
+        > .DropDown__Item__Prefix {
+          min-width: 1.25rem;
+          min-height: 1.25rem;
+          @include centerElement();
+          white-space: nowrap;
+        }
 
-            >.DropDown__Item__Prefix{
-              min-width: 1.25rem;
-              min-height: 1.25rem;
-              @include centerElement();
-              white-space: nowrap;
-            
-            }
+        > .DropDown__Item__Content {
+          padding: 0 1rem 0 0.5rem;
+        }
 
-            >.DropDown__Item__Content {
-     
-              padding: 0 1rem 0 0.5rem;
-            }
+        > .DropDown__Item__Suffix {
+          margin-left: auto;
+          margin-right: 0.25rem;
+        }
 
-            >.DropDown__Item__Suffix {
-              margin-left: auto;
-              margin-right: 0.25rem;
-        
-            }
-
-
-          &.is-selected {
-              background-color: $primary-color;
-              color: $text-color-dark;
-          }
+        &.is-selected {
+          background-color: $primary-color;
+          color: $text-color-dark;
+        }
       }
-        @at-root .DropDown__Menu__Separator{
-          margin: 0.5rem auto;
-          border-bottom: $border;
-          width: 95%;
-          height: 1px;
+      @at-root .DropDown__Menu__Separator {
+        margin: 0.5rem auto;
+        border-bottom: $border;
+        width: 95%;
+        height: 1px;
       }
-       @at-root .DropDown__ItemGroup__Label {
-          color: hsla(0,0%,60%,0.9);
-          user-select: none;
-          font-size: 0.8rem;
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          margin: 0.15rem 0;
-          text-indent: 15px;
-       }
+      @at-root .DropDown__ItemGroup__Label {
+        color: hsla(0, 0%, 60%, 0.9);
+        user-select: none;
+        font-size: 0.8rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0.15rem 0;
+        text-indent: 15px;
+      }
     }
   }
 }

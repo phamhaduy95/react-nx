@@ -1,21 +1,22 @@
 import { useRef } from 'react';
 import { DropDownMenu } from './DropDownMenu';
-import { useStore } from 'zustand';
 import {
   DropDownStoreProvider,
   useDropDownStore,
 } from './DropDownStoreProvider';
 import './DropDown.scss';
-
+import { giveIndexToDropDownItem } from './DropDownItem';
 
 export type DropDownProps = {
   children: JSX.Element | JSX.Element[];
   className?: string;
+  label:string;
 };
 
 const DropDownDefaultProps: Required<DropDownProps> = {
   className: '',
   children: <></>,
+  label:"",
 };
 export function DropDown(props: DropDownProps) {
   return (
@@ -27,10 +28,10 @@ export function DropDown(props: DropDownProps) {
 
 function WrappedDropDown(props: DropDownProps) {
   const newProps = { ...DropDownDefaultProps, ...props };
-  const { children, className } = newProps;
+  const { children, className,label } = newProps;
   const ref = useRef<HTMLDivElement>(null);
-  const store = useDropDownStore();
-  const action = useStore(store, (state) => state.action);
+  const action = useDropDownStore((state) => state.action);
+  const IndexedDropDownItems = giveIndexToDropDownItem(children)
 
   const handleClickToOpenPopup = () => {
     action.togglePopup(true);
@@ -42,7 +43,7 @@ function WrappedDropDown(props: DropDownProps) {
       case 'ArrowDown': {
         e.preventDefault();
         action.togglePopup(true);
-        action.hightLightFirstItem();
+        action.highlightNext();
         return;
       }
       case 'Enter': {
@@ -57,16 +58,17 @@ function WrappedDropDown(props: DropDownProps) {
   };
 
   return (
-    <div
-      className="DropDown"
-      tabIndex={0}
-      ref={ref}
-      onKeyDown={handleKeyPress}
-    >
-      <div className="DropDown__Trigger" onClick={handleClickToOpenPopup}>
-        ItemsList
+    <div className="DropDown" >
+      <div
+        className="DropDown__Trigger"
+        onClick={handleClickToOpenPopup}
+        tabIndex={0}
+        onKeyDown={handleKeyPress}
+        ref={ref}
+      >
+        {label}
       </div>
-      <DropDownMenu targetRef={ref}>{children}</DropDownMenu>
+      <DropDownMenu targetRef={ref}>{IndexedDropDownItems}</DropDownMenu>
     </div>
   );
 }
