@@ -63,7 +63,7 @@ const PopupElement = (props: PopupElementProps) => {
   const arrowRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   usePopupWidthHandler(targetRef, popupRef, width, placement);
-  usePopupPlacement(targetRef, popupRef, placement);
+  usePopupPlacement(targetRef, popupRef, placement,isShowed);
   usePopupPadding(popupRef, placement, padding);
 
   const rootClassName = classNames('Popup', {

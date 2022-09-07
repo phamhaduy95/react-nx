@@ -1,7 +1,8 @@
-import { MutableRefObject, useEffect, useEffect as useLayoutEffect } from 'react';
+import { MutableRefObject, useEffect, useLayoutEffect } from 'react';
 import PopupPositionCalculator from './PopupPositionCalculator';
 import { OnResizeObserver } from './OnResizeObserver';
 import { transformToPixel } from './utilities';
+
 
 type ElementRef = MutableRefObject<HTMLElement | null>;
 export type Placement =
@@ -29,13 +30,24 @@ export type Placement =
 export default function usePopupPlacement(
   wrapper: ElementRef,
   popUp: ElementRef,
-  placement: Placement
+  placement: Placement,
+  isOpen:boolean,
 ) {
   /** set initial position */
   useInitialPosition(wrapper, popUp, placement);
 
   /** change position according to the size of the window */
   usePositionOnWindowResize(wrapper, popUp, placement);
+
+  useLayoutEffect(()=>{
+    if (!isOpen) return;
+    const button = wrapper.current;
+    const menu = popUp.current;
+    if (button && menu) {
+      positionPopup(button, menu, placement);
+    }
+  },[isOpen])
+
 }
 
 function usePositionOnWindowResize(
