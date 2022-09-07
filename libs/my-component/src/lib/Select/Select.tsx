@@ -43,7 +43,6 @@ function WrappedSelect(props: SelectProps) {
   const rootClassName = classNames('Select', {
     'auto-width': autoWidth,
   });
-  console.log("debug")
   return (
     <div className={rootClassName}>
       <SelectTextField label={label} helperText={helperText} ref={rootRef} onSelect={onSelect} />

@@ -43,8 +43,6 @@ function IndexedSelectOption(props: IndexedSelectOption) {
     (state) => state.highLightedItem?.index === index
   );
 
-  console.log('debug');
-
   useEffect(() => {
     action.subscribe(index);
     return () => {
