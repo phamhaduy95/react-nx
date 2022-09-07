@@ -1,5 +1,6 @@
 import { createContext, useContext, useMemo } from 'react';
 import { createStore, StoreApi, useStore } from 'zustand';
+import { searchForNextNonDisableItem } from '../utils/highLightedItemState';
 
 type ContextMenuState = {
   itemList: { index: number; disabled: boolean }[];
@@ -133,22 +134,3 @@ export function useContextMenuStore<U>(
   return useStore(store, selector, equalFunc);
 }
 
-function searchForNextNonDisableItem(
-  itemList: ContextMenuState['itemList'],
-  startPos: number,
-  dir: 'des' | 'acs'
-) {
-  if (dir === 'acs') {
-    for (let i = startPos + 1; i < itemList.length; i++) {
-      console.assert(itemList[i] !== undefined, itemList, i);
-      if (itemList[i].disabled) continue;
-      return i;
-    }
-  } else {
-    for (let i = startPos - 1; i >= 0; i--) {
-      if (itemList[i].disabled) continue;
-      return i;
-    }
-  }
-  return startPos;
-}
