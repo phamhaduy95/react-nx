@@ -12,7 +12,7 @@ type Point = { x: number; y: number };
 export function useContextMenuPlacement(
   ref: ElementRef,
   popupRef: ElementRef,
-  initialPlacement: Placement,
+  initialPlacement: Placement
 ) {
   // ensure the position style for popup is fixed
   useEffect(() => {
@@ -76,20 +76,31 @@ function getCorrectPositionForPopup(
   basePlacement: Placement,
   basePoint: Point
 ) {
-  let newPlacement = basePlacement.toString();
   const viewPortSize = getViewPortSize();
-  if (basePoint.y + popupEl.clientHeight > viewPortSize.height) {
-    newPlacement = newPlacement.replace('bottom', 'top');
+  let { horizontal, vertical } = getDimensionsFromPlacement(basePlacement);
+  console.log(horizontal,vertical)
+  if (vertical === 'bottom') {
+    if (basePoint.y + popupEl.clientHeight > viewPortSize.height) {
+      vertical = 'top';
+    }
+  } else {
+    if (basePoint.y - popupEl.clientHeight < 0) {
+      vertical = 'bottom';
+    }
   }
-  if (basePoint.y - popupEl.clientHeight < 0) {
-    newPlacement = newPlacement.replace('top', 'bottom');
+
+  if (horizontal === 'right') {
+    if (basePoint.x + popupEl.clientWidth > viewPortSize.width) {
+      horizontal = 'left';
+    }
+  } else {
+    if (basePoint.x - popupEl.clientWidth < 0) {
+      horizontal = 'right';
+    }
   }
-  if (basePoint.x + popupEl.clientWidth > viewPortSize.width) {
-    newPlacement = newPlacement.replace('left', 'right');
-  }
-  if (basePoint.x - popupEl.clientWidth < 0) {
-    newPlacement = newPlacement.replace('right', 'left');
-  }
+
+  const newPlacement = `${vertical}-${horizontal}`;
+  console.log(newPlacement)
   return newPlacement as Placement;
 }
 
@@ -114,4 +125,11 @@ function switchFocus(el: HTMLElement, isFocus: boolean) {
     return;
   }
   el.blur();
+}
+
+type Dimensions = { horizontal: 'left' | 'right'; vertical: 'top' | 'bottom' };
+
+function getDimensionsFromPlacement(placement: Placement): Dimensions {
+  const [vertical,horizontal] = placement.split('-');
+  return { horizontal, vertical } as Dimensions;
 }
