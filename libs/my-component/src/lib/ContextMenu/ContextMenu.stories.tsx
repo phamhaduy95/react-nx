@@ -1,0 +1,40 @@
+import styled from '@emotion/styled';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { useRef } from 'react';
+import { ContextMenu } from './ContextMenu';
+import { ContextMenuItem } from './ContextMenuItem';
+
+export default {
+  component: ContextMenu,
+  title: 'my-component/ContextMenu',
+  subcomponents: { ContextMenuItem },
+} as ComponentMeta<typeof ContextMenu>;
+
+export const Example: ComponentStory<typeof ContextMenu> = (args) => {
+  const { placement } = args;
+  const targetRef = useRef<HTMLDivElement>(null);
+  const Box = styled('div')`
+    margin: 1rem auto;
+    width: 200px;
+    height: 400px;
+    border: 2px dashed grey;
+  `;
+  return (
+    <Box ref={targetRef}>
+      <ContextMenu targetRef={targetRef} placement={placement}>
+        <ContextMenuItem>Item 1</ContextMenuItem>
+        <ContextMenuItem prefix={<>a</>} suffix={<>aa</>}>
+          Item 2
+        </ContextMenuItem>
+        <ContextMenuItem disabled>Item 3</ContextMenuItem>
+        <ContextMenuItem>Item 4</ContextMenuItem>
+        <ContextMenuItem>Item 5</ContextMenuItem>
+        <ContextMenuItem>Item 6</ContextMenuItem>
+      </ContextMenu>
+    </Box>
+  );
+};
+
+Example.args = {
+  placement: 'bottom-right',
+};
