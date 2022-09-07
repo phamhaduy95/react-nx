@@ -8,7 +8,7 @@ export type DateTimeRangePickerProps = {
   className?: string;
 };
 
-export function DateTimeRangePicker() {
+export function DateTimeRangePicker(props:DateTimeRangePickerProps) {
   const initialState: DateTimeRangePickerState = {
     startDate: null,
     endDate: null,
@@ -21,7 +21,7 @@ export function DateTimeRangePicker() {
   );
 }
 
-function WrappedComponent() {
+function WrappedComponent(props:DateTimeRangePickerProps) {
   const { state, action } = useDateTimeRangePickerContext();
   const handleStartDateSelect = (date: Date | null) => {
     action.selectStartDate(date);
