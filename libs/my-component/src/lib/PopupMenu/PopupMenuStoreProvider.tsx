@@ -5,13 +5,13 @@ import { searchForNextNonDisableItem } from '../utils/highLightedItemState';
 type PopUpMenuState = {
   itemList: { id: string; disabled: boolean }[];
   highLightedItem: { id: string } | null;
-  selectedItem: { id: string } | null;
+  selectedItem: { id: string,value?:string } | null;
   isPopupOpen: boolean;
   action: {
     togglePopup: (isOpen: boolean) => void;
     disableItem: (id: PopUpMenuState['itemList'][number]['id']) => void;
     unDisableItem: (id: PopUpMenuState['itemList'][number]['id']) => void;
-    selectItem:(id:string)=>void;
+    selectItem:(id:string,value?:string)=>void;
     highlightNext: () => void;
     highlightPrev: () => void;
     highlightOne: (
@@ -44,9 +44,9 @@ export function PopupMenuStoreProvider(props: Props) {
         togglePopup(isOpen) {
           set((state) => ({ isPopupOpen: isOpen }));
         },
-        selectItem(id){
+        selectItem(id,value){
           set((state) => {
-            return {selectedItem:{id}}
+            return {selectedItem:{id,value}}
           });
         },
         disableItem(id) {
