@@ -1,9 +1,11 @@
-import { Placement } from './useContextMenuPlacement';
+import { Placement, useContextMenuPlacement } from './useContextMenuPlacement';
 import './ContextMenu.scss';
 import { ContextMenuStoreProvider } from './ContextMenuStoreProvider';
-import { ContextMenuPopup } from './ContextMenuPopup';
-import { giveIndexToItems } from './ContextMenuItem';
-import "./ContextMenu.scss"
+import './ContextMenu.scss';
+import { PopupMenu } from '../PopupMenu/PopupMenu';
+import { useRef } from 'react';
+import { reDefineMenuItem } from '../PopupMenu/PopupMenuItem';
+
 
 type ContextMenuProps = {
   className?: string;
@@ -31,15 +33,13 @@ export function ContextMenu(props: ContextMenuProps) {
 function WrappedContextMenu(props: ContextMenuProps) {
   const newProps = { ...defaultProps, ...props };
   const { children, placement, className, targetRef } = newProps;
-  const menuItems = giveIndexToItems(children);
+  const MenuItems = reDefineMenuItem(children);
+  const popupRef = useRef<HTMLDivElement>(null);
+  useContextMenuPlacement(targetRef,popupRef,placement);
   return (
-    <ContextMenuPopup
-      targetRef={targetRef}
-      className={className}
-      initialPlacement={placement}
-    >
-      {menuItems}
-    </ContextMenuPopup>
+    <PopupMenu className='ContextMenu' targetRef={targetRef} ref={popupRef}>
+      {MenuItems}
+    </PopupMenu>
   );
 }
 

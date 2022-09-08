@@ -3,6 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { useRef } from 'react';
 import { ContextMenu } from './ContextMenu';
 import { ContextMenuItem } from './ContextMenuItem';
+import { ContextMenuItemGroup } from './ContextMenuItemGroup';
 
 export default {
   component: ContextMenu,
@@ -28,8 +29,11 @@ export const Example: ComponentStory<typeof ContextMenu> = (args) => {
         </ContextMenuItem>
         <ContextMenuItem disabled>Item 3</ContextMenuItem>
         <ContextMenuItem>Item 4</ContextMenuItem>
+        <ContextMenuItemGroup label='group 1'>
         <ContextMenuItem>Item 5</ContextMenuItem>
         <ContextMenuItem>Item 6</ContextMenuItem>
+        </ContextMenuItemGroup>
+  
       </ContextMenu>
     </Box>
   );
