@@ -1,5 +1,5 @@
-import { PopUpMenuStoreProvider, usePopUpMenuStore } from '../PopupMenuStore/PopupMenuStoreProvider';
+import { PopupMenuStoreProvider, usePopupMenuStore } from '../PopupMenu/PopupMenuStoreProvider';
 
 
-export const SelectStoreProvider = PopUpMenuStoreProvider;
-export const useSelectStore = usePopUpMenuStore;
+export const SelectStoreProvider = PopupMenuStoreProvider;
+export const useSelectStore = usePopupMenuStore;

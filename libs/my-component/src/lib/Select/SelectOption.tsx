@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import { useSelectStore } from './SelectStoreProvider';
 import { useSwitchFocus } from '../utils/hooks';
 import { ensureElementsListAsArray } from '../utils/ReactElementProcessor';
+import { v4 as uuidv4 } from 'uuid';
 export interface SelectOption {
   value: string;
   children?: React.ReactNode | false;
@@ -23,41 +24,42 @@ export function SelectOption(props: SelectOption) {
   return <></>;
 }
 
-type IndexedSelectOption = SelectOption & { index: number };
-
-function IndexedSelectOption(props: IndexedSelectOption) {
+function SelectOptionWithId(props: SelectOption) {
   const newProps = { ...defaultProps, ...props };
-  const { children, label, value, isDefault, index, disabled } = newProps;
+  const { children, label, value, isDefault, disabled } = newProps;
+  const id = useMemo(()=>{
+    return uuidv4();
+  },[])
 
   const action = useSelectStore((state) => state.action);
   const isSelected = useSelectStore(
-    (state) => state.selectedItem?.index === index
+    (state) => state.selectedItem?.id === id
   );
   const isHighLighted = useSelectStore(
-    (state) => state.highLightedItem?.index === index
+    (state) => state.highLightedItem?.id === id
   );
 
   useEffect(() => {
-    action.subscribe(index);
+    action.subscribe({id,disabled});
     return () => {
-      action.unsubscribe(index);
+      action.unsubscribe(id);
     };
   }, []);
 
   // update disabled state of item in ItemList in store when then disabled prop is changed. This useEffect must always be put after the item subscription in store useEffect
   useEffect(() => {
     if (disabled) {
-      action.disableItem(index);
+      action.disableItem(id);
       return;
     }
-    action.unDisableItem(index);
+    action.unDisableItem(id);
   }, [disabled]);
 
   const itemRef = useRef(null);
   useSwitchFocus(itemRef, isHighLighted);
   useEffect(() => {
     if (!isDefault) return;
-    action.selectItem({ index, value });
+    action.selectItem(id,value);
   }, [isDefault]);
 
   const renderContent = () => {
@@ -68,7 +70,7 @@ function IndexedSelectOption(props: IndexedSelectOption) {
 
   const handleSelectItem = (e: React.MouseEvent) => {
     if (disabled) return;
-    action.selectItem({ index, value });
+    action.selectItem(id,value);
     action.togglePopup(false);
   };
 
@@ -82,7 +84,7 @@ function IndexedSelectOption(props: IndexedSelectOption) {
     switch (key) {
       case 'Enter': {
         if (disabled) return;
-        action.selectItem({ index, value });
+        action.selectItem(id,value);
         return;
       }
     }
@@ -90,11 +92,11 @@ function IndexedSelectOption(props: IndexedSelectOption) {
 
   const handleMouseEnter = () => {
     if (disabled) return;
-    action.hightLightItem({ index });
+    action.highlightOne(id);
   };
   const handleMouseLeave = () => {
     if (disabled) return;
-    action.hightLightItem(null);
+    action.highlightOne(null);
   };
 
   return (
@@ -121,6 +123,6 @@ export function giveIndexToSelectOptions(
     .map((e, i) => {
       const props = e.props;
       const newProps = { ...props, index: i };
-      return <IndexedSelectOption {...newProps} key={i} />;
+      return <SelectOptionWithId {...newProps} key={i} />;
     });
 }

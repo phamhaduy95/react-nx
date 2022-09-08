@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import { useStore } from 'zustand';
 import PopupElement from '../Popup/PopupElement';
 import { useSelectStore } from './SelectStoreProvider';
 import { switchFocus } from './utils';
@@ -15,7 +14,7 @@ export const SelectPopup = (props: SelectPopupProps) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const isShowed = useSelectStore((state) => state.isPopupOpen);
-  const action = useSelectStore( (state) => state.action);
+  const action = useSelectStore((state) => state.action);
   const isMenuFocused = useSelectStore((state) => {
     return state.isPopupOpen === true && state.highLightedItem === null;
   });
@@ -28,7 +27,7 @@ export const SelectPopup = (props: SelectPopupProps) => {
   // when popup is closed, reset the highlightedItem in store and move focus back to TextField
   useEffect(() => {
     if (isShowed) return;
-    action.hightLightItem(null);
+    action.highlightOne(null);
     switchFocus(targetRef, true);
   }, [isShowed]);
 

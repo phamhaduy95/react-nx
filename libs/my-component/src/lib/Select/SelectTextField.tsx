@@ -19,13 +19,18 @@ export const SelectTextField = forwardRef<
   const action = useSelectStore((state) => state.action);
   const selectedItem = useSelectStore(
     (state) => state.selectedItem,
-    (a, b) => a?.index === b?.index
+    (a, b) => a?.id === b?.id
   );
 
   useEffectSkipFirstRender(() => {
-    const value = selectedItem === null ? '' : selectedItem.value;
+    const value =
+      selectedItem === null
+        ? ''
+        : selectedItem.value === undefined
+        ? ''
+        : selectedItem.value;
     onSelect(value);
-  }, [selectedItem?.index]);
+  }, [selectedItem?.id]);
 
   const IconField = () => {
     return (
