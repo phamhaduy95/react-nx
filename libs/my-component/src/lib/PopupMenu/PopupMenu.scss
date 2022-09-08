@@ -1,0 +1,80 @@
+@import '../_utils.scss';
+@import '../_sharedStyle.scss';
+.PopupMenu {
+    position: fixed;
+    height: max-content;
+    width: max-content;
+    display: flex;
+    border: $border;
+    padding: 0.25rem;
+    flex-direction: column;
+    background-color: white;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.2s ease-in;
+    border-radius: 5px;
+    z-index: 200;
+    @at-root .PopupMenu__ItemGroup {
+      display: flex;
+      flex-direction: column;
+      >.PopupMenu__ItemGroup__Label {
+        margin:0.5rem 0;
+        width: 100%;
+        text-align: left;
+        text-indent: 0.25rem;
+        color: hsl(0, 0%, 60%);
+        font-size: 0.8rem;
+      }
+    }
+    @at-root .PopupMenu__Item {
+      min-width: 150px;
+      display: flex;
+      background-color: unset;
+      border: none;
+      user-select: none;
+      cursor: pointer;
+      align-items: center;
+      color: $text-color;
+      > .PopupMenu__Item__Prefix {
+        min-width: 1.25rem;
+        min-height: 1.25rem;
+        @include centerElement();
+        white-space: nowrap;
+      }
+      > .PopupMenu__Item__Content {
+        margin-right: 0.25rem;
+        padding: 0.5rem;
+        padding-left: 0.25rem;
+        white-space: nowrap;
+      }
+      > .PopupMenu__Item__Suffix {
+        margin-left: auto;
+        min-width: 1.25rem;
+        min-height: 1.25rem;
+        padding: 0.5rem;
+        white-space: nowrap;
+        @include centerElement();
+      }
+  
+      &:focus-visible,
+      &:focus {
+        background-color: hsl(220, 80%, 90%, 0.8);
+        outline: none;
+        border-radius: 5px;
+      }
+  
+      &.is-disabled {
+        color: hsl(0, 0%, 80%);
+      }
+    }
+  
+    &:not(.is-showed) {
+      visibility: collapse;
+      opacity: 0;
+    }
+  
+    &:focus-visible {
+      outline: none;
+    }
+  }
+  
