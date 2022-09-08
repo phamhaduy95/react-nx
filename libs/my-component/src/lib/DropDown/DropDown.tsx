@@ -5,7 +5,8 @@ import {
   useDropDownStore,
 } from './DropDownStoreProvider';
 import './DropDown.scss';
-import { giveIndexToDropDownItem } from './DropDownItem';
+import { reDefineMenuItem } from '../PopupMenu/PopupMenuItem';
+
 
 export type DropDownProps = {
   children: JSX.Element | JSX.Element[];
@@ -31,8 +32,7 @@ function WrappedDropDown(props: DropDownProps) {
   const { children, className,label } = newProps;
   const ref = useRef<HTMLDivElement>(null);
   const action = useDropDownStore((state) => state.action);
-  const IndexedDropDownItems = giveIndexToDropDownItem(children)
-
+  const Items = reDefineMenuItem(children)
   const handleClickToOpenPopup = () => {
     action.togglePopup(true);
   };
@@ -68,7 +68,7 @@ function WrappedDropDown(props: DropDownProps) {
       >
         {label}
       </div>
-      <DropDownMenu targetRef={ref}>{IndexedDropDownItems}</DropDownMenu>
+      <DropDownMenu targetRef={ref}>{Items}</DropDownMenu>
     </div>
   );
 }
