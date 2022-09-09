@@ -1,12 +1,12 @@
-import React, { useEffect, useRef } from "react";
-import ModalBody from "./ModalBody";
-import ModalFooter, { DefaultFooter } from "./ModalFooter";
-import ModalHeader from "./ModalHeader";
-import ClickOutSideWatcher from "../ClickOutsideWatcher/ClickOutSideWatcher";
-import ReactDOM from "react-dom";
-import ModalState from "./ModalState";
-import "./Modal.scss";
-import ModalContextProvider, { useModalContext } from "./ModalContextProvider";
+import React, { useEffect, useRef } from 'react';
+import ModalBody from './ModalBody';
+import ModalFooter, { DefaultFooter } from './ModalFooter';
+import ModalHeader from './ModalHeader';
+import ClickOutSideWatcher from '../ClickOutsideWatcher/ClickOutSideWatcher';
+import ReactDOM from 'react-dom';
+import ModalState from './ModalState';
+import './Modal.scss';
+import ModalContextProvider, { useModalContext } from './ModalContextProvider';
 // ToDo: reimplement Modal using React Portal.
 export type ModalProps = {
   className?: string;
@@ -20,20 +20,20 @@ export type ModalProps = {
   timeToExpire?: number;
 };
 
-const defaultPropsValue:Required<ModalProps> = {
-  className:"Modal--default",
-  isOpen:false,
-  draggable:false,
-  footer: <DefaultFooter/>,
-  header:"Modal header",
-  body:<>Modal body</>,
-  onClose:()=>{},
-  onOpen:()=>{},
-  timeToExpire:0
-}
+const defaultPropsValue: Required<ModalProps> = {
+  className: 'Modal--default',
+  isOpen: false,
+  draggable: false,
+  footer: <DefaultFooter />,
+  header: 'Modal header',
+  body: <>Modal body</>,
+  onClose: () => {},
+  onOpen: () => {},
+  timeToExpire: 0,
+};
 
 function WrappedModal(props: ModalProps) {
-  const newProps = {...defaultPropsValue,...props};
+  const newProps = { ...defaultPropsValue, ...props };
   const {
     className,
     isOpen,
@@ -56,10 +56,9 @@ function WrappedModal(props: ModalProps) {
 
   useEffect(() => {
     if (state.isOpen) {
-      if (onOpen) onOpen();
-      else {
-        if (onClose) onClose();
-      }
+      onOpen();
+    } else {
+      onClose();
     }
   }, [state.isOpen]);
 
@@ -78,8 +77,8 @@ function WrappedModal(props: ModalProps) {
   };
 
   const makeOpen = () => {
-    if (state.isOpen) return "open";
-    return "";
+    if (state.isOpen) return 'open';
+    return '';
   };
 
   return (
@@ -97,7 +96,6 @@ function WrappedModal(props: ModalProps) {
 
 export default function Modal(props: ModalProps) {
   const { draggable, isOpen } = props;
-  const emptyFunction = () => {};
   const initialState: ModalState = {
     draggable: draggable ?? false,
     isOpen: isOpen,
