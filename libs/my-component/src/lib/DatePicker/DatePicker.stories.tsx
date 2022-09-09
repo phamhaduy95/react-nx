@@ -10,12 +10,16 @@ export default {
   },
 } as ComponentMeta<typeof DatePicker>;
 
-const Template: ComponentStory<typeof DatePicker> = (args) => (
-  <DatePicker {...args} />
-);
+const Template: ComponentStory<typeof DatePicker> = (args) => {
+  const {dateFormat,label} = args; 
+  
+  return (
+  <DatePicker dateFormat={dateFormat} label={label} />
+ )
+};
 
 export const Primary = Template.bind({});
 Primary.args = {
-  dateFormat: '',
+  dateFormat: 'DD/MM/YYYY',
   label: '',
 };
