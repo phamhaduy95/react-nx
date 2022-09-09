@@ -10,15 +10,25 @@ export default {
   },
 } as ComponentMeta<typeof DateTimePicker>;
 
-const Template: ComponentStory<typeof DateTimePicker> = (args) => (
-  <DateTimePicker {...args} />
-);
+export const Primary: ComponentStory<typeof DateTimePicker> = (args) => {
+  const { className, isSecondIncluded, label, dateFormat, timeDelimiters } =
+    args;
 
-export const Primary = Template.bind({});
+  return (
+    <DateTimePicker
+      className={className}
+      isSecondIncluded={isSecondIncluded}
+      label={label}
+      dateFormat={dateFormat}
+      timeDelimiters={timeDelimiters}
+    />
+  );
+};
+
 Primary.args = {
   className: '',
-  dateFormat: '',
+  dateFormat: 'DD/MM/YYYY',
   isSecondIncluded: false,
   label: '',
-  timeDelimiters: '',
+  timeDelimiters: ':',
 };
