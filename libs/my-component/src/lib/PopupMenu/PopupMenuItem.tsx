@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import { v4 as uuidv4 } from 'uuid';
 import { usePopupMenuStore } from './PopupMenuStoreProvider';
-
+import { PopupMenuSubMenu } from './SubMenu/SubMenu';
 
 export type PopupMenuItemProps = {
   className?: string;
@@ -74,21 +74,12 @@ function PopupMenuItemWithId(props: IndexedContextMenuItemProps) {
     }
   };
 
-  const handleItemFocused = () => {
-    if (disabled) return;
-    action.highlightOne(id);
-  };
-
   const handleClick = () => {
     if (disabled) return;
     action.togglePopup(false);
     onSelect();
   };
 
-  const handleMouseLeave = () => {
-    if (disabled) return;
-    if (isFocus) action.highlightOne(null);
-  };
 
   const handleMouseEnter = () => {
     if (disabled) return;
@@ -107,6 +98,11 @@ function PopupMenuItemWithId(props: IndexedContextMenuItemProps) {
     return <></>;
   };
 
+  const handleMouseLeave = () => {
+    if (isFocus) action.highlightOne(null);
+  };
+
+
   return (
     <div
       className={className}
@@ -114,7 +110,6 @@ function PopupMenuItemWithId(props: IndexedContextMenuItemProps) {
       ref={itemRef}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      onFocus={handleItemFocused}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -132,7 +127,13 @@ export function reDefineMenuItem(children: JSX.Element[] | JSX.Element) {
   for (let element of childrenArray) {
     if (element.type.name === PopupMenuItem.name) {
       const props = element.props as PopupMenuItemProps;
-      newArray.push(<PopupMenuItemWithId {...props} key={i}/>);
+      newArray.push(<PopupMenuItemWithId {...props} key={i} />);
+      i++;
+      continue;
+    }
+    if (element.type.name === PopupMenuSubMenu.name) {
+      const props = element.props;
+      newArray.push(<PopupMenuSubMenu {...props} key={i} />);
       i++;
       continue;
     }

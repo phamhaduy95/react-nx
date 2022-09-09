@@ -1,0 +1,50 @@
+@import '../../_utils.scss';
+@import '../../_sharedStyle.scss';
+.PopupMenu__SubMenu {
+  user-select: none;
+  cursor: pointer;
+  position: relative;
+
+  &:focus-within {
+      background-color: hsl(220, 80%, 90%, 0.8);
+      outline: none;
+      border-radius: 5px;
+    }
+
+  @at-root .PopupMenu__SubMenu__Trigger {
+    width: 100%;
+    user-select: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 0.5rem;
+    &:focus-visible {
+      outline: none;
+    }
+   
+  }
+ @at-root .PopupMenu__SubMenu__Popup{
+    min-width: 100px;
+    position: absolute;
+    opacity: 1;
+    visibility: visible;
+    background-color: white;
+    transition: opacity 0.1s ease-in;
+   
+    >.SubMenu__Menu{
+      padding: 0.25rem;
+      flex-direction: column;
+      border: $border;
+      border-radius: 5px;
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
+
+    &:not(.is-showed) {
+      visibility: collapse;
+      opacity: 0;
+    }
+  }
+}
