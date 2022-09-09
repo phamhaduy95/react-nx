@@ -9,7 +9,9 @@ export function useSwitchFocus(
     if (el === null) return;
     if (isOpen) {
       el.focus();
+      return;
     }
+    el.blur();
   }, [isOpen]);
 }
 
