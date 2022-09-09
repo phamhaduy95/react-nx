@@ -3,7 +3,7 @@ import { DatePicker } from './DatePicker';
 
 export default {
   component: DatePicker,
-  title: 'DatePicker',
+  title: 'my-component/DatePicker',
   argTypes: {
     onSelect: { action: 'onSelect executed!' },
     PanelComponent: { action: 'PanelComponent executed!' },
