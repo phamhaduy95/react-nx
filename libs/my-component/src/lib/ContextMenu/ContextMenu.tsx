@@ -1,7 +1,6 @@
 import { Placement, useContextMenuPlacement } from './useContextMenuPlacement';
-import './ContextMenu.scss';
 import { ContextMenuStoreProvider } from './ContextMenuStoreProvider';
-import './ContextMenu.scss';
+
 import { PopupMenu } from '../PopupMenu/PopupMenu';
 import { useRef } from 'react';
 import { reDefineMenuItem } from '../PopupMenu/PopupMenuItem';
