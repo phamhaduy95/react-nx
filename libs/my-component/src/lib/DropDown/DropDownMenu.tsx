@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import PopupElement from '../Popup/PopupElement';
 import { useDropDownStore } from './DropDownStoreProvider';
 import { useSwitchFocus } from '../utils/hooks';
-import classNames from 'classnames';
+import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 
 type DropDownMenuProps = {
   targetRef: React.MutableRefObject<HTMLElement | null>;
@@ -11,7 +11,7 @@ type DropDownMenuProps = {
 
 export function DropDownMenu(props: DropDownMenuProps) {
   const { targetRef, children } = props;
-  
+
   const menuRef = useRef<HTMLDivElement>(null);
   const action = useDropDownStore((state) => state.action);
   const isPopupOpen = useDropDownStore((state) => state.isPopupOpen);
@@ -24,7 +24,7 @@ export function DropDownMenu(props: DropDownMenuProps) {
 
   useSwitchFocus(menuRef, isMenuFocused);
 
-  useEffect(() => {
+  useEffectSkipFirstRender(() => {
     if (isPopupOpen) return;
     action.highlightOne(null);
     switchFocus(targetRef, true);
@@ -63,6 +63,7 @@ export function DropDownMenu(props: DropDownMenuProps) {
         tabIndex={-1}
         onKeyDown={handleKeyDown}
         ref={menuRef}
+
       >
         {children}
       </div>
