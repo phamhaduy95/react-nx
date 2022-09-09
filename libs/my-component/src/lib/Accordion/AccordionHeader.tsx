@@ -12,7 +12,6 @@ type ItemHeaderProps = {
 export function AccordionHeader(props: ItemHeaderProps) {
   const { header, id,isOpen } = props;
   const action = useAccordionStore((state) => state.action);
-  console.log(isOpen)
   const handleClick = () => {
        action.toggleItem({id,isOpen:!isOpen});
   };
