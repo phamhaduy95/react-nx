@@ -45,7 +45,7 @@ const defaultProps: Required<PopupElementProps> = {
   onClickOutside:()=>{}
 };
 
-const PopupElement = (props: PopupElementProps) => {
+export const PopupElement = (props: PopupElementProps) => {
   const newProps = { ...defaultProps, ...props };
 
   const {
