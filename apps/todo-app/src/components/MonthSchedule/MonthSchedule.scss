@@ -1,0 +1,138 @@
+$border: 1px solid hsl(0, 0%, 70%);
+$text-color: hsl(0, 0%, 20%);
+$font-size--small: 0.8rem;
+@mixin centerElement {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.MonthSchedule {
+  width: 700px;
+  height: 600px;
+  border-collapse: collapse;
+  border: $border;
+  table-layout: fixed;
+  > thead {
+    th {
+      height: 30px;
+      text-align: center;
+      border: $border;
+      color: $text-color;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      user-select: none;
+    }
+  }
+  > tbody {
+    td {
+      vertical-align: top;
+      padding: 0.5rem;
+      border: $border;
+      > .TableDateCell__Container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        color: $text-color;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        > .TableDateCell__DateNumber {
+          user-select: none;
+          cursor: pointer;
+          margin-bottom: 0.25rem;
+          font-size: $font-size--small;
+        }
+        > .TableDateCell__TasksLines {
+          position: relative;
+          width: 100%;
+          min-height: calc(2 * 20px);
+          caret-color: transparent;
+          > .TableDateCell__TaskLine {
+            position: absolute;
+            height: 18px;
+            background-color: hsla(220, 80%, 80%, 0.5);
+            border-radius: 5px;
+            font-size: $font-size--small;
+            text-indent: 10px;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            z-index: 2;
+          }
+        }
+        > .TableDateCell__RemainingTaskIndicator {
+          @include centerElement();
+          margin-top: auto;
+          padding: 0.1rem;
+          border: $border;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: $font-size--small;
+          user-select: none;
+        }
+        > .TableDateCell__TaskListPopup {
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          top: -0.5rem;
+          left: -0.5rem;
+          z-index: 15;
+          border: 1px solid hsla(0, 0%, 80%, 0.8);
+          border-radius: 5px;
+          box-shadow: 0px 2px 20px 1px hsla(0, 0%, 80%, 0.8);
+          > .TableDateCell__TaskListPopup__Header {
+            background: hsl(0,0%,85%);
+            display: flex;
+            padding: 0.5rem;
+            > .TaskListPopup__Header__DateText {
+              max-width: 6rem;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              margin-right: 0.5rem;
+              font-size: 0.9rem;
+            }
+            > .TaskListPopup__Header__Close {
+              margin-left: auto;
+              cursor: pointer;
+              @include centerElement();
+              > * {
+                width: 1rem;
+                height: 1rem;
+              }
+            }
+          }
+          > .TableDateCell__TaskListPopup__Body {
+            padding: 0.5rem;
+            background-color: white;
+            max-height: 150px;
+            overflow: auto;
+
+            > .TaskListPopup__Body__Task {
+              width: 7rem;
+              margin-bottom: 0.5rem;
+              padding: 0.1em;
+              border-radius: 5px;
+              font-size: $font-size--small;
+              text-indent: 0.5rem;
+              color: $text-color;
+              background-color: hsla(220, 80%, 80%, 0.5);
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow-x: hidden;
+            
+            }
+            > .TaskListPopup__Body__Task:last-child {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+      &:not(.is-day-within-month) {
+        .TableCell__DateNumber {
+          color: hsl(0, 0%, 70%);
+        }
+      }
+    }
+  }
+}
