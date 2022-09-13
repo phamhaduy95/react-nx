@@ -23,3 +23,4 @@ export * from './lib/Carousel';
 export * from './lib/Tabs';
 export * from './lib/ContextMenu';
 export * from "./lib/Popup";
+export * from "./lib/ClickOutsideWatcher"
