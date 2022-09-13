@@ -1,109 +1,112 @@
 import React, { useEffect, useRef } from 'react';
-import ModalBody from './ModalBody';
-import ModalFooter, { DefaultFooter } from './ModalFooter';
-import ModalHeader from './ModalHeader';
 import ClickOutSideWatcher from '../ClickOutsideWatcher/ClickOutSideWatcher';
-import ReactDOM from 'react-dom';
-import ModalState from './ModalState';
+import { createPortal } from 'react-dom';
+import { ModalStoreProvider, useModalStore } from './ModalStoreProvider';
 import './Modal.scss';
-import ModalContextProvider, { useModalContext } from './ModalContextProvider';
-// ToDo: reimplement Modal using React Portal.
+import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
+import classNames from 'classnames';
+
 export type ModalProps = {
+  children: JSX.Element[] | JSX.Element;
   className?: string;
   isOpen: boolean;
-  draggable?: boolean;
-  footer?: React.ReactNode;
-  header?: React.ReactNode;
-  body?: React.ReactNode;
-  onOpen?: () => void;
-  onClose?: () => void;
+  onToggle: (isOpen: boolean) => void;
   timeToExpire?: number;
+  closeIcon?: React.ReactNode | false;
+  forceMount?: boolean;
 };
 
-const defaultPropsValue: Required<ModalProps> = {
-  className: 'Modal--default',
+const defaultPropsValue: Required<Omit<ModalProps, 'children'>> = {
+  className: '',
   isOpen: false,
-  draggable: false,
-  footer: <DefaultFooter />,
-  header: 'Modal header',
-  body: <>Modal body</>,
-  onClose: () => {},
-  onOpen: () => {},
+  onToggle(isOpen) {},
   timeToExpire: 0,
+  closeIcon: false,
+  forceMount: true,
 };
+
+export function Modal(props: ModalProps) {
+  return (
+    <ModalStoreProvider>
+      <WrappedModal {...props} />
+    </ModalStoreProvider>
+  );
+}
 
 function WrappedModal(props: ModalProps) {
   const newProps = { ...defaultPropsValue, ...props };
   const {
+    children,
     className,
-    isOpen,
-    footer,
-    header,
-    body,
-    onClose,
-    onOpen,
+    isOpen: openSignal,
+    onToggle,
     timeToExpire,
+    forceMount,
+    closeIcon,
   } = newProps;
   // provide default value incase no user input for these properties
-
-  const { state, action } = useModalContext();
+  const action = useModalStore((state) => state.action);
+  const isOpen = useModalStore((state) => state.isOpen);
   const ref = useRef(null);
-
   // make Modal open when the outside signal isOpen is on.
   useEffect(() => {
-    if (isOpen) action.openModal();
-  }, [isOpen]);
+    action.toggleOpen(openSignal);
+  }, [openSignal]);
 
-  useEffect(() => {
-    if (state.isOpen) {
-      onOpen();
-    } else {
-      onClose();
-    }
-  }, [state.isOpen]);
+  // trigger onToggle when internal state isOpen changes
+  useEffectSkipFirstRender(() => {
+    onToggle(isOpen);
+  }, [isOpen]);
 
   // set automatic turn-off feature when time is expired
   useEffect(() => {
     if (timeToExpire === 0 || timeToExpire === undefined) return;
-    if (state.isOpen) {
+    if (isOpen) {
       setTimeout(() => {
-        action.closeModal();
+        action.toggleOpen(false);
       }, timeToExpire);
     }
-  }, [state.isOpen, timeToExpire]);
+  }, [isOpen, timeToExpire]);
+
+  const rootClassName = classNames('Modal', className, {
+    ['is-open']: isOpen,
+  });
 
   const handleClickOutSide = () => {
-    action.closeModal();
+    action.toggleOpen(false);
   };
 
-  const makeOpen = () => {
-    if (state.isOpen) return 'open';
-    return '';
+  const renderCloseIcon = () => {
+    if (closeIcon)
+      return (
+        <div className="Modal__CloseIcon" onClick={handleClickOutSide}>
+          {closeIcon}
+        </div>
+      );
+    return <></>;
   };
 
   return (
-    <div className={`Modal ${className} ${makeOpen()}`}>
-      <ClickOutSideWatcher ref={ref} onClickOutSide={handleClickOutSide}>
-        <div className="Modal__Content" ref={ref}>
-          <ModalHeader>{header}</ModalHeader>
-          <ModalBody>{body}</ModalBody>
-          <ModalFooter>{footer}</ModalFooter>
-        </div>
-      </ClickOutSideWatcher>
-    </div>
+    <ModalPortal forceMount={forceMount} isShowed={isOpen}>
+      <div className={rootClassName}>
+        <ClickOutSideWatcher ref={ref} onClickOutSide={handleClickOutSide}>
+          <div className="Modal__Dialog" ref={ref}>
+            {renderCloseIcon()}
+            {children}
+          </div>
+        </ClickOutSideWatcher>
+      </div>
+    </ModalPortal>
   );
 }
+type ModalPortalProps = {
+  isShowed: boolean;
+  forceMount: boolean;
+  children: JSX.Element;
+};
 
-export default function Modal(props: ModalProps) {
-  const { draggable, isOpen } = props;
-  const initialState: ModalState = {
-    draggable: draggable ?? false,
-    isOpen: isOpen,
-  };
-  return ReactDOM.createPortal(
-    <ModalContextProvider initialState={initialState}>
-      <WrappedModal {...props}></WrappedModal>
-    </ModalContextProvider>,
-    document.body
-  );
+function ModalPortal(props: ModalPortalProps) {
+  const { isShowed, forceMount, children } = props;
+  if (forceMount && !isShowed) return <></>;
+  return createPortal(children, document.body);
 }

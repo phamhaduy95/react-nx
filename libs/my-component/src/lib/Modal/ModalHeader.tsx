@@ -1,27 +1,19 @@
-import React, { useContext } from "react";
-import { ReactComponent as CloseIcon } from "./close-Icon.svg";
-import { useModalContext } from './ModalContextProvider';
+import classNames from 'classnames';
+import React from 'react';
 
 
-type Props = {
+export type ModalHeaderProps = {
   children: React.ReactNode;
+  className?:string,
 };
 
-export default function ModalHeader(props: Props) {
-  let { children } = props;
-  children ??= "";
-  const {state,action} = useModalContext();
-
-  function handleClick(e: any) {
-    action.closeModal();
-  }
-  
+export function ModalHeader(props: ModalHeaderProps) {
+  let { children,className } = props;
+  className = className=== undefined?"":className;
+  const rootClassName = classNames("Modal__Header",className)
   return (
-    <div className="Modal__Header">
+    <div className={rootClassName}>
       {children}
-      <button className="Modal__Close-button" onClick={handleClick}>
-        <CloseIcon className="Modal__Close-Icon" />
-      </button>
     </div>
   );
 }

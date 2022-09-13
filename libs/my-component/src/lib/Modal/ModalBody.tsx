@@ -1,11 +1,14 @@
-import React, { useContext } from "react";
+import classNames from 'classnames';
+import React, { useContext } from 'react';
 
-type Props = {
-  children?: React.ReactNode;
+export type ModalBodyProps = {
+  children: React.ReactNode;
+  className?: string;
 };
 
-export default function ModalBody(props: Props) {
-  let { children } = props;
-  children = children === undefined ? "" : children;
-  return <div className="Modal__Body">{children}</div>;
+export function ModalBody(props: ModalBodyProps) {
+  let { children, className } = props;
+  className = className === undefined ? '' : className;
+  const rootClassName = classNames('Modal__Body', className);
+  return <div className={rootClassName}>{children}</div>;
 }
