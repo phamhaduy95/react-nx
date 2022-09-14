@@ -5,7 +5,7 @@ import { Modal } from './Modal';
 import { ModalHeader } from './ModalHeader';
 import { ModalBody } from './ModalBody';
 import CloseIcon from '@mui/icons-material/Close';
-import { Tune } from '@mui/icons-material';
+import { ModalFooter } from './ModalFooter';
 
 export default {
   component: Modal,
@@ -32,14 +32,17 @@ export const Example: ComponentStory<typeof Modal> = (args) => {
         closeIcon={<CloseIcon />}
       >
         <ModalHeader>
-          Welcome!
+          <p>Welcome!</p>
         </ModalHeader>
         <ModalBody>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus,
+           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus,
             quis obcaecati neque dolorem voluptatem incidunt tempora ea
             provident repellat minus error in, libero distinctio ipsam
-            voluptatibus laborum maxime sed repellendus.
+            voluptatibus laborum maxime sed repellendus.</p> 
         </ModalBody>
+       <ModalFooter>
+            <Button onClick={()=>{setModalOpen(false)}}>Close</Button>
+       </ModalFooter>
       </Modal>
     </div>
   );
