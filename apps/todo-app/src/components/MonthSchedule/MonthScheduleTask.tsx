@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import React, { useEffect, useRef } from 'react';
-import { TaskDataType, MonthScheduleState } from './MonthScheduleStoreProvider';
+import { TaskDataType } from '../../type/model';
+import { MonthScheduleState } from './MonthScheduleStoreProvider';
 import { isSunDay } from './utils';
 
 type MonthScheduleTaskProps = {

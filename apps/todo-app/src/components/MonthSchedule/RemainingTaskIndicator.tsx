@@ -1,5 +1,4 @@
 import {
-  TaskDataType,
   useMonthScheduleStore,
 } from './MonthScheduleStoreProvider';
 import { findAllTasksInADayAmongTasksList } from './utils';
@@ -8,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import CloseIcon from '@mui/icons-material/Close';
 import { ClickOutSideWatcher } from '@phduylib/my-component';
+import { TaskDataType } from '../../type/model';
 
 type Props = {
   lineLimit: number;

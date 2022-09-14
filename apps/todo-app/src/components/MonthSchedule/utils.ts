@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import { MonthScheduleState, TaskDataType } from './MonthScheduleStoreProvider';
+import { TaskDataType } from '../../type/model';
+import { MonthScheduleState } from './MonthScheduleStoreProvider';
 
 export function findAllTasksInADayAmongTasksList(
   date: Date,
@@ -27,15 +28,7 @@ export function isDateWithinRange(
   if (dayObj.isSame(endDate, 'day')) return true;
   return false;
 }
-/** in ascend order */
-export function sortTaskListBaseOnItsTimeLength(
-  tasksList: MonthScheduleState['tasks']
-) {
-  return tasksList.sort((a, b) => {
-    if (dayjs(a.endDate).isAfter(b.endDate, 'day')) return 1;
-    return -1;
-  });
-}
+
 
 export function isSunDay(date: Date) {
   if (date.getDay() === 0) return true;
@@ -70,7 +63,7 @@ export function findsAllShowedTasksInTaskLine(
   }
   for (let line of taskLine) {
     const task = line.find((task) => {
-      return dayjs(date).isSame(task.startDate, 'date');
+      return dayjs(date).isSame(task.startDate, 'day');
     });
     if (task !== undefined) {
       const indexTasked = { ...task, index: lineNumber };
