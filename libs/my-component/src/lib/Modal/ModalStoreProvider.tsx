@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import { StoreApi, createStore, useStore } from 'zustand';
 
 type ModalState = {
@@ -19,14 +19,14 @@ type Props = {
 };
 export function ModalStoreProvider(props: Props) {
   const { children } = props;
-  const store = createStore<ModalState>((set) => ({
+  const store = useMemo(()=>createStore<ModalState>((set) => ({
     isOpen: false,
     action: {
       toggleOpen(isOpen) {
-        set((state) => ({ isOpen }));
+        set((state) => ({ isOpen:isOpen }));
       },
     },
-  }));
+  })),[]);
   return (
     <StoreContext.Provider value={{ store }}>{children}</StoreContext.Provider>
   );
