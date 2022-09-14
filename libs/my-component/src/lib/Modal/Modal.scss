@@ -72,16 +72,10 @@ $transitionDuration: 0.1s;
     }
 
     @at-root .Modal__Header {
-      padding: 0.5em 1em;
       margin-bottom: 0.5rem;
     }
     @at-root .Modal__Body {
-      padding: 0.5em 1em;
       margin-bottom: 0.5rem;
-    }
-
-    @at-root .Modal__Footer {
-      padding: 0.5em 1em;
     }
   }
 }
