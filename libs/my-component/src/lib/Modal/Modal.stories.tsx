@@ -13,6 +13,7 @@ export default {
 } as ComponentMeta<typeof Modal>;
 
 export const Example: ComponentStory<typeof Modal> = (args) => {
+  const {forceMount} = args;
   const [isModalOpen, setModalOpen] = useState(false);
   const handleClick = () => {
     setModalOpen((prev) => !prev);
@@ -28,7 +29,7 @@ export const Example: ComponentStory<typeof Modal> = (args) => {
       <Modal
         isOpen={isModalOpen}
         onToggle={handleModalToggle}
-        forceMount={true}
+        forceMount={forceMount}
         closeIcon={<CloseIcon />}
       >
         <ModalHeader>
@@ -47,3 +48,7 @@ export const Example: ComponentStory<typeof Modal> = (args) => {
     </div>
   );
 };
+
+Example.args = {
+  forceMount:false,
+}
