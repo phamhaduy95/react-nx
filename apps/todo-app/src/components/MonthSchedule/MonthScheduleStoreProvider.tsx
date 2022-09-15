@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import { createStore, StoreApi, useStore } from 'zustand';
 import { TaskDataType } from '../../type/model';
 import { sortTasksBaseOnStartDateAndThenLength, organizeTasksIntoSeriesOfTaskLine } from '../utils';
@@ -28,7 +28,7 @@ type Props = {
 
 export function MonthScheduleStoreProvider(props: Props) {
   const { children } = props;
-  const store = createStore<MonthScheduleState>((set) => ({
+  const store = useMemo(()=>createStore<MonthScheduleState>((set) => ({
     month: dayjs().toDate(),
     tasks: [],
     taskLines: [],
@@ -41,7 +41,7 @@ export function MonthScheduleStoreProvider(props: Props) {
         });
       },
     },
-  }));
+  })),[]);
 
   return (
     <StoreContext.Provider value={{ store }}>{children}</StoreContext.Provider>
