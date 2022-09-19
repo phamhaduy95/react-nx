@@ -1,0 +1,144 @@
+@import '../_sharedStyle.scss';
+@import '../_utils.scss';
+$indicator-cell-width: 50px;
+
+.WeekSchedule {
+  width: 760px;
+  height: 700px;
+  border: $border;
+  border-radius: 5px;
+  color: $text-color;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  > .WeekSchedule__Container {
+    width: 100%;
+    overflow-y: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    @at-root .WeekSchedule__Header {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background-color: white;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+
+      @at-root .WeekSchedule__WeekDaysBox {
+        display: flex;
+        width: 100%;
+        height: 50px;
+        border-bottom: $border;
+        > .WeekSchedule__WeekDaysBox__DummyCell {
+          flex-shrink: 0;
+          width: $indicator-cell-width;
+          height: 100%;
+        }
+        > .WeekSchedule__WeekDaysBox__DayIndicator {
+          width: calc(100% / 7);
+          @include centerElement();
+          word-wrap: normal;
+        }
+      }
+      @at-root .WeekSchedule__WeekTaskView {
+        display: flex;
+        width: 100%;
+        height: 120px;
+        border-bottom: $border;
+
+        > .WeekSchedule__WeekTaskView__TextIndicator {
+          @include centerElement();
+          width: 50px;
+          height: 100%;
+          font-size: 0.85rem;
+          text-align: center;
+          flex-shrink: 0;
+          border-right: $border;
+        }
+        @at-root .WeekSchedule__WeekTaskView__TaskTimeLine {
+          display: flex;
+          flex-grow: 1;
+          position: relative;
+
+          > .WeekSchedule__WeekTaskView__DayTimeFrame {
+            position: relative;
+            width: calc(100% / 7);
+            height: 100%;
+            word-wrap: normal;
+            border-right: $border;
+            &:last-child {
+              border-right: none;
+            }
+            @at-root .WeekSchedule__WeekTaskView__TaskBlock {
+              position: absolute;
+              background-color: hsla(220, 80%, 80%, 0.5);
+              border-radius: 5px;
+              display: flex;
+              align-items: center;
+              font-size: 0.85rem;
+              text-indent: 0.5rem;
+            }
+          }
+        }
+      }
+    }
+
+    @at-root .WeekSchedule__TimeLineBox {
+      display: flex;
+      height: 450%;
+      flex-shrink: 0;
+      background-color: white;
+      @at-root .WeekSchedule__TimeIndicatorBox {
+        width: $indicator-cell-width;
+        height: 100%;
+        border-right: $border;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+        > .WeekSchedule__TimeIndicator {
+          @include centerElement();
+          height: calc(100% / 24);
+          border-bottom: $border;
+        }
+      }
+
+      > .WeekSchedule__WeekDayTimeLine {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: calc(100% / 7);
+        height: 100%;
+        border-right: $border;
+        background-color: hsla(0, 0%, 95%, 0.5);
+        &:last-child {
+          border-right: none;
+        }
+        @at-root .WeekSchedule__WeekDayTimeLine__TaskTimeLine {
+            position: absolute;
+            background-color: hsla(220, 80%, 80%, 0.5);
+            padding:0.25rem;
+       
+            user-select: none;
+            cursor: pointer;
+            >.WeekDayTimeLine__TaskTitle{
+              margin: 0;
+              position: sticky;
+              top:10px;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow-x: hidden;
+            }
+        }
+
+        > .WeekSchedule__TimeFrame {
+          width: 100%;
+          height: calc(100% / 24);
+          border-bottom: $border;
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+      }
+    }
+  }
+}
