@@ -26,7 +26,7 @@ export function DaySchedule(props: DayScheduleProps) {
   );
 }
 
-export function WrappedDaySchedule(props: DayScheduleProps) {
+function WrappedDaySchedule(props: DayScheduleProps) {
   const { data } = props;
   const action = useDayScheduleStore((state) => state.action);
   
