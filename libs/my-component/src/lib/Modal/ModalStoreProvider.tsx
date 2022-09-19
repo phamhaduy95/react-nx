@@ -19,25 +19,28 @@ type Props = {
 };
 export function ModalStoreProvider(props: Props) {
   const { children } = props;
-  const store = useMemo(()=>createStore<ModalState>((set) => ({
-    isOpen: false,
-    action: {
-      toggleOpen(isOpen) {
-        set((state) => ({ isOpen:isOpen }));
-      },
-    },
-  })),[]);
+  const store = useMemo(
+    () =>
+      createStore<ModalState>((set) => ({
+        isOpen: false,
+        action: {
+          toggleOpen(isOpen) {
+            set((state) => ({ isOpen: isOpen }));
+          },
+        },
+      })),
+    []
+  );
   return (
     <StoreContext.Provider value={{ store }}>{children}</StoreContext.Provider>
   );
 }
 export function useModalStore<U>(
-    selector: (state: ModalState) => U,
-    equalFunc?: (a: U, b: U) => boolean
-  ):U {
-    const value = useContext(StoreContext);
-    if (value === null) throw new Error(' store context of Modal is null');
-    const { store } = value;
-    return useStore(store, selector, equalFunc);
-  }
-  
+  selector: (state: ModalState) => U,
+  equalFunc?: (a: U, b: U) => boolean
+): U {
+  const value = useContext(StoreContext);
+  if (value === null) throw new Error(' store context of Modal is null');
+  const { store } = value;
+  return useStore(store, selector, equalFunc);
+}
