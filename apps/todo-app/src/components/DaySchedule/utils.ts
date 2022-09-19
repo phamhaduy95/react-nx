@@ -9,6 +9,6 @@ export function getTimeRatioInPercentage(date: Date, baseDate: Date) {
         : calculatedDiff > 24 * 60
         ? 24 * 60
         : calculatedDiff;
-    const ratio = Math.floor((100 * timeDiff) / (24 * 60));
+    const ratio = (100 * timeDiff) / (24 * 60);
     return ratio;
   }
