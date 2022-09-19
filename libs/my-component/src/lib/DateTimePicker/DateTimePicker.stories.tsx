@@ -5,8 +5,7 @@ export default {
   component: DateTimePicker,
   title: 'my-component/DateTimePicker',
   argTypes: {
-    onSelect: { action: 'onSelect executed!' },
-    DatePanel: { action: 'DatePanel executed!' },
+    onSelect: { action: 'onSelect executed!' }
   },
 } as ComponentMeta<typeof DateTimePicker>;
 
