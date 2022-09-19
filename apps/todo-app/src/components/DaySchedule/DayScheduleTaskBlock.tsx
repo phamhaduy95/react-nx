@@ -3,6 +3,7 @@ import React, { memo, useEffect, useRef } from 'react';
 import { TaskDataType } from '../../type/model';
 import { useDayScheduleStore } from './DayScheduleStoreProvider';
 import { getTimeRatioInPercentage } from './utils';
+import { Position, positionElement } from '../utils';
 
 type DayScheduleTaskProps = {
   taskId: string;
@@ -29,7 +30,7 @@ export const DayScheduleTaskBlock = memo((props: DayScheduleTaskProps) => {
       baseDate,
       linePos
     );
-    positionTaskBlockOnTimeLine(offsetPos, taskBlockEl);
+    positionElement(taskBlockEl, offsetPos);
   }, [taskBlockRef.current, taskData, linePos, baseDate.toDateString()]);
 
   if (taskData === undefined) return <></>;
@@ -42,18 +43,11 @@ export const DayScheduleTaskBlock = memo((props: DayScheduleTaskProps) => {
 
 const TASK_BLOCK_HEIGHT = 12; // in %
 
-type PositionType = {
-  top: string;
-  left: string;
-  width: string;
-  height: string;
-};
-
 function calculateTaskBlockOffsetPosition(
   taskData: TaskDataType,
   baseDate: Date,
   linePos: number
-): PositionType {
+): Position {
   const { startDate, endDate } = taskData;
   const startPos = getTimeRatioInPercentage(startDate, baseDate);
   const endPos = getTimeRatioInPercentage(endDate, baseDate);
@@ -64,15 +58,4 @@ function calculateTaskBlockOffsetPosition(
     width: `${endPos - startPos}%`,
   };
   return offsetPos;
-}
-
-function positionTaskBlockOnTimeLine(
-  position: PositionType,
-  taskBlockEl: HTMLElement
-) {
-  const { top, left, width, height } = position;
-  taskBlockEl.style.top = top;
-  taskBlockEl.style.left = left;
-  taskBlockEl.style.width = width;
-  taskBlockEl.style.height = height;
 }
