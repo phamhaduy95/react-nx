@@ -1,8 +1,7 @@
-import dayjs from 'dayjs';
 import React, { useEffect, useRef } from 'react';
-import { TaskDataType } from '../../type/model';
+import { calculateTaskBarLengthInDayUnit, isSunDay } from '../utils';
 import { MonthScheduleState } from './MonthScheduleStoreProvider';
-import { isSunDay } from './utils';
+
 
 type MonthScheduleTaskProps = {
   cellDate: Date;
@@ -61,23 +60,4 @@ export function MonthScheduleTask(props: MonthScheduleTaskProps) {
   );
 }
 
-function calculateTaskBarLengthInDayUnit(
-  task: TaskDataType,
-  cellDate: Date,
-  isTaskInSunDay: boolean
-) {
-  const startDate = isTaskInSunDay ? cellDate : task.startDate;
-  const nextSaturDay = findNextSaturday(startDate);
-  const endDate = dayjs(nextSaturDay).isBefore(task.endDate, 'day')
-    ? nextSaturDay
-    : task.endDate;
-  const currDayInWeek = startDate.getDay();
-  const endDayInWeek = endDate.getDay();
-  return endDayInWeek - currDayInWeek + 1;
-}
 
-function findNextSaturday(date: Date) {
-  const currDayInWeek = date.getDay();
-  const daysToSaturday = 6 - currDayInWeek;
-  return dayjs(date).add(daysToSaturday, 'day').toDate();
-}

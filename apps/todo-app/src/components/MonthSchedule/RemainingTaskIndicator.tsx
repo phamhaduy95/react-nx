@@ -1,13 +1,10 @@
-import {
-  useMonthScheduleStore,
-} from './MonthScheduleStoreProvider';
-import { findAllTasksInADayAmongTasksList } from './utils';
+import { useMonthScheduleStore } from './MonthScheduleStoreProvider';
 import { useEffect, useRef, useState } from 'react';
-
 import dayjs from 'dayjs';
 import CloseIcon from '@mui/icons-material/Close';
 import { ClickOutSideWatcher } from '@phduylib/my-component';
 import { TaskDataType } from '../../type/model';
+import { findAllTasksInADayAmongTasksList } from '../utils';
 
 type Props = {
   lineLimit: number;
@@ -26,9 +23,9 @@ export function RemainingTaskIndicator(props: Props) {
     setShowed((prev) => !prev);
   };
 
-  const handlePopupToggle = (isOpen:boolean)=>{
-    setShowed(isOpen)
-  }
+  const handlePopupToggle = (isOpen: boolean) => {
+    setShowed(isOpen);
+  };
 
   if (isTaskIndicatorShowed)
     return (
@@ -74,9 +71,9 @@ function TaskListBox(props: TaskListProps) {
     setOpen(false);
   };
 
-  const handleClickClose = ()=>{
-    setOpen(false)
-  }
+  const handleClickClose = () => {
+    setOpen(false);
+  };
 
   if (isOpen) {
     const taskComponentList = tasksList.map((task, i) => {
@@ -92,7 +89,10 @@ function TaskListBox(props: TaskListProps) {
         <div className="TableDateCell__TaskListPopup" ref={ref}>
           <div className="TableDateCell__TaskListPopup__Header">
             <span className="TaskListPopup__Header__DateText">{dateText}</span>
-            <div className="TaskListPopup__Header__Close" onClick={handleClickClose}>
+            <div
+              className="TaskListPopup__Header__Close"
+              onClick={handleClickClose}
+            >
               <CloseIcon />
             </div>
           </div>

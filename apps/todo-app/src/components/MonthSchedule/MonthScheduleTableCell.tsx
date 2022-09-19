@@ -1,9 +1,9 @@
 import { useRef } from 'react';
 import classNames from 'classnames';
 import { useMonthScheduleStore } from './MonthScheduleStoreProvider';
-import { findsAllShowedTasksInTaskLine } from './utils';
 import { MonthScheduleTask } from './MonthScheduleTask';
 import { RemainingTaskIndicator } from './RemainingTaskIndicator';
+import { findsAllShowedTasksInTaskLine } from '../utils';
 
 const LINE_LIMIT = 2;
 
