@@ -1,0 +1,18 @@
+.Popover{
+    position: fixed;
+    transition: opacity 0.15s ease-in;
+    width: max-content;
+    max-height: 100vh;
+    overflow: auto;
+    isolation: isolate;
+    z-index: 100;
+    &:not(.is-open) {
+        visibility: collapse;
+        opacity: 0;
+    }
+    
+    &.is-open {
+        visibility: visible;
+        opacity: 1;
+    }
+}
