@@ -1,9 +1,10 @@
-import { Placement, useContextMenuPlacement } from './useContextMenuPlacement';
+import { useContextMenuPlacement } from './useContextMenuPlacement';
 import { ContextMenuStoreProvider } from './ContextMenuStoreProvider';
 
 import { PopupMenu } from '../PopupMenu/PopupMenu';
 import { useRef } from 'react';
 import { reDefineMenuItem } from '../PopupMenu/PopupMenuItem';
+import { Placement } from './utils';
 
 
 type ContextMenuProps = {

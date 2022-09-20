@@ -1,12 +1,9 @@
 import { MutableRefObject, useEffect } from 'react';
+import { Placement, getCorrectPositionForPopup, positionPopup, Point } from './utils';
 
 type ElementRef = MutableRefObject<HTMLElement | null>;
-export type Placement =
-  | 'top-left'
-  | 'top-right'
-  | 'bottom-left'
-  | 'bottom-right';
-type Point = { x: number; y: number };
+
+
 
 // hook allow to position popup
 export function useContextMenuPlacement(
@@ -44,72 +41,7 @@ export function useContextMenuPlacement(
   //on scroll event
 }
 
-function positionPopup(popup: HTMLElement, placement: Placement, point: Point) {
-  const popupHeight = popup.clientHeight;
-  const popupWidth = popup.clientWidth;
-  switch (placement) {
-    case 'bottom-right': {
-      popup.style.top = `${point.y}px`;
-      popup.style.left = `${point.x}px`;
-      return;
-    }
-    case 'top-right': {
-      popup.style.top = `${point.y - popupHeight}px`;
-      popup.style.left = `${point.x}px`;
-      return;
-    }
-    case 'bottom-left': {
-      popup.style.top = `${point.y}px`;
-      popup.style.left = `${point.x - popupWidth}px`;
-      return;
-    }
-    case 'top-left': {
-      popup.style.top = `${point.y - popupHeight}px`;
-      popup.style.left = `${point.x - popupWidth}px`;
-      return;
-    }
-  }
-}
 
-function getCorrectPositionForPopup(
-  popupEl: HTMLElement,
-  basePlacement: Placement,
-  basePoint: Point
-) {
-  const viewPortSize = getViewPortSize();
-  let { horizontal, vertical } = getDimensionsFromPlacement(basePlacement);
-  console.log(horizontal,vertical)
-  if (vertical === 'bottom') {
-    if (basePoint.y + popupEl.clientHeight > viewPortSize.height) {
-      vertical = 'top';
-    }
-  } else {
-    if (basePoint.y - popupEl.clientHeight < 0) {
-      vertical = 'bottom';
-    }
-  }
-
-  if (horizontal === 'right') {
-    if (basePoint.x + popupEl.clientWidth > viewPortSize.width) {
-      horizontal = 'left';
-    }
-  } else {
-    if (basePoint.x - popupEl.clientWidth < 0) {
-      horizontal = 'right';
-    }
-  }
-
-  const newPlacement = `${vertical}-${horizontal}`;
-  console.log(newPlacement)
-  return newPlacement as Placement;
-}
-
-function getViewPortSize() {
-  return {
-    width: window.innerWidth,
-    height: window.innerHeight,
-  };
-}
 
 function hideThenShowAgain(popupEl: HTMLElement) {
   popupEl.classList.remove('is-showed');
@@ -127,9 +59,5 @@ function switchFocus(el: HTMLElement, isFocus: boolean) {
   el.blur();
 }
 
-type Dimensions = { horizontal: 'left' | 'right'; vertical: 'top' | 'bottom' };
 
-function getDimensionsFromPlacement(placement: Placement): Dimensions {
-  const [vertical,horizontal] = placement.split('-');
-  return { horizontal, vertical } as Dimensions;
-}
+
