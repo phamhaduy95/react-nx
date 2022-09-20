@@ -10,28 +10,35 @@ export function positionPopup(
   placement: Placement,
   point: Point
 ) {
+  const viewPortSize = getViewPortSize();
   const popupHeight = popup.clientHeight;
   const popupWidth = popup.clientWidth;
-
+  let pointY = (popupHeight >= viewPortSize.height)?0:point.y;
+  let pointX = (popupWidth >= viewPortSize.width)?0:point.x;
+  console.log(placement,pointX,pointY)
   switch (placement) {
     case 'bottom-right': {
-      popup.style.top = `${point.y}px`;
-      popup.style.left = `${point.x}px`;
+      popup.style.top = `${pointY}px`;
+      popup.style.left = `${pointX}px`;
       return;
     }
     case 'top-right': {
-      popup.style.top = `${point.y - popupHeight}px`;
-      popup.style.left = `${point.x}px`;
+      pointY = (pointY - popupHeight <0)?0:pointY-popupHeight;
+      popup.style.top = `${pointY}px`;
+      popup.style.left = `${pointX}px`;
       return;
     }
     case 'bottom-left': {
-      popup.style.top = `${point.y}px`;
-      popup.style.left = `${point.x - popupWidth}px`;
+
+      popup.style.top = `${pointY}px`;
+      popup.style.left = `${pointX}px`;
       return;
     }
     case 'top-left': {
-      popup.style.top = `${point.y - popupHeight}px`;
-      popup.style.left = `${point.x - popupWidth}px`;
+      pointY = (pointY - popupHeight <0)?0:pointY-popupHeight;
+      pointX = (pointX - popupWidth <0)?0:pointX-popupWidth;
+      popup.style.top = `${pointY}px`;
+      popup.style.left = `${pointX}px`;
       return;
     }
   }

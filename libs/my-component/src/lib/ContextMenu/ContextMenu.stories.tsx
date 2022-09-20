@@ -15,6 +15,9 @@ export const Example: ComponentStory<typeof ContextMenu> = (args) => {
   const { placement } = args;
   const targetRef = useRef<HTMLDivElement>(null);
   const Box = styled('div')`
+    :root {
+      box-sizing:border-box;
+    }
     margin: 1rem auto;
     width: 200px;
     height: 400px;

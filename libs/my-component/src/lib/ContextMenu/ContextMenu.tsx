@@ -5,7 +5,7 @@ import { PopupMenu } from '../PopupMenu/PopupMenu';
 import { useRef } from 'react';
 import { reDefineMenuItem } from '../PopupMenu/PopupMenuItem';
 import { Placement } from './utils';
-
+import "./ContextMenu.scss"
 
 type ContextMenuProps = {
   className?: string;
