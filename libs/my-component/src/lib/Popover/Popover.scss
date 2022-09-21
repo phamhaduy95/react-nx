@@ -3,9 +3,12 @@
     transition: opacity 0.15s ease-in;
     width: max-content;
     max-height: 100vh;
+    max-width: 100vw;
     overflow: auto;
     isolation: isolate;
     z-index: 100;
+
+
     &:not(.is-open) {
         visibility: collapse;
         opacity: 0;

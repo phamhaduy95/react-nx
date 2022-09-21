@@ -1,33 +1,35 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Placement, Point } from '../ContextMenu/utils';
+
 import { useMovePopoverOnScroll } from './useMovePopoverOnScroll';
-import { usePopoverPlacement } from './usePopoverPlacement';
+import { Placement, Position, usePopoverPlacement } from './usePopoverPlacement';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import classNames from 'classnames';
 import { createPortal } from 'react-dom';
 import { ClickOutSideWatcher } from '../ClickOutsideWatcher';
-import "./Popover.scss"
+import './Popover.scss';
 
 export type PopoverProps = {
-  children: JSX.Element;
+  children: React.ReactNode;
   className?: string;
+  anchorRef?: React.MutableRefObject<HTMLElement | null>|null;
+  positionOrigin?: Position;
   placement?: Placement;
-  /** clientPosition in pixel */
-  basePosition: Point;
   isOpen: boolean;
   onOpen?: (isOpen: boolean) => void;
   forceMount?: boolean;
-  fixedOnScroll?:boolean
+  fixedOnScroll?: boolean;
 };
 
-type key = 'children' | 'isOpen' | 'basePosition';
+type key = 'children' | 'isOpen' ;
 
 const defaultProps: Required<Omit<PopoverProps, key>> = {
   className: '',
   placement: 'bottom-right',
   onOpen(isOpen) {},
   forceMount: false,
-  fixedOnScroll:false,
+  fixedOnScroll: false,
+  positionOrigin: { top: 0, left: 0 },
+  anchorRef:null,
 };
 
 export function Popover(props: PopoverProps) {
@@ -35,17 +37,16 @@ export function Popover(props: PopoverProps) {
   const {
     children,
     placement,
-    basePosition,
+    positionOrigin,
+    anchorRef,
     isOpen: openSignal,
     onOpen,
     className,
     forceMount,
-    fixedOnScroll
+    fixedOnScroll,
   } = newProps;
   const [isOpen, setOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
- 
-
 
   useEffectSkipFirstRender(() => {
     onOpen(isOpen);
@@ -55,15 +56,15 @@ export function Popover(props: PopoverProps) {
     setOpen(openSignal);
   }, [openSignal]);
 
-  usePopoverPlacement(popupRef, placement, basePosition, isOpen);
-  useMovePopoverOnScroll(popupRef, isOpen,fixedOnScroll);
+  usePopoverPlacement(popupRef, anchorRef, placement, positionOrigin, isOpen);
+  useMovePopoverOnScroll(popupRef, isOpen, fixedOnScroll);
 
   const rootClassName = classNames('Popover', className, {
     ['is-open']: isOpen,
   });
   const handleClickOutSide = () => {
-        onOpen(false);
-        setOpen(false)
+    onOpen(false);
+    setOpen(false);
   };
   return (
     <PortalProvider forceMount={forceMount} isOpen={isOpen}>

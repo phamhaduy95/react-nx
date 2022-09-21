@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Popover } from './Popover';
 
 export default {
@@ -13,11 +13,14 @@ const Template: ComponentStory<typeof Popover> = (args) => (
 );
 
 export const Primary: ComponentStory<typeof Popover> = (args) => {
-  const {basePosition,forceMount,fixedOnScroll} = args;
+  const {positionOrigin,forceMount,fixedOnScroll,placement} = args;
   const [isOpen, setOpen] = useState(false);
+  const ref = useRef<HTMLButtonElement>(null);
   const Container = styled('div')`
-    margin: 0.5rem auto;
-    width: 250px;
+    margin-top: 0.5rem ;
+    margin-right:10px;
+    margin-left:auto;
+    width: 10vw;
     height: 250px;
   `;
 
@@ -26,11 +29,12 @@ export const Primary: ComponentStory<typeof Popover> = (args) => {
     border: 1px solid hsl(0, 0%, 90%);
     color: hsl(0, 0%, 20%);
   `;
-  const MyPopOver = styled('div')`
+  const MyPopover = styled(Popover)`
     display: flex;
     flex-direction: column;
     width: 250px;
-
+    background-color:white;
+    z-index:10;
     padding: 0.5rem;
     color: hsl(0, 0%, 20%);
     border: 1px solid hsl(0, 0%, 80%);
@@ -55,15 +59,17 @@ export const Primary: ComponentStory<typeof Popover> = (args) => {
   return (
    
     <Container>
-      <MyButton onClick={handleClick}>Open Popover</MyButton>
-      <Popover
+      <MyButton onClick={handleClick} ref={ref}>Open Popover</MyButton>
+      <MyPopover
         isOpen={isOpen}
-        basePosition={basePosition}
+        positionOrigin={positionOrigin}
+        anchorRef={ref}
         onOpen={handleOpen}
         fixedOnScroll={fixedOnScroll}
         forceMount={forceMount}
+        placement={placement}
       >
-        <MyPopOver>
+          <>
           <div className="Popover__Title">OK</div>
           <p className="Popover__Content">
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae
@@ -71,13 +77,14 @@ export const Primary: ComponentStory<typeof Popover> = (args) => {
             eius repellat? Asperiores a saepe id illum libero consequuntur modi
             ipsum nostrum!
           </p>
-        </MyPopOver>
-      </Popover>
+          </>
+      </MyPopover>
     </Container>
   );
 };
 Primary.args = {
-  basePosition:{x:10,y:10},
+  positionOrigin:{top:0,left:0},
   forceMount:false,
-  fixedOnScroll:false
+  fixedOnScroll:false,
+  placement:"bottom-left",
 };
