@@ -31,9 +31,9 @@ export default function DatePickerPopup(props: DatePickerPopup) {
 
   return (
     <PopupElement
-      targetRef={targetRef}
+      triggerRef={targetRef}
       isShowed={isPopupOpen}
-      placement="bottomCenter"
+      placement="bottom-center"
       width="fit-content"
       className="DatePicker__Popup"
       onClickOutside={handleClickOutsidePopup}
