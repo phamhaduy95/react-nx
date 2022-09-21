@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
 import "./ToolTips.scss";
 import PopupElement from "../Popup/PopupElement";
-import { Placement } from "../usePopupPlacement/usePopUpPlacement";
+import { Placement } from "../Popup/types";
+
 
 type Props = {
   children: JSX.Element;
@@ -16,7 +17,7 @@ const defaultPropsValue:Required<Props> ={
   children:<></>,
   className:"Tooltips-default",
   text:"tooltips",
-  placement:"bottomLeft",
+  placement:"bottom-left",
   padding:5,
   trigger:"hover"
 }
@@ -43,7 +44,7 @@ export default function ToolTips(props: Props) {
     >
       {children}
       <PopupElement isShowed={isShowed} placement={placement} padding={padding}
-        targetRef={wrapper} arrowEnable className="Tooltips__Popup"> 
+        triggerRef={wrapper} arrowEnable className="Tooltips__Popup"> 
         {text}
       </PopupElement>
     </div>

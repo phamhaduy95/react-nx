@@ -15,9 +15,9 @@ export const Example = Template.bind({});
 Example.args = {
     children:<div className={".child"}>Hover Me</div>,
     text:"tooltips",
-    placement:"bottomCenter",
+    placement:"bottom-center",
     trigger:"hover",
-    padding:10,
+    padding:5,
 };
 
 Example.decorators = [
