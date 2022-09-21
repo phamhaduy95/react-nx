@@ -46,9 +46,9 @@ export function DateTimePickerPopup(props: DateTimePickerPopupProps) {
 
   return (
     <PopupElement
-      targetRef={targetRef}
+      triggerRef={targetRef}
       isShowed={isShowed}
-      placement="bottomLeft"
+      placement="bottom-left"
       padding={8}
       width="fit-content"
       className="DateTimePicker__Popup"
