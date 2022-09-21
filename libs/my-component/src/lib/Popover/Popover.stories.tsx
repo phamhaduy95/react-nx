@@ -18,7 +18,7 @@ export const Primary: ComponentStory<typeof Popover> = (args) => {
   const ref = useRef<HTMLButtonElement>(null);
   const Container = styled('div')`
     margin-top: 0.5rem ;
-    margin-right:10px;
+    margin-right:auto;
     margin-left:auto;
     width: 10vw;
     height: 250px;
