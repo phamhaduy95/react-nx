@@ -58,8 +58,8 @@ export const SelectPopup = (props: SelectPopupProps) => {
   return (
     <PopupElement
       className="Select__Popup"
-      targetRef={targetRef}
-      placement="bottomCenter"
+      triggerRef={targetRef}
+      placement="bottom-center"
       padding={8}
       isShowed={isShowed}
       width="auto"

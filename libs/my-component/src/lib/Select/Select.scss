@@ -19,6 +19,7 @@ $text-color: hsla(0, 0%, 20%, 1);
   }
   @at-root .Select__Popup {
     .Select__Menu {
+      background-color: white;
       padding: 0.5rem 0;
       color: $text-color;
       display: flex;
