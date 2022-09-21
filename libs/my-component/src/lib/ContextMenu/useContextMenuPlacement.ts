@@ -2,9 +2,6 @@ import { MutableRefObject, useEffect } from 'react';
 import { Placement, getCorrectPositionForPopup, positionPopup, Point } from './utils';
 
 type ElementRef = MutableRefObject<HTMLElement | null>;
-
-
-
 // hook allow to position popup
 export function useContextMenuPlacement(
   ref: ElementRef,
@@ -23,13 +20,15 @@ export function useContextMenuPlacement(
     const popupEl = popupRef.current;
     if (el === null || popupEl === null) return;
     const callback = (e: MouseEvent) => {
+  
       e.preventDefault(); // ensure no default context popup
-      const basePoint: Point = { x: e.clientX, y: e.clientY };
+      const basePoint: Point = { top:e.clientY , left: e.clientX };
       const newPlacement = getCorrectPositionForPopup(
         popupEl,
         initialPlacement,
         basePoint
       );
+
       positionPopup(popupEl, newPlacement, basePoint);
       hideThenShowAgain(popupEl);
     };
