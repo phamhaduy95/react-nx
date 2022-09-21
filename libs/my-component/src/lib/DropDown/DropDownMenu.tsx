@@ -52,8 +52,8 @@ export function DropDownMenu(props: DropDownMenuProps) {
   return (
     <PopupElement
       className="DropDown__Popup"
-      placement="bottomLeft"
-      targetRef={targetRef}
+      placement="bottom-left"
+      triggerRef={targetRef}
       isShowed={isPopupOpen}
       padding={5}
       onClickOutside={handleClickOutSidePopup}

@@ -1,8 +1,9 @@
+import styled from '@emotion/styled';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { DropDown } from './DropDown';
 import { DropDownItem } from './DropDownItem';
 import { DropDownItemGroup } from './DropDownItemGroup';
-import {DropDownSubMenu} from "./DropDownSubMenu"
+import { DropDownSubMenu } from './DropDownSubMenu';
 
 export default {
   component: DropDown,
@@ -10,21 +11,29 @@ export default {
 } as ComponentMeta<typeof DropDown>;
 
 export const Primary: ComponentStory<typeof DropDown> = (args) => {
+  const Container = styled('div')`
+    margin: 0.5rem auto;
+    width: max-content;
+    height: 200vh;
+  `;
+
   return (
-    <DropDown label="Item List">
-      <DropDownItem>Item 1</DropDownItem>
-      <DropDownItem disabled>Item 2</DropDownItem>
-      <DropDownItem>Item 3</DropDownItem>
-      <DropDownItem>Item 4</DropDownItem>
-      <DropDownSubMenu label='menu'>
+    <Container>
+      <DropDown label="Item List">
+        <DropDownItem>Item 1</DropDownItem>
+        <DropDownItem disabled>Item 2</DropDownItem>
+        <DropDownItem>Item 3</DropDownItem>
+        <DropDownItem>Item 4</DropDownItem>
+        <DropDownSubMenu label="menu">
           <DropDownItem>Item 1</DropDownItem>
           <DropDownItem>Item 2</DropDownItem>
-      </DropDownSubMenu>
-      <DropDownItemGroup label='group 1'>
-      <DropDownItem disabled>Item 5</DropDownItem>
-      <DropDownItem>Item 6</DropDownItem>
-      </DropDownItemGroup>
-    </DropDown>
+        </DropDownSubMenu>
+        <DropDownItemGroup label="group 1">
+          <DropDownItem disabled>Item 5</DropDownItem>
+          <DropDownItem>Item 6</DropDownItem>
+        </DropDownItemGroup>
+      </DropDown>
+    </Container>
   );
 };
 Primary.args = {};
