@@ -3,7 +3,7 @@
   visibility: collapse;
   transition: opacity 0.2s ease-in 0s;
   z-index: 1020;
-  position: absolute;
+  position: fixed;
   width: max-content;
   > .Popup__Content {
     position: relative;

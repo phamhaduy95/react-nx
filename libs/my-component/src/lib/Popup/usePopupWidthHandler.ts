@@ -24,7 +24,7 @@ export default function usePopupWidthHandler(
       for (let entry of entries) {
         const newWidth = entry.borderBoxSize[0].inlineSize;
         popupEl.style.width = `${newWidth}px`;
-        positionPopup(targetEl, popupEl, placement);
+        // positionPopup(targetEl, popupEl, placement);
       }
     });
     observer.observe(targetEl);
