@@ -1,9 +1,7 @@
 import { useEffect } from 'react';
 import { Placement } from './types';
 import {
-  calculatePositionForPopupBasedOnPlacement,
-  findCorrectPlacementForPopup,
-  positionPopup,
+  recalculateAndPositionPopup,
 } from './utilities';
 
 export function usePopupPlacement(
@@ -18,23 +16,7 @@ export function usePopupPlacement(
     const popupEl = popupRef.current;
     if (triggerEl === null || popupEl === null) return;
 
-
-    const initialPos = calculatePositionForPopupBasedOnPlacement(
-      triggerEl,
-      popupEl,
-      placement
-    );
-    // debugger
-    const newPlacement = findCorrectPlacementForPopup(
-      popupEl,
-      initialPos,
-      placement
-    );
-    const finalPos = calculatePositionForPopupBasedOnPlacement(
-      triggerEl,
-      popupEl,
-      newPlacement
-    );
-    positionPopup(popupEl, finalPos);
+    recalculateAndPositionPopup(triggerEl, popupEl, placement);
   }, [placement, isOpen]);
 }
+

@@ -12,28 +12,30 @@ export function useMovePopupOnScroll(
     if (!isOpen) return;
     const popupEl = popupRef.current;
     if (popupEl === null) return;
-    let tick = 0;
-    const basePopupPos = getPopoverPosition(popupEl);
-    console.log(basePopupPos)
+    let basePopupPos = getPopoverPosition(popupEl);
+
+    const resizeCallback = () => {
+      basePopupPos = getPopoverPosition(popupEl);
+    };
+    window.addEventListener('resize', resizeCallback);
+
     let initialScroll = getWindowScrollPosition();
     const callback = () => {
-      if (tick === 1) {
-        const deltaScroll = {
-          top: window.scrollY - initialScroll.top,
-          left: window.scrollX - initialScroll.left,
-        };
-        const newPopupPos = repositionPopupForNewScrollPos(
-          basePopupPos,
-          deltaScroll
-        );
-        positionPopup(popupEl, newPopupPos);
-        tick = 0;
-      }
-      tick++;
+      const deltaScroll = {
+        top: window.scrollY - initialScroll.top,
+        left: window.scrollX - initialScroll.left,
+      };
+    
+      const newPopupPos = repositionPopupForNewScrollPos(
+        basePopupPos,
+        deltaScroll
+      );
+      positionPopup(popupEl, newPopupPos);
     };
     document.addEventListener('scroll', callback);
     return () => {
       document.removeEventListener('scroll', callback);
+      window.removeEventListener('resize', resizeCallback);
     };
   }, [isOpen, placement]);
 }

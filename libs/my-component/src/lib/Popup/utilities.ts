@@ -11,11 +11,32 @@ export function getSizeOf(element: HTMLElement) {
   return { width, height };
 }
 
-export function transformToPixel(number: number) {
-  return `${number}px`;
+export function recalculateAndPositionPopup(
+  triggerEl: HTMLElement,
+  popupEl: HTMLElement,
+  placement: Placement
+) {
+  const initialPos = calculatePositionForPopupBasedOnPlacement(
+    triggerEl,
+    popupEl,
+    placement
+  );
+  // debugger
+  const newPlacement = findCorrectPlacementForPopup(
+    popupEl,
+    initialPos,
+    placement
+  );
+  const finalPos = calculatePositionForPopupBasedOnPlacement(
+    triggerEl,
+    popupEl,
+    newPlacement
+  );
+  positionPopup(popupEl, finalPos);
 }
 
-export function calculatePositionForPopupBasedOnPlacement(
+
+function calculatePositionForPopupBasedOnPlacement(
   triggerEl: HTMLElement,
   popupEl: HTMLElement,
   placement: Placement
@@ -28,9 +49,7 @@ export function calculatePositionForPopupBasedOnPlacement(
   return pos;
 }
 
-
-
-export function findCorrectPlacementForPopup(
+function findCorrectPlacementForPopup(
   popupEl: HTMLElement,
   initialPosition: Position,
   initialPlacement: Placement
@@ -65,8 +84,8 @@ type DimensionType = {
   first: 'bottom' | 'top' | 'left' | 'right';
   second: 'bottom' | 'top' | 'left' | 'right' | 'center';
 };
-
-export function getDimensionFromPlacement(placement: Placement) {
+ 
+function getDimensionFromPlacement(placement: Placement) {
   const [first, second] = placement.split('-');
   return { first, second } as DimensionType;
 }
