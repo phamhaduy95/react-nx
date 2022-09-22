@@ -2,12 +2,14 @@ import { createContext, useContext, useMemo } from 'react';
 import { createStore, StoreApi, useStore } from 'zustand';
 
 type DatePickerState = {
-  selectedDate: Date | null;
-  isPopupOpen: boolean;
+  selectedDate: Date | null,
+  submittedDate:Date|null,
+  isPopupOpen: boolean,
   action: {
-    selectDate(date: DatePickerState['selectedDate']): void;
-    togglePopup: (isOpen: boolean) => void;
-  };
+    selectDate(date: DatePickerState['selectedDate']): void,
+    submitDate(date:DatePickerState["submittedDate"]):void,
+    togglePopup: (isOpen: boolean) => void,
+  }
 };
 
 type ContextValueType = {
@@ -25,6 +27,7 @@ export function DatePickerStoreProvider(props: ContextProviderProps) {
   const store = useMemo(() => {
     return createStore<DatePickerState>((set) => ({
       selectedDate: null,
+      submittedDate:null,
       isPopupOpen: false,
       action: {
         selectDate(date) {
@@ -32,6 +35,9 @@ export function DatePickerStoreProvider(props: ContextProviderProps) {
         },
         togglePopup(isOpen) {
           set((state) => ({ isPopupOpen: isOpen }));
+        },
+        submitDate(date) {
+          set((state) => ({ submittedDate: date }));
         },
       },
     }));

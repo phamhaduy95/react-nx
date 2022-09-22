@@ -26,6 +26,8 @@ export interface DatePickerProps {
     dateValue: Date | null;
     onSelect: (date: Date | null) => void;
     disabledDate?: CalendarProps['disabledDate'];
+    onSubmit: (date: Date | null) => void;
+    onClear: () => void;
   }) => JSX.Element;
 }
 const defaultPropsValue: Required<DatePickerProps> = {
@@ -65,9 +67,22 @@ function WrappedDatePicker(props: DatePickerProps) {
   });
   const targetRef = useRef(null);
 
-  const selectedDate = useDatePickerStore((state) => state.selectedDate,(a,b)=>{
-    return a?.toDateString() === b?.toDateString()
-  });
+  const submittedDate = useDatePickerStore(
+    (state) => state.submittedDate,
+    (a, b) => {
+      return a?.toDateString() === b?.toDateString();
+    }
+  );
+
+  const displayDate = useDatePickerStore(
+    (state) => {
+      const { isPopupOpen, selectedDate, submittedDate } = state;
+      if (!isPopupOpen) return submittedDate;
+      if (selectedDate === null) return submittedDate;
+      return selectedDate;
+    },
+    (a, b) => a?.toDateString() === b?.toDateString()
+  );
 
   const action = useDatePickerStore((state) => state.action);
 
@@ -75,18 +90,18 @@ function WrappedDatePicker(props: DatePickerProps) {
 
   // trigger onSelect when the selectedDate is updated
   useEffectSkipFirstRender(() => {
-    onSelect(selectedDate);
-  }, [selectedDate?.toDateString()]);
+    onSelect(submittedDate);
+  }, [submittedDate?.toDateString()]);
 
- // change the inputValue when the selectedDate in store is updated
+  // change the inputValue when the selectedDate in store is updated
   useEffect(() => {
-    if (selectedDate === null) {
+    if (displayDate === null) {
       setInputValue('');
       return;
     }
-    const newValue = dayjs(selectedDate).format(dateFormat);
+    const newValue = dayjs(displayDate).format(dateFormat);
     setInputValue(newValue);
-  }, [selectedDate?.toDateString()]);
+  }, [displayDate?.toDateString()]);
 
   useEffect(() => {
     if (inputValue === '') {
