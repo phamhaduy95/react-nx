@@ -1,32 +1,28 @@
-import { TimePanelState } from './reducer';
-import {
-  TimePanelContextProvider,
-  useTimePanelContext,
-} from './TimePanelContext';
 import TimePanelDataColumn from './TimePanelDataColumn';
-import { useColumnDataGenerator } from './utils';
+import { useColumnDataGenerator, getDefaultTimeValue } from './utils';
 import classNames from 'classnames';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import './TimePanel.scss';
-import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import { range } from '../utils/range';
 import { extractTimeFromDate } from '../utils/dateTime';
 import dayjs from 'dayjs';
-
-type Time = {
-  hour: number;
-  minute: number;
-  second: number;
-};
+import { Time } from './types';
+import {
+  TimePanelStoreProvider,
+  useTimePanelStore,
+} from './TimePanelStoreProvider';
+import shallow from 'zustand/shallow';
 
 export type TimePanelProps = {
   value?: Time | null;
   className?: string;
   isSecondInclude?: boolean;
   numberOfShowedItem?: number;
-  onTimeSelect?: (time: Time) => void;
+  onTimeSelect?: (time: Time | null) => void;
+  onSubmit?: (time: Time | null) => void;
   maxTime?: Date | null;
   minTime?: Date | null;
+  actionIncluded?: boolean;
 };
 
 const defaultProps: Required<TimePanelProps> = {
@@ -35,23 +31,17 @@ const defaultProps: Required<TimePanelProps> = {
   isSecondInclude: true,
   numberOfShowedItem: 7,
   onTimeSelect: () => {},
+  onSubmit(time) {},
   maxTime: null,
   minTime: null,
+  actionIncluded: true,
 };
 
 export function TimePanel(props: TimePanelProps) {
-  const initialState: TimePanelState = {
-    selectTime: {
-      hour: 0,
-      minute: 0,
-      second: 0,
-    },
-  };
-
   return (
-    <TimePanelContextProvider initialState={initialState}>
+    <TimePanelStoreProvider>
       <WrappedTimePanel {...props} />
-    </TimePanelContextProvider>
+    </TimePanelStoreProvider>
   );
 }
 
@@ -63,30 +53,30 @@ export function WrappedTimePanel(props: TimePanelProps) {
     numberOfShowedItem,
     onTimeSelect,
     value,
-    maxTime,
-    minTime,
+    onSubmit,
+    actionIncluded,
   } = newProps;
-  const { state, action } = useTimePanelContext();
-  const { selectTime } = state;
-  const { hour, minute, second } = selectTime;
+  const action = useTimePanelStore((state) => state.action);
+
+  const selectedTime = useTimePanelStore(
+    (state) => state.selectedTime,
+    shallow
+  );
 
   useEffect(() => {
-    if (value === null) return;
-    action.selectHour(value.hour);
-    action.selectMinute(value.minute);
-    action.selectSecond(value.second);
+    const selectTime = value === null ? getDefaultTimeValue() : value;
+    action.selectHour(selectTime.hour);
+    action.selectMinute(selectTime.minute);
+    action.selectSecond(selectTime.second);
   }, [value?.hour, value?.minute, value?.second]);
 
-  useEffectSkipFirstRender(() => {
-    onTimeSelect(state.selectTime);
-  }, [hour, minute, second]);
+  useEffect(() => {
+    onTimeSelect(selectedTime);
+  }, [selectedTime]);
 
   const rootClassName = classNames('TimePanel', className, {
     isSecondIncluded: isSecondInclude,
   });
-
-  const disabledHour = computeDisableHour(maxTime,minTime);
-  console.log(disabledHour)
 
   const hourData = useColumnDataGenerator('hour', []);
   const secondData = useColumnDataGenerator('second', []);
@@ -104,6 +94,9 @@ export function WrappedTimePanel(props: TimePanelProps) {
     action.selectSecond(value);
   };
 
+  const timeValue =
+    selectedTime === null ? getDefaultTimeValue() : selectedTime;
+
   const renderColumnForSecond = () => {
     if (isSecondInclude)
       return (
@@ -112,8 +105,28 @@ export function WrappedTimePanel(props: TimePanelProps) {
           dataSet={secondData}
           numberShowedItem={numberOfShowedItem}
           onSelect={handleSecondSelect}
-          value={selectTime.second}
+          value={timeValue.second}
         />
+      );
+    return <></>;
+  };
+
+  const handleTimeSubmit = () => {
+    if (value === null && shallow(selectedTime, getDefaultTimeValue())) {
+      onSubmit(null);
+      return;
+    }
+    onSubmit(selectedTime);
+  };
+
+  const renderActionPart = () => {
+    if (actionIncluded)
+      return (
+        <div className="TimePanel__Footer">
+          <button className="TimePanel__Submit" onClick={handleTimeSubmit}>
+            OK
+          </button>
+        </div>
       );
     return <></>;
   };
@@ -127,17 +140,18 @@ export function WrappedTimePanel(props: TimePanelProps) {
           dataSet={hourData}
           numberShowedItem={numberOfShowedItem}
           onSelect={handleHourSelect}
-          value={selectTime.hour}
+          value={timeValue.hour}
         />
         <TimePanelDataColumn
           className="TimePanel__MinuteColumn"
           dataSet={minuteData}
           numberShowedItem={numberOfShowedItem}
           onSelect={handleMinuteSelect}
-          value={selectTime.minute}
+          value={timeValue.minute}
         />
         {renderColumnForSecond()}
       </div>
+      {renderActionPart()}
     </div>
   );
 }
@@ -146,21 +160,19 @@ function computeDisableHour(
   maxTime: Required<TimePanelProps>['maxTime'],
   minTime: Required<TimePanelProps>['minTime']
 ) {
-  const hourArray = range(0,23);
+  const hourArray = range(0, 23);
   const upperLimit = normalizeDateTime(maxTime);
   const lowerLimit = normalizeDateTime(minTime);
 
   if (upperLimit === null && lowerLimit === null) return [];
-     const filteredArray =  hourArray.filter((e)=>{
-        const day = dayjs().hour(e).minute(0).second(0);
-        if (upperLimit === null) 
-        return day.isBefore(lowerLimit);
-        if (lowerLimit === null)
-          return day.isAfter(upperLimit);
-        return (day.isBefore(lowerLimit)||day.isAfter(upperLimit));
-    });
-    return filteredArray;
-  }
+  const filteredArray = hourArray.filter((e) => {
+    const day = dayjs().hour(e).minute(0).second(0);
+    if (upperLimit === null) return day.isBefore(lowerLimit);
+    if (lowerLimit === null) return day.isAfter(upperLimit);
+    return day.isBefore(lowerLimit) || day.isAfter(upperLimit);
+  });
+  return filteredArray;
+}
 /**
  * ensure result datetime will have the same date which is Date.now();
  * */

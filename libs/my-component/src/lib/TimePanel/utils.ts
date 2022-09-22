@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { ScrollableDataColumnProps } from "../ScrollableDataColumn";
+import { Time } from "./types";
 
 type DataType = "hour"|"second"|"minute";
 
@@ -19,4 +20,7 @@ export function useColumnDataGenerator(dataType:DataType,disabledRange:number[])
     return data;
   }
   
+export  function getDefaultTimeValue(){
+    return {hour:0,minute:0,second:0} as Time
+  }
  
