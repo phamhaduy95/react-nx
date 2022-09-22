@@ -1,16 +1,18 @@
 import { useEffect } from 'react';
-import { positionPopup } from '../usePopupPlacement/usePopUpPlacement';
 import { PopupElementProps } from './PopupElement';
+import {recalculateAndPositionPopup } from './utilities';
+
+
 export default function usePopupWidthHandler(
-  targetRef: React.MutableRefObject<HTMLElement|null>,
-  popupRef: React.MutableRefObject<HTMLElement|null>,
+  triggerRef: React.MutableRefObject<HTMLElement | null>,
+  popupRef: React.MutableRefObject<HTMLElement | null>,
   widthType: PopupElementProps['width'],
   placement: PopupElementProps['placement']
 ) {
   useEffect(() => {
-    const targetEl = targetRef.current;
+    const triggerEl = triggerRef.current;
     const popupEl = popupRef.current;
-    if (targetEl === null || popupEl === null) return;
+    if (triggerEl === null || popupEl === null) return;
     if (widthType === 'fit-content') {
       popupEl.style.width = 'max-content';
       return;
@@ -24,10 +26,10 @@ export default function usePopupWidthHandler(
       for (let entry of entries) {
         const newWidth = entry.borderBoxSize[0].inlineSize;
         popupEl.style.width = `${newWidth}px`;
-        // positionPopup(targetEl, popupEl, placement);
+        recalculateAndPositionPopup(triggerEl,popupEl,placement);
       }
     });
-    observer.observe(targetEl);
+    observer.observe(triggerEl);
 
     return () => {
       observer.disconnect();
