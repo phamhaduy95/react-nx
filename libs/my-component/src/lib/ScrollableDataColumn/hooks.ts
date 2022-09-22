@@ -34,10 +34,7 @@ export function useRowHeightCalculator(
     const resizeObserver = new ResizeObserver((entries, observer) => {
       for (let entry of entries) {
         const containerHeight = entry.borderBoxSize[0].blockSize;
-        const calculatedHeight = Math.floor(
-          containerHeight / numberOfShowedItem
-        );
-
+        const calculatedHeight =  containerHeight / numberOfShowedItem;
         setRowHeight(calculatedHeight);
       }
     });
