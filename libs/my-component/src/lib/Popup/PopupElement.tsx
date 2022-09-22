@@ -8,6 +8,8 @@ import { useMovePopupOnScroll } from './useMovePopupOnScroll';
 import usePopupPadding from './usePopupPadding';
 import './PopupElement.scss';
 import { forwardRef } from 'react';
+import { useRepositionPopupOnResize } from './useRepositionPopupOnResize';
+import usePopupWidthHandler from './usePopupWidthHandler';
 
 
 export type PopupElementProps = {
@@ -54,8 +56,11 @@ export const PopupElement = forwardRef<HTMLElement,PopupElementProps>((props,ref
 
 
   usePopupPlacement(triggerRef, popupRef, placement, isShowed);
-  useMovePopupOnScroll(triggerRef,popupRef,placement,isShowed)
+  useMovePopupOnScroll(triggerRef,popupRef,placement,isShowed);
+  usePopupWidthHandler(triggerRef,popupRef,width,placement);
+  useRepositionPopupOnResize(triggerRef,popupRef,placement,isShowed);
   usePopupPadding(popupRef,placement,padding);
+
 
   const rootClassName = classNames('Popup', {
     showed: isShowed,
