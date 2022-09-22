@@ -1,13 +1,16 @@
 import dayjs from 'dayjs';
 import { createContext, useContext, useMemo } from 'react';
 import { createStore, StoreApi, useStore } from 'zustand';
+import { Time } from '../TimePanel/types';
 
 type TimePickerState = {
-  selectedTime: Date;
+  selectedTime: Time|null;
+  submittedTime:Time|null;
   isPopupOpen: boolean;
   action: {
-    selectTime: (time: Date) => void;
+    selectTime: (time: Time|null) => void;
     togglePopup: (state: boolean) => void;
+    submitTime:(time:Time|null)=>void;
   };
 };
 
@@ -25,7 +28,8 @@ export function TimePickerStoreProvider(props: ContextProviderProps) {
   const { children } = props;
   const store = useMemo(() => {
     return createStore<TimePickerState>((set) => ({
-      selectedTime: dayjs().hour(0).minute(0).second(0).toDate(),
+      selectedTime: null,
+      submittedTime:null,
       isPopupOpen: false,
       action: {
         selectTime(date) {
@@ -33,6 +37,9 @@ export function TimePickerStoreProvider(props: ContextProviderProps) {
         },
         togglePopup(isOpen) {
           set((state) => ({ isPopupOpen: isOpen }));
+        },
+        submitTime(time) {
+          set((state)=>({submittedTime:time}))
         },
       },
     }));

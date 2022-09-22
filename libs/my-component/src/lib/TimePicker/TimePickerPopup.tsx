@@ -1,13 +1,14 @@
 import React from 'react';
 import PopupElement from '../Popup/PopupElement';
 import { TimePanel, TimePanelProps } from '../TimePanel';
-import dayjs from 'dayjs';
 import { useTimePickerStore } from './TimePickerStoreProvider';
+import { Time } from '../TimePanel/types';
+import shallow from 'zustand/shallow';
 
 interface TimePickerPopupProps {
   targetRef: React.MutableRefObject<HTMLElement | null>;
   isSecondInCluded: boolean;
-  selectedTime:Date;
+  selectedTime:Time|null;
 }
 
 export default function TimePickerPopup(props: TimePickerPopupProps) {
@@ -20,21 +21,20 @@ export default function TimePickerPopup(props: TimePickerPopupProps) {
   const action = useTimePickerStore((state)=>(state.action));
   const isPopupOpen = useTimePickerStore((state)=>(state.isPopupOpen));
 
+  
+
   const handleClickOutsidePopup = () => {
     action.togglePopup(false);
   };
 
   const handleTimeSelect: TimePanelProps['onTimeSelect'] = (time) => {
-    const { hour, minute, second } = time;
-    const selectedTime = dayjs()
-      .hour(hour)
-      .minute(minute)
-      .second(second)
-      .toDate();
-    action.selectTime(selectedTime);
+    action.selectTime(time);
   };
 
-  const value = getTimeFormDate(selectedTime);
+  const handleTimeSubmit:TimePanelProps["onSubmit"] = (time)=>{
+    action.submitTime(time)
+    action.togglePopup(false);
+  }
 
   return (
     <PopupElement
@@ -50,15 +50,10 @@ export default function TimePickerPopup(props: TimePickerPopupProps) {
         isSecondInclude={isSecondInCluded}
         numberOfShowedItem={7}
         onTimeSelect={handleTimeSelect}
-        value={value}
+        value={selectedTime}
+        onSubmit={handleTimeSubmit}
       ></TimePanel>
     </PopupElement>
   );
 }
 
-function getTimeFormDate(date: Date) {
-  const hour = date.getHours();
-  const second = date.getSeconds();
-  const minute = date.getMinutes();
-  return { hour, second, minute };
-}
