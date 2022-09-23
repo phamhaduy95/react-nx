@@ -11,7 +11,7 @@ type ToggleGroupState = {
   action: {
     toggleItem: (item: { index: number; isSelected: boolean }) => void;
     disableItem: (index: number) => void;
-    unDisableItem:(index:number)=>void;
+    unDisableItem: (index: number) => void;
     highlightNext: () => void;
     highlightPrev: () => void;
     highlightOne: (index: number | null) => void;
@@ -21,9 +21,7 @@ type ToggleGroupState = {
   };
 };
 
-type StoreContextValue = {
-  store: StoreApi<ToggleGroupState>;
-} | null;
+type StoreContextValue = StoreApi<ToggleGroupState> | null;
 
 const StoreContext = createContext<StoreContextValue>(null);
 
@@ -135,7 +133,7 @@ export function ToggleGroupStoreProvider(props: Props) {
   }, []);
 
   return (
-    <StoreContext.Provider value={{ store }}>{children}</StoreContext.Provider>
+    <StoreContext.Provider value={ store }>{children}</StoreContext.Provider>
   );
 }
 
@@ -145,7 +143,7 @@ export function useToggleGroupStore<U>(
 ): U {
   const value = useContext(StoreContext);
   if (value === null) throw new Error('ToggleGroupStore context is null');
-  const { store } = value;
+  const store  = value;
   return useStore(store, selector, equalFunc);
 }
 
@@ -179,7 +177,7 @@ function searchForNextNonDisableItem(
   startPos: number,
   dir: 'des' | 'acs'
 ) {
-  debugger
+  debugger;
   if (dir === 'acs') {
     for (let i = startPos + 1; i < itemList.length; i++) {
       console.assert(itemList[i] !== undefined, itemList, i);
