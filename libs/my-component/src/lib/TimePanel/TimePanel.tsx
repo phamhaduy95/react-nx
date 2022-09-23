@@ -1,7 +1,7 @@
-import TimePanelDataColumn from './TimePanelDataColumn';
+import {TimePanelDataColumn} from './TimePanelDataColumn';
 import { useColumnDataGenerator, getDefaultTimeValue } from './utils';
 import classNames from 'classnames';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import './TimePanel.scss';
 import { range } from '../utils/range';
 import { extractTimeFromDate } from '../utils/dateTime';
@@ -64,11 +64,9 @@ export function WrappedTimePanel(props: TimePanelProps) {
   );
 
   useEffect(() => {
-    const selectTime = value === null ? getDefaultTimeValue() : value;
-    action.selectHour(selectTime.hour);
-    action.selectMinute(selectTime.minute);
-    action.selectSecond(selectTime.second);
+    action.selectTime(value);
   }, [value?.hour, value?.minute, value?.second]);
+
 
   useEffect(() => {
     onTimeSelect(selectedTime);
@@ -77,25 +75,24 @@ export function WrappedTimePanel(props: TimePanelProps) {
   const rootClassName = classNames('TimePanel', className, {
     isSecondIncluded: isSecondInclude,
   });
+  // this emptyArray is used as the temporary disabled value for time. 
+  const emptyArray = useMemo(()=>[],[]);
 
-  const hourData = useColumnDataGenerator('hour', []);
-  const secondData = useColumnDataGenerator('second', []);
-  const minuteData = useColumnDataGenerator('minute', []);
+  const hourData = useColumnDataGenerator('hour', emptyArray);
+  const secondData = useColumnDataGenerator('second', emptyArray);
+  const minuteData = useColumnDataGenerator('minute', emptyArray);
 
-  const handleHourSelect = (value: any) => {
+  const handleHourSelect = useCallback((value: any) => {
     action.selectHour(value);
-  };
+  },[])
 
-  const handleMinuteSelect = (value: any) => {
+  const handleMinuteSelect = useCallback((value: any) => {
     action.selectMinute(value);
-  };
+  },[]);
 
-  const handleSecondSelect = (value: any) => {
+  const handleSecondSelect = useCallback((value: any) => {
     action.selectSecond(value);
-  };
-
-  const timeValue =
-    selectedTime === null ? getDefaultTimeValue() : selectedTime;
+  },[]);
 
   const renderColumnForSecond = () => {
     if (isSecondInclude)
@@ -105,7 +102,7 @@ export function WrappedTimePanel(props: TimePanelProps) {
           dataSet={secondData}
           numberShowedItem={numberOfShowedItem}
           onSelect={handleSecondSelect}
-          value={timeValue.second}
+          value={selectedTime?.second}
         />
       );
     return <></>;
@@ -140,14 +137,14 @@ export function WrappedTimePanel(props: TimePanelProps) {
           dataSet={hourData}
           numberShowedItem={numberOfShowedItem}
           onSelect={handleHourSelect}
-          value={timeValue.hour}
+          value={selectedTime?.hour}
         />
         <TimePanelDataColumn
           className="TimePanel__MinuteColumn"
           dataSet={minuteData}
           numberShowedItem={numberOfShowedItem}
           onSelect={handleMinuteSelect}
-          value={timeValue.minute}
+          value={selectedTime?.minute}
         />
         {renderColumnForSecond()}
       </div>

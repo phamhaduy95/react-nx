@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import { createStore, StoreApi, useStore } from 'zustand';
 import { Time } from './types';
-import { getDefaultTimeValue } from './utils';
 
 type TimePanelState = {
   selectedTime: Time | null;
   action: {
+    selectTime: (time:Time|null)=>void;
     selectHour: (hour: Time['hour']) => void;
     selectMinute: (minute: Time['minute']) => void;
     selectSecond: (second: Time['second']) => void;
@@ -22,17 +22,24 @@ type Props = {
   children: JSX.Element;
 };
 
+const DEFAULT_TIME:Time = {hour:0,minute:0,second:0};
+
 export function TimePanelStoreProvider(props: Props) {
   const { children } = props;
   const store = useMemo(() => {
     return createStore<TimePanelState>((set) => ({
       selectedTime: null,
       action: {
+        selectTime(time) {
+          set((state) => ({
+            selectedTime:time
+          })); 
+        },
         selectHour(hour) {
           set((state) => {
             const selectedTime =
               state.selectedTime === null
-                ? getDefaultTimeValue()
+                ? DEFAULT_TIME
                 : state.selectedTime;
             const newTime = { ...selectedTime, hour };
             return { selectedTime: newTime };
@@ -42,7 +49,7 @@ export function TimePanelStoreProvider(props: Props) {
           set((state) => {
             const selectedTime =
               state.selectedTime === null
-                ? getDefaultTimeValue()
+                ? DEFAULT_TIME
                 : state.selectedTime;
             const newTime = { ...selectedTime, minute };
             return { selectedTime: newTime };
@@ -52,7 +59,7 @@ export function TimePanelStoreProvider(props: Props) {
           set((state) => {
             const selectedTime =
               state.selectedTime === null
-                ? getDefaultTimeValue()
+                ? DEFAULT_TIME
                 : state.selectedTime;
             const newTime = { ...selectedTime, second };
             return { selectedTime: newTime };
