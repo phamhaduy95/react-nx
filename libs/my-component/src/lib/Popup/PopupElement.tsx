@@ -21,7 +21,7 @@ export type PopupElementProps = {
   isShowed: boolean;
   triggerRef: MutableRefObject<any>;
   width?: 'auto' | 'fit-content' | number;
-  onClickOutside?: () => void;
+  onClickOutside?: (e:MouseEvent) => void;
 };
 
 const defaultProps: Required<PopupElementProps> = {
