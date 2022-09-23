@@ -16,9 +16,9 @@ type AccordionState = {
   };
 };
 
-type StoreContextValue = {
-  store: StoreApi<AccordionState>;
-} | null;
+type StoreContextValue = 
+  StoreApi<AccordionState>
+ | null;
 
 const StoreContext = createContext<StoreContextValue>(null);
 
@@ -73,7 +73,7 @@ export default function AccordionStoreProvider(props: Props) {
   }, []);
 
   return (
-    <StoreContext.Provider value={{ store }}>{children}</StoreContext.Provider>
+    <StoreContext.Provider value={ store }>{children}</StoreContext.Provider>
   );
 }
 
@@ -83,7 +83,7 @@ export function useAccordionStore<U>(
 ): U {
     const value = useContext(StoreContext);
     if (value === null) throw new Error("Accordion Store context is null");
-    const {store} = value;
+    const store = value;
     return useStore(store,selector,equalFunc);
 }
 
