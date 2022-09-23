@@ -1,3 +1,3 @@
-import { ContextMenuStoreProvider, useContextMenuStore } from '../../ContextMenu/ContextMenuStoreProvider';
-export const SubMenuStoreProvider = ContextMenuStoreProvider;
-export const useSubMenuStore = useContextMenuStore;
+import { usePopupMenuStore, PopupMenuStoreProvider } from '../PopupMenuStoreProvider';
+export const SubMenuStoreProvider = PopupMenuStoreProvider;
+export const useSubMenuStore = usePopupMenuStore;
