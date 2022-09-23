@@ -1,12 +1,12 @@
 export class ClickOutSideHandler {
   private element: Element;
   isOutSide: boolean;
-  private onClickOutSide: Function;
+  private onClickOutSide: (e:MouseEvent)=>void;
   private handleClick: (e?: any) => void;
   private handleMouseOver: (e?: any) => void;
   private handleMouseOut: (e?: any) => void;
 
-  constructor(element: Element, onClickOutSide: Function) {
+  constructor(element: Element, onClickOutSide: (e:MouseEvent)=>void) {
     this.element = element;
     this.isOutSide = true;
     this.handleClick = this.getClickHandler();
@@ -19,28 +19,28 @@ export class ClickOutSideHandler {
   }
 
   private getClickHandler() {
-    const handlerObject: ClickOutSideHandler = this;
+    const ref: ClickOutSideHandler = this;
     return function (event: MouseEvent) {
-        if (handlerObject.isOutSide) {
-          handlerObject.onClickOutSide();
+        if (ref.isOutSide) {
+          ref.onClickOutSide(event);
         }
     };
   }
 
   private getMouseOverHandler() {
-    const handlerObject: ClickOutSideHandler = this;
+    const ref: ClickOutSideHandler = this;
     return function (event: MouseEvent) {
-      if (event.currentTarget === handlerObject.element) {
-        handlerObject.isOutSide = false;
+      if (event.currentTarget === ref.element) {
+        ref.isOutSide = false;
       }
     };
   }
 
   private getMouseOutHandler() {
-    const handlerObject: ClickOutSideHandler = this;
+    const ref: ClickOutSideHandler = this;
     return function (event: MouseEvent) {
-      if (event.currentTarget === handlerObject.element) {
-        handlerObject.isOutSide = true;
+      if (event.currentTarget === ref.element) {
+        ref.isOutSide = true;
       }
     };
   }

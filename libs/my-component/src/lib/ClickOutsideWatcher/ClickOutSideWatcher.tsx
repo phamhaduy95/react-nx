@@ -3,7 +3,7 @@ import { ClickOutSideHandler } from "./ClickOutSideHandler";
 
 type Props = {
   children: JSX.Element;
-  onClickOutSide: (e?: any) => void;
+  onClickOutSide: (e: MouseEvent) => void;
 };
 
 /**
