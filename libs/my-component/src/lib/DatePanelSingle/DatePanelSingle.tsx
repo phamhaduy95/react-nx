@@ -7,6 +7,7 @@ import {
   DatePanelStoreProvider,
   useDatePanelStore,
 } from './DatePanelStoreProvider';
+import { useEffect, useMemo } from 'react';
 
 export type DatePanelSingleProps = {
   className?: string;
@@ -99,9 +100,7 @@ function WrappedDatePanelSingle(props: DatePanelSingleProps) {
   return (
     <div className={rootClassName}>
       <Calendar
-        CellComponent={(props) => (
-          <DatePanelDateCell {...props} onClickToSelect={onClickToSelect} />
-        )}
+        CellComponent={CellComponent}
         className="DatePanelSingle__Calendar"
         selectable
         dateValue={selectedDate}
@@ -111,3 +110,7 @@ function WrappedDatePanelSingle(props: DatePanelSingleProps) {
     </div>
   );
 }
+
+const CellComponent: CalendarProps['CellComponent'] = (props) => {
+  return <DatePanelDateCell {...props} />;
+};

@@ -20,8 +20,8 @@ type Props = {
 
 export function DatePanelStoreProvider(props: Props) {
   const { children } = props;
-  const store = useMemo(() => {
-    return createStore<DatePanelState>((set) => ({
+  const value = useMemo(() => {
+    const store = createStore<DatePanelState>((set) => ({
       selectedDateTime: null,
       action: {
         selectDateTime(date) {
@@ -29,10 +29,11 @@ export function DatePanelStoreProvider(props: Props) {
         },
       },
     }));
+    return {store}
   }, []);
 
   return (
-    <StoreContext.Provider value={{ store }}>{children}</StoreContext.Provider>
+    <StoreContext.Provider value={value}>{children}</StoreContext.Provider>
   );
 }
 
