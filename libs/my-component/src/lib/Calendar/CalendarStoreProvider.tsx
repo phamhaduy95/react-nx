@@ -12,9 +12,8 @@ export type CalendarStore = {
   };
 };
 
-type StoreContextValue = {
-  store: StoreApi<CalendarStore>;
-} | null;
+type StoreContextValue = 
+   StoreApi<CalendarStore> | null;
 
 const StoreContext = createContext<StoreContextValue>(null);
 
@@ -67,7 +66,7 @@ export  function CalendarStoreProvider(props: StoreContextProps) {
 
 
   return (
-    <StoreContext.Provider value={{store}}>
+    <StoreContext.Provider value={store}>
         {children}
     </StoreContext.Provider>
   )
@@ -76,6 +75,6 @@ export  function CalendarStoreProvider(props: StoreContextProps) {
 export function useCalendarStore(){
     const value = useContext(StoreContext);
     if (value === null) throw new Error("store context is null");
-    const {store} = value;
+    const store = value;
     return store;
 }

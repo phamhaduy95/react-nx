@@ -10,9 +10,12 @@ import {
 } from './CalendarSharedDataContext';
 import { CalendarTableRow } from './CalendarTableRow';
 import { CalendarDateCell, CalendarDateCellProps } from './CalendarDateCell';
-import { CalendarStoreProvider, useCalendarStore } from './CalendarStoreProvider';
+import {
+  CalendarStoreProvider,
+  useCalendarStore,
+} from './CalendarStoreProvider';
 import { useStore } from 'zustand';
-import shallow from "zustand/shallow";
+import shallow from 'zustand/shallow';
 
 function getDateString(year: number, month: number) {
   const date = dayjs().year(year).month(month);
@@ -23,7 +26,9 @@ export interface CalendarProps {
   className?: string;
   selectable?: boolean;
   disabledDate?: (currentDate: Date) => boolean;
-  CellComponent?: (props: CalendarDateCellProps) => JSX.Element;
+  CellComponent?: (
+    props: CalendarDateCellProps & { key: string | number }
+  ) => JSX.Element;
   dateValue?: Date | null;
 }
 
@@ -55,15 +60,15 @@ function WrappedCalendar(props: CalendarProps) {
   const newProps = { ...defaultCalendarProps, ...props };
   const { dateValue } = newProps;
   const store = useCalendarStore();
-  const action = useStore(store,(state)=>state.action);
-  const currentMonth = useStore(store,(state)=>state.currentMonth,shallow);
-  const {year,month} = currentMonth;
+  const action = useStore(store, (state) => state.action);
+  const currentMonth = useStore(store, (state) => state.currentMonth, shallow);
+  const { year, month } = currentMonth;
 
   useEffect(() => {
     if (dateValue === null) return;
     const month = dateValue.getMonth();
     const year = dateValue.getFullYear();
-    action.selectNewMonth({year, month});
+    action.selectNewMonth({ year, month });
   }, [dateValue?.getMonth(), dateValue?.getFullYear()]);
 
   const calendarData = useGenerateCalendarData(year, month);
