@@ -8,9 +8,9 @@ type ModalState = {
   };
 };
 
-type StoreContextValue = {
-  store: StoreApi<ModalState>;
-} | null;
+type StoreContextValue = 
+ StoreApi<ModalState>
+ | null;
 
 const StoreContext = createContext<StoreContextValue>(null);
 
@@ -32,7 +32,7 @@ export function ModalStoreProvider(props: Props) {
     []
   );
   return (
-    <StoreContext.Provider value={{ store }}>{children}</StoreContext.Provider>
+    <StoreContext.Provider value={ store }>{children}</StoreContext.Provider>
   );
 }
 export function useModalStore<U>(
@@ -41,6 +41,6 @@ export function useModalStore<U>(
 ): U {
   const value = useContext(StoreContext);
   if (value === null) throw new Error(' store context of Modal is null');
-  const { store } = value;
+  const store  = value;
   return useStore(store, selector, equalFunc);
 }
