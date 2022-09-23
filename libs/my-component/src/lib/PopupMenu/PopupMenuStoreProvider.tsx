@@ -34,8 +34,8 @@ type Props = {
 
 export function PopupMenuStoreProvider(props: Props) {
   const { children } = props;
-  const store = useMemo(() => {
-    return createStore<PopUpMenuState>((set) => ({
+  const value = useMemo(() => {
+    const store = createStore<PopUpMenuState>((set) => ({
       itemList: [],
       highLightedItem: null,
       selectedItem: null,
@@ -153,11 +153,14 @@ export function PopupMenuStoreProvider(props: Props) {
           });
         },
       },
+
+
     }));
+    return {store}
   }, []);
 
   return (
-    <StoreContext.Provider value={{ store }}>{children}</StoreContext.Provider>
+    <StoreContext.Provider value={value}>{children}</StoreContext.Provider>
   );
 }
 
