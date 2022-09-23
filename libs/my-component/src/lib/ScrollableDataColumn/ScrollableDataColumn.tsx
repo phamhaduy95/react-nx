@@ -18,7 +18,7 @@ export type ScrollableDataColumnProps = {
   /** must be odd number so that the selected one will be in the middle */
   numberShowedItem?: number;
   className?: string;
-  initialSelected?: number | string | null;
+  value?: number | string | null;
   onSelect?: (value: number | string) => void;
 };
 
@@ -26,7 +26,7 @@ const defaultProps: Required<ScrollableDataColumnProps> = {
   dataSet: [],
   className: '',
   numberShowedItem: 3,
-  initialSelected: null,
+  value: null,
   onSelect: (value) => {},
 };
 
@@ -48,21 +48,25 @@ export function ScrollableDataColumn(props: ScrollableDataColumnProps) {
 
 export function WrappedDataColumn(props: ScrollableDataColumnProps) {
   const newProps = { ...defaultProps, ...props };
-  const { dataSet, numberShowedItem, initialSelected, className } =
+  const { dataSet, numberShowedItem, value, className } =
     newProps;
   const rootRef = useRef(null);
   const action = useDataColumnStore((state) => state.action);
 
   const rowHeight = useRowHeightCalculator(rootRef, numberShowedItem);
+  // update state when the input prop value is changed
   useEffect(() => {
-    if (initialSelected === null) return;
+    if (value === null) {
+      action.selectItem(null);
+      return;
+    }
     const pos = dataSet
       .map((e) => e.value)
-      .findIndex((e) => e.toString() === initialSelected.toString());
+      .findIndex((e) => e.toString() === value.toString());
     if (pos === -1) return;
     const itemId = pos.toString();
     action.selectItem({ id: itemId });
-  }, [initialSelected]);
+  }, [value]);
 
   const renderRows = () => {
     const rows = dataSet.map((e, i) => {
