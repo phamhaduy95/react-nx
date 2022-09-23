@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
-import TimePickerPopup from './TimePickerPopup';
+
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import './TimePicker.scss';
@@ -15,6 +15,7 @@ import {
 import shallow from 'zustand/shallow';
 import { convertDateToTimeObject, convertTimeToDateType } from './utils';
 import { Time } from '../TimePanel/types';
+import { TimePickerPopup } from './TimePickerPopup';
 dayjs.extend(customParseFormat);
 
 export type TimePickerProps = {
@@ -56,37 +57,33 @@ function WrappedTimePicker(props: TimePickerProps) {
     helperText,
   } = newProps;
   const rootClassName = classNames('TimePicker', className);
-
   const timeFormat = getTimeFormat(isSecondIncluded, delimiter);
-
-  const ref = useRef(null);
+  
+  const popupRef = useRef(null);
   const [inputValue, setInputValue] = useState('');
   const action = useTimePickerStore((state) => state.action);
-  const displayTime = useTimePickerStore((state) => {
+  const displayedTime = useTimePickerStore((state) => {
     const { isPopupOpen, selectedTime, submittedTime } = state;
     if (!isPopupOpen) return submittedTime;
     return selectedTime;
   }, shallow);
-
+  // update the time text in input field when the time value is updated.
   useEffect(() => {
-    if (displayTime === null) {
+    if (displayedTime === null) {
       setInputValue('');
       return;
     }
-    const dateObj = convertTimeToDateType(displayTime);
+    const dateObj = convertTimeToDateType(displayedTime);
     const time = dayjs(dateObj);
     const timeStr = time.format(timeFormat);
     setInputValue(timeStr);
-  }, [displayTime, delimiter, isSecondIncluded]);
-
-  useEffectSkipFirstRender(() => {
-    onTimeSelect(displayTime);
-  }, [displayTime]);
+  }, [displayedTime, delimiter, isSecondIncluded]);
 
   const handleInputChange = (value: string) => {
     setInputValue(value);
     if (value === '') {
       action.selectTime(null);
+      return;
     }
     const time = dayjs(value, timeFormat, true);
     if (!time.isValid()) return;
@@ -94,6 +91,16 @@ function WrappedTimePicker(props: TimePickerProps) {
     const timeObj = convertDateToTimeObject(dateObj);
     action.selectTime(timeObj);
   };
+
+
+
+  const submittedDate = useTimePickerStore((state)=>(state.submittedTime),shallow)
+  // trigger onTimeSelect when new time is submitted
+  useEffectSkipFirstRender(() => {
+    onTimeSelect(submittedDate);
+  }, [submittedDate]);
+
+  
 
   const handleClickToOpenPopup = () => {
     action.togglePopup(true);
@@ -115,16 +122,15 @@ function WrappedTimePicker(props: TimePickerProps) {
         placeHolder={timeFormat}
         label={label}
         onChange={handleInputChange}
-        ref={ref}
+        ref={popupRef}
         onClick={handleClickToOpenPopup}
         suffix={<IconField />}
         helperText={helperText}
         autoFocusWhenChanged
       />
       <TimePickerPopup
-        targetRef={ref}
+        targetRef={popupRef}
         isSecondInCluded={isSecondIncluded}
-        selectedTime={displayTime}
       />
     </div>
   );

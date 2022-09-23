@@ -3,25 +3,24 @@ import PopupElement from '../Popup/PopupElement';
 import { TimePanel, TimePanelProps } from '../TimePanel';
 import { useTimePickerStore } from './TimePickerStoreProvider';
 import { Time } from '../TimePanel/types';
-import shallow from 'zustand/shallow';
+import { memo } from 'react';
+
 
 interface TimePickerPopupProps {
   targetRef: React.MutableRefObject<HTMLElement | null>;
   isSecondInCluded: boolean;
-  selectedTime:Time|null;
 }
 
-export default function TimePickerPopup(props: TimePickerPopupProps) {
+export const TimePickerPopup = memo((props: TimePickerPopupProps)=> {
   const {
     targetRef,
     isSecondInCluded,
-    selectedTime
   } = props;
 
   const action = useTimePickerStore((state)=>(state.action));
   const isPopupOpen = useTimePickerStore((state)=>(state.isPopupOpen));
 
-  
+  const displayedTimeOnPanel = useTimePickerStore((state)=>state.selectedTime);
 
   const handleClickOutsidePopup = () => {
     action.togglePopup(false);
@@ -50,10 +49,10 @@ export default function TimePickerPopup(props: TimePickerPopupProps) {
         isSecondInclude={isSecondInCluded}
         numberOfShowedItem={7}
         onTimeSelect={handleTimeSelect}
-        value={selectedTime}
+        value={displayedTimeOnPanel}
         onSubmit={handleTimeSubmit}
       ></TimePanel>
     </PopupElement>
   );
-}
+});
 
