@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import PopupElement from '../Popup/PopupElement';
 import { DatePickerProps } from './DatePicker';
 import { useDatePickerStore } from './DatePickerStoreProvider';
@@ -9,31 +9,15 @@ interface DatePickerPopup {
   disabledDate: NonNullable<DatePickerProps['disabledDate']>;
 }
 
-export default function DatePickerPopup(props: DatePickerPopup) {
+export const DatePickerPopup = memo((props: DatePickerPopup)=>{
   const { targetRef, PanelComponent, disabledDate } = props;
 
   const isPopupOpen = useDatePickerStore((state) => state.isPopupOpen);
   const action = useDatePickerStore((state) => state.action);
   
-  const selectedDate = useDatePickerStore(
-    (state) => state.selectedDate,
-    (a, b) => {
-      return a?.toDateString() === b?.toDateString();
-    }
-  );
-
-  const submittedDate = useDatePickerStore(
-    (state) => state.submittedDate,
-    (a, b) => {
-      return a?.toDateString() === b?.toDateString();
-    }
-  );
- 
-  const getDisplayDate = () => {
-    if (!isPopupOpen) return submittedDate;
-    if (selectedDate === null) return submittedDate;
-    return selectedDate;
-  };
+  const displayedDateOnPanel = useDatePickerStore((state)=>state.selectedDate,(a, b) => {
+    return a?.toDateString() === b?.toDateString();
+  })
 
   const handleClickOutsidePopup = () => {
     action.togglePopup(false);
@@ -64,7 +48,7 @@ export default function DatePickerPopup(props: DatePickerPopup) {
       padding={8}
     >
       {PanelComponent({
-        dateValue: getDisplayDate(),
+        dateValue: displayedDateOnPanel,
         onSelect: handleDateChanged,
         disabledDate,
         onSubmit: handleDateSubmit,
@@ -72,4 +56,4 @@ export default function DatePickerPopup(props: DatePickerPopup) {
       })}
     </PopupElement>
   );
-}
+});

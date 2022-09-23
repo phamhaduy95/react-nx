@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import DatePickerPopup from './DatePickerPopup';
+import { DatePickerPopup } from './DatePickerPopup';
 import { TextField } from '../TextField';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import { DatePanelSingle } from '../DatePanelSingle/DatePanelSingle';
