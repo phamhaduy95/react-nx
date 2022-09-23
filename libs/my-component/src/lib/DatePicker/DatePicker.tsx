@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import classNames from 'classnames';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { DatePickerPopup } from './DatePickerPopup';
@@ -14,6 +14,7 @@ import './DatePicker.scss';
 
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { checkIsClickOnElement } from '../utils/utils';
 dayjs.extend(customParseFormat);
 
 export interface DatePickerProps {
@@ -65,7 +66,7 @@ function WrappedDatePicker(props: DatePickerProps) {
   const rootClassName = classNames('DatePicker', {
     [`${className}`]: className,
   });
-  const targetRef = useRef(null);
+  const textFieldRef = useRef<HTMLDivElement>(null);
 
   const submittedDate = useDatePickerStore(
     (state) => state.submittedDate,
@@ -78,7 +79,6 @@ function WrappedDatePicker(props: DatePickerProps) {
     (state) => {
       const { isPopupOpen, selectedDate, submittedDate } = state;
       if (!isPopupOpen) return submittedDate;
-      if (selectedDate === null) return submittedDate;
       return selectedDate;
     },
     (a, b) => a?.toDateString() === b?.toDateString()
@@ -111,7 +111,6 @@ function WrappedDatePicker(props: DatePickerProps) {
     if (isDateInputValid(inputValue, dateFormat)) {
       const date = dayjs(inputValue, dateFormat).toDate();
       action.selectDate(date);
-      return;
     }
   }, [inputValue]);
 
@@ -122,6 +121,12 @@ function WrappedDatePicker(props: DatePickerProps) {
   const handleClickToTogglePopup = () => {
     action.togglePopup(true);
   };
+
+  const handleClickOutSide = useCallback((e: MouseEvent) => {
+    const textFieldEl = textFieldRef.current as HTMLDivElement;
+    if (!checkIsClickOnElement(e,textFieldEl))
+    action.togglePopup(false);
+  },[]);
 
   const IconField = () => {
     return (
@@ -143,12 +148,13 @@ function WrappedDatePicker(props: DatePickerProps) {
         value={inputValue}
         suffix={<IconField />}
         autoFocusWhenChanged
-        ref={targetRef}
+        ref={textFieldRef}
       />
       <DatePickerPopup
-        targetRef={targetRef}
+        targetRef={textFieldRef}
         disabledDate={disabledDate}
         PanelComponent={PanelComponent}
+        onClickOutSide={handleClickOutSide}
       />
     </div>
   );
@@ -157,5 +163,7 @@ function WrappedDatePicker(props: DatePickerProps) {
 const isDateInputValid = (input: string, dateFormat: string) => {
   return dayjs(input, dateFormat, true).isValid();
 };
+
+
 
 export default DatePicker;

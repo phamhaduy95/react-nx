@@ -7,21 +7,23 @@ interface DatePickerPopup {
   targetRef: React.MutableRefObject<HTMLElement | null>;
   PanelComponent: NonNullable<DatePickerProps['PanelComponent']>;
   disabledDate: NonNullable<DatePickerProps['disabledDate']>;
+  onClickOutSide:(e:MouseEvent)=>void;
 }
 
 export const DatePickerPopup = memo((props: DatePickerPopup)=>{
-  const { targetRef, PanelComponent, disabledDate } = props;
+  const { targetRef, PanelComponent, disabledDate,onClickOutSide } = props;
 
   const isPopupOpen = useDatePickerStore((state) => state.isPopupOpen);
   const action = useDatePickerStore((state) => state.action);
   
-  const displayedDateOnPanel = useDatePickerStore((state)=>state.selectedDate,(a, b) => {
+  const displayedDateOnPanel = useDatePickerStore((state)=>{
+    const { isPopupOpen, selectedDate, submittedDate } = state;
+    if (!isPopupOpen) return submittedDate;
+    return selectedDate;
+  },(a, b) => {
     return a?.toDateString() === b?.toDateString();
   })
 
-  const handleClickOutsidePopup = () => {
-    action.togglePopup(false);
-  };
   const handleDateChanged = (date: Date | null) => {
     action.selectDate(date);
     // action.togglePopup(false);
@@ -44,7 +46,7 @@ export const DatePickerPopup = memo((props: DatePickerPopup)=>{
       placement="bottom-center"
       width="fit-content"
       className="DatePicker__Popup"
-      onClickOutside={handleClickOutsidePopup}
+      onClickOutside={onClickOutSide}
       padding={8}
     >
       {PanelComponent({
