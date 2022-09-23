@@ -3,7 +3,7 @@ import { createStore, StoreApi, useStore } from 'zustand';
 
 type TabState = {
   selectedTab: { index: number };
-  highlightedTab:{index:number}|null;
+  highlightedTab: { index: number } | null;
   numberOfTabs: number;
   action: {
     subscribe: () => void;
@@ -11,13 +11,11 @@ type TabState = {
     selectTab: (index: number) => void;
     highlightNextTab: () => void;
     highlightPrevTab: () => void;
-    highlightTab:(index:number)=>void;
+    highlightTab: (index: number) => void;
   };
 };
 
-type StoreContextValueType = {
-  store: StoreApi<TabState>;
-} | null;
+type StoreContextValueType = StoreApi<TabState> | null;
 
 const StoreContext = createContext<StoreContextValueType>(null);
 
@@ -30,7 +28,7 @@ export function TabStoreProvider(props: Props) {
   const store = useMemo(() => {
     return createStore<TabState>((set) => ({
       selectedTab: { index: 0 },
-      highlightedTab:null,
+      highlightedTab: null,
       numberOfTabs: 0,
       action: {
         subscribe() {
@@ -57,7 +55,6 @@ export function TabStoreProvider(props: Props) {
           });
         },
         highlightPrevTab() {
-
           set((state) => {
             if (state.highlightedTab === null) return {};
             const oldPos = state.highlightedTab.index;
@@ -83,7 +80,7 @@ export function TabStoreProvider(props: Props) {
   }, []);
 
   return (
-    <StoreContext.Provider value={{ store }}>{children}</StoreContext.Provider>
+    <StoreContext.Provider value={ store }>{children}</StoreContext.Provider>
   );
 }
 
@@ -93,7 +90,7 @@ export function useTabStore<U>(
 ): U {
   const value = useContext(StoreContext);
   if (value === null) throw new Error(' store context of DataColumn is null');
-  const { store } = value;
+  const store  = value;
   return useStore(store, selector, equalFunc);
 }
 
