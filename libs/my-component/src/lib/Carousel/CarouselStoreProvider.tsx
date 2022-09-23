@@ -17,9 +17,9 @@ type CarouselState = {
   };
 };
 
-type StoreContextValueType = {
-  store: StoreApi<CarouselState>;
-} | null;
+type StoreContextValueType = 
+ StoreApi<CarouselState>
+| null;
 
 const StoreContext = createContext<StoreContextValueType>(null);
 
@@ -81,7 +81,7 @@ export function CarouselStoreProvider(props: Props) {
   }, []);
 
   return (
-    <StoreContext.Provider value={{ store }}>{children}</StoreContext.Provider>
+    <StoreContext.Provider value={ store }>{children}</StoreContext.Provider>
   );
 }
 
@@ -91,7 +91,7 @@ export function useCarouselStore<U>(
 ): U {
   const value = useContext(StoreContext);
   if (value === null) throw new Error(' store context of DataColumn is null');
-  const { store } = value;
+  const  store  = value;
   return useStore(store, selector, equalFunc);
 }
 /** make input number equal to min when it is larger than max and equal to max when it is smaller than min, otherwise keep its value */
