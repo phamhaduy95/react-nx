@@ -5,16 +5,14 @@ import { Time } from './types';
 type TimePanelState = {
   selectedTime: Time | null;
   action: {
-    selectTime: (time:Time|null)=>void;
+    selectTime: (time: Time | null) => void;
     selectHour: (hour: Time['hour']) => void;
     selectMinute: (minute: Time['minute']) => void;
     selectSecond: (second: Time['second']) => void;
   };
 };
 
-type ContextValueType = {
-  store: StoreApi<TimePanelState>;
-} | null;
+type ContextValueType = StoreApi<TimePanelState> | null;
 
 const StoreContext = createContext<ContextValueType>(null);
 
@@ -22,7 +20,7 @@ type Props = {
   children: JSX.Element;
 };
 
-const DEFAULT_TIME:Time = {hour:0,minute:0,second:0};
+const DEFAULT_TIME: Time = { hour: 0, minute: 0, second: 0 };
 
 export function TimePanelStoreProvider(props: Props) {
   const { children } = props;
@@ -32,15 +30,13 @@ export function TimePanelStoreProvider(props: Props) {
       action: {
         selectTime(time) {
           set((state) => ({
-            selectedTime:time
-          })); 
+            selectedTime: time,
+          }));
         },
         selectHour(hour) {
           set((state) => {
             const selectedTime =
-              state.selectedTime === null
-                ? DEFAULT_TIME
-                : state.selectedTime;
+              state.selectedTime === null ? DEFAULT_TIME : state.selectedTime;
             const newTime = { ...selectedTime, hour };
             return { selectedTime: newTime };
           });
@@ -48,9 +44,7 @@ export function TimePanelStoreProvider(props: Props) {
         selectMinute(minute) {
           set((state) => {
             const selectedTime =
-              state.selectedTime === null
-                ? DEFAULT_TIME
-                : state.selectedTime;
+              state.selectedTime === null ? DEFAULT_TIME : state.selectedTime;
             const newTime = { ...selectedTime, minute };
             return { selectedTime: newTime };
           });
@@ -58,9 +52,7 @@ export function TimePanelStoreProvider(props: Props) {
         selectSecond(second) {
           set((state) => {
             const selectedTime =
-              state.selectedTime === null
-                ? DEFAULT_TIME
-                : state.selectedTime;
+              state.selectedTime === null ? DEFAULT_TIME : state.selectedTime;
             const newTime = { ...selectedTime, second };
             return { selectedTime: newTime };
           });
@@ -70,7 +62,7 @@ export function TimePanelStoreProvider(props: Props) {
   }, []);
 
   return (
-    <StoreContext.Provider value={{ store }}>{children}</StoreContext.Provider>
+    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
   );
 }
 
@@ -80,6 +72,6 @@ export function useTimePanelStore<U>(
 ): U {
   const value = useContext(StoreContext);
   if (value === null) throw new Error('TimePanelStore Context is null');
-  const { store } = value;
+  const store = value;
   return useStore(store, selector, equalFunc);
 }
