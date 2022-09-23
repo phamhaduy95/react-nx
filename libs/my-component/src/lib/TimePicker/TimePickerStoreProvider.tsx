@@ -14,9 +14,9 @@ type TimePickerState = {
   };
 };
 
-type ContextValueType = {
-  store: StoreApi<TimePickerState>;
-} | null;
+type ContextValueType = 
+  StoreApi<TimePickerState>
+| null;
 
 const StoreContext = createContext<ContextValueType>(null);
 
@@ -46,7 +46,7 @@ export function TimePickerStoreProvider(props: ContextProviderProps) {
   }, []);
 
   return (
-    <StoreContext.Provider value={{ store }}>{children}</StoreContext.Provider>
+    <StoreContext.Provider value={ store }>{children}</StoreContext.Provider>
   );
 }
 
@@ -56,5 +56,5 @@ export function useTimePickerStore<U>(
 ): U {
   const value = useContext(StoreContext);
   if (value === null) throw new Error('TimePicker context value is null');
-  return useStore(value.store, selector, equalFunc);
+  return useStore(value, selector, equalFunc);
 }
