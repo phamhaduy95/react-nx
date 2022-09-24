@@ -3,6 +3,7 @@ import PopupElement from '../Popup/PopupElement';
 import { useSelectStore } from './SelectStoreProvider';
 import { switchFocus } from './utils';
 import { useSwitchFocus } from '../utils/hooks';
+import { checkIsClickOnElement } from '../utils/utils';
 
 interface SelectPopupProps {
   children: JSX.Element[] | JSX.Element;
@@ -18,10 +19,6 @@ export const SelectPopup = (props: SelectPopupProps) => {
   const isMenuFocused = useSelectStore((state) => {
     return state.isPopupOpen === true && state.highLightedItem === null;
   });
-
-  const handleClickOutSide = () => {
-    action.togglePopup(false);
-  };
 
   useSwitchFocus(menuRef, isMenuFocused);
   // when popup is closed, reset the highlightedItem in store and move focus back to TextField
@@ -53,6 +50,12 @@ export const SelectPopup = (props: SelectPopupProps) => {
         return;
       }
     }
+  };
+
+  const handleClickOutSide = (e:MouseEvent) => {
+    const el = targetRef.current as HTMLElement;
+    if (!checkIsClickOnElement(e,el))
+    action.togglePopup(false);
   };
 
   return (
