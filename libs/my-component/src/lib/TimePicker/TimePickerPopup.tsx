@@ -2,8 +2,8 @@ import React from 'react';
 import PopupElement from '../Popup/PopupElement';
 import { TimePanel, TimePanelProps } from '../TimePanel';
 import { useTimePickerStore } from './TimePickerStoreProvider';
-import { Time } from '../TimePanel/types';
 import { memo } from 'react';
+import { checkIsClickOnElement } from '../utils/utils';
 
 
 interface TimePickerPopupProps {
@@ -22,7 +22,9 @@ export const TimePickerPopup = memo((props: TimePickerPopupProps)=> {
 
   const displayedTimeOnPanel = useTimePickerStore((state)=>state.selectedTime);
 
-  const handleClickOutsidePopup = () => {
+  const handleClickOutsidePopup = (e:MouseEvent) => {
+    const targetEl = targetRef.current as HTMLElement;
+    if (!checkIsClickOnElement(e,targetEl))
     action.togglePopup(false);
   };
 
@@ -51,6 +53,7 @@ export const TimePickerPopup = memo((props: TimePickerPopupProps)=> {
         onTimeSelect={handleTimeSelect}
         value={displayedTimeOnPanel}
         onSubmit={handleTimeSubmit}
+        actionIncluded={false}
       ></TimePanel>
     </PopupElement>
   );

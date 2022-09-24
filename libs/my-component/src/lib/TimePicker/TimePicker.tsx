@@ -58,7 +58,7 @@ function WrappedTimePicker(props: TimePickerProps) {
   } = newProps;
   const rootClassName = classNames('TimePicker', className);
   const timeFormat = getTimeFormat(isSecondIncluded, delimiter);
-  
+
   const popupRef = useRef(null);
   const [inputValue, setInputValue] = useState('');
   const action = useTimePickerStore((state) => state.action);
@@ -92,15 +92,14 @@ function WrappedTimePicker(props: TimePickerProps) {
     action.selectTime(timeObj);
   };
 
-
-
-  const submittedDate = useTimePickerStore((state)=>(state.submittedTime),shallow)
+  const submittedDate = useTimePickerStore(
+    (state) => state.submittedTime,
+    shallow
+  );
   // trigger onTimeSelect when new time is submitted
   useEffectSkipFirstRender(() => {
     onTimeSelect(submittedDate);
   }, [submittedDate]);
-
-  
 
   const handleClickToOpenPopup = () => {
     action.togglePopup(true);
