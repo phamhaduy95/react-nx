@@ -10,9 +10,7 @@ export type DateRangePanelState = {
   };
 };
 
-type ContextValueType = {
-  store: StoreApi<DateRangePanelState>;
-} | null;
+type ContextValueType = StoreApi<DateRangePanelState> | null;
 
 const StoreContext = createContext<ContextValueType>(null);
 
@@ -25,7 +23,7 @@ export function DateRangePanelStoreProvider(props: ContextProviderProps) {
   const store = useMemo(() => {
     return createStore<DateRangePanelState>((set) => ({
       startDate: null,
-      endDate: null,
+      endDate: null,  
       action: {
         selectEndDate(date) {
           set((state) => {
@@ -42,7 +40,7 @@ export function DateRangePanelStoreProvider(props: ContextProviderProps) {
   }, []);
 
   return (
-    <StoreContext.Provider value={{ store }}>{children}</StoreContext.Provider>
+    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
   );
 }
 
@@ -52,5 +50,5 @@ export function useDateRangePanelStore<U>(
 ): U {
   const value = useContext(StoreContext);
   if (value === null) throw new Error('DatePanel context value is null');
-  return useStore(value.store, selector, equalFunc);
+  return useStore(value, selector, equalFunc);
 }

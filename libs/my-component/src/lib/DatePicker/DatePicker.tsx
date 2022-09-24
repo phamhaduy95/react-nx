@@ -4,7 +4,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { DatePickerPopup } from './DatePickerPopup';
 import { TextField } from '../TextField';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
-import { DatePanelSingle } from '../DatePanelSingle/DatePanelSingle';
+import { DatePanelSingle, DatePanelProps } from '../DatePanelSingle/DatePanelSingle';
 import { CalendarProps } from '../Calendar';
 import {
   DatePickerStoreProvider,
@@ -23,13 +23,7 @@ export interface DatePickerProps {
   label?: string;
   disabledDate?: CalendarProps['disabledDate'];
   onSelect?: (date: Date | null) => void;
-  PanelComponent?: (props: {
-    dateValue: Date | null;
-    onSelect: (date: Date | null) => void;
-    disabledDate?: CalendarProps['disabledDate'];
-    onSubmit: (date: Date | null) => void;
-    onClear: () => void;
-  }) => JSX.Element;
+  PanelComponent?: (props: DatePanelProps) => JSX.Element;
 }
 const defaultPropsValue: Required<DatePickerProps> = {
   className: false,

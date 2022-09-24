@@ -9,7 +9,7 @@ import {
 } from './DatePanelStoreProvider';
 import { useEffect, useMemo } from 'react';
 
-export type DatePanelSingleProps = {
+export type DatePanelProps = {
   className?: string;
   dateValue?: Date | null;
   onSelect?: (date: Date | null) => void;
@@ -20,7 +20,7 @@ export type DatePanelSingleProps = {
   actionEnabled?: boolean;
 };
 
-const defaultProps: Required<DatePanelSingleProps> = {
+export const defaultDatePanelProps: Required<DatePanelProps> = {
   className: '',
   dateValue: null,
   actionEnabled: true,
@@ -33,7 +33,7 @@ const defaultProps: Required<DatePanelSingleProps> = {
   onClear() {},
 };
 
-export function DatePanelSingle(props: DatePanelSingleProps) {
+export function DatePanelSingle(props: DatePanelProps) {
   return (
     <DatePanelStoreProvider>
       <WrappedDatePanelSingle {...props} />
@@ -41,8 +41,8 @@ export function DatePanelSingle(props: DatePanelSingleProps) {
   );
 }
 
-function WrappedDatePanelSingle(props: DatePanelSingleProps) {
-  const newProps = { ...defaultProps, ...props };
+function WrappedDatePanelSingle(props: DatePanelProps) {
+  const newProps = { ...defaultDatePanelProps, ...props };
   const {
     dateValue,
     onSelect,

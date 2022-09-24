@@ -3,7 +3,7 @@ import PopupElement from '../Popup/PopupElement';
 import { TimePanel, TimePanelProps } from '../TimePanel';
 import { extractTimeFromDate } from '../utils/dateTime';
 import { DateTimePickerProps } from './DateTimePicker';
-import { DatePanelSingleProps } from '../DatePanelSingle/DatePanelSingle';
+import { DatePanelProps } from '../DatePanelSingle/DatePanelSingle';
 import { CalendarProps } from '../Calendar/Calendar';
 import { useDateTimePickerStore } from './DateTimePickerStoreProvider';
 import { checkIsClickOnElement } from '../utils/utils';
@@ -37,7 +37,7 @@ export const DateTimePickerPopup =memo((props: DateTimePickerPopupProps)=>{
     action.selectTime(time);
   };
 
-  const handleDateSelect: DatePanelSingleProps['onSelect'] = (date) => {
+  const handleDateSelect: DatePanelProps['onSelect'] = (date) => {
     action.selectDate(date);
   };
 

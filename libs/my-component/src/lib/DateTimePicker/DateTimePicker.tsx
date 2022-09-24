@@ -6,7 +6,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import {
   DatePanelSingle,
-  DatePanelSingleProps,
+  DatePanelProps,
 } from '../DatePanelSingle/DatePanelSingle';
 import { CalendarProps } from '../Calendar';
 import { DateTimePickerPopup } from './DateTimePickerPopup';
@@ -23,7 +23,7 @@ export interface DateTimePickerProps {
   label?: string;
   timeDelimiters?: string;
   onSelect?: (dateTime: Date | null) => void;
-  DatePanel?: (props: DatePanelSingleProps) => JSX.Element;
+  DatePanel?: (props: DatePanelProps) => JSX.Element;
   disabledDate?: CalendarProps['disabledDate'];
 }
 

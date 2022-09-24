@@ -17,6 +17,8 @@ export const DateRangePanelDateCell=memo((props: CalendarDateCellProps)=> {
   const { isDayWithinMonth, date } = data;
   const sharedData = useDateRangePanelSharedData();
   const action = useDateRangePanelStore((state) => state.action);
+
+
   const isStartDate = useDateRangePanelStore((state) => {
     return state.startDate?.toDateString() === date.toDateString();
   });
@@ -37,6 +39,7 @@ export const DateRangePanelDateCell=memo((props: CalendarDateCellProps)=> {
     [`is-start-date`]: isStartDate,
     [`is-date-in-range`]: isDateInRange,
   });
+
 
   const handleClickToSelectDate = () => {
     if (isDisabled) return;
