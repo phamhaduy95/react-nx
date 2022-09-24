@@ -1,53 +1,60 @@
-import React, { useMemo, useRef } from 'react';
+import React, { memo, useCallback } from 'react';
 import PopupElement from '../Popup/PopupElement';
 import { TimePanel, TimePanelProps } from '../TimePanel';
 import { extractTimeFromDate } from '../utils/dateTime';
-import { useDateTimePickerContext } from './DatePickerContextProvider';
 import { DateTimePickerProps } from './DateTimePicker';
 import { DatePanelSingleProps } from '../DatePanelSingle/DatePanelSingle';
 import { CalendarProps } from '../Calendar/Calendar';
+import { useDateTimePickerStore } from './DateTimePickerStoreProvider';
+import { checkIsClickOnElement } from '../utils/utils';
 
 interface DateTimePickerPopupProps {
-  isShowed: boolean;
-  targetRef: React.MutableRefObject<HTMLElement | null>;
+  triggerRef: React.MutableRefObject<HTMLElement | null>;
   isSecondIncluded: boolean;
   DatePanel: NonNullable<DateTimePickerProps['DatePanel']>;
   disabledDate: CalendarProps['disabledDate'];
 }
 
-export function DateTimePickerPopup(props: DateTimePickerPopupProps) {
-  const { targetRef, isShowed, DatePanel, disabledDate } = props;
-  const { state, action } = useDateTimePickerContext();
-  const ref = useRef(null);
+export const DateTimePickerPopup =memo((props: DateTimePickerPopupProps)=>{
+  const { triggerRef, DatePanel, disabledDate } = props;
+  const action = useDateTimePickerStore((state) => state.action);
+  const isOpen = useDateTimePickerStore((state) => state.isPopupOpen);
+  const displayDateTime = useDateTimePickerStore(
+    (state) => {
+      return state.selectedDate;
+    },
+    (a, b) => a?.toString() === b?.toString()
+  );
 
-  const nowDate = useMemo(() => {
-    return state.selectedDateTime;
-  }, [state.selectedDateTime?.toDateString()]);
+    console.log("popup rendered")
 
-  const handleClickOutsidePopup = () => {
-    action.togglePopup(false);
-  };
+  const handleClickOutsidePopup = useCallback((e: MouseEvent) => {
+    const el = triggerRef.current as HTMLElement;
+    if (!checkIsClickOnElement(e, el)) action.togglePopup(false);
+  }, []);
+
   const handleTimeSelect: TimePanelProps['onTimeSelect'] = (time) => {
     action.selectTime(time);
   };
 
   const handleDateSelect: DatePanelSingleProps['onSelect'] = (date) => {
-    if (date === null) return;
     action.selectDate(date);
   };
 
-  const getValueForTimePanel = () => {
-    if (state.selectedDateTime === null) return null;
-    const { hour, minute, second } = extractTimeFromDate(
-      state.selectedDateTime
-    );
-    return { hour, minute, second };
+  const handleClearDate = () => {
+    action.selectDate(null);
+    action.submitDate(null);
+  };
+
+  const handleDateSubmit = () => {
+    action.submitDate(displayDateTime);
+    action.togglePopup(false);
   };
 
   return (
     <PopupElement
-      triggerRef={targetRef}
-      isShowed={isShowed}
+      triggerRef={triggerRef}
+      isShowed={isOpen}
       placement="bottom-left"
       padding={8}
       width="fit-content"
@@ -55,20 +62,42 @@ export function DateTimePickerPopup(props: DateTimePickerPopupProps) {
       onClickOutside={handleClickOutsidePopup}
     >
       <div className="DateTimePicker__Popup__Container">
-        {/* <Calendar selectable date={nowDate} onSelect={handleDateChanged} /> */}
         {DatePanel({
-          dateValue: nowDate,
+          dateValue: displayDateTime,
           onSelect: handleDateSelect,
           disabledDate: disabledDate,
-          className: 'DateTimePicker__Panel',
+          className: 'DateTimePicker__DatePanel',
+          actionEnabled: false,
         })}
         <TimePanel
+          className="DateTimePicker__TimePanel"
           numberOfShowedItem={7}
           isSecondInclude={false}
           onTimeSelect={handleTimeSelect}
-          value={getValueForTimePanel()}
+          value={getValueForTimePanel(displayDateTime)}
+          actionIncluded={false}
         />
+      </div>
+      <div className="DateTimePicker__Control">
+        <button
+          className="DateTimePicker__ClearButton"
+          onClick={handleClearDate}
+        >
+          Clear
+        </button>
+        <button
+          className="DateTimePicker__SubmitButton"
+          onClick={handleDateSubmit}
+        >
+          OK
+        </button>
       </div>
     </PopupElement>
   );
-}
+});
+
+const getValueForTimePanel = (date: Date | null) => {
+  if (date === null) return null;
+  const { hour, minute, second } = extractTimeFromDate(date);
+  return { hour, minute, second };
+};

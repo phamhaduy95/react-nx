@@ -19,19 +19,54 @@ $text-color: hsl(0, 0%, 20%);
   }
   @at-root .DateTimePicker__Popup {
     background-color: white;
+    display: flex;
+    flex-direction: column;
+    height: 320px;
+    border: $border;
+    border-radius: 5px;
     > .DateTimePicker__Popup__Container {
-      border: $border;
       border-radius: 5px;
       display: flex;
-      >.DateTimePicker__Panel {
+      height: 80%;
+      flex-grow: 1;
+      > .DateTimePicker__DatePanel {
         border: none;
         border-right: $border;
-        >.Calendar {
+        height: auto;
+        > .Calendar {
           border: 0;
         }
       }
-      >.TimePanel {
+      > .DateTimePicker__TimePanel {
+        width: 120px;
         border: none;
+        height: auto;
+        &:not(.isSecondIncluded) {
+          width: 90px;
+        }
+      }
+    }
+
+    >.DateTimePicker__Control{
+      border-top: $border;
+      height: 40px;
+      padding: 0.25rem;
+      @include centerElement();
+      > button {
+        padding: 0.25rem 0.5rem;
+        border: $border;
+        border-radius: 3px;
+      };
+      >.DateTimePicker__ClearButton{
+        margin-left:auto;
+        background-color: white;
+      
+      }
+      >.DateTimePicker__SubmitButton{
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        background-color: $primary-color;
+        color:white;
       }
     }
   }

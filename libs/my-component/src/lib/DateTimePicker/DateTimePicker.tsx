@@ -2,13 +2,7 @@ import classNames from 'classnames';
 import dayjs from 'dayjs';
 import React, { useEffect, useRef, useState } from 'react';
 import { TextField } from '../TextField';
-import {
-  DateTimePickerContextProvider,
-  useDateTimePickerContext,
-} from './DatePickerContextProvider';
-import { DateTimePickerState } from './reducer';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import {
   DatePanelSingle,
@@ -16,6 +10,10 @@ import {
 } from '../DatePanelSingle/DatePanelSingle';
 import { CalendarProps } from '../Calendar';
 import { DateTimePickerPopup } from './DateTimePickerPopup';
+import {
+  DateTimePickerStoreProvider,
+  useDateTimePickerStore,
+} from './DateTimePickerStoreProvider';
 import './DateTimePicker.scss';
 
 export interface DateTimePickerProps {
@@ -45,15 +43,10 @@ const defaultProps: Required<DateTimePickerProps> = {
 };
 
 export function DateTimePicker(props: DateTimePickerProps) {
-  const initialState: DateTimePickerState = {
-    isPopupOpen: false,
-    selectedDateTime: null,
-  };
-
   return (
-    <DateTimePickerContextProvider initialState={initialState}>
+    <DateTimePickerStoreProvider>
       <WrappedDateTimePicker {...props} />
-    </DateTimePickerContextProvider>
+    </DateTimePickerStoreProvider>
   );
 }
 
@@ -78,35 +71,59 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
   const rootClassName = classNames('DateTimePicker', {
     [`${className}`]: className,
   });
-  const targetRef = useRef(null);
-  const { state, action } = useDateTimePickerContext();
-  useEffectSkipFirstRender(() => {
-    const date = state.selectedDateTime;
-    onSelect(date);
-  }, [state.selectedDateTime?.toString()]);
+  const triggerRef = useRef(null);
+  const action = useDateTimePickerStore((state) => state.action);
+  const displayedDate = useDateTimePickerStore(
+    (state) => {
+      const { selectedDate, submittedDate, isPopupOpen } = state;
+      if (!isPopupOpen) return submittedDate;
+      return selectedDate;
+    },
+    (a, b) => a?.toString() === b?.toString()
+  );
 
-  const { selectedDateTime: selectedDate } = state;
+  const submittedDate = useDateTimePickerStore(
+    (state) => state.submittedDate,
+    (a, b) => a?.toString() === b?.toString()
+  );
+  // trigger onSelect declared outside when the new date value is submitted
+  useEffectSkipFirstRender(() => {
+    onSelect(submittedDate);
+  }, [submittedDate?.toString()]);
+
   const [inputValue, setInputValue] = useState('');
-
-  useEffectSkipFirstRender(() => {
-    const newValue = dayjs(selectedDate).format(dateTimeFormat);
-    setInputValue(newValue);
-  }, [selectedDate?.toString()]);
-
+  // set new input value for textField when the new dateTime is selected via Panel.
   useEffect(() => {
+    if (displayedDate === null) {
+      setInputValue('');
+      return;
+    }
+    const newValue = dayjs(displayedDate).format(dateTimeFormat);
+    setInputValue(newValue);
+  }, [displayedDate?.toString()]);
+
+  // update dateTime when text input inside textField is valid as Date.
+  useEffect(() => {
+    if (inputValue === '') {
+      action.selectDate(null);
+      return;
+    }
+   
     if (isDateInputValid(inputValue, dateTimeFormat)) {
       const date = dayjs(inputValue, dateTimeFormat).toDate();
-      action.selectDate(date);
+      action.selectDateTime(date);
       return;
     }
   }, [inputValue]);
+
 
   const handleInputChanged = (value: string) => {
     setInputValue(value);
   };
 
   const handleClickToTogglePopup = () => {
-    action.togglePopup(!state.isPopupOpen);
+    action.togglePopup(true);
+
   };
 
   const IconField = () => {
@@ -128,13 +145,12 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
         type={'tel'}
         value={inputValue}
         suffix={<IconField />}
-        ref={targetRef}
+        ref={triggerRef}
         autoFocusWhenChanged={true}
       />
       <DateTimePickerPopup
         isSecondIncluded={isSecondIncluded}
-        targetRef={targetRef}
-        isShowed={state.isPopupOpen}
+        triggerRef={triggerRef}
         DatePanel={DatePanel}
         disabledDate={disabledDate}
       />
@@ -143,7 +159,7 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
 }
 
 const isDateInputValid = (input: string, dateFormat: string) => {
-  return dayjs(input, dateFormat, true).isValid();
+  return dayjs(input, dateFormat,true).isValid();
 };
 
 const getDateTimeFormat = (

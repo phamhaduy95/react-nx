@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { DateRangePanel, DateRangePanelProps } from '../DateRangePanel';
 import { DateTimePickerProps, DateTimePicker } from '../DateTimePicker';
 import { useDateTimeRangePickerContext } from './DataRangePickerContextProvider';
-import classNames from 'classnames';
 import { CalendarProps } from '../Calendar';
 import dayjs from 'dayjs';
 
