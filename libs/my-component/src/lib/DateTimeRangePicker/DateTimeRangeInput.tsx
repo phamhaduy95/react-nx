@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { DateRangePanel, DateRangePanelProps } from '../DateRangePanel';
 import { DateTimePickerProps, DateTimePicker } from '../DateTimePicker';
-import { useDateTimeRangePickerContext } from './DataRangePickerContextProvider';
 import { CalendarProps } from '../Calendar';
 import dayjs from 'dayjs';
+import { useDateTimeRangePickerStore } from './DateTimeRangePickerStoreProvider';
 
 export interface DateTimeRangeInputProps {
   label: DateTimePickerProps['label'];
@@ -13,15 +13,31 @@ export interface DateTimeRangeInputProps {
 
 export function DateTimeRangeInput(props: DateTimeRangeInputProps) {
   const { label, onDateSelect, mode } = props;
-  const { state, action } = useDateTimeRangePickerContext();
+  const startDate = useDateTimeRangePickerStore(
+    (state) => state.startDate,
+    (a, b) => a?.toString() === b?.toString()
+  );
+  const endDate = useDateTimeRangePickerStore(
+    (state) => state.endDate,
+    (a, b) => a?.toString() === b?.toString()
+  );
   const DatePanel: DateTimePickerProps['DatePanel'] = useMemo(() => {
     return (props) => {
       let { dateValue, onSelect, disabledDate, className } = props;
       dateValue = dateValue === undefined ? null : dateValue;
-      const { state, action } = useDateTimeRangePickerContext();
+
+      const startDate = useDateTimeRangePickerStore(
+        (state) => state.startDate,
+        (a, b) => a?.toString() === b?.toString()
+      );
+      const endDate = useDateTimeRangePickerStore(
+        (state) => state.endDate,
+        (a, b) => a?.toString() === b?.toString()
+      );
+
       const range: DateRangePanelProps['range'] = {
-        startDate: mode === 'selectStart' ? dateValue : state.startDate,
-        endDate: mode === 'selectEnd' ? dateValue : state.endDate,
+        startDate: mode === 'selectStart' ? dateValue : startDate,
+        endDate: mode === 'selectEnd' ? dateValue : endDate,
       };
 
       const handleDateSelect: DateRangePanelProps['onSelect'] = (
@@ -47,10 +63,10 @@ export function DateTimeRangeInput(props: DateTimeRangeInputProps) {
 
   const disabledDate: CalendarProps['disabledDate'] = (curr) => {
     if (mode === 'selectEnd') {
-      return dayjs(curr).isBefore(state.startDate, 'day');
+      return dayjs(curr).isBefore(startDate, 'day');
     }
     if (mode === 'selectStart') {
-      return dayjs(curr).isAfter(state.endDate, 'day');
+      return dayjs(curr).isAfter(endDate, 'day');
     }
 
     return false;

@@ -1,28 +1,19 @@
-import { DateTimeRangePickerState } from './reducer';
-import {
-  DateTimeRangePickerContextProvider,
-  useDateTimeRangePickerContext,
-} from './DataRangePickerContextProvider';
 import { DateTimeRangeInput } from './DateTimeRangeInput';
+import { DateTimeRangePickerStoreProvider, useDateTimeRangePickerStore } from './DateTimeRangePickerStoreProvider';
 export type DateTimeRangePickerProps = {
   className?: string;
 };
 
-export function DateTimeRangePicker(props:DateTimeRangePickerProps) {
-  const initialState: DateTimeRangePickerState = {
-    startDate: null,
-    endDate: null,
-  };
-
+export function DateTimeRangePicker(props: DateTimeRangePickerProps) {
   return (
-    <DateTimeRangePickerContextProvider initialState={initialState}>
+    <DateTimeRangePickerStoreProvider>
       <WrappedComponent />
-    </DateTimeRangePickerContextProvider>
+    </DateTimeRangePickerStoreProvider>
   );
 }
 
-function WrappedComponent(props:DateTimeRangePickerProps) {
-  const { state, action } = useDateTimeRangePickerContext();
+function WrappedComponent(props: DateTimeRangePickerProps) {
+  const action = useDateTimeRangePickerStore((state) => state.action);
   const handleStartDateSelect = (date: Date | null) => {
     action.selectStartDate(date);
   };
@@ -37,7 +28,7 @@ function WrappedComponent(props:DateTimeRangePickerProps) {
         label=""
         onDateSelect={handleStartDateSelect}
       />
-       <DateTimeRangeInput
+      <DateTimeRangeInput
         mode="selectEnd"
         label=""
         onDateSelect={handleEndDateSelect}
