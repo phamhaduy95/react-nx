@@ -1,8 +1,10 @@
-import { useDateRangePickerContext } from './DataRangePickerContextProvider';
 import { DateRangePanel, DateRangePanelProps } from '../DateRangePanel';
 import { DatePicker, DatePickerProps } from '../DatePicker';
 import { useMemo } from 'react';
 import dayjs from 'dayjs';
+import { defaultDatePanelProps } from '../DatePanelSingle/DatePanelSingle';
+import { useDateRangePickerStore } from './DateRangePickerStoreProvider';
+import { useDatePickerStore } from '../DatePicker/DatePickerStoreProvider';
 
 export interface DateRangeInputFieldProps {
   label: string;
@@ -12,21 +14,27 @@ export interface DateRangeInputFieldProps {
 
 export default function DateRangeInputField(props: DateRangeInputFieldProps) {
   const { label, mode, onDateSelect } = props;
-  const { state, action } = useDateRangePickerContext();
+  const startDate = useDateRangePickerStore((state)=>state.startDate,(a,b)=>a?.toDateString() === b?.toDateString());
+  const endDate = useDateRangePickerStore((state)=>state.endDate,(a,b)=>a?.toDateString() === b?.toDateString());
 
   const InputDatePanel: DatePickerProps['PanelComponent'] = useMemo(() => {
     return (props) => {
-      const { state, action, } = useDateRangePickerContext();
-      const { dateValue, onSelect,disabledDate } = props;
+      const newProps = {...defaultDatePanelProps,...props};
+      const action = useDatePickerStore((state)=>state.action);
+      const { dateValue, onSelect,disabledDate } = newProps;
       const range: DateRangePanelProps['range'] = {
-        startDate: mode === 'selectStart' ? dateValue : state.startDate,
-        endDate: mode === 'selectEnd' ? dateValue : state.endDate,
+        startDate: mode === 'selectStart' ? dateValue : startDate,
+        endDate: mode === 'selectEnd' ? dateValue : endDate,
       };
       const handleDateSelect: DateRangePanelProps['onSelect'] = (
         type,
-        value
+        dateValue
       ) => {
-        if (mode === type) onSelect(value);
+        if (mode === type) {
+          action.selectDate(dateValue);
+          action.submitDate(dateValue);
+          action.togglePopup(false);
+        }
         return;
       };
 
@@ -34,19 +42,19 @@ export default function DateRangeInputField(props: DateRangeInputFieldProps) {
         <DateRangePanel
           mode={mode}
           range={range}
-          onSelect={handleDateSelect}
+          onClickToSelect={handleDateSelect}
           showedMonth={dateValue}
           disabledDate={disabledDate}
         />
       );
     };
-  }, [mode]);
+  }, [mode,startDate,endDate]);
 
   const disabledDate:DatePickerProps["disabledDate"] =(curr)=>{
     if (mode === "selectEnd") 
-        return dayjs(curr).isBefore(state.startDate);
+        return dayjs(curr).isBefore(startDate);
     if (mode === "selectStart")
-       return dayjs(curr).isAfter(state.endDate);
+       return dayjs(curr).isAfter(endDate);
     return false
   } 
 

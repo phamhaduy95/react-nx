@@ -1,57 +1,52 @@
 import DateRangeInputField from './DateRangeInputField';
-import { DateRangePickerState } from './reducer';
-import { DateRangePickerContextProvider, useDateRangePickerContext } from './DataRangePickerContextProvider';
-
+import { DateRangePickerStoreProvider, useDateRangePickerStore } from './DateRangePickerStoreProvider';
 
 export interface DateRangePickerProps {
-    className?: string ;
-    dateFormat?: string;
-    label?: string;
-    onSelect?: (date: Date) => void;
-  }
-
-const defaultProps:Required<DateRangePickerProps>= {
-  className:"",
-  dateFormat:"DD/MM/YYYY",
-  label:"",
-  onSelect(date) {
-  },
+  className?: string;
+  dateFormat?: string;
+  label?: string;
+  onSelect?: (date: Date) => void;
 }
 
-export function DateRangePicker(props:DateRangePickerProps){
-    const initialState:DateRangePickerState = {
-      endDate:null,
-      startDate:null,
-      endDatePopup:false,
-      startDatePopup:false
-    }
-    return (
-      <DateRangePickerContextProvider initialState={initialState}>
-        <WrappedDateRangePicker {...props}/>
-      </DateRangePickerContextProvider>
-    )
+const defaultProps: Required<DateRangePickerProps> = {
+  className: '',
+  dateFormat: 'DD/MM/YYYY',
+  label: '',
+  onSelect(date) {},
+};
 
+export function DateRangePicker(props: DateRangePickerProps) {
+  return (
+    <DateRangePickerStoreProvider>
+      <WrappedDateRangePicker {...props} />
+    </DateRangePickerStoreProvider>
+  );
 }
 
+function WrappedDateRangePicker(props: DateRangePickerProps) {
+  const newProps = {...defaultProps,...props};
+  const action = useDateRangePickerStore(state=>state.action);
 
-function WrappedDateRangePicker(props:DateRangePickerProps) {
-    
-  const {state,action} = useDateRangePickerContext();
-
-  const handleStartDateSelect = (date:Date|null)=>{
-    // console.log("aa")    
+  const handleStartDateSelect = (date: Date | null) => {
     action.selectStartDate(date);
-    }  
+  };
 
-    const handleEndDateSelect = (date:Date|null)=>{
-      // console.log("bb")  
-      action.selectEndDate(date);
-    }
+  const handleEndDateSelect = (date: Date | null) => {
+    action.selectEndDate(date);
+  };
 
-    return (
-    <div className='DateRangePicker'>
-      <DateRangeInputField mode='selectStart' label='' onDateSelect={handleStartDateSelect} key={1}/>
-      <DateRangeInputField mode='selectEnd' label='' onDateSelect={handleEndDateSelect} key={2}/>
+  return (
+    <div className="DateRangePicker">
+      <DateRangeInputField
+        mode="selectStart"
+        label=""
+        onDateSelect={handleStartDateSelect}
+      />
+      <DateRangeInputField
+        mode="selectEnd"
+        label=""
+        onDateSelect={handleEndDateSelect}
+      />
     </div>
-  )
+  );
 }
