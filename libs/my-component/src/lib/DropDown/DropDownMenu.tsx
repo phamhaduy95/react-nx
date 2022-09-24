@@ -3,6 +3,7 @@ import PopupElement from '../Popup/PopupElement';
 import { useDropDownStore } from './DropDownStoreProvider';
 import { useSwitchFocus } from '../utils/hooks';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
+import { checkIsClickOnElement } from '../utils/utils';
 
 type DropDownMenuProps = {
   targetRef: React.MutableRefObject<HTMLElement | null>;
@@ -15,9 +16,7 @@ export function DropDownMenu(props: DropDownMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const action = useDropDownStore((state) => state.action);
   const isPopupOpen = useDropDownStore((state) => state.isPopupOpen);
-  const handleClickOutSidePopup = () => {
-    action.togglePopup(false);
-  };
+
   const isMenuFocused = useDropDownStore((state) => {
     return state.isPopupOpen === true && state.highLightedItem === null;
   });
@@ -29,6 +28,12 @@ export function DropDownMenu(props: DropDownMenuProps) {
     action.highlightOne(null);
     switchFocus(targetRef, true);
   }, [isPopupOpen]);
+
+  const handleClickOutSidePopup = (e:MouseEvent) => {
+    const el = targetRef.current as HTMLElement;
+    if (!checkIsClickOnElement(e,el))
+    action.togglePopup(false);
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     e.preventDefault();
@@ -48,6 +53,8 @@ export function DropDownMenu(props: DropDownMenuProps) {
       }
     }
   };
+
+
 
   return (
     <PopupElement
