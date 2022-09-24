@@ -20,6 +20,7 @@ export interface TextFieldProps {
   onEnterPressed?: (value: string) => void;
   onClick?: (e: React.MouseEvent) => void;
   onFocus?: (e: React.FormEvent) => void;
+  onBlur?: (e: React.FormEvent) => void;
   onKeyDown?: (e: React.KeyboardEvent) => void;
   type?: HTMLInputTypeAttribute;
   autoFocusWhenChanged?: boolean;
@@ -44,10 +45,11 @@ const defaultProps: Required<TextFieldProps> = {
   onEnterPressed: (value) => {},
   onClick: (e) => {},
   onFocus: (e) => {},
+  onBlur(e) {},
   onKeyDown(e) {},
 };
 
-export const TextField = React.forwardRef<any, TextFieldProps>((props, ref) => {
+export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>((props, ref) => {
   const newProps = { ...defaultProps, ...props };
   const {
     className,
@@ -62,7 +64,7 @@ export const TextField = React.forwardRef<any, TextFieldProps>((props, ref) => {
     onEnterPressed,
     onClick,
     onFocus,
-    type,
+    onBlur,
     disabled,
     autoFocusWhenChanged,
     onKeyDown,
@@ -150,6 +152,7 @@ export const TextField = React.forwardRef<any, TextFieldProps>((props, ref) => {
             placeholder={placeHolder ? placeHolder : ''}
             onChange={handleInputChange}
             onFocus={onFocus}
+            onBlur={onBlur}
             value={props.value}
             disabled={disabled}
             ref={inputRef}
