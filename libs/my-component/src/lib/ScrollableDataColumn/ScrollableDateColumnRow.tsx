@@ -11,11 +11,10 @@ type DataColumnRowProps = {
   disabled: boolean;
   rootRef: React.MutableRefObject<null | HTMLElement>;
   index: number;
-  height:number;
-  
+  numberOfShowedItem:number;
 };
 export const  DataColumnRow= memo((props: DataColumnRowProps)=>{
-  const { data, disabled, rootRef, index,height } = props;
+  const { data, disabled, rootRef, index,numberOfShowedItem } = props;
   const id = index.toString();
   const action = useDataColumnStore((state)=>(state.action));
   const isSelected = useDataColumnStore((state)=>(state.selectedItem?.id === id));
@@ -25,17 +24,16 @@ export const  DataColumnRow= memo((props: DataColumnRowProps)=>{
     selected: isSelected,
     disabled: disabled,
   });
-
+  
   const rowRef = useRef<HTMLDivElement>(null);
   const sharedData = useSharedData();
-  useRowHeight(rowRef,height)
+  useRowHeight(rowRef,numberOfShowedItem);
 
   useEffect(()=>{
     if (!isSelected) return; 
     const rootEl = rootRef.current as HTMLElement;
     const rowEl = rowRef.current as HTMLElement; 
     scrollToRow(rootEl, rowEl);
-
   },[isSelected])
 
 

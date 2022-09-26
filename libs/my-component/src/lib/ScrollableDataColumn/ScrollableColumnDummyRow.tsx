@@ -1,12 +1,20 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useRowHeight } from './hooks';
 type DummyRowProps = {
-  height: number;
+  numberOfShowedItem: number;
 };
 export  function DummyRow(props: DummyRowProps) {
-   const {height} = props;
+   const {numberOfShowedItem} = props;
    const rowRef = useRef<HTMLDivElement|null>(null);
-   useRowHeight(rowRef,height)
+   
+   useEffect(()=>{
+    const el = rowRef.current;
+    if (el === null) return;
+    const rowHeight = (numberOfShowedItem-1)*100/numberOfShowedItem;
+    el.style.height = `${rowHeight}%`;
+   },[numberOfShowedItem])
+
+
     return (
     <div className="ScrollableDataColumn__DummyRow" ref={rowRef}>
       1

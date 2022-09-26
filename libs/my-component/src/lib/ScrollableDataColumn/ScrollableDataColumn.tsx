@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import { useRowHeightCalculator } from './hooks';
 import './ScrollableDataColumn.scss';
 import { SharedDataContextProvider, SharedDataType } from './SharedDataContext';
 import { DummyRow } from './ScrollableColumnDummyRow';
@@ -48,12 +47,10 @@ export function ScrollableDataColumn(props: ScrollableDataColumnProps) {
 
 export function WrappedDataColumn(props: ScrollableDataColumnProps) {
   const newProps = { ...defaultProps, ...props };
-  const { dataSet, numberShowedItem, value, className } =
-    newProps;
+  const { dataSet, numberShowedItem, value, className } = newProps;
   const rootRef = useRef(null);
   const action = useDataColumnStore((state) => state.action);
 
-  const rowHeight = useRowHeightCalculator(rootRef, numberShowedItem);
   // update state when the input prop value is changed
   useEffect(() => {
     if (value === null) {
@@ -79,15 +76,13 @@ export function WrappedDataColumn(props: ScrollableDataColumnProps) {
           data={value}
           rootRef={rootRef}
           index={i}
-          height={rowHeight}
+          numberOfShowedItem={numberShowedItem}
         />
       );
     });
-
-    const numberOfDummyRow = numberShowedItem - 1;
-    for (let i = 0; i < numberOfDummyRow; i++) {
-      rows.push(<DummyRow height={rowHeight} key={`dummy-${i}`} />);
-    }
+    rows.push(
+      <DummyRow numberOfShowedItem={numberShowedItem}/>
+    );
 
     return rows;
   };
