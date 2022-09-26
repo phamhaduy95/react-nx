@@ -10,3 +10,10 @@ export function checkIsClickOnElement(e: MouseEvent, el: HTMLElement) {
       return true;
     return false;
   }
+
+export function isElementFocus(el:HTMLElement|null){
+  if (el === null) return false;
+  const activeEl = document.activeElement;
+  if (activeEl === el) return true;
+  return false;
+}
