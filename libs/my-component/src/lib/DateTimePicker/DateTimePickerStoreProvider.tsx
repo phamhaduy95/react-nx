@@ -86,6 +86,13 @@ export function useDateTimePickerStore<U>(
   return useStore(value, selector, equalFunc);
 }
 
+export function useStoreDirectly(
+  ){
+    const value = useContext(StoreContext);
+    if (value === null) throw new Error('DatePickerStore Context value is null');
+    return value;
+  }
+
 function updateTimeForDateObject(date: Date | null, time: Time | null) {
   const nonNullableDate = date === null ? DEFAULT_DATE : date;
   const newTime = time === null ? DEFAULT_TIME : time;

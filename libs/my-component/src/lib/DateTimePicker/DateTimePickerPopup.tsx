@@ -6,7 +6,7 @@ import { DateTimePickerProps } from './DateTimePicker';
 import { DatePanelProps } from '../DatePanelSingle/DatePanelSingle';
 import { CalendarProps } from '../Calendar/Calendar';
 import { useDateTimePickerStore } from './DateTimePickerStoreProvider';
-import { checkIsClickOnElement } from '../utils/utils';
+import { checkIsClickOnElement, isElementFocus } from '../utils/utils';
 
 interface DateTimePickerPopupProps {
   triggerRef: React.MutableRefObject<HTMLElement | null>;
@@ -30,7 +30,9 @@ export const DateTimePickerPopup =memo((props: DateTimePickerPopupProps)=>{
 
   const handleClickOutsidePopup = useCallback((e: MouseEvent) => {
     const el = triggerRef.current as HTMLElement;
-    if (!checkIsClickOnElement(e, el)) action.togglePopup(false);
+    const inputEl = el.querySelector('input');
+    if (!checkIsClickOnElement(e, el) && !isElementFocus(inputEl))
+      action.togglePopup(false);
   }, []);
 
   const handleTimeSelect: TimePanelProps['onTimeSelect'] = (time) => {

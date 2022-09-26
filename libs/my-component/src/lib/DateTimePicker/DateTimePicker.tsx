@@ -13,6 +13,7 @@ import { DateTimePickerPopup } from './DateTimePickerPopup';
 import {
   DateTimePickerStoreProvider,
   useDateTimePickerStore,
+  useStoreDirectly,
 } from './DateTimePickerStoreProvider';
 import './DateTimePicker.scss';
 
@@ -72,7 +73,10 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
     [`${className}`]: className,
   });
   const triggerRef = useRef(null);
+  const store = useStoreDirectly();
   const action = useDateTimePickerStore((state) => state.action);
+  const isPopupOpen = useDateTimePickerStore((state)=>state.isPopupOpen);
+
   const displayedDate = useDateTimePickerStore(
     (state) => {
       const { selectedDate, submittedDate, isPopupOpen } = state;
@@ -81,11 +85,23 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
     },
     (a, b) => a?.toString() === b?.toString()
   );
-
   const submittedDate = useDateTimePickerStore(
     (state) => state.submittedDate,
     (a, b) => a?.toString() === b?.toString()
   );
+
+  useEffect(()=>{
+    if (isPopupOpen) return;
+    const {submittedDate: date} =store.getState();
+    if (date === null) {
+      setInputValue('');
+      return;
+    }
+    const newValue = dayjs(date).format(dateTimeFormat);
+    setInputValue(newValue);
+  },[isPopupOpen])
+
+ 
   // trigger onSelect declared outside when the new date value is submitted
   useEffectSkipFirstRender(() => {
     onSelect(submittedDate);
@@ -134,6 +150,27 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
     );
   };
 
+  const handleKeyDown = (e:React.KeyboardEvent)=>{
+    e.stopPropagation();
+    const {isPopupOpen,selectedDate} = store.getState();
+    const key = e.key;
+    switch(key){
+      case "Enter": {
+          if (!isPopupOpen){
+            action.togglePopup(true);
+            return;
+          }
+            action.submitDate(selectedDate);
+            action.togglePopup(false);
+            return;
+      }
+      case "Escape":{
+          action.togglePopup(false);
+          return;
+      }
+    }
+}
+
   return (
     <div className={rootClassName}>
       <TextField
@@ -147,6 +184,7 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
         suffix={<IconField />}
         ref={triggerRef}
         autoFocusWhenChanged={true}
+        onKeyDown={handleKeyDown}
       />
       <DateTimePickerPopup
         isSecondIncluded={isSecondIncluded}
