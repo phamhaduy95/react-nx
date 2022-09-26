@@ -1,3 +1,4 @@
+import { Store } from '@mui/icons-material';
 import { createContext, useContext, useMemo } from 'react';
 import { createStore, StoreApi, useStore } from 'zustand';
 
@@ -53,4 +54,11 @@ export function useDatePickerStore<U>(
   const value = useContext(StoreContext);
   if (value === null) throw new Error('DatePickerStore Context value is null');
   return useStore(value, selector, equalFunc);
+}
+
+export function useStoreDirectly(
+){
+  const value = useContext(StoreContext);
+  if (value === null) throw new Error('DatePickerStore Context value is null');
+  return value;
 }

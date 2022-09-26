@@ -4,7 +4,10 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { DatePickerPopup } from './DatePickerPopup';
 import { TextField } from '../TextField';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
-import { DatePanelSingle, DatePanelProps } from '../DatePanelSingle/DatePanelSingle';
+import {
+  DatePanelSingle,
+  DatePanelProps,
+} from '../DatePanelSingle/DatePanelSingle';
 import { CalendarProps } from '../Calendar';
 import {
   DatePickerStoreProvider,
@@ -14,7 +17,8 @@ import './DatePicker.scss';
 
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { checkIsClickOnElement } from '../utils/utils';
+import { checkIsClickOnElement, isElementFocus } from '../utils/utils';
+import { useStoreDirectly } from './DatePickerStoreProvider';
 dayjs.extend(customParseFormat);
 
 export interface DatePickerProps {
@@ -61,6 +65,7 @@ function WrappedDatePicker(props: DatePickerProps) {
     [`${className}`]: className,
   });
   const textFieldRef = useRef<HTMLDivElement>(null);
+  const store = useStoreDirectly();
 
   const submittedDate = useDatePickerStore(
     (state) => state.submittedDate,
@@ -79,6 +84,17 @@ function WrappedDatePicker(props: DatePickerProps) {
   );
 
   const action = useDatePickerStore((state) => state.action);
+  const isPopupOpen = useDatePickerStore((state)=>state.isPopupOpen);
+
+  useEffectSkipFirstRender(()=>{
+    if (isPopupOpen) return;
+    if (submittedDate === null) {
+      setInputValue('');
+      return;
+    }
+    const newValue = dayjs(submittedDate).format(dateFormat);
+    setInputValue(newValue); 
+  },[isPopupOpen]);
 
   const [inputValue, setInputValue] = useState('');
 
@@ -118,9 +134,11 @@ function WrappedDatePicker(props: DatePickerProps) {
 
   const handleClickOutSide = useCallback((e: MouseEvent) => {
     const textFieldEl = textFieldRef.current as HTMLDivElement;
-    if (!checkIsClickOnElement(e,textFieldEl))
-    action.togglePopup(false);
-  },[]);
+    const inputEl = textFieldEl.querySelector('input');
+
+    if (!checkIsClickOnElement(e, textFieldEl) && !isElementFocus(inputEl))
+      action.togglePopup(false);
+  }, []);
 
   const IconField = () => {
     return (
@@ -130,12 +148,34 @@ function WrappedDatePicker(props: DatePickerProps) {
     );
   };
 
+  const handleOnKeyDown = (e: React.KeyboardEvent) => {
+    e.stopPropagation();
+    const { isPopupOpen, selectedDate } = store.getState();
+    const key = e.key;
+    switch (key) {
+      case 'Enter': {
+        if (!isPopupOpen) {
+          action.togglePopup(true);
+          return;
+        }
+        action.submitDate(selectedDate);
+        action.togglePopup(false);
+        return;
+      }
+      case 'Escape': {
+        action.togglePopup(false);
+        return;
+      }
+    }
+  };
+
   return (
     <div className={rootClassName}>
       <TextField
         className="DatePicker__TextField"
         label={label}
         onClick={handleClickToTogglePopup}
+        onKeyDown={handleOnKeyDown}
         placeHolder={dateFormat}
         onChange={handleInputChanged}
         type={'tel'}
@@ -157,7 +197,5 @@ function WrappedDatePicker(props: DatePickerProps) {
 const isDateInputValid = (input: string, dateFormat: string) => {
   return dayjs(input, dateFormat, true).isValid();
 };
-
-
 
 export default DatePicker;
