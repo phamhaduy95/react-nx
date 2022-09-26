@@ -1,67 +1,73 @@
 @import '../_utils.scss';
-@import "../_sharedStyle.scss";
+@import '../_sharedStyle.scss';
 
 .TimePanel {
   border: $border;
   display: flex;
   flex-direction: column;
-  justify-content: stretch;
-  max-height: 350px;
-  height: max-content;
-  width: 120px;
+  width: calc(60px + 18vw);
+  max-width: 120px;
+  border-radius: 5px;
+
+  &:not(.isSecondIncluded) {
+     width: calc(40px + 12vw);
+        max-width: 90px;
+  }
+
   @at-root .TimePanel__Header {
-    height: 40px;
-    border-bottom:$border;
+    height: calc(20px + 3vw);
+    min-height: 30px;
+    max-height: 40px;
+    border-bottom: $border;
     @include centerElement();
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: $text-color;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: $font-size-b;
   }
   @at-root .TimePanel__Container {
     display: flex;
     height: 70%;
     flex-grow: 1;
 
-    >.ScrollableDataColumn {
-        width: 30%;
-        flex-grow: 1;
-        height: auto;
+    > .ScrollableDataColumn {
+      width: 30%;
+      height: 100%;
+      border-right: none;
+      border-top: none;
+      border-bottom: none;
+      &:first-child {
+        border: none;
+      }
+      &:last-child {
         border-right: none;
         border-top: none;
         border-bottom: none;
-        &:first-child {
-            border: none;
-        }
-        &:last-child {
-            border-right: none;
-            border-top: none;
-            border-bottom: none;
-        }
-        
+      }
     }
   }
   &:not(.isSecondIncluded) {
     width: 100px;
-     >.TimePanel__Container {
-       >.ScrollableDataColumn {
-        width:50%;
-       }
-     }
+    > .TimePanel__Container {
+      > .ScrollableDataColumn {
+        width: 50%;
+      }
+    }
   }
 
-  @at-root .TimePanel__Footer{
-      height: 40px;
-      display: flex;
-      align-items: center;
-      border-top: $border ;
-      >.TimePanel__Submit{
-        border-radius: 5px;
-        margin: 0 auto;
-        padding: 0.25rem 0.5rem;
-        background-color: $primary-color;
-        color:white;
-        border:$border;
-      }
+  @at-root .TimePanel__Footer {
+    height: calc(20px + 3vw);
+    min-height: 30px;
+    max-height: 40px;
+    @include centerElement();
+    border-top: $border;
+    > .TimePanel__Submit {
+      border-radius: 5px;
+      margin: 0 auto;
+      padding: 0.25em 0.5em;
+      background-color: $primary-color;
+      color: white;
+      border: $border;
+    }
   }
 }

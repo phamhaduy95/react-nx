@@ -1,14 +1,18 @@
 @import '../_utils.scss';
 @import '../_sharedStyle.scss';
+@import '../_mediaQuery.scss';
 
 .DatePanelSingle {
-  width: 260px;
+  width: calc(150px + 10vw);
+  max-width: 260px;
   max-height: 350px;
   height: max-content;
   display: flex;
   flex-direction: column;
   > .Calendar {
     width: 100%;
+    max-width: unset;
+    max-height: unset;
     height: 80%;
     flex-grow: 1;
     .Calendar__Table__DateCell {
@@ -24,16 +28,19 @@
     }
   }
   @at-root .DatePanelSingle__Action {
-    border-top:$border;
     display: flex;
-    height: 40px;
-    width: 100%;
-    align-items: center;
     flex-grow: 0;
+    align-items: center;
+    height: calc(20px + 3vw);
+    min-height: 30px;
+    max-height: 40px;
+    width: 100%;
+    border-top: $border;
     > button {
-      padding: 0.25rem 1rem;
+      padding: 0.25em 0.75em;
       border: $border;
       border-radius: 5px;
+      font-size: $font-size-s;
     }
     > .DatePanelSingle__Submit {
       margin-right: 0.5rem;
@@ -43,8 +50,8 @@
     > .DatePanelSingle__Clear {
       margin-left: auto;
       margin-right: 0.5rem;
-      color:$text-color;
-      background-color: hsl(0,0%,100%);
+      color: $text-color;
+      background-color: hsl(0, 0%, 100%);
     }
   }
 }

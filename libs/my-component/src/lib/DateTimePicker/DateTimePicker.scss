@@ -1,7 +1,6 @@
 @import '../_utils.scss';
 @import '../sharedStyle.scss';
-
-$text-color: hsl(0, 0%, 20%);
+@import '../mediaQuery.scss';
 
 .DateTimePicker {
   @at-root .DateTimePicker__TextField {
@@ -21,52 +20,58 @@ $text-color: hsl(0, 0%, 20%);
     background-color: white;
     display: flex;
     flex-direction: column;
-    height: 320px;
+    height: calc(220px + 10vw);
+    max-height: 350px;
     border: $border;
     border-radius: 5px;
-    > .DateTimePicker__Popup__Container {
+    @at-root  .DateTimePicker__Popup__Container {
       border-radius: 5px;
       display: flex;
       height: 80%;
       flex-grow: 1;
-      > .DateTimePicker__DatePanel {
+      @at-root .DateTimePicker__DatePanel {
+        width: max-content;
         border: none;
         border-right: $border;
-        height: auto;
+        height: 100%;
         > .Calendar {
           border: 0;
+        height: 100%;
+        flex-grow: 1;
+          >.Calendar_Table{
+            padding: 0;
+            flex-grow: 0;
+          }
         }
       }
       > .DateTimePicker__TimePanel {
-        width: 120px;
         border: none;
-        height: auto;
-        &:not(.isSecondIncluded) {
-          width: 90px;
-        }
+        width: calc(40px + 5vw);
+        height: 100%;
       }
     }
 
-    >.DateTimePicker__Control{
+    > .DateTimePicker__Control {
+      height: calc(20px + 3vw);
+      min-height: 30px;
+      max-height: 40px;
       border-top: $border;
-      height: 40px;
-      padding: 0.25rem;
       @include centerElement();
       > button {
-        padding: 0.25rem 0.5rem;
         border: $border;
         border-radius: 3px;
-      };
-      >.DateTimePicker__ClearButton{
-        margin-left:auto;
-        background-color: white;
-      
+        padding: 0.25em 0.5em;
+        font-size: $font-size-m;
       }
-      >.DateTimePicker__SubmitButton{
+      > .DateTimePicker__ClearButton {
+        margin-left: auto;
+        background-color: white;
+      }
+      > .DateTimePicker__SubmitButton {
         margin-left: 0.5rem;
         margin-right: 0.5rem;
         background-color: $primary-color;
-        color:white;
+        color: white;
       }
     }
   }

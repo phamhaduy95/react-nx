@@ -1,14 +1,14 @@
 @import '../_utils.scss';
-@import "../sharedStyle.scss";
+@import '../sharedStyle.scss';
 $text-color: hsl(0, 0%, 20%);
 
 .DatePicker {
-  width: max-content;
+  width: 180px;
   height: max-content;
-  >.DatePicker__TextField {
+  > .DatePicker__TextField {
     width: inherit;
-
-  .DatePicker__InputIcon {
+    height: inherit;
+    .DatePicker__InputIcon {
       cursor: pointer;
       margin-right: 0.25rem;
       margin-left: auto;
@@ -22,11 +22,12 @@ $text-color: hsl(0, 0%, 20%);
   @at-root .DatePicker__Popup {
     background-color: white;
     border: $border;
-    border-radius: 5px; 
-    .Calendar {
-      border: none;
-     }
+    border-radius: 5px;
+    > .DatePanelSingle {
+      
+      > .Calendar {
+        border: none;
+      }
+    }
   }
-
-  
 }

@@ -1,5 +1,6 @@
 @import '../_utils.scss';
 @import '../sharedStyle.scss';
+@import '../mediaQuery.scss';
 
 .TimePicker {
   width: 150px;
@@ -18,13 +19,23 @@
     }
   }
   @at-root .TimePicker__Popup {
-    > .TimePicker__TimePanel {
-      width: 180px;
+    @at-root .TimePicker__TimePanel {
       border-radius: 5px;
-      height: 250px;
-      &:not(.isSecondIncluded) {
-        width: 120px;
+      min-height: 180px;
+      height: calc(170px + 9vw);
+      max-height: 250px;
+      font-size: min($font-size-m, 1.15rem);
+    
+      > .TimePanel__Header {
+        font-size: $font-size-b;
+      }  
+      >.TimePanel__Footer {
+        > button{
+          font-size: $font-size-m;
+        }
+      
       }
+
     }
   }
 }

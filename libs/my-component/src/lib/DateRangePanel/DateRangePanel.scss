@@ -1,13 +1,20 @@
 @import '../_utils.scss';
-@import '../sharedStyle.scss';
+@import '../_sharedStyle.scss';
+@import "../_mediaQuery.scss";
 
 .DateRangePanel {
-  width: 260px;
-  height: 300px;
-
+  width: calc(150px + 10vw);
+  max-width: 260px;
+  max-height: 300px;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
   > .Calendar {
     width: 100%;
+    max-width: unset;
     height: 100%;
+    max-height: unset;
+    border: none;
     .Calendar__Table__DateCell {
       &.is-start-date,
       &.is-end-date {
