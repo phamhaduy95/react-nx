@@ -12,6 +12,8 @@ import {
 
 import { useWeekScheduleStore } from './WeekScheduleStoreProvider';
 import CloseIcon from '@mui/icons-material/Close';
+import TaskListPopover from '../TaskListPopover/TaskListPopover';
+import App from '../../app/app';
 
 export function WeekScheduleWeekTaskView() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -167,20 +169,7 @@ function WeekDayTasksExpandButton(props: TaskExpandButtonProps) {
     () => findAllTasksInADayAmongTasksList(currDate, tasks),
     [currDate.toDateString(), tasks]
   );
-  const numberOfTasks = tasksWithInDay.length;
-  const popoverPosition: PopoverProps['positionOrigin'] = {
-    top: 6,
-    left: 6,
-  };
-
-  const viewTasks = tasksWithInDay.map((task, i) => {
-    const { title } = task;
-    return (
-      <div className="WeekSchedule__TasksListView__TaskData" key={i}>
-        {title}
-      </div>
-    );
-  });
+  const numberOfTasks = tasksWithInDay.length - TASK_LIMIT;
 
   const handleClick = () => {
     setPopoverOpen(true);
@@ -190,9 +179,6 @@ function WeekDayTasksExpandButton(props: TaskExpandButtonProps) {
     setPopoverOpen(isOpen);
   };
 
-  const handleClickToClose = () => {
-    setPopoverOpen(false);
-  };
 
   if (numberOfTasks < TASK_LIMIT) return <></>;
 
@@ -205,22 +191,13 @@ function WeekDayTasksExpandButton(props: TaskExpandButtonProps) {
       >
         +{numberOfTasks} more
       </button>
-      <Popover
-        className="WeekSchedule__TimeFrame__TasksListView"
-        isOpen={isPopoverOpen}
+      <TaskListPopover
+        className=""
         anchorRef={timeFrameRef}
-        positionOrigin={popoverPosition}
-        onOpen={handlePopoverOpenState}
-      >
-        <div className="WeekSchedule__TasksListView__Header">
-          Tasks
-          <CloseIcon
-            className="WeekSchedule__TasksListView__CloseIcon"
-            onClick={handleClickToClose}
-          />
-        </div>
-        <div className="WeekSchedule__TasksListView__Lists">{viewTasks}</div>
-      </Popover>
+        isOpen={isPopoverOpen}
+        onToggle={handlePopoverOpenState}
+        taskList={tasksWithInDay}
+      />
     </>
   );
 }

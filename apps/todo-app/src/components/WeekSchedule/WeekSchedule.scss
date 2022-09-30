@@ -1,7 +1,6 @@
 @import '../_sharedStyle.scss';
 @import '../_utils.scss';
-$indicator-cell-width: 50px;
-$font-size-m: 0.85rem;
+
 .WeekSchedule {
   width: 760px;
   height: 700px;
@@ -95,53 +94,6 @@ $font-size-m: 0.85rem;
 
               &:hover {
                 background-color: hsla(0, 0%, 80%, 0.8);
-              }
-            }
-            // since the element below is React Portal, don't remove @at-root
-            @at-root .Popover.WeekSchedule__TimeFrame__TasksListView {
-              background-color: white;
-              color: $text-color;
-              font-size: $font-size-m;
-              overflow: hidden;
-              width: 130px;
-              border: $border;
-              border-radius: 5px;
-              display: flex;
-              flex-direction: column;
-              > .WeekSchedule__TasksListView__Header {
-                padding: 0.5rem;
-                display: flex;
-                background-color: hsla(0, 0%, 80%, 0.5);
-                align-items: center;
-
-                > .WeekSchedule__TasksListView__CloseIcon {
-                  font-size: 1rem;
-                  margin-left: auto;
-                }
-              }
-              > .WeekSchedule__TasksListView__Lists {
-                padding: 0.25rem 0.5rem;
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-                max-height: 160px;
-                overflow-y: auto;
-                > .WeekSchedule__TasksListView__TaskData {
-                    margin-bottom: 0.5rem;
-                    height: max-content;
-                    flex-shrink: 0;
-                    padding: 0.1rem 0;
-                    border-radius: 5px;
-                    padding-left: 0.8em;
-                    overflow-x: hidden;
-                    text-overflow: ellipsis;
-                    white-space: no-wrap;
-                    background-color: hsla(220, 80%, 80%, 0.5);
-                    &:last-child {
-                        margin-bottom: none;
-                    }
-
-                }
               }
             }
           }

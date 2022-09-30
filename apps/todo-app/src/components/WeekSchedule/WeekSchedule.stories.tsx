@@ -1,8 +1,10 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import dayjs from 'dayjs';
+import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { TaskDataType } from '../../type/model';
 import { WeekSchedule, WeekScheduleProps } from './WeekSchedule';
+
 
 let count =0;
 const generateTask = (
@@ -40,7 +42,7 @@ const data: WeekScheduleProps['data'] = {
 
 export default {
   component: WeekSchedule,
-  title: 'DaySchedule',
+  title: 'WeekSchedule',
 } as ComponentMeta<typeof WeekSchedule>;
 
 const Template: ComponentStory<typeof WeekSchedule> = (args) => (
