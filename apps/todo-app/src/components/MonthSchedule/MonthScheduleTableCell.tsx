@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import classNames from 'classnames';
 import { useMonthScheduleStore } from './MonthScheduleStoreProvider';
 import { MonthScheduleTask } from './MonthScheduleTask';
-import { RemainingTaskIndicator } from './RemainingTaskIndicator';
+import { MonthScheduleTasksExpandButton } from './RemainingTaskIndicator';
 import { findsAllShowedTasksInTaskLine } from '../utils';
 
 const LINE_LIMIT = 2;
@@ -47,7 +47,11 @@ export function MonthScheduleTableCell(props: MonthScheduleTableCellProps) {
       <div className="TableDateCell__Container">
         <div className="TableDateCell__DateNumber">{dateNumber}</div>
         <div className="TableDateCell__TasksLines">{renderTask()}</div>
-        <RemainingTaskIndicator currDate={date} lineLimit={LINE_LIMIT}/>
+        <MonthScheduleTasksExpandButton
+          currDate={date}
+          lineLimit={LINE_LIMIT}
+          anchorRef={cellRef}
+        />
       </div>
     </td>
   );

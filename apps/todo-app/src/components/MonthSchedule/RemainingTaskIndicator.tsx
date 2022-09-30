@@ -5,14 +5,16 @@ import CloseIcon from '@mui/icons-material/Close';
 import { ClickOutSideWatcher } from '@phduylib/my-component';
 import { TaskDataType } from '../../type/model';
 import { findAllTasksInADayAmongTasksList } from '../utils';
+import TaskListPopover from '../TaskListPopover/TaskListPopover';
 
 type Props = {
+  anchorRef: React.MutableRefObject<HTMLDivElement | null>;
   lineLimit: number;
   currDate: Date;
 };
 
-export function RemainingTaskIndicator(props: Props) {
-  const { lineLimit, currDate } = props;
+export function MonthScheduleTasksExpandButton(props: Props) {
+  const { lineLimit, currDate, anchorRef } = props;
   const [isShowed, setShowed] = useState(false);
   const tasksList = useMonthScheduleStore((state) => state.tasks);
   const tasksInADay = findAllTasksInADayAmongTasksList(currDate, tasksList);
@@ -36,10 +38,11 @@ export function RemainingTaskIndicator(props: Props) {
         >
           {`+${numberOfHiddenTasks} more`}
         </div>
-        <TaskListBox
-          tasksList={tasksInADay}
-          currDate={currDate}
-          isShowed={isShowed}
+        <TaskListPopover
+          className=""
+          taskList={tasksInADay}
+          anchorRef={anchorRef}
+          isOpen={isShowed}
           onToggle={handlePopupToggle}
         />
       </>

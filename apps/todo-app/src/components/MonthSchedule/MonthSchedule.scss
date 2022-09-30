@@ -64,62 +64,6 @@
           font-size: $font-size--small;
           user-select: none;
         }
-        > .TableDateCell__TaskListPopup {
-          display: flex;
-          flex-direction: column;
-          position: absolute;
-          top: -0.5rem;
-          left: -0.5rem;
-          z-index: 15;
-          border: 1px solid hsla(0, 0%, 80%, 0.8);
-          border-radius: 5px;
-          box-shadow: 0px 2px 20px 1px hsla(0, 0%, 80%, 0.8);
-          > .TableDateCell__TaskListPopup__Header {
-            background: hsl(0, 0%, 85%);
-            display: flex;
-            padding: 0.5rem;
-            > .TaskListPopup__Header__DateText {
-              max-width: 6rem;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              overflow: hidden;
-              margin-right: 0.5rem;
-              font-size: 0.9rem;
-            }
-            > .TaskListPopup__Header__Close {
-              margin-left: auto;
-              cursor: pointer;
-              @include centerElement();
-              > * {
-                width: 1rem;
-                height: 1rem;
-              }
-            }
-          }
-          > .TableDateCell__TaskListPopup__Body {
-            padding: 0.5rem;
-            background-color: white;
-            max-height: 150px;
-            overflow: auto;
-
-            > .TaskListPopup__Body__Task {
-              width: 7rem;
-              margin-bottom: 0.5rem;
-              padding: 0.1em;
-              border-radius: 5px;
-              font-size: $font-size--small;
-              text-indent: 0.5rem;
-              color: $text-color;
-              background-color: hsla(220, 80%, 80%, 0.5);
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              overflow-x: hidden;
-            }
-            > .TaskListPopup__Body__Task:last-child {
-              margin-bottom: 0;
-            }
-          }
-        }
       }
       &:not(.is-day-within-month) {
         .TableCell__DateNumber {
