@@ -25,3 +25,4 @@ export * from './lib/ContextMenu';
 export * from './lib/Popup';
 export * from './lib/ClickOutsideWatcher';
 export * from './lib/Drawer';
+export * from './lib/Popover';
