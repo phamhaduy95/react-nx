@@ -5,7 +5,7 @@ import { useWeekScheduleStore } from './WeekScheduleStoreProvider';
 
 const DATE_FORMAT = 'ddd D/M';
 
-export function WeekScheduleWeekDaysBox() {
+export function WeekScheduleDateDisplayRow() {
   const weekRange = useWeekScheduleStore(
     (state) => state.range,
     (a, b) => {
@@ -22,7 +22,7 @@ export function WeekScheduleWeekDaysBox() {
         .add(e, 'day')
         .format(DATE_FORMAT);
       return (
-        <div className="WeekSchedule__WeekDaysBox__DayIndicator" key={e}>
+        <div className="WeekSchedule__DateDisplayRow__Text" key={e}>
           {dayStr}
         </div>
       );
@@ -30,8 +30,8 @@ export function WeekScheduleWeekDaysBox() {
   }, [weekRange.startDate.toDateString()]);
 
   return (
-    <div className="WeekSchedule__WeekDaysBox">
-      <div className="WeekSchedule__WeekDaysBox__DummyCell"></div>
+    <div className="WeekSchedule__DateDisplayRow">
+      <div className="WeekSchedule__DateDisplayRow__DummyCell"></div>
       {weekDayIndicators}
     </div>
   );

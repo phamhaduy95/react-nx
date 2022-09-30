@@ -5,7 +5,6 @@ import { useWeekScheduleStore } from './WeekScheduleStoreProvider';
 import {
   findTaskWhichStartsOnThisDate,
   organizeTasksOnTimeLine,
-  TaskDataWithWidthType,
 } from './utils';
 import { TaskDataType } from '../../type/model';
 import { getTimeRatioInPercentage } from '../DaySchedule/utils';

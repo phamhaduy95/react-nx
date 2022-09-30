@@ -4,11 +4,11 @@ import {
   WeekScheduleState,
   useWeekScheduleStore,
 } from './WeekScheduleStoreProvider';
-import { WeekScheduleWeekDaysBox } from './WeekScheduleWeeksDayBox';
+import { WeekScheduleDateDisplayRow } from './WeekScheduleDateDisplayRow';
 import { WeekScheduleTimeLine } from './WeekScheduleTimeLineBox';
 import { useEffect, useMemo } from 'react';
 import './WeekSchedule.scss';
-import { WeekScheduleWeekTaskView } from './WeekScheduleWeekTaskView';
+import { WeekScheduleWeekTaskView } from './WeekScheduleWeekOverviewRow';
 
 export type WeekScheduleProps = {
   data: {
@@ -43,7 +43,7 @@ function WrappedWeekSchedule(props: WeekScheduleProps) {
     <div className="WeekSchedule">
       <div className="WeekSchedule__Container">
         <div className="WeekSchedule__Header">
-          <WeekScheduleWeekDaysBox />
+          <WeekScheduleDateDisplayRow />
           <WeekScheduleWeekTaskView />
         </div>
         <div className="WeekSchedule__TimeLineBox">

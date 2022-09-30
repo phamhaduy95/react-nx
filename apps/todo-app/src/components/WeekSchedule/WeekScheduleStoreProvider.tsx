@@ -21,9 +21,8 @@ export type WeekScheduleState = {
   };
 };
 
-type ContextValueType = {
-  store: StoreApi<WeekScheduleState>;
-} | null;
+type ContextValueType =  StoreApi<WeekScheduleState>|
+ null;
 
 const StoreContext = createContext<ContextValueType>(null);
 
@@ -57,7 +56,7 @@ export function WeekScheduleStoreProvider(props: Props) {
   );
 
   return (
-    <StoreContext.Provider value={{ store }}>{children}</StoreContext.Provider>
+    <StoreContext.Provider value={ store }>{children}</StoreContext.Provider>
   );
 }
 
@@ -67,7 +66,7 @@ export function useWeekScheduleStore<U>(
 ): U {
   const value = useContext(StoreContext);
   if (value === null) throw new Error('MonthScheduleStore context is null');
-  const { store } = value;
+  const  store  = value;
   return useStore(store, selector, equalFunc);
 }
 

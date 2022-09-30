@@ -1,7 +1,7 @@
 @import '../_sharedStyle.scss';
 @import '../_utils.scss';
 $indicator-cell-width: 50px;
-
+$font-size-m: 0.85rem;
 .WeekSchedule {
   width: 760px;
   height: 700px;
@@ -9,7 +9,7 @@ $indicator-cell-width: 50px;
   border-radius: 5px;
   color: $text-color;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  > .WeekSchedule__Container {
+  @at-root .WeekSchedule__Container {
     width: 100%;
     overflow-y: auto;
     height: 100%;
@@ -25,59 +25,124 @@ $indicator-cell-width: 50px;
       display: flex;
       flex-direction: column;
 
-      @at-root .WeekSchedule__WeekDaysBox {
+      @at-root .WeekSchedule__DateDisplayRow {
         display: flex;
         width: 100%;
         height: 50px;
         border-bottom: $border;
-        > .WeekSchedule__WeekDaysBox__DummyCell {
+        > .WeekSchedule__DateDisplayRow__DummyCell {
           flex-shrink: 0;
           width: $indicator-cell-width;
           height: 100%;
         }
-        > .WeekSchedule__WeekDaysBox__DayIndicator {
+        > .WeekSchedule__DateDisplayRow__Text {
           width: calc(100% / 7);
           @include centerElement();
           word-wrap: normal;
         }
       }
-      @at-root .WeekSchedule__WeekTaskView {
+      @at-root .WeekSchedule__WeekOverViewRow {
         display: flex;
         width: 100%;
-        height: 120px;
+        height: 130px;
         border-bottom: $border;
 
-        > .WeekSchedule__WeekTaskView__TextIndicator {
+        > .WeekSchedule__WeekOverViewRow__TextIndicator {
           @include centerElement();
           width: 50px;
           height: 100%;
-          font-size: 0.85rem;
+          font-size: $font-size-m;
           text-align: center;
           flex-shrink: 0;
           border-right: $border;
         }
-        @at-root .WeekSchedule__WeekTaskView__TaskTimeLine {
+        @at-root .WeekSchedule__WeekOverViewRow__TaskTimeLine {
           display: flex;
           flex-grow: 1;
           position: relative;
 
-          > .WeekSchedule__WeekTaskView__DayTimeFrame {
+          @at-root .WeekSchedule__WeekOverViewRow__TimeFrame {
             position: relative;
             width: calc(100% / 7);
             height: 100%;
+            display: flex;
             word-wrap: normal;
             border-right: $border;
             &:last-child {
               border-right: none;
             }
-            @at-root .WeekSchedule__WeekTaskView__TaskBlock {
+
+            @at-root .WeekSchedule__TimeFrame__TaskBlock {
               position: absolute;
               background-color: hsla(220, 80%, 80%, 0.5);
               border-radius: 5px;
               display: flex;
               align-items: center;
-              font-size: 0.85rem;
+              font-size: $font-size-m;
               text-indent: 0.5rem;
+            }
+            @at-root .WeekSchedule__TimeFrame__TaskExpandButton {
+              margin-top: auto;
+              font-size: $font-size-m;
+              color: inherit;
+              font-family: inherit;
+              border-radius: 5px;
+              margin-bottom: 0.5rem;
+              margin-left: auto;
+              margin-right: auto;
+              width: 80%;
+              border: $border;
+
+              &:hover {
+                background-color: hsla(0, 0%, 80%, 0.8);
+              }
+            }
+            // since the element below is React Portal, don't remove @at-root
+            @at-root .Popover.WeekSchedule__TimeFrame__TasksListView {
+              background-color: white;
+              color: $text-color;
+              font-size: $font-size-m;
+              overflow: hidden;
+              width: 130px;
+              border: $border;
+              border-radius: 5px;
+              display: flex;
+              flex-direction: column;
+              > .WeekSchedule__TasksListView__Header {
+                padding: 0.5rem;
+                display: flex;
+                background-color: hsla(0, 0%, 80%, 0.5);
+                align-items: center;
+
+                > .WeekSchedule__TasksListView__CloseIcon {
+                  font-size: 1rem;
+                  margin-left: auto;
+                }
+              }
+              > .WeekSchedule__TasksListView__Lists {
+                padding: 0.25rem 0.5rem;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                max-height: 160px;
+                overflow-y: auto;
+                > .WeekSchedule__TasksListView__TaskData {
+                    margin-bottom: 0.5rem;
+                    height: max-content;
+                    flex-shrink: 0;
+                    padding: 0.1rem 0;
+                    border-radius: 5px;
+                    padding-left: 0.8em;
+                    overflow-x: hidden;
+                    text-overflow: ellipsis;
+                    white-space: no-wrap;
+                    background-color: hsla(220, 80%, 80%, 0.5);
+                    &:last-child {
+                        margin-bottom: none;
+                    }
+
+                }
+              }
             }
           }
         }
@@ -114,20 +179,20 @@ $indicator-cell-width: 50px;
           border-right: none;
         }
         @at-root .WeekSchedule__WeekDayTimeLine__TaskTimeLine {
-            position: absolute;
-            background-color: hsla(220, 80%, 80%, 0.5);
-            padding:0.25rem;
-       
-            user-select: none;
-            cursor: pointer;
-            >.WeekDayTimeLine__TaskTitle{
-              margin: 0;
-              position: sticky;
-              top:10px;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              overflow-x: hidden;
-            }
+          position: absolute;
+          background-color: hsla(220, 80%, 80%, 0.5);
+          padding: 0.25rem;
+
+          user-select: none;
+          cursor: pointer;
+          > .WeekDayTimeLine__TaskTitle {
+            margin: 0;
+            position: sticky;
+            top: 10px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow-x: hidden;
+          }
         }
 
         > .WeekSchedule__TimeFrame {
