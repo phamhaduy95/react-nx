@@ -1,9 +1,14 @@
 import classNames from 'classnames';
-import React, { HTMLInputTypeAttribute, useEffect, useImperativeHandle, useRef } from 'react';
+import React, {
+  HTMLInputTypeAttribute,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import './TextField.scss';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 
-export interface TextFieldProps {
+export type TextFieldProps = {
   className?: string | null;
   placeHolder?: string | null;
   value?: string | number;
@@ -24,7 +29,9 @@ export interface TextFieldProps {
   onKeyDown?: (e: React.KeyboardEvent) => void;
   type?: HTMLInputTypeAttribute;
   autoFocusWhenChanged?: boolean;
-}
+  error?: string | false;
+  success?: string | false;
+};
 
 const defaultProps: Required<TextFieldProps> = {
   placeHolder: null,
@@ -47,121 +54,132 @@ const defaultProps: Required<TextFieldProps> = {
   onFocus: (e) => {},
   onBlur(e) {},
   onKeyDown(e) {},
+  error: false,
+  success: false,
 };
 
-export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>((props, ref) => {
-  const newProps = { ...defaultProps, ...props };
-  const {
-    className,
-    placeHolder,
-    label,
-    helperText,
-    prefix,
-    addOnBefore,
-    suffix,
-    addOnAfter,
-    onChange,
-    onEnterPressed,
-    onClick,
-    onFocus,
-    onBlur,
-    disabled,
-    autoFocusWhenChanged,
-    onKeyDown,
-  } = newProps;
+export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
+  (props, ref) => {
+    const newProps = { ...defaultProps, ...props };
+    const {
+      className,
+      placeHolder,
+      label,
+      helperText,
+      prefix,
+      addOnBefore,
+      suffix,
+      addOnAfter,
+      onChange,
+      onEnterPressed,
+      onClick,
+      onFocus,
+      onBlur,
+      disabled,
+      autoFocusWhenChanged,
+      onKeyDown,
+      error,
+      success,
+    } = newProps;
+    const inputRef = useRef<HTMLInputElement>(null);
+    // the error flag has higher priority than success
+    let newSuccess = error ? false : success;
+    useEffectSkipFirstRender(() => {
+      if (!autoFocusWhenChanged) return;
+      const input = inputRef.current as HTMLInputElement;
+      if (input === null) return;
+      input.focus();
+    }, [props.value]);
 
-  const inputRef = useRef<HTMLInputElement>(null);
-  
-  useEffectSkipFirstRender(() => {
-    if (!autoFocusWhenChanged) return;
-    const input = inputRef.current as HTMLInputElement;
-    if (input === null) return;
-    input.focus();
-  }, [props.value]);
+    const rootClassName = classNames('TextField', {
+      [`${className}`]: className,
+      disabled: disabled,
+      error: error,
+      success: newSuccess,
+    });
 
-  const rootClassName = classNames('TextField', {
-    [`${className}`]: className,
-    disabled: disabled,
-  });
+    const inputFieldClassName = classNames('TextField__InputField', {
+      'has-addon-before': addOnBefore,
+      'has-addon-after': addOnAfter,
+    });
 
-  const inputFieldClassName = classNames('TextField__InputField', {
-    'has-addon-before': addOnBefore,
-    'has-addon-after': addOnAfter,
-  });
+    const renderAddonBefore = () => {
+      if (addOnBefore)
+        return <div className="TextField__AddonBefore">{addOnBefore}</div>;
+      return <></>;
+    };
 
-  const renderAddonBefore = () => {
-    if (addOnBefore)
-      return <div className="TextField__AddonBefore">{addOnBefore}</div>;
-    return <></>;
-  };
+    const renderAddonAfter = () => {
+      if (addOnAfter)
+        return <div className="TextField__AddonAfter">{addOnAfter}</div>;
+      return <></>;
+    };
 
-  const renderAddonAfter = () => {
-    if (addOnAfter)
-      return <div className="TextField__AddonAfter">{addOnAfter}</div>;
-    return <></>;
-  };
+    const renderPrefix = () => {
+      if (prefix) return <div className="TextField__InputPrefix">{prefix}</div>;
+      return <></>;
+    };
 
-  const renderPrefix = () => {
-    if (prefix) return <div className="TextField__InputPrefix">{prefix}</div>;
-    return <></>;
-  };
+    const renderSuffix = () => {
+      if (suffix) return <div className="TextField__InputSuffix">{suffix}</div>;
+      return <></>;
+    };
 
-  const renderSuffix = () => {
-    if (suffix) return <div className="TextField__InputSuffix">{suffix}</div>;
-    return <></>;
-  };
+    const renderHelpText = () => {
+      const content = error
+        ? error
+        : newSuccess
+        ? success
+        : helperText
+        ? helperText
+        : false;
+      if (content)
+        return <div className="TextField__HelperText">{content}</div>;
+      return <></>;
+    };
 
-  const renderHelpText = () => {
-    if (helperText)
-      return <div className="TextField__HelperText">{helperText}</div>;
-    return <></>;
-  };
-
-  const handleInputChange = (e: React.FormEvent) => {
-    const target = e.target as HTMLInputElement;
-    const value = target.value;
-    onChange(value);
-  };
-
-  const handleEnterPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    const handleInputChange = (e: React.FormEvent) => {
       const target = e.target as HTMLInputElement;
       const value = target.value;
-      onEnterPressed(value);
-    }
-    onKeyDown(e);
-  };
+      onChange(value);
+    };
 
-  return (
-    <div className={rootClassName}>
-      <label className="TextField__Label">{label}</label>
-      <div className="TextField__InputContainer">
-        {renderAddonBefore()}
-        <div
-          className={inputFieldClassName}
-          onClick={onClick}
-          ref={ref}
-        >
-          {renderPrefix()}
-          <input
-            className="TextField__Input"
-            autoComplete="hidden"
-            placeholder={placeHolder ? placeHolder : ''}
-            onChange={handleInputChange}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            onKeyDown={handleEnterPress}
-            value={props.value}
-            disabled={disabled}
-            ref={inputRef}
-          />
-          {renderSuffix()}
+    const handleEnterPress = (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        const target = e.target as HTMLInputElement;
+        const value = target.value;
+        onEnterPressed(value);
+      }
+      onKeyDown(e);
+    };
+
+    return (
+      <div className={rootClassName}>
+        <label className="TextField__Label">{label}</label>
+        <div className="TextField__InputContainer">
+          {renderAddonBefore()}
+          <div className={inputFieldClassName} onClick={onClick} ref={ref}>
+            {renderPrefix()}
+            <input
+              className="TextField__Input"
+              autoComplete="hidden"
+              placeholder={placeHolder ? placeHolder : ''}
+              onChange={handleInputChange}
+              onFocus={onFocus}
+              onBlur={onBlur}
+              onKeyDown={handleEnterPress}
+              value={props.value}
+              disabled={disabled}
+              ref={inputRef}
+            />
+            {renderSuffix()}
+          </div>
+          {renderAddonAfter()}
         </div>
-        {renderAddonAfter()}
+        {renderHelpText()}
       </div>
-      {renderHelpText()}
-    </div>
-  );
-});
+    );
+  }
+);
 
 export default TextField;
