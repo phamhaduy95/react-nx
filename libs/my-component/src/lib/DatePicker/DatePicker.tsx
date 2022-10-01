@@ -19,6 +19,7 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { checkIsClickOnElement, isElementFocus } from '../utils/utils';
 import { useStoreDirectly } from './DatePickerStoreProvider';
+import { TextFieldProps } from '../TextField/TextField';
 dayjs.extend(customParseFormat);
 
 export interface DatePickerProps {
@@ -28,6 +29,9 @@ export interface DatePickerProps {
   disabledDate?: CalendarProps['disabledDate'];
   onSelect?: (date: Date | null) => void;
   PanelComponent?: (props: DatePanelProps) => JSX.Element;
+  error?: TextFieldProps['error'];
+  success?: TextFieldProps['success'];
+  helperText?: TextFieldProps['helperText'];
 }
 const defaultPropsValue: Required<DatePickerProps> = {
   className: false,
@@ -40,6 +44,9 @@ const defaultPropsValue: Required<DatePickerProps> = {
   PanelComponent(props) {
     return <DatePanelSingle {...props} />;
   },
+  helperText: null,
+  error: false,
+  success: false,
 };
 
 export function DatePicker(props: DatePickerProps) {
@@ -59,6 +66,9 @@ function WrappedDatePicker(props: DatePickerProps) {
     onSelect,
     PanelComponent,
     disabledDate,
+    error,
+    success,
+    helperText
   } = newProps;
 
   const rootClassName = classNames('DatePicker', {
@@ -84,17 +94,17 @@ function WrappedDatePicker(props: DatePickerProps) {
   );
 
   const action = useDatePickerStore((state) => state.action);
-  const isPopupOpen = useDatePickerStore((state)=>state.isPopupOpen);
+  const isPopupOpen = useDatePickerStore((state) => state.isPopupOpen);
 
-  useEffectSkipFirstRender(()=>{
+  useEffectSkipFirstRender(() => {
     if (isPopupOpen) return;
     if (submittedDate === null) {
       setInputValue('');
       return;
     }
     const newValue = dayjs(submittedDate).format(dateFormat);
-    setInputValue(newValue); 
-  },[isPopupOpen]);
+    setInputValue(newValue);
+  }, [isPopupOpen]);
 
   const [inputValue, setInputValue] = useState('');
 
@@ -167,7 +177,7 @@ function WrappedDatePicker(props: DatePickerProps) {
         return;
       }
 
-      case "Tab": {
+      case 'Tab': {
         action.togglePopup(false);
         return;
       }
@@ -188,6 +198,9 @@ function WrappedDatePicker(props: DatePickerProps) {
         suffix={<IconField />}
         autoFocusWhenChanged
         ref={textFieldRef}
+        success={success}
+        error={error}
+        helperText={helperText}
       />
       <DatePickerPopup
         targetRef={textFieldRef}
