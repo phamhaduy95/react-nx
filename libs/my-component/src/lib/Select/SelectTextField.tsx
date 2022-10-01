@@ -12,7 +12,7 @@ type SelectTextFieldProps = {
 };
 
 export const SelectTextField = forwardRef<
-  HTMLDivElement | null,
+  HTMLInputElement | null,
   SelectTextFieldProps
 >((props, ref) => {
   const { helperText, label, onSelect } = props;
@@ -51,9 +51,10 @@ export const SelectTextField = forwardRef<
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     const keyPressed = e.key;
-    e.preventDefault();
+    e.stopPropagation();
     switch (keyPressed) {
       case 'ArrowDown': {
+        e.preventDefault();
         action.togglePopup(true);
         action.highlightNext();
         return;
