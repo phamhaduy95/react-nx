@@ -3,7 +3,7 @@
 @import '../mediaQuery.scss';
 
 .DateTimePicker {
-  @at-root .DateTimePicker__TextField {
+  > .DateTimePicker__TextField {
     width: 100%;
     .DateTimePicker__InputIcon {
       cursor: pointer;
