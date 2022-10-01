@@ -8,24 +8,24 @@ import { SelectTextField } from './SelectTextField';
 import { giveIndexToSelectOptions } from './SelectOption';
 
 export interface SelectProps {
-  className?:string,
+  className?: string;
   children: JSX.Element[] | JSX.Element;
   onSelect?: (value: string) => void;
   label?: TextFieldProps['label'];
   helperText?: TextFieldProps['helperText'];
   error?: string | false;
-  valid?: string | false;
+  success?: string | false;
   autoWidth?: boolean;
 }
 
 const defaultPropsValue: Required<SelectProps> = {
-  className:"",
+  className: '',
   children: <></>,
   onSelect: (value) => {},
   label: '',
   helperText: null,
   error: false,
-  valid: false,
+  success: false,
   autoWidth: false,
 };
 
@@ -39,15 +39,31 @@ export function Select(props: SelectProps) {
 
 function WrappedSelect(props: SelectProps) {
   const newProps = { ...defaultPropsValue, ...props };
-  const { children, autoWidth, label, helperText,onSelect,className } = newProps;
+  const {
+    children,
+    autoWidth,
+    label,
+    helperText,
+    onSelect,
+    className,
+    error,
+    success,
+  } = newProps;
   const textFieldRef = useRef<any>(null);
   const IndexedItems = giveIndexToSelectOptions(children);
-  const rootClassName = classNames('Select',className,{
+  const rootClassName = classNames('Select', className, {
     'auto-width': autoWidth,
   });
   return (
     <div className={rootClassName}>
-      <SelectTextField label={label} helperText={helperText} ref={textFieldRef} onSelect={onSelect} />
+      <SelectTextField
+        label={label}
+        helperText={helperText}
+        success={success}
+        error={error}
+        ref={textFieldRef}
+        onSelect={onSelect}
+      />
       <SelectPopup targetRef={textFieldRef}>{IndexedItems}</SelectPopup>
     </div>
   );
