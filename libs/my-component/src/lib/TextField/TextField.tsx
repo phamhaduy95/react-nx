@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { HTMLInputTypeAttribute, useEffect, useRef } from 'react';
+import React, { HTMLInputTypeAttribute, useEffect, useImperativeHandle, useRef } from 'react';
 import './TextField.scss';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 
@@ -71,7 +71,7 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>((props
   } = newProps;
 
   const inputRef = useRef<HTMLInputElement>(null);
-
+  
   useEffectSkipFirstRender(() => {
     if (!autoFocusWhenChanged) return;
     const input = inputRef.current as HTMLInputElement;
@@ -141,13 +141,11 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>((props
           className={inputFieldClassName}
           onClick={onClick}
           ref={ref}
-          tabIndex={0}
         >
           {renderPrefix()}
           <input
             className="TextField__Input"
             autoComplete="hidden"
-            type="tel"
             placeholder={placeHolder ? placeHolder : ''}
             onChange={handleInputChange}
             onFocus={onFocus}
