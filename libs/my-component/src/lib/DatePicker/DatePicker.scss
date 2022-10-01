@@ -6,8 +6,8 @@ $text-color: hsl(0, 0%, 20%);
   width: 180px;
   height: max-content;
   > .DatePicker__TextField {
-    width: inherit;
-    height: inherit;
+    width: 100%;
+    height: 100%;
     .DatePicker__InputIcon {
       cursor: pointer;
       margin-right: 0.25rem;

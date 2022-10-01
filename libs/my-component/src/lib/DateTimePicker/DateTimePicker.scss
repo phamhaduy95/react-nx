@@ -4,7 +4,7 @@
 
 .DateTimePicker {
   @at-root .DateTimePicker__TextField {
-    width: inherit;
+    width: 100%;
     .DateTimePicker__InputIcon {
       cursor: pointer;
       margin-right: 0.25rem;
