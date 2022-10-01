@@ -26,6 +26,7 @@ export interface DatePickerProps {
   className?: string | false;
   dateFormat?: string;
   label?: string;
+  value?:Date|null,
   disabledDate?: CalendarProps['disabledDate'];
   onSelect?: (date: Date | null) => void;
   PanelComponent?: (props: DatePanelProps) => JSX.Element;
@@ -35,6 +36,7 @@ export interface DatePickerProps {
 }
 const defaultPropsValue: Required<DatePickerProps> = {
   className: false,
+  value:null,
   dateFormat: 'DD/MM/YYYY',
   label: '',
   disabledDate(currentDate) {
@@ -63,6 +65,7 @@ function WrappedDatePicker(props: DatePickerProps) {
     dateFormat,
     className,
     label,
+    value,
     onSelect,
     PanelComponent,
     disabledDate,
@@ -76,6 +79,10 @@ function WrappedDatePicker(props: DatePickerProps) {
   });
   const textFieldRef = useRef<any>(null);
   const store = useStoreDirectly();
+  // update internal state when the initial date value is provided.
+  useEffect(()=>{
+    action.submitDate(value);
+  },[value?.toDateString()])
 
   const submittedDate = useDatePickerStore(
     (state) => state.submittedDate,
