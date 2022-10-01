@@ -1,3 +1,6 @@
 $border: 1px solid hsl(0, 0%, 80%);
 $text-color: hsl(0, 0%, 20%);
 $font-size--small: 0.8rem;
+
+$font-size-m: clamp(0.5rem,calc(0.5rem + 0.8vw),0.9rem);
+$font-size-b: clamp(0.7rem,calc(0.7rem + 0.8vw),1.1rem);
