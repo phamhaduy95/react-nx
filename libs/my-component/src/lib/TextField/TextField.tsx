@@ -142,7 +142,6 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>((props
           onClick={onClick}
           ref={ref}
           tabIndex={0}
-          onKeyDown={handleEnterPress}
         >
           {renderPrefix()}
           <input
@@ -153,6 +152,7 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>((props
             onChange={handleInputChange}
             onFocus={onFocus}
             onBlur={onBlur}
+            onKeyDown={handleEnterPress}
             value={props.value}
             disabled={disabled}
             ref={inputRef}
