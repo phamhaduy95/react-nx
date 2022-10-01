@@ -12,7 +12,7 @@ type SelectTextFieldProps = {
 };
 
 export const SelectTextField = forwardRef<
-  HTMLElement | null,
+  HTMLDivElement | null,
   SelectTextFieldProps
 >((props, ref) => {
   const { helperText, label, onSelect } = props;

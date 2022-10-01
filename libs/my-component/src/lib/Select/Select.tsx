@@ -8,6 +8,7 @@ import { SelectTextField } from './SelectTextField';
 import { giveIndexToSelectOptions } from './SelectOption';
 
 export interface SelectProps {
+  className?:string,
   children: JSX.Element[] | JSX.Element;
   onSelect?: (value: string) => void;
   label?: TextFieldProps['label'];
@@ -18,6 +19,7 @@ export interface SelectProps {
 }
 
 const defaultPropsValue: Required<SelectProps> = {
+  className:"",
   children: <></>,
   onSelect: (value) => {},
   label: '',
@@ -37,10 +39,12 @@ export function Select(props: SelectProps) {
 
 function WrappedSelect(props: SelectProps) {
   const newProps = { ...defaultPropsValue, ...props };
-  const { children, autoWidth, label, helperText,onSelect } = newProps;
+  const { children, autoWidth, label, helperText,onSelect,className } = newProps;
   const rootRef = useRef<HTMLDivElement>(null);
+
+
   const IndexedItems = giveIndexToSelectOptions(children);
-  const rootClassName = classNames('Select', {
+  const rootClassName = classNames('Select',className,{
     'auto-width': autoWidth,
   });
   return (
