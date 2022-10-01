@@ -26,8 +26,6 @@ export const DateTimePickerPopup =memo((props: DateTimePickerPopupProps)=>{
     (a, b) => a?.toString() === b?.toString()
   );
 
-    console.log("popup rendered")
-
   const handleClickOutsidePopup = useCallback((e: MouseEvent) => {
     const el = triggerRef.current as HTMLElement;
     const inputEl = el.querySelector('input');

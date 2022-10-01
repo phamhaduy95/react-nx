@@ -44,7 +44,6 @@ export function WrappedDrawer(props: DrawerProps) {
   const action = useDrawerStore((state) => state.action);
   const isShowed = useDrawerStore((state) => state.isOpen);
   const popupRef = useRef(null);
-  console.log(isShowed)
   const rootClassName = classNames('Drawer', className, {
     ['is-open']: isShowed,
   });
