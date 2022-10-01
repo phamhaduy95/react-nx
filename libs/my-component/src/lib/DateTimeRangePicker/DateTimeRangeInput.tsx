@@ -4,15 +4,20 @@ import { DateTimePickerProps, DateTimePicker } from '../DateTimePicker';
 import { CalendarProps } from '../Calendar';
 import dayjs from 'dayjs';
 import { useDateTimeRangePickerStore } from './DateTimeRangePickerStoreProvider';
+import { TextFieldProps } from '../TextField';
 
 export interface DateTimeRangeInputProps {
   label: DateTimePickerProps['label'];
   onDateSelect: NonNullable<DateTimePickerProps['onSelect']>;
   mode: DateRangePanelProps['mode'];
+  error: TextFieldProps['error'];
+  success: TextFieldProps['success'];
+  helperText: TextFieldProps['helperText'];
+  value:Date|null,
 }
 
 export function DateTimeRangeInput(props: DateTimeRangeInputProps) {
-  const { label, onDateSelect, mode } = props;
+  const { label, onDateSelect, mode, error, success, helperText,value } = props;
   const startDate = useDateTimeRangePickerStore(
     (state) => state.startDate,
     (a, b) => a?.toString() === b?.toString()
@@ -72,13 +77,18 @@ export function DateTimeRangeInput(props: DateTimeRangeInputProps) {
     return false;
   };
 
+
   return (
     <DateTimePicker
       className="DateTimeRangePicker__Input"
+      value={value}
       label={label}
       onSelect={onDateSelect}
       DatePanel={DatePanel}
       disabledDate={disabledDate}
+      success={success}
+      error={error}
+      helperText={helperText}
     />
   );
 }
