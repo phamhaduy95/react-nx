@@ -64,7 +64,7 @@ function WrappedDatePicker(props: DatePickerProps) {
   const rootClassName = classNames('DatePicker', {
     [`${className}`]: className,
   });
-  const textFieldRef = useRef<HTMLDivElement>(null);
+  const textFieldRef = useRef<any>(null);
   const store = useStoreDirectly();
 
   const submittedDate = useDatePickerStore(
@@ -163,6 +163,11 @@ function WrappedDatePicker(props: DatePickerProps) {
         return;
       }
       case 'Escape': {
+        action.togglePopup(false);
+        return;
+      }
+
+      case "Tab": {
         action.togglePopup(false);
         return;
       }
