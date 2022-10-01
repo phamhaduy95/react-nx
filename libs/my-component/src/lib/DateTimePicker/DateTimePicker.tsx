@@ -16,6 +16,7 @@ import {
   useStoreDirectly,
 } from './DateTimePickerStoreProvider';
 import './DateTimePicker.scss';
+import { TextFieldProps } from '../TextField/TextField';
 
 export interface DateTimePickerProps {
   className?: string;
@@ -26,6 +27,9 @@ export interface DateTimePickerProps {
   onSelect?: (dateTime: Date | null) => void;
   DatePanel?: (props: DatePanelProps) => JSX.Element;
   disabledDate?: CalendarProps['disabledDate'];
+  error?:TextFieldProps["error"],
+  success?:TextFieldProps["success"],
+  helperText?:TextFieldProps["helperText"]
 }
 
 const defaultProps: Required<DateTimePickerProps> = {
@@ -41,6 +45,9 @@ const defaultProps: Required<DateTimePickerProps> = {
   DatePanel(props) {
     return <DatePanelSingle {...props} />;
   },
+  error:false,
+  success:false,
+  helperText:null
 };
 
 export function DateTimePicker(props: DateTimePickerProps) {
@@ -62,6 +69,9 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
     onSelect,
     DatePanel,
     disabledDate,
+    error,
+    success,
+    helperText
   } = newProps;
   const dateTimeFormat = getDateTimeFormat(
     dateFormat,
@@ -186,6 +196,9 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
         ref={triggerRef}
         autoFocusWhenChanged={true}
         onKeyDown={handleKeyDown}
+        success={success}
+        error={error}
+        helperText={helperText}
       />
       <DateTimePickerPopup
         isSecondIncluded={isSecondIncluded}
