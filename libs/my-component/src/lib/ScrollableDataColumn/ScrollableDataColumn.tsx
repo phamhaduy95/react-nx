@@ -81,7 +81,7 @@ export function WrappedDataColumn(props: ScrollableDataColumnProps) {
       );
     });
     rows.push(
-      <DummyRow numberOfShowedItem={numberShowedItem}/>
+      <DummyRow numberOfShowedItem={numberShowedItem} key={`dummy-row`}/>
     );
 
     return rows;
