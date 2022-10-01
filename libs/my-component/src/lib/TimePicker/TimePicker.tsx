@@ -21,6 +21,7 @@ dayjs.extend(customParseFormat);
 export type TimePickerProps = {
   className?: string;
   isSecondIncluded?: boolean;
+  value?:Time|null,
   delimiter?: string;
   disabled?: boolean;
   label?: TextFieldProps['label'];
@@ -30,6 +31,7 @@ export type TimePickerProps = {
 
 const DefaultProps: Required<TimePickerProps> = {
   className: '',
+  value:null,
   isSecondIncluded: false,
   delimiter: ':',
   onTimeSelect(time) {},
@@ -50,6 +52,7 @@ function WrappedTimePicker(props: TimePickerProps) {
   const newProps = { ...DefaultProps, ...props };
   const {
     className,
+    value,
     delimiter,
     isSecondIncluded,
     onTimeSelect,
@@ -59,8 +62,13 @@ function WrappedTimePicker(props: TimePickerProps) {
   const rootClassName = classNames('TimePicker', className);
   const timeFormat = getTimeFormat(isSecondIncluded, delimiter);
 
-  const popupRef = useRef(null);
+  const textFieldRef = useRef(null);
   const [inputValue, setInputValue] = useState('');
+  // update internal state when initial value is provided
+  useEffect(()=>{
+      action.submitTime(value);
+  },[value?.hour,value?.minute,value?.second])
+  
   const action = useTimePickerStore((state) => state.action);
   const displayedTime = useTimePickerStore((state) => {
     const { isPopupOpen, selectedTime, submittedTime } = state;
@@ -121,14 +129,14 @@ function WrappedTimePicker(props: TimePickerProps) {
         placeHolder={timeFormat}
         label={label}
         onChange={handleInputChange}
-        ref={popupRef}
+        ref={textFieldRef}
         onClick={handleClickToOpenPopup}
         suffix={<IconField />}
         helperText={helperText}
         autoFocusWhenChanged
       />
       <TimePickerPopup
-        targetRef={popupRef}
+        targetRef={textFieldRef}
         isSecondInCluded={isSecondIncluded}
       />
     </div>
