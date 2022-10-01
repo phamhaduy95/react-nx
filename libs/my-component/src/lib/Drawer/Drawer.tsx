@@ -104,10 +104,10 @@ function positionDrawerPopup(
       return { top: 0, width: '100%' };
     }
     case 'left': {
-      return { left: 0, height: '100%', width: '40%' };
+      return { left: 0,height:"100%" };
     }
     case 'right': {
-      return { right: 0, height: '100%', width: '40%' };
+      return { right: 0,height:"100%" };
     }
   }
 }
