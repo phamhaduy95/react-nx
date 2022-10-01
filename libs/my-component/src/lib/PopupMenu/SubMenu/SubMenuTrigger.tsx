@@ -4,7 +4,6 @@ import React, {
   useImperativeHandle,
   useRef,
 } from 'react';
-import { switchFocus } from '../../Select/utils';
 import { useSwitchFocus } from '../../utils/hooks';
 import { useSubMenuStore } from './SubMenuStoreProvider';
 
@@ -79,3 +78,17 @@ export const SubMenuTrigger = forwardRef<HTMLDivElement, SubMenuTriggerProps>(
     );
   }
 );
+
+
+function switchFocus(
+  ref: React.MutableRefObject<HTMLElement | null>,
+  isFocus: boolean
+) {
+  const el = ref.current;
+  if (el === null) return;
+  if (isFocus) {
+    el.focus();
+    return;
+  }
+  el.blur();
+}
