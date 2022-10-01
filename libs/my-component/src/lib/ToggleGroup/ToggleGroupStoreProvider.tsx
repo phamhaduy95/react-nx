@@ -177,7 +177,6 @@ function searchForNextNonDisableItem(
   startPos: number,
   dir: 'des' | 'acs'
 ) {
-  debugger;
   if (dir === 'acs') {
     for (let i = startPos + 1; i < itemList.length; i++) {
       console.assert(itemList[i] !== undefined, itemList, i);

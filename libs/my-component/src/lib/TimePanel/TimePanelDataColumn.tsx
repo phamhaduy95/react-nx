@@ -16,7 +16,6 @@ export const TimePanelDataColumn = memo((props: Props)=> {
   const { className, dataSet, numberShowedItem, onSelect, value } = props;
   let newValue = value === undefined?null:value;
 
-  console.log(className," rendered")
   return (
     <ScrollableDataColumn
       className={className}

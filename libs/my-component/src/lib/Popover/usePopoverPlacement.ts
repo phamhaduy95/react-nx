@@ -110,7 +110,6 @@ function rePositionPopoverBaseOnViewPort(
   const popoverHeight = popoverEl.clientHeight;
   const popoverWidth = popoverEl.clientWidth;
   let top = popoverPos.top;
-  debugger
   if (top < 0) {
     top = padding;
   } else if (top + popoverHeight > viewPortSize.height) {

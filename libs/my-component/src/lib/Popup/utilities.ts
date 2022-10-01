@@ -21,7 +21,7 @@ export function recalculateAndPositionPopup(
     popupEl,
     placement
   );
-  // debugger
+
   const newPlacement = findCorrectPlacementForPopup(
     popupEl,
     initialPos,
