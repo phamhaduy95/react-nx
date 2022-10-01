@@ -1,9 +1,7 @@
 export function switchFocus(
-  ref: React.MutableRefObject<HTMLElement | null>,
+  el:HTMLElement,
   isFocus: boolean
 ) {
-  const el = ref.current;
-  if (el === null) return;
   if (isFocus) {
     el.focus();
     return;

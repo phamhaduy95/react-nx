@@ -23,9 +23,11 @@ export const SelectPopup = (props: SelectPopupProps) => {
   useSwitchFocus(menuRef, isMenuFocused);
   // when popup is closed, reset the highlightedItem in store and move focus back to TextField
   useEffect(() => {
+    const textFieldEl = targetRef.current as HTMLElement;
     if (isShowed) return;
     action.highlightOne(null);
-    switchFocus(targetRef, true);
+    const inputEl = textFieldEl.querySelector("input") as HTMLElement;
+    switchFocus(inputEl, true);
   }, [isShowed]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -46,6 +48,10 @@ export const SelectPopup = (props: SelectPopupProps) => {
         return;
       }
       case 'Escape': {
+        action.togglePopup(false);
+        return;
+      }
+      case "Tab": {
         action.togglePopup(false);
         return;
       }

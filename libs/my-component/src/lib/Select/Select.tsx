@@ -40,17 +40,15 @@ export function Select(props: SelectProps) {
 function WrappedSelect(props: SelectProps) {
   const newProps = { ...defaultPropsValue, ...props };
   const { children, autoWidth, label, helperText,onSelect,className } = newProps;
-  const rootRef = useRef<HTMLDivElement>(null);
-
-
+  const textFieldRef = useRef<any>(null);
   const IndexedItems = giveIndexToSelectOptions(children);
   const rootClassName = classNames('Select',className,{
     'auto-width': autoWidth,
   });
   return (
     <div className={rootClassName}>
-      <SelectTextField label={label} helperText={helperText} ref={rootRef} onSelect={onSelect} />
-      <SelectPopup targetRef={rootRef}>{IndexedItems}</SelectPopup>
+      <SelectTextField label={label} helperText={helperText} ref={textFieldRef} onSelect={onSelect} />
+      <SelectPopup targetRef={textFieldRef}>{IndexedItems}</SelectPopup>
     </div>
   );
 }
