@@ -75,7 +75,7 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
   const triggerRef = useRef(null);
   const store = useStoreDirectly();
   const action = useDateTimePickerStore((state) => state.action);
-  const isPopupOpen = useDateTimePickerStore((state)=>state.isPopupOpen);
+  const isPopupOpen = useDateTimePickerStore((state) => state.isPopupOpen);
 
   const displayedDate = useDateTimePickerStore(
     (state) => {
@@ -90,18 +90,17 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
     (a, b) => a?.toString() === b?.toString()
   );
 
-  useEffect(()=>{
+  useEffect(() => {
     if (isPopupOpen) return;
-    const {submittedDate: date} =store.getState();
+    const { submittedDate: date } = store.getState();
     if (date === null) {
       setInputValue('');
       return;
     }
     const newValue = dayjs(date).format(dateTimeFormat);
     setInputValue(newValue);
-  },[isPopupOpen])
+  }, [isPopupOpen]);
 
- 
   // trigger onSelect declared outside when the new date value is submitted
   useEffectSkipFirstRender(() => {
     onSelect(submittedDate);
@@ -124,7 +123,7 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
       action.selectDate(null);
       return;
     }
-   
+
     if (isDateInputValid(inputValue, dateTimeFormat)) {
       const date = dayjs(inputValue, dateTimeFormat).toDate();
       action.selectDateTime(date);
@@ -132,14 +131,12 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
     }
   }, [inputValue]);
 
-
   const handleInputChanged = (value: string) => {
     setInputValue(value);
   };
 
   const handleClickToTogglePopup = () => {
     action.togglePopup(true);
-
   };
 
   const IconField = () => {
@@ -150,26 +147,30 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
     );
   };
 
-  const handleKeyDown = (e:React.KeyboardEvent)=>{
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     e.stopPropagation();
-    const {isPopupOpen,selectedDate} = store.getState();
+    const { isPopupOpen, selectedDate } = store.getState();
     const key = e.key;
-    switch(key){
-      case "Enter": {
-          if (!isPopupOpen){
-            action.togglePopup(true);
-            return;
-          }
-            action.submitDate(selectedDate);
-            action.togglePopup(false);
-            return;
-      }
-      case "Escape":{
-          action.togglePopup(false);
+    switch (key) {
+      case 'Enter': {
+        if (!isPopupOpen) {
+          action.togglePopup(true);
           return;
+        }
+        action.submitDate(selectedDate);
+        action.togglePopup(false);
+        return;
+      }
+      case 'Escape': {
+        action.togglePopup(false);
+        return;
+      }
+      case 'Tab': {
+        action.togglePopup(false);
+        return;
       }
     }
-}
+  };
 
   return (
     <div className={rootClassName}>
@@ -197,7 +198,7 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
 }
 
 const isDateInputValid = (input: string, dateFormat: string) => {
-  return dayjs(input, dateFormat,true).isValid();
+  return dayjs(input, dateFormat, true).isValid();
 };
 
 const getDateTimeFormat = (
