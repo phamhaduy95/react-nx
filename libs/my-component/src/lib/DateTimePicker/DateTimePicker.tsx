@@ -20,6 +20,7 @@ import { TextFieldProps } from '../TextField/TextField';
 
 export interface DateTimePickerProps {
   className?: string;
+  value?: Date | null;
   dateFormat?: string;
   isSecondIncluded?: boolean;
   label?: string;
@@ -27,13 +28,14 @@ export interface DateTimePickerProps {
   onSelect?: (dateTime: Date | null) => void;
   DatePanel?: (props: DatePanelProps) => JSX.Element;
   disabledDate?: CalendarProps['disabledDate'];
-  error?:TextFieldProps["error"],
-  success?:TextFieldProps["success"],
-  helperText?:TextFieldProps["helperText"]
+  error?: TextFieldProps['error'];
+  success?: TextFieldProps['success'];
+  helperText?: TextFieldProps['helperText'];
 }
 
 const defaultProps: Required<DateTimePickerProps> = {
   className: '',
+  value: null,
   dateFormat: 'DD/MM/YYYY',
   isSecondIncluded: false,
   label: '',
@@ -45,9 +47,9 @@ const defaultProps: Required<DateTimePickerProps> = {
   DatePanel(props) {
     return <DatePanelSingle {...props} />;
   },
-  error:false,
-  success:false,
-  helperText:null
+  error: false,
+  success: false,
+  helperText: null,
 };
 
 export function DateTimePicker(props: DateTimePickerProps) {
@@ -62,6 +64,7 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
   const newProps = { ...defaultProps, ...props };
   const {
     dateFormat,
+    value,
     className,
     label,
     timeDelimiters,
@@ -71,7 +74,7 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
     disabledDate,
     error,
     success,
-    helperText
+    helperText,
   } = newProps;
   const dateTimeFormat = getDateTimeFormat(
     dateFormat,
@@ -86,6 +89,10 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
   const store = useStoreDirectly();
   const action = useDateTimePickerStore((state) => state.action);
   const isPopupOpen = useDateTimePickerStore((state) => state.isPopupOpen);
+
+  useEffect(()=>{
+    action.submitDate(value);
+  },[value?.toString()])
 
   const displayedDate = useDateTimePickerStore(
     (state) => {

@@ -27,17 +27,17 @@
     @at-root  .DateTimePicker__Popup__Container {
       border-radius: 5px;
       display: flex;
-      height: 80%;
+      height: 70%;
       flex-grow: 1;
-      @at-root .DateTimePicker__DatePanel {
+      > .DateTimePicker__DatePanel {
         width: max-content;
         border: none;
         border-right: $border;
         height: 100%;
+        flex-grow: 1;
         > .Calendar {
           border: 0;
         height: 100%;
-        flex-grow: 1;
           >.Calendar_Table{
             padding: 0;
             flex-grow: 0;
