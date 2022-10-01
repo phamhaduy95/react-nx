@@ -10,7 +10,7 @@ $text-color: hsla(0, 0%, 20%, 1);
   color: $text-color;
 
   > .Select__TextField {
-    width: inherit;
+    width: 100%;
 
     .Select__ArrowIcon {
       @include centerElement();
