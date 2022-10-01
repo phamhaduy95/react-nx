@@ -15,12 +15,18 @@ export const ClickOutSideWatcher = forwardRef((props: Props, ref: any) => {
   useEffect(() => {
     const element = ref.current;
     if (element === null) return;
-      const clickOutSideHandler = new ClickOutSideHandler(
-        element,
-        onClickOutSide
-      );
+      const callback = (e:MouseEvent)=>{
+          const point:Pointer = {
+              top:e.clientY,
+              left:e.clientX
+          }
+          if (!isPointerInsideElement(point,element)){
+              onClickOutSide(e);
+          }
+      }
+      document.addEventListener("click",callback,true);
       return () => {
-        clickOutSideHandler.removeEventHandler();
+          document.removeEventListener("click",callback,true);
       };
   }, [ref.current]);
 
@@ -28,3 +34,17 @@ export const ClickOutSideWatcher = forwardRef((props: Props, ref: any) => {
 });
 
 export default ClickOutSideWatcher;
+
+type Pointer = {
+  top:number,
+  left:number,
+}
+
+function isPointerInsideElement(point:Pointer,el:HTMLElement){
+    const {top,left,width,height} = el.getBoundingClientRect();
+    if(point.left < left) return false;
+    if (point.left > left + width) return false;
+    if (point.top < top) return false;
+    if (point.top > height + top) return false;
+    return true;
+}
