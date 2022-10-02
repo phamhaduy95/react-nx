@@ -128,7 +128,7 @@ function WrappedTimePicker(props: TimePickerProps) {
         value={inputValue}
         placeHolder={timeFormat}
         label={label}
-        onChange={handleInputChange}
+        onValueChange={handleInputChange}
         ref={textFieldRef}
         onClick={handleClickToOpenPopup}
         suffix={<IconField />}

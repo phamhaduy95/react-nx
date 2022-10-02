@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useImperativeHandle,
   useRef,
+  useState,
 } from 'react';
 import './TextField.scss';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
@@ -21,8 +22,10 @@ export type TextFieldProps = {
   addOnBefore?: React.ReactNode | null;
   addOnAfter?: React.ReactNode | null;
   suffix?: React.ReactNode | null;
-  onChange?: (value: string) => void;
+  onValueChange?: (value: string) => void;
+  onInput?: (e: React.FormEvent) => void;
   onEnterPressed?: (value: string) => void;
+  onChange?: (e: React.FormEvent) => void;
   onClick?: (e: React.MouseEvent) => void;
   onFocus?: (e: React.FormEvent) => void;
   onBlur?: (e: React.FormEvent) => void;
@@ -48,11 +51,13 @@ const defaultProps: Required<TextFieldProps> = {
   addOnBefore: null,
   addOnAfter: null,
   autoFocusWhenChanged: false,
-  onChange: (value) => {},
+  onValueChange: (value) => {},
   onEnterPressed: (value) => {},
   onClick: (e) => {},
   onFocus: (e) => {},
+  onChange(e) {},
   onBlur(e) {},
+  onInput(value) {},
   onKeyDown(e) {},
   error: false,
   success: false,
@@ -70,20 +75,30 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
       addOnBefore,
       suffix,
       addOnAfter,
-      onChange,
+      onValueChange,
       onEnterPressed,
       onClick,
       onFocus,
+      onInput,
+      onChange,
       onBlur,
       disabled,
       autoFocusWhenChanged,
       onKeyDown,
       error,
       success,
+      value,
     } = newProps;
     const inputRef = useRef<HTMLInputElement>(null);
     // the error flag has higher priority than success
     let newSuccess = error ? false : success;
+    const [inputValue, setInputValue] = useState('');
+
+    useEffect(() => {
+      onValueChange(value.toString());
+      setInputValue(value.toString());
+    }, [value]);
+
     useEffectSkipFirstRender(() => {
       if (!autoFocusWhenChanged) return;
       const input = inputRef.current as HTMLInputElement;
@@ -139,9 +154,11 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
     };
 
     const handleInputChange = (e: React.FormEvent) => {
+      onChange(e);
       const target = e.target as HTMLInputElement;
       const value = target.value;
-      onChange(value);
+      setInputValue(value);
+      onValueChange(value);
     };
 
     const handleEnterPress = (e: React.KeyboardEvent) => {
@@ -167,8 +184,9 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
               onChange={handleInputChange}
               onFocus={onFocus}
               onBlur={onBlur}
+              onInput={onInput}
               onKeyDown={handleEnterPress}
-              value={props.value}
+              value={inputValue}
               disabled={disabled}
               ref={inputRef}
             />

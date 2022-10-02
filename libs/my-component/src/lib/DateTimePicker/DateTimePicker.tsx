@@ -91,6 +91,7 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
   const isPopupOpen = useDateTimePickerStore((state) => state.isPopupOpen);
 
   useEffect(()=>{
+    onSelect(value);
     action.submitDate(value);
   },[value?.toString()])
 
@@ -196,7 +197,7 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
         label={label}
         onClick={handleClickToTogglePopup}
         placeHolder={dateTimeFormat}
-        onChange={handleInputChanged}
+        onValueChange={handleInputChanged}
         type={'tel'}
         value={inputValue}
         suffix={<IconField />}

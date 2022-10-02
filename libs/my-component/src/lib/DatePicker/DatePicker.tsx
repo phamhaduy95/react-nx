@@ -199,7 +199,7 @@ function WrappedDatePicker(props: DatePickerProps) {
         onClick={handleClickToTogglePopup}
         onKeyDown={handleOnKeyDown}
         placeHolder={dateFormat}
-        onChange={handleInputChanged}
+        onValueChange={handleInputChanged}
         type={'tel'}
         value={inputValue}
         suffix={<IconField />}
