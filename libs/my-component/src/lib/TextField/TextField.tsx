@@ -34,6 +34,7 @@ export type TextFieldProps = {
   autoFocusWhenChanged?: boolean;
   error?: string | false;
   success?: string | false;
+  typeable?:boolean,
 };
 
 const defaultProps: Required<TextFieldProps> = {
@@ -61,6 +62,7 @@ const defaultProps: Required<TextFieldProps> = {
   onKeyDown(e) {},
   error: false,
   success: false,
+  typeable:true,
 };
 
 export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
@@ -88,6 +90,7 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
       error,
       success,
       value,
+      typeable
     } = newProps;
     const inputRef = useRef<HTMLInputElement>(null);
     // the error flag has higher priority than success
@@ -154,6 +157,7 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
     };
 
     const handleInputChange = (e: React.FormEvent) => {
+      if (!typeable) return;  
       onChange(e);
       const target = e.target as HTMLInputElement;
       const value = target.value;
