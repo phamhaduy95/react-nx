@@ -4,6 +4,7 @@ import { TaskDataType } from '../../type/model';
 import { useDayScheduleStore } from './DayScheduleStoreProvider';
 import { getTimeRatioInPercentage } from './utils';
 import { Position, positionElement } from '../utils';
+import { useDayScheduleSharedData } from './DayScheduleContext';
 
 type DayScheduleTaskProps = {
   taskId: string;
@@ -14,6 +15,7 @@ export const DayScheduleTaskBlock = memo((props: DayScheduleTaskProps) => {
   const { taskId, linePos } = props;
   const taskBlockRef = useRef<HTMLDivElement>(null);
   const baseDate = useDayScheduleStore((state) => state.date);
+  const { onTaskSelect } = useDayScheduleSharedData();
   const taskData = useDayScheduleStore(
     (state) => {
       return state.tasks.find((e) => e.id === taskId);
@@ -33,9 +35,13 @@ export const DayScheduleTaskBlock = memo((props: DayScheduleTaskProps) => {
     positionElement(taskBlockEl, offsetPos);
   }, [taskBlockRef.current, taskData, linePos, baseDate.toDateString()]);
 
+  const handleClick = () => {
+    if (taskData) onTaskSelect(taskData);
+  };
+
   if (taskData === undefined) return <></>;
   return (
-    <div className="DaySchedule__TaskBlock" ref={taskBlockRef}>
+    <div className="DaySchedule__TaskBlock" ref={taskBlockRef} onClick={handleClick}>
       <span className="DaySchedule__TaskBlock__title">{taskData?.title}</span>
     </div>
   );

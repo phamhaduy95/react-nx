@@ -10,34 +10,39 @@ import {
 
 import { DayScheduleTaskBlock } from './DayScheduleTaskBlock';
 import { DayScheduleCurrentTimeIndicator } from './DayScheduleCurrentTimeIndicator';
+import { DayScheduleContextProvider } from './DayScheduleContext';
+import { DayScheduleTimeFrame } from './DayScheduleTimeFrame';
 
 export type DayScheduleProps = {
   data: {
     date: Date;
     tasksList: TaskDataType[];
   };
+  onTaskSelect?: (task: TaskDataType) => void;
+  onDateSelect?: (date: Date) => void;
 };
 
 export function DaySchedule(props: DayScheduleProps) {
   return (
-    <DayScheduleStoreProvider>
-      <WrappedDaySchedule {...props} />
-    </DayScheduleStoreProvider>
+    <DayScheduleContextProvider elProps={props}>
+      <DayScheduleStoreProvider>
+        <WrappedDaySchedule {...props} />
+      </DayScheduleStoreProvider>
+    </DayScheduleContextProvider>
   );
 }
 
 function WrappedDaySchedule(props: DayScheduleProps) {
   const { data } = props;
   const action = useDayScheduleStore((state) => state.action);
-  
+
   useEffect(() => {
     action.updateDayData(data.date, data.tasksList);
   }, [data]);
 
-
   return (
     <div className="DaySchedule">
-      <div className="DaySchedule__Container" >
+      <div className="DaySchedule__Container">
         <TimeAxis />
         <DayScheduleTimeLine />
       </div>
@@ -61,26 +66,27 @@ function TimeAxis() {
 function DayScheduleTimeLine() {
   const timeLineRef = useRef<HTMLDivElement>(null);
   const taskLines = useDayScheduleStore((state) => state.tasksLine);
+
   const timesFrames = useMemo(() => {
     return range(0, 23).map((e) => {
-      return <div className="DaySchedule__TimeFrame" key={e}></div>;
+      return <DayScheduleTimeFrame key={e} time={e} />;
     });
   }, []);
 
   // increase the height of timeLine incase there are many tasks lines to be showed;
-  useEffect(()=>{
+  useEffect(() => {
     const timeLineEl = timeLineRef.current;
     if (timeLineEl === null) return;
     const maxNumberOfLine = taskLines.length;
-    const newHeight = Math.max(maxNumberOfLine*14+1,100);
-  
-    timeLineEl.style.height = `${newHeight}%`;  
-  },[taskLines.length]);
+    const newHeight = Math.max(maxNumberOfLine * 14 + 1, 100);
+
+    timeLineEl.style.height = `${newHeight}%`;
+  }, [taskLines.length]);
 
   return (
     <div className="DaySchedule__TimeLine" ref={timeLineRef}>
       {timesFrames}
-      <DayScheduleCurrentTimeIndicator containerRef={timeLineRef}/>
+      <DayScheduleCurrentTimeIndicator containerRef={timeLineRef} />
       {renderTaskLines(taskLines)}
     </div>
   );
@@ -100,6 +106,3 @@ function renderTaskLines(tasksLines: DayScheduleState['tasksLine']) {
   }
   return TaskBlocks;
 }
-
-
-
