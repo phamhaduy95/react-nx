@@ -21,6 +21,7 @@
       > .TaskListPopover__CloseIcon {
         font-size: 1rem;
         margin-left: auto;
+        cursor: pointer;
       }
     }
     > .TaskListPopover__Lists {
@@ -41,6 +42,8 @@
           text-overflow: ellipsis;
           white-space: no-wrap;
           background-color: hsla(220, 80%, 80%, 0.5);
+          user-select: none;
+          cursor: pointer;
           &:last-child {
               margin-bottom: none;
           }

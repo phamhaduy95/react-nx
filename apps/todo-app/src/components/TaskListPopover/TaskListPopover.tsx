@@ -1,17 +1,18 @@
 import { Popover, PopoverProps } from '@phduylib/my-component';
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import { TaskDataType } from '../../type/model';
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffectSkipFirstRender } from '../../utils/hooks';
-import "./TaskListPopover.scss";
+import './TaskListPopover.scss';
 import classNames from 'classnames';
 
 type TaskListPopoverProps = {
-  className:string,
+  className: string;
   anchorRef: React.MutableRefObject<HTMLElement | null>;
   taskList: TaskDataType[];
   isOpen: boolean;
   onToggle: (isOpen: boolean) => void;
+  onTaskSelect?: (taskData: TaskDataType) => void;
 };
 
 const PopoverPosition: PopoverProps['positionOrigin'] = Object.freeze({
@@ -20,7 +21,14 @@ const PopoverPosition: PopoverProps['positionOrigin'] = Object.freeze({
 });
 
 export default function TaskListPopover(props: TaskListPopoverProps) {
-  const { anchorRef, isOpen: openSignal, onToggle, taskList,className } = props;
+  const {
+    anchorRef,
+    isOpen: openSignal,
+    onToggle,
+    taskList,
+    className,
+    onTaskSelect,
+  } = props;
   const [isOpen, setOpen] = useState(false);
   useEffectSkipFirstRender(() => {
     setOpen(openSignal);
@@ -30,14 +38,11 @@ export default function TaskListPopover(props: TaskListPopoverProps) {
     onToggle(isOpen);
   }, [isOpen]);
 
-  const rootClassName = classNames("TaskListPopover",className)
+  const rootClassName = classNames('TaskListPopover', className);
 
   const viewTasks = taskList.map((task, i) => {
-    const { title } = task;
     return (
-      <div className="TaskListPopover__TaskData" key={i}>
-        {title}
-      </div>
+      <TaskIndicator key={i} taskData={task} onTaskSelect={onTaskSelect} />
     );
   });
 
@@ -62,5 +67,24 @@ export default function TaskListPopover(props: TaskListPopoverProps) {
       </div>
       <div className="TaskListPopover__Lists">{viewTasks}</div>
     </Popover>
+  );
+}
+
+type TaskIndicatorProps = {
+  taskData: TaskDataType;
+  onTaskSelect: TaskListPopoverProps['onTaskSelect'];
+};
+
+function TaskIndicator(props: TaskIndicatorProps) {
+  const { taskData, onTaskSelect } = props;
+
+  const handleClick = () => {
+    if (onTaskSelect) onTaskSelect(taskData);
+  };
+
+  return (
+    <div className="TaskListPopover__TaskData" onClick={handleClick}>
+      {taskData.title}
+    </div>
   );
 }

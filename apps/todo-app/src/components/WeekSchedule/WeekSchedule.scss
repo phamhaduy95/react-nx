@@ -1,8 +1,12 @@
 @import '../_sharedStyle.scss';
 @import '../_utils.scss';
 
+$indicator-cell-width: clamp(25px,calc(25px + 2vw),50px);
+
 .WeekSchedule {
-  width: 760px;
+  width: calc(100px + 55vw);
+  min-width: 350px;
+  max-width: 750px;
   height: 700px;
   border: $border;
   border-radius: 5px;
@@ -36,8 +40,10 @@
         }
         > .WeekSchedule__DateDisplayRow__Text {
           width: calc(100% / 7);
+          font-size: $font-size-b;
           @include centerElement();
-          word-wrap: normal;
+          text-align: center;
+          writing-mode: horizontal-tb;
         }
       }
       @at-root .WeekSchedule__WeekOverViewRow {
@@ -48,7 +54,7 @@
 
         > .WeekSchedule__WeekOverViewRow__TextIndicator {
           @include centerElement();
-          width: 50px;
+          width: $indicator-cell-width;
           height: 100%;
           font-size: $font-size-m;
           text-align: center;
@@ -78,15 +84,18 @@
               display: flex;
               align-items: center;
               font-size: $font-size-m;
-              text-indent: 0.5rem;
+              text-indent: 0.5em;
             }
             @at-root .WeekSchedule__TimeFrame__TaskExpandButton {
               margin-top: auto;
               font-size: $font-size-m;
               color: inherit;
+              overflow-x: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
               font-family: inherit;
               border-radius: 5px;
-              margin-bottom: 0.5rem;
+              margin-bottom: 0.5em;
               margin-left: auto;
               margin-right: auto;
               width: 80%;
@@ -110,7 +119,7 @@
         width: $indicator-cell-width;
         height: 100%;
         border-right: $border;
-        font-size: 0.85rem;
+        font-size:  $font-size-m;
         flex-shrink: 0;
         > .WeekSchedule__TimeIndicator {
           @include centerElement();
@@ -141,6 +150,7 @@
             margin: 0;
             position: sticky;
             top: 10px;
+            font-size: $font-size-m;
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow-x: hidden;
