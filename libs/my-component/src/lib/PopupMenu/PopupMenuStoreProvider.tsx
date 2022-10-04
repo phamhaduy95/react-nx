@@ -3,20 +3,20 @@ import { createStore, StoreApi, useStore } from 'zustand';
 import { searchForNextNonDisableItem } from '../utils/highLightedItemState';
 
 type PopUpMenuState = {
-  itemList: { id: string; disabled: boolean }[];
+  itemList: { id: string; disabled: boolean; value?: string }[];
   highLightedItem: { id: string } | null;
-  selectedItem: { id: string,value?:string } | null;
+  selectedItem: { id: string } | null;
   isPopupOpen: boolean;
   action: {
     togglePopup: (isOpen: boolean) => void;
+    updateItemValue: (id: string, value: string) => void;
     disableItem: (id: PopUpMenuState['itemList'][number]['id']) => void;
     unDisableItem: (id: PopUpMenuState['itemList'][number]['id']) => void;
-    selectItem:(id:string,value?:string)=>void;
+    selectItem: (item: { id: string } | null) => void;
+    selectItemByValue:(value:string|null)=>void,
     highlightNext: () => void;
     highlightPrev: () => void;
-    highlightOne: (
-      id: PopUpMenuState['itemList'][number]['id'] | null
-    ) => void;
+    highlightOne: (id: PopUpMenuState['itemList'][number]['id'] | null) => void;
     subscribe: (item: PopUpMenuState['itemList'][number]) => void;
     unsubscribe: (id: PopUpMenuState['itemList'][number]['id']) => void;
   };
@@ -44,17 +44,30 @@ export function PopupMenuStoreProvider(props: Props) {
         togglePopup(isOpen) {
           set((state) => ({ isPopupOpen: isOpen }));
         },
-        selectItem(id,value){
+        selectItem(item) {
           set((state) => {
-            return {selectedItem:{id,value}}
+            return { selectedItem: item };
+          });
+        },
+        selectItemByValue(value) {
+          set((state) => {
+            if (value === null) return {selectedItem:null};
+            const item = state.itemList.find((item)=>item.value === value);
+            if (item === undefined) return {}   
+            return {selectedItem: {id:item.id}};
+          });
+        },
+        updateItemValue(id, value) {
+          set((state) => {
+            const itemList = [...state.itemList];
+            updateItemStateWithinItemList(id,itemList,{value})
+            return { itemList: itemList,selectedItem:null};
           });
         },
         disableItem(id) {
           set((state) => {
             const itemList = [...state.itemList];
-            const item = itemList.find((e) => e.id === id);
-            if (item === undefined) return {};
-            item.disabled = true;
+            updateItemStateWithinItemList(id,itemList,{disabled:true})
             let newState: any = { itemList: itemList };
             // if item is disabled remove highlight
             if (state.highLightedItem?.id === id) {
@@ -70,9 +83,7 @@ export function PopupMenuStoreProvider(props: Props) {
         unDisableItem(id) {
           set((state) => {
             const itemList = [...state.itemList];
-            const item = itemList.find((e) => e.id === id);
-            if (item === undefined) return {};
-            item.disabled = false;
+            updateItemStateWithinItemList(id,itemList,{disabled:false});
             return { itemList: itemList };
           });
         },
@@ -153,10 +164,8 @@ export function PopupMenuStoreProvider(props: Props) {
           });
         },
       },
-
-
     }));
-    return {store}
+    return { store };
   }, []);
 
   return (
@@ -172,4 +181,15 @@ export function usePopupMenuStore<U>(
   if (value === null) throw new Error('ToggleGroupStore context is null');
   const { store } = value;
   return useStore(store, selector, equalFunc);
+}
+
+function updateItemStateWithinItemList(
+  id: string,
+  itemList: PopUpMenuState['itemList'],
+  newState:Partial<Omit<PopUpMenuState["itemList"][number],"id">>
+) {
+  const index = itemList.findIndex((e) => e.id === id);
+  if (index === -1) return;
+  const itemToUpdate = { ...itemList[index],...newState};
+  itemList[index] = itemToUpdate;
 }
