@@ -12,18 +12,22 @@ import {
   CalendarTableData,
 } from './useGenerateCalendarData';
 import './MonthSchedule.scss';
-
-
+import { TaskDataType } from '../../type/model';
+import { MonthScheduleContextProvider } from './MonthScheduleContextProvider';
 
 export type MonthScheduleProps = {
   data: Omit<MonthScheduleState, 'action' | 'taskLines'>;
+  onTaskSelect?: (taskData: TaskDataType) => void;
+  onDateSelect?: (date: Date) => void;
 };
 
 export function MonthSchedule(props: MonthScheduleProps) {
   return (
-    <MonthScheduleStoreProvider>
-      <WrappedMonthSchedule {...props} />
-    </MonthScheduleStoreProvider>
+    <MonthScheduleContextProvider elProps={props}>
+      <MonthScheduleStoreProvider>
+        <WrappedMonthSchedule {...props} />
+      </MonthScheduleStoreProvider>
+    </MonthScheduleContextProvider>
   );
 }
 

@@ -2,8 +2,10 @@
 @import '../utils.scss';
 
 .MonthSchedule {
-  width: 600px;
-  height: 500px;
+  width: calc(90px + 55vw);
+  min-width: 350px;
+  max-width: 750px;
+  height: 700px;
   border-collapse: collapse;
   border: $border;
   table-layout: fixed;
@@ -34,7 +36,7 @@
           user-select: none;
           cursor: pointer;
           margin-bottom: 0.25rem;
-          font-size: $font-size--small;
+          font-size: $font-size-m;
         }
         > .TableDateCell__TasksLines {
           position: relative;
@@ -46,7 +48,7 @@
             height: 18px;
             background-color: hsla(220, 80%, 80%, 0.5);
             border-radius: 5px;
-            font-size: $font-size--small;
+            font-size: $font-size-m;
             text-indent: 10px;
             cursor: pointer;
             white-space: nowrap;
@@ -54,14 +56,14 @@
             z-index: 2;
           }
         }
-        > .TableDateCell__RemainingTaskIndicator {
+        > .TableDateCell__TasksExpandButton {
           @include centerElement();
           margin-top: auto;
           padding: 0.1rem;
           border: $border;
           border-radius: 5px;
           cursor: pointer;
-          font-size: $font-size--small;
+          font-size: $font-size-m;
           user-select: none;
         }
       }

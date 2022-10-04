@@ -1,11 +1,8 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
 import dayjs from 'dayjs';
-
-import { TaskDataType } from '../../type/model';
-
-import { v4 as uuidv4 } from 'uuid';
-import { MonthScheduleProps, MonthSchedule } from './MonthSchedule';
 import React from 'react';
+import { TaskDataType } from '../../type/model';
+import { MonthSchedule, MonthScheduleProps } from './MonthSchedule';
+import { v4 as uuidv4 } from 'uuid';
 
 let count = 0;
 const generateTask = (
@@ -28,22 +25,27 @@ const firstDateOfMonth = dayjs().startOf('month').hour(0).minute(0);
 const data: MonthScheduleProps['data'] = {
   month: dayjs().toDate(),
   tasks: [
-    generateTask(firstDateOfMonth.add(2, 'hour').toDate(), 120, 'minute'),
-    generateTask(firstDateOfMonth.add(25, 'minute').toDate(), 300, 'minute'),
+    generateTask(firstDateOfMonth.add(1, 'day').toDate(), 25, 'hour'),
+    generateTask(firstDateOfMonth.add(3, 'day').toDate(), 300, 'minute'),
     generateTask(firstDateOfMonth.toDate(), 5, 'hour'),
     generateTask(firstDateOfMonth.toDate(), 24 * 5, 'hour'),
     generateTask(firstDateOfMonth.add(28, 'hour').toDate(), 2, 'hour'),
   ],
 };
 
-export default {
-  component: MonthSchedule,
-  title: 'MonthSchedule',
-} as ComponentMeta<typeof MonthSchedule>;
+export function MonthScheduleExample() {
+  const handleSelectTask: MonthScheduleProps['onTaskSelect'] = (task) => {
+    console.log(task);
+  };
 
-const Template: ComponentStory<typeof MonthSchedule> = (args) => (
-  <MonthSchedule {...args} />
-);
-
-export const Primary = Template.bind({});
-Primary.args = {};
+  const handleDateSelect: MonthScheduleProps['onDateSelect'] = (date) => {
+    console.log(date);
+  };
+  return (
+    <MonthSchedule
+      data={data}
+      onDateSelect={handleDateSelect}
+      onTaskSelect={handleSelectTask}
+    />
+  );
+}

@@ -2,8 +2,9 @@ import { useRef } from 'react';
 import classNames from 'classnames';
 import { useMonthScheduleStore } from './MonthScheduleStoreProvider';
 import { MonthScheduleTask } from './MonthScheduleTask';
-import { MonthScheduleTasksExpandButton } from './RemainingTaskIndicator';
+import { MonthScheduleTasksExpandButton } from './MonthScheduleTasksExpandButton';
 import { findsAllShowedTasksInTaskLine } from '../utils';
+import { useMonthScheduleSharedData } from './MonthScheduleContextProvider';
 
 const LINE_LIMIT = 2;
 
@@ -16,6 +17,7 @@ export function MonthScheduleTableCell(props: MonthScheduleTableCellProps) {
   const { date, isDayWithinMonth } = props;
   const dateNumber = date.getDate();
   const cellRef = useRef<HTMLTableCellElement>(null);
+  const {onDateSelect} = useMonthScheduleSharedData();
 
   const rootClassName = classNames('MonthSchedule__TableCell', {
     ['is-day-within-month']: isDayWithinMonth,
@@ -42,8 +44,13 @@ export function MonthScheduleTableCell(props: MonthScheduleTableCellProps) {
     });
   };
 
+  const handleClick = ()=>{
+      if (onDateSelect)
+      onDateSelect(date)
+  }
+
   return (
-    <td className={rootClassName} ref={cellRef}>
+    <td className={rootClassName} ref={cellRef} onClick={handleClick}>
       <div className="TableDateCell__Container">
         <div className="TableDateCell__DateNumber">{dateNumber}</div>
         <div className="TableDateCell__TasksLines">{renderTask()}</div>
