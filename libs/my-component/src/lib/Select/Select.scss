@@ -12,6 +12,14 @@ $text-color: hsla(0, 0%, 20%, 1);
   > .Select__TextField {
     width: 100%;
 
+    .TextField__InputField {
+      caret-color: transparent;
+      cursor: pointer;
+      input {
+        cursor: inherit;
+      }
+    }
+
     .Select__ArrowIcon {
       @include centerElement();
       @include setChildElementsSize(1.5rem, 1.5rem);
@@ -59,7 +67,7 @@ $text-color: hsla(0, 0%, 20%, 1);
         }
 
         &.is-highlighted.selected {
-          background-color: hsla(220, 80%, 60%,0.7);
+          background-color: hsla(220, 80%, 60%, 0.7);
         }
 
         &:focus-visible {

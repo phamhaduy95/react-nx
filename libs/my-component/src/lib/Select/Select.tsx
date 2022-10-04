@@ -1,9 +1,9 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { SelectPopup } from './SelectPopup';
 import './Select.scss';
 import classNames from 'classnames';
 import { TextFieldProps } from '../TextField';
-import { SelectStoreProvider } from './SelectStoreProvider';
+import { SelectStoreProvider, useSelectStore } from './SelectStoreProvider';
 import { SelectTextField } from './SelectTextField';
 import { giveIndexToSelectOptions } from './SelectOption';
 
@@ -16,7 +16,10 @@ export interface SelectProps {
   error?: string | false;
   success?: string | false;
   autoWidth?: boolean;
+  defaultValue?: string;
 }
+
+// change select interface.
 
 const defaultPropsValue: Required<SelectProps> = {
   className: '',
@@ -27,6 +30,7 @@ const defaultPropsValue: Required<SelectProps> = {
   error: false,
   success: false,
   autoWidth: false,
+  defaultValue: "",
 };
 
 export function Select(props: SelectProps) {
@@ -48,12 +52,21 @@ function WrappedSelect(props: SelectProps) {
     className,
     error,
     success,
+    defaultValue,
   } = newProps;
   const textFieldRef = useRef<any>(null);
   const IndexedItems = giveIndexToSelectOptions(children);
   const rootClassName = classNames('Select', className, {
     'auto-width': autoWidth,
   });
+
+  const action = useSelectStore((state)=>state.action);
+
+  useEffect(()=>{
+        const value =  (defaultValue === "")?null:defaultValue; 
+        action.selectItemByValue(value);
+  },[defaultValue])
+
   return (
     <div className={rootClassName}>
       <SelectTextField

@@ -8,7 +8,6 @@ export interface SelectOption {
   value: string;
   children?: React.ReactNode | false;
   label?: string | false;
-  isDefault?: boolean;
   disabled?: boolean;
 }
 
@@ -16,7 +15,6 @@ const defaultProps: Required<SelectOption> = {
   value: 'option 1',
   label: 'option 1',
   children: false,
-  isDefault: false,
   disabled: false,
 };
 
@@ -26,21 +24,23 @@ export function SelectOption(props: SelectOption) {
 
 function SelectOptionWithId(props: SelectOption) {
   const newProps = { ...defaultProps, ...props };
-  const { children, label, value, isDefault, disabled } = newProps;
-  const id = useMemo(()=>{
+  const { children, label, value, disabled } = newProps;
+  const id = useMemo(() => {
     return uuidv4();
-  },[])
+  }, []);
 
   const action = useSelectStore((state) => state.action);
-  const isSelected = useSelectStore(
-    (state) => state.selectedItem?.id === id
-  );
+  const isSelected = useSelectStore((state) => state.selectedItem?.id === id);
   const isHighLighted = useSelectStore(
     (state) => state.highLightedItem?.id === id
   );
 
   useEffect(() => {
-    action.subscribe({id,disabled});
+    action.updateItemValue(id, value);
+  }, [value]);
+
+  useEffect(() => {
+    action.subscribe({ id, disabled, value });
     return () => {
       action.unsubscribe(id);
     };
@@ -57,10 +57,6 @@ function SelectOptionWithId(props: SelectOption) {
 
   const itemRef = useRef(null);
   useSwitchFocus(itemRef, isHighLighted);
-  useEffect(() => {
-    if (!isDefault) return;
-    action.selectItem(id,value);
-  }, [isDefault]);
 
   const renderContent = () => {
     if (children) return children;
@@ -70,7 +66,7 @@ function SelectOptionWithId(props: SelectOption) {
 
   const handleSelectItem = (e: React.MouseEvent) => {
     if (disabled) return;
-    action.selectItem(id,value);
+    action.selectItem({ id });
     action.togglePopup(false);
   };
 
@@ -84,7 +80,7 @@ function SelectOptionWithId(props: SelectOption) {
     switch (key) {
       case 'Enter': {
         if (disabled) return;
-        action.selectItem(id,value);
+        action.selectItem({ id });
         return;
       }
     }

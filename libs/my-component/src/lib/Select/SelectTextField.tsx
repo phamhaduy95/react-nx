@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useSelectStore } from './SelectStoreProvider';
 import { SelectProps } from './Select';
@@ -20,19 +20,23 @@ export const SelectTextField = forwardRef<
   const { helperText, label, onSelect,success,error } = props;
   const action = useSelectStore((state) => state.action);
   const selectedItem = useSelectStore(
-    (state) => state.selectedItem,
+    (state) => {
+       const id = state.selectedItem?.id;
+       const item = state.itemList.find((item)=>item.id === id);
+       return item;
+    },
     (a, b) => a?.id === b?.id
   );
 
   useEffectSkipFirstRender(() => {
     const value =
-      selectedItem === null
+      selectedItem === undefined
         ? ''
         : selectedItem.value === undefined
         ? ''
         : selectedItem.value;
     onSelect(value);
-  }, [selectedItem?.id]);
+  }, [selectedItem?.value]);
 
   const IconField = () => {
     return (
@@ -84,6 +88,7 @@ export const SelectTextField = forwardRef<
       onKeyDown={handleKeyDown}
       success={success}
       error={error}
+      typeable={false}
     />
   );
 });
