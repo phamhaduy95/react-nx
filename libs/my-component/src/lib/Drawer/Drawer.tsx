@@ -6,7 +6,7 @@ import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import { DrawerStoreProvider, useDrawerStore } from './DrawerStoreProvider';
 import './Drawer.scss';
 
-type DrawerProps = {
+export type DrawerProps = {
   position?: 'top' | 'bottom' | 'left' | 'right';
   className?: string;
   forceMouth?: boolean;

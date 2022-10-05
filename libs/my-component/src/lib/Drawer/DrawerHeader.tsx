@@ -2,18 +2,18 @@ import classNames from 'classnames';
 import { useDrawerStore } from './DrawerStoreProvider';
 import CloseIcon from '@mui/icons-material/Close';
 
-export type DrawerProps = {
+export type DrawerHeaderProps = {
   children: JSX.Element[] | JSX.Element;
   className?: string;
   closeIcon?: boolean;
 };
 
-const defaultProps: Required<Omit<DrawerProps, 'children'>> = {
+const defaultProps: Required<Omit<DrawerHeaderProps, 'children'>> = {
   className: '',
   closeIcon: false,
 };
 
-export function DrawerHeader(props: DrawerProps) {
+export function DrawerHeader(props: DrawerHeaderProps) {
   const newProps = { ...defaultProps, ...props };
   const { className, closeIcon, children } = newProps;
   const action = useDrawerStore((state) => state.action);
