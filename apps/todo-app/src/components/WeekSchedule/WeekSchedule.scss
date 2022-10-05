@@ -85,6 +85,7 @@ $indicator-cell-width: clamp(25px,calc(25px + 2vw),50px);
               align-items: center;
               font-size: $font-size-m;
               text-indent: 0.5em;
+              cursor: pointer;
             }
             @at-root .WeekSchedule__TimeFrame__TaskExpandButton {
               margin-top: auto;
@@ -143,8 +144,6 @@ $indicator-cell-width: clamp(25px,calc(25px + 2vw),50px);
           position: absolute;
           background-color: hsla(220, 80%, 80%, 0.5);
           padding: 0.25rem;
-
-          user-select: none;
           cursor: pointer;
           > .WeekDayTimeLine__TaskTitle {
             margin: 0;

@@ -9,6 +9,7 @@ import {
 import { TaskDataType } from '../../type/model';
 import { getTimeRatioInPercentage } from '../DaySchedule/utils';
 import { Position, positionElement } from '../utils';
+import { useWeekScheduleSharedData } from './WeekScheduleContextProvider';
 
 export type WeekScheduleTimeLineProps = {
   pos: number;
@@ -26,7 +27,7 @@ export function WeekScheduleTimeLine(props: WeekScheduleTimeLineProps) {
   );
   const timeFrames = useMemo(() => {
     return range(0, 23).map((e) => {
-      return <div className="WeekSchedule__TimeFrame" key={e}></div>;
+      return <WeekScheduleTimeFrame date={currDate} hour={e} key={e} />;
     });
   }, []);
 
@@ -73,16 +74,25 @@ function TaskTimeLine(props: TaskTimeLineProps) {
   const { taskData, linePos, width } = props;
   const ref = useRef<HTMLDivElement>(null);
 
+  const { onTaskSelect } = useWeekScheduleSharedData();
+
   useEffect(() => {
     const el = ref.current;
     if (el === null) return;
     const pos = calculateTaskLinePosAndSize(taskData, linePos, width);
-    console.log(taskData.title, pos);
     positionElement(el, pos);
   }, [taskData, linePos, width]);
 
+  const handleClick = () => {
+    onTaskSelect(taskData);
+  };
+
   return (
-    <div className="WeekSchedule__WeekDayTimeLine__TaskTimeLine" ref={ref}>
+    <div
+      className="WeekSchedule__WeekDayTimeLine__TaskTimeLine"
+      ref={ref}
+      onClick={handleClick}
+    >
       <p className="WeekDayTimeLine__TaskTitle">{taskData.title}</p>
     </div>
   );
@@ -99,7 +109,7 @@ function calculateTaskLinePosAndSize(
   const { startDate, endDate } = taskData;
   const startTime = getTimeRatioInPercentage(startDate, startDate);
   const endTime = getTimeRatioInPercentage(endDate, startDate);
-  
+
   return {
     top: `${startTime}%`,
     left: `${linePos * MIN_LINE_WIDTH + MIN_GAP_BETWEEN_LINE * (linePos + 1)}%`,
@@ -110,3 +120,19 @@ function calculateTaskLinePosAndSize(
   };
 }
 
+type WeekScheduleTimeFrameProps = {
+  date: Date;
+  hour: number;
+};
+
+function WeekScheduleTimeFrame(props: WeekScheduleTimeFrameProps) {
+  const { date, hour } = props;
+  const { onDateSelect } = useWeekScheduleSharedData();
+
+  const handleClick = () => {
+    const currDateTime = dayjs(date).hour(hour).minute(0).toDate();
+    onDateSelect(currDateTime);
+  };
+
+  return <div className="WeekSchedule__TimeFrame" onClick={handleClick}></div>;
+}

@@ -8,20 +8,26 @@ import { WeekScheduleDateDisplayRow } from './WeekScheduleDateDisplayRow';
 import { WeekScheduleTimeLine } from './WeekScheduleTimeLineBox';
 import { useEffect, useMemo } from 'react';
 import './WeekSchedule.scss';
-import { WeekScheduleWeekTaskView } from './WeekScheduleWeekOverviewRow';
+import { WeekScheduleWeeksTaskView } from './WeekScheduleWeekTasksView';
+import { TaskDataType } from '../../type/model';
+import { WeekScheduleContextProvider } from './WeekScheduleContextProvider';
 
 export type WeekScheduleProps = {
   data: {
     range: WeekScheduleState['range'];
     tasks: WeekScheduleState['tasks'];
   };
+  onTaskSelect?: (taskData: TaskDataType) => void;
+  onDateSelect?: (date: Date) => void;
 };
 
 export function WeekSchedule(props: WeekScheduleProps) {
   return (
-    <WeekScheduleStoreProvider>
-      <WrappedWeekSchedule {...props} />
-    </WeekScheduleStoreProvider>
+    <WeekScheduleContextProvider elProps={props}>
+      <WeekScheduleStoreProvider>
+        <WrappedWeekSchedule {...props} />
+      </WeekScheduleStoreProvider>
+    </WeekScheduleContextProvider>
   );
 }
 
@@ -44,7 +50,7 @@ function WrappedWeekSchedule(props: WeekScheduleProps) {
       <div className="WeekSchedule__Container">
         <div className="WeekSchedule__Header">
           <WeekScheduleDateDisplayRow />
-          <WeekScheduleWeekTaskView />
+          <WeekScheduleWeeksTaskView />
         </div>
         <div className="WeekSchedule__TimeLineBox">
           {timeLineIndicators}
