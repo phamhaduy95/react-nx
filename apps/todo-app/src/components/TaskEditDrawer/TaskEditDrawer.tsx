@@ -9,63 +9,47 @@ import {
   TextFieldProps,
 } from '@phduylib/my-component';
 import './TaskEditDrawer.scss';
-import { validateInputData } from './TaskDataSchema';
-import {
-  TaskEditDrawerStoreProvider,
-  useTaskEditDrawerStore,
-} from './TaskEditDrawerStore';
 import { compareTwoTaskData } from './utils';
-import shallow from 'zustand/shallow';
-import { TaskDataInput } from './types';
+import { shallowEqual } from 'react-redux';
+import {
+  useAppAction,
+  useAppDispatch,
+  useAppSelector,
+} from '../../redux/rootStore';
+import { validateInputData } from './TaskDataSchema';
 
 const options = ['Business', 'Family', 'Personal', 'ETC', 'Holiday'];
 
-const defaultTaskData: TaskDataInput = Object.freeze({
-  id: '',
-  title: '',
-  category: '',
-  description: '',
-  endDate: null,
-  startDate: null,
-});
-
 export function TaskEditDrawer() {
-  return (
-    <TaskEditDrawerStoreProvider>
-      <WrappedElement />
-    </TaskEditDrawerStoreProvider>
-  );
-}
-
-function WrappedElement() {
-  const action = useTaskEditDrawerStore((state) => state.action);
-  const taskData = useTaskEditDrawerStore(
-    (state) => state.taskData,
+  const dispatch = useAppDispatch();
+  const taskData = useAppSelector(
+    (state) => state.taskEditDrawer.taskData,
     compareTwoTaskData
   );
-  const errorsMessage = useTaskEditDrawerStore(
-    (state) => state.errorMessages,
-    shallow
+  const errorsMessage = useAppSelector(
+    (state) => state.taskEditDrawer.errorMessages,
+    shallowEqual
   );
+  const action = useAppAction();
 
   const handleTitleInputChange: TextFieldProps['onValueChange'] = (value) => {
-    action.updateTaskData({ title: value });
+    dispatch(action.taskEditDrawer.updateTaskData({ title: value }));
   };
 
   const handleCategoryChange: SelectProps['onSelect'] = (value) => {
-    action.updateTaskData({ category: value });
+    dispatch(action.taskEditDrawer.updateTaskData({ category: value }));
   };
 
   const handleStartDateChange: DateTimeRangePickerProps['onStartTimeChange'] = (
     date
   ) => {
-    action.updateTaskData({ startDate: date });
+    dispatch(action.taskEditDrawer.updateTaskData({ startDate: date }));
   };
 
   const handleEndDateChange: DateTimeRangePickerProps['onStartTimeChange'] = (
     date
   ) => {
-    action.updateTaskData({ endDate: date });
+    dispatch(action.taskEditDrawer.updateTaskData({ endDate: date }));
   };
 
   const handleFormSubmit = async () => {
@@ -74,11 +58,11 @@ function WrappedElement() {
       console.log('success');
       return;
     }
-    action.updateErrorMessages(error);
+    dispatch(action.taskEditDrawer.updateErrorMessage(error));
   };
   const handleClear = () => {
-    action.updateTaskData(defaultTaskData);
-    action.clearErrorMessages();
+    dispatch(action.taskEditDrawer.clearErrorMessage());
+    dispatch(action.taskEditDrawer.clearTaskData());
   };
 
   const renderSelectOptions: () => JSX.Element[] = () => {
@@ -87,13 +71,15 @@ function WrappedElement() {
     });
   };
 
+  console.log(taskData);
+
   return (
     <Drawer isOpen position="right" className="TaskEditDrawer">
       <TextField
         className="TextEditDrawer__TitleInput"
         label="title:"
         onValueChange={handleTitleInputChange}
-        value={taskData.title}
+        // value={taskData.title}
         error={errorsMessage.title}
       />
       <Select
@@ -113,7 +99,7 @@ function WrappedElement() {
         startDate={taskData.startDate}
         endDate={taskData.endDate}
         label={{ start: 'start time:', end: 'end time:' }}
-        error={{start:errorsMessage.startDate,end:errorsMessage.endDate}}
+        error={{ start: errorsMessage.startDate, end: errorsMessage.endDate }}
       />
       <div className="TextEditDrawer__ActionBox">
         <button

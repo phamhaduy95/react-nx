@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useMemo } from 'react';
-import { useDispatch } from 'react-redux';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { TaskEditDrawerAction, TaskEditDrawerReducer } from '../components/TaskEditDrawer/redux'
 
 // ...
@@ -13,10 +13,14 @@ export const rootStore = configureStore({
 export type RootState = ReturnType<typeof rootStore.getState>
 type AppDispatch = typeof rootStore.dispatch;
 export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+
 
 const rootAction = Object.freeze({
     taskEditDrawer:TaskEditDrawerAction,
 });
+
+
 
 
 export function useAppAction(){

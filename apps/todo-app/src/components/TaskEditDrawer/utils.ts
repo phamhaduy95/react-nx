@@ -1,5 +1,5 @@
-import { TaskDataSchema } from './types';
-export function compareTwoTaskData(data1:TaskDataSchema,data2:TaskDataSchema){
+import { TaskDataSchema, TaskDataInput } from './types';
+export function compareTwoTaskData(data1:TaskDataInput,data2:TaskDataInput){
     if (data1.category !== data2.category) return false;
     if (data1.description !== data2.description) return false;
     if (data1.endDate?.toString() !== data2.endDate?.toString()) return false;
