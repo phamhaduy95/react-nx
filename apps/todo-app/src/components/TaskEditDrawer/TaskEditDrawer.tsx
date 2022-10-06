@@ -2,6 +2,8 @@ import {
   DateTimeRangePicker,
   DateTimeRangePickerProps,
   Drawer,
+  DrawerHeaderProps,
+  DrawerProps,
   Select,
   SelectOption,
   SelectProps,
@@ -30,6 +32,8 @@ export function TaskEditDrawer() {
     (state) => state.taskEditDrawer.errorMessages,
     shallowEqual
   );
+
+  const isOpen = useAppSelector((state) => state.taskEditDrawer.isOpen);
   const action = useAppAction();
 
   const handleTitleInputChange: TextFieldProps['onValueChange'] = (value) => {
@@ -71,15 +75,22 @@ export function TaskEditDrawer() {
     });
   };
 
-  console.log(taskData);
+  const handleDrawerToggle: DrawerProps['onToggle'] = (isOpen) => {
+    dispatch(action.taskEditDrawer.toggleDrawerOpen(isOpen));
+  };
 
   return (
-    <Drawer isOpen position="right" className="TaskEditDrawer">
+    <Drawer
+      isOpen={isOpen}
+      position="right"
+      className="TaskEditDrawer"
+      onToggle={handleDrawerToggle}
+    >
       <TextField
         className="TextEditDrawer__TitleInput"
         label="title:"
         onValueChange={handleTitleInputChange}
-        // value={taskData.title}
+        value={taskData.title}
         error={errorsMessage.title}
       />
       <Select
