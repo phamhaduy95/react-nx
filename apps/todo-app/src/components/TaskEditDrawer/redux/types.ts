@@ -1,17 +1,19 @@
 
 import { Action } from "@reduxjs/toolkit";
+import { ReduxTaskData } from "apps/todo-app/src/redux/types";
 import { ErrorsMessage, TaskDataInput, TaskDataSchema } from "../types";
 
 
+
 export type TaskEditDrawerState = {
-    taskData: TaskDataInput;
+    taskData: ReduxTaskData;
     errorMessages: ErrorsMessage<TaskDataSchema>;
     isOpen: boolean;
 }
 
 export interface UpdateTaskDataAction extends Action<string> {
     payload: {
-        taskDataPiece:Partial<TaskDataInput>
+        taskDataPiece:Partial<ReduxTaskData>
     }
 }
 

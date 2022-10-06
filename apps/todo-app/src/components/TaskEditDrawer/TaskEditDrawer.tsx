@@ -11,7 +11,6 @@ import {
   TextFieldProps,
 } from '@phduylib/my-component';
 import './TaskEditDrawer.scss';
-import { compareTwoTaskData } from './utils';
 import { shallowEqual } from 'react-redux';
 import {
   useAppAction,
@@ -19,15 +18,20 @@ import {
   useAppSelector,
 } from '../../redux/rootStore';
 import { validateInputData } from './TaskDataSchema';
+import { convertTaskReduxDataIntoTaskDataInput } from './redux/utils';
+import { useMemo } from 'react';
 
 const options = ['Business', 'Family', 'Personal', 'ETC', 'Holiday'];
 
 export function TaskEditDrawer() {
   const dispatch = useAppDispatch();
-  const taskData = useAppSelector(
+  const reduxTaskData = useAppSelector(
     (state) => state.taskEditDrawer.taskData,
-    compareTwoTaskData
   );
+
+  const taskData = useMemo(()=>convertTaskReduxDataIntoTaskDataInput(reduxTaskData),[reduxTaskData]);
+ 
+
   const errorsMessage = useAppSelector(
     (state) => state.taskEditDrawer.errorMessages,
     shallowEqual
@@ -47,13 +51,15 @@ export function TaskEditDrawer() {
   const handleStartDateChange: DateTimeRangePickerProps['onStartTimeChange'] = (
     date
   ) => {
-    dispatch(action.taskEditDrawer.updateTaskData({ startDate: date }));
+    const dateStr = (date === null)?"":date.toString();
+    dispatch(action.taskEditDrawer.updateTaskData({ startDate: dateStr }));
   };
 
   const handleEndDateChange: DateTimeRangePickerProps['onStartTimeChange'] = (
     date
   ) => {
-    dispatch(action.taskEditDrawer.updateTaskData({ endDate: date }));
+    const dateStr = (date === null)?"":date.toString();
+    dispatch(action.taskEditDrawer.updateTaskData({ endDate: dateStr}));
   };
 
   const handleFormSubmit = async () => {

@@ -1,11 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ErrorsMessage, TaskDataInput } from '../types';
-import {
-  TaskEditDrawerState,
-  UpdateTaskDataAction,
-  UpdateErrorsMessage,
-  ToggleDrawerAction,
-} from './types';
+import { ReduxTaskData } from 'apps/todo-app/src/redux/types';
+import { TaskEditDrawerState } from './types';
 
 const initialState: TaskEditDrawerState = {
   taskData: {
@@ -13,8 +8,8 @@ const initialState: TaskEditDrawerState = {
     title: '',
     category: '',
     description: '',
-    endDate: null,
-    startDate: null,
+    endDate: '',
+    startDate: '',
   },
   errorMessages: {
     title: false,
@@ -30,7 +25,7 @@ const slice = createSlice({
   name: 'TaskEditDrawer-slice',
   initialState: initialState,
   reducers: {
-    updateTaskData(state, action: PayloadAction<Partial<TaskDataInput>>) {
+    updateTaskData(state, action: PayloadAction<Partial<ReduxTaskData>>) {
       const partialData = action.payload;
       state.taskData = { ...state.taskData, ...partialData };
     },
