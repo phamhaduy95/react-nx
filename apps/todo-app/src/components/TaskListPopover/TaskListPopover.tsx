@@ -50,6 +50,10 @@ export default function TaskListPopover(props: TaskListPopoverProps) {
     setOpen(false);
   };
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
     <Popover
       className={rootClassName}
@@ -58,14 +62,16 @@ export default function TaskListPopover(props: TaskListPopoverProps) {
       positionOrigin={PopoverPosition}
       onOpen={onToggle}
     >
-      <div className="TaskListPopover__Header">
-        Tasks
-        <CloseIcon
-          className="TaskListPopover__CloseIcon"
-          onClick={handleClickToClose}
-        />
+      <div className="TaskListPopover__Container" onClick={handleClick}>
+        <div className="TaskListPopover__Header">
+          Tasks
+          <CloseIcon
+            className="TaskListPopover__CloseIcon"
+            onClick={handleClickToClose}
+          />
+        </div>
+        <div className="TaskListPopover__Lists">{viewTasks}</div>
       </div>
-      <div className="TaskListPopover__Lists">{viewTasks}</div>
     </Popover>
   );
 }
@@ -78,7 +84,7 @@ type TaskIndicatorProps = {
 function TaskIndicator(props: TaskIndicatorProps) {
   const { taskData, onTaskSelect } = props;
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
     if (onTaskSelect) onTaskSelect(taskData);
   };
 
