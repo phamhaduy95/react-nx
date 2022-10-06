@@ -57,7 +57,8 @@ export function MonthScheduleTask(props: MonthScheduleTaskProps) {
   }, [index]);
 
 
-  const handleClick = ()=>{
+  const handleClick = (e:React.MouseEvent)=>{
+    e.stopPropagation();
     onTaskSelect(taskData);
   }
   return (

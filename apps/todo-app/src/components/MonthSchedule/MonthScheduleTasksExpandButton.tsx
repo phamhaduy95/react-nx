@@ -19,7 +19,8 @@ export function MonthScheduleTasksExpandButton(props: Props) {
   const isTaskIndicatorShowed = tasksInADay.length > lineLimit;
   const { onTaskSelect } = useMonthScheduleSharedData();
 
-  const handleClick = () => {
+  const handleClick = (e:React.MouseEvent) => {
+    e.stopPropagation();
     setShowed((prev) => !prev);
   };
 

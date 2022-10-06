@@ -17,7 +17,7 @@ export function MonthScheduleTableCell(props: MonthScheduleTableCellProps) {
   const { date, isDayWithinMonth } = props;
   const dateNumber = date.getDate();
   const cellRef = useRef<HTMLTableCellElement>(null);
-  const {onDateSelect} = useMonthScheduleSharedData();
+  const { onDateSelect } = useMonthScheduleSharedData();
 
   const rootClassName = classNames('MonthSchedule__TableCell', {
     ['is-day-within-month']: isDayWithinMonth,
@@ -44,10 +44,9 @@ export function MonthScheduleTableCell(props: MonthScheduleTableCellProps) {
     });
   };
 
-  const handleClick = ()=>{
-      if (onDateSelect)
-      onDateSelect(date)
-  }
+  const handleClick = (e: React.MouseEvent) => {
+    if (onDateSelect) onDateSelect(date);
+  };
 
   return (
     <td className={rootClassName} ref={cellRef} onClick={handleClick}>
