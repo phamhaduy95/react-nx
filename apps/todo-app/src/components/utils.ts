@@ -99,7 +99,8 @@ export function findNextSaturday(date: Date) {
 export function sortTasksBaseOnStartDateAndThenLength(
   taskList: TaskDataType[]
 ) {
-  return taskList.sort((a, b) => {
+  const newTaskList = [...taskList]; // since sort will mutate the original array, get the copied version for taskList.
+  return newTaskList.sort((a, b) => {
     if (dayjs(a.startDate).isSame(b.startDate)) {
       if (dayjs(a.endDate).isAfter(b.endDate)) return -1;
       return 1;
