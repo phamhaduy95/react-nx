@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { TaskDataType } from '../../type/model';
 import { MonthSchedule, MonthScheduleProps } from './MonthSchedule';
 import { v4 as uuidv4 } from 'uuid';
@@ -20,20 +20,28 @@ const generateTask = (
     endDate: dayjs(startDate).add(length, unit).toDate(),
   };
 };
-const firstDateOfMonth = dayjs().startOf('month').hour(0).minute(0);
 
-const data: MonthScheduleProps['data'] = {
-  month: dayjs().toDate(),
-  tasks: [
-    generateTask(firstDateOfMonth.add(1, 'day').toDate(), 25, 'hour'),
-    generateTask(firstDateOfMonth.add(3, 'day').toDate(), 300, 'minute'),
-    generateTask(firstDateOfMonth.toDate(), 5, 'hour'),
-    generateTask(firstDateOfMonth.toDate(), 24 * 5, 'hour'),
-    generateTask(firstDateOfMonth.add(28, 'hour').toDate(), 2, 'hour'),
-  ],
-};
+
+export function getMonthScheduleDataSample(){
+  const firstDateOfMonth = dayjs().startOf('month').hour(0).minute(0);
+
+  const data: MonthScheduleProps['data'] = {
+    month: dayjs().toDate(),
+    tasks: [
+      generateTask(firstDateOfMonth.add(1, 'day').toDate(), 25, 'hour'),
+      generateTask(firstDateOfMonth.add(3, 'day').toDate(), 300, 'minute'),
+      generateTask(firstDateOfMonth.toDate(), 5, 'hour'),
+      generateTask(firstDateOfMonth.toDate(), 24 * 5, 'hour'),
+      generateTask(firstDateOfMonth.add(28, 'hour').toDate(), 2, 'hour'),
+    ],
+  };  
+
+  return data;
+}
 
 export function MonthScheduleExample() {
+
+  const data = useMemo(()=>getMonthScheduleDataSample(),[])
   const handleSelectTask: MonthScheduleProps['onTaskSelect'] = (task) => {
     console.log(task);
   };

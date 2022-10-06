@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { DayScheduleState } from "./types";
+import { ReduxDayScheduleState } from "./types";
 
-const initialState: DayScheduleState = {
-    date:new Date(),
+const now = new Date(Date.now());
+
+const initialState: ReduxDayScheduleState = {
+    date:now.toString(),
     tasksList: []
   };
   
@@ -10,7 +12,7 @@ const initialState: DayScheduleState = {
     name: 'TaskEditDrawer-slice',
     initialState: initialState,
     reducers: {
-      updateData(state, action: PayloadAction<DayScheduleState>) {
+      updateData(state, action: PayloadAction<ReduxDayScheduleState>) {
         const {tasksList,date}= action.payload;
         state.tasksList = tasksList;
         state.date = date;

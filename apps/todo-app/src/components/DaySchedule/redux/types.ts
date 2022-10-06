@@ -1,9 +1,9 @@
-import { TaskDataType } from '../../../type/model';
-
-export type DayScheduleState = {
-    date:Date,
-    tasksList: TaskDataType[],
-}
+import { ReduxTaskData } from "apps/todo-app/src/redux/types";
 
 
+type DateStr = string;
 
+export type ReduxDayScheduleState = {
+  date: DateStr;
+  tasksList: ReduxTaskData[];
+};
