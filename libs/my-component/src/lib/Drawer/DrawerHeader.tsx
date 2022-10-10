@@ -25,7 +25,7 @@ export function DrawerHeader(props: DrawerHeaderProps) {
       };
       return (
         <div className="Drawer__CloseIcon" onClick={handleClickToClose}>
-            <CloseIcon/>
+          <CloseIcon />
         </div>
       );
     }
@@ -33,8 +33,8 @@ export function DrawerHeader(props: DrawerHeaderProps) {
   };
   return (
     <div className={headerClassName}>
-      {renderCloseIcon()}
       {children}
+      {renderCloseIcon()}
     </div>
   );
 }

@@ -26,7 +26,7 @@ export const SelectPopup = (props: SelectPopupProps) => {
     const textFieldEl = targetRef.current as HTMLElement;
     if (isShowed) return;
     action.highlightOne(null);
-    const inputEl = textFieldEl.querySelector("input") as HTMLElement;
+    const inputEl = textFieldEl.querySelector('input') as HTMLElement;
     switchFocus(inputEl, true);
   }, [isShowed]);
 
@@ -51,17 +51,16 @@ export const SelectPopup = (props: SelectPopupProps) => {
         action.togglePopup(false);
         return;
       }
-      case "Tab": {
+      case 'Tab': {
         action.togglePopup(false);
         return;
       }
     }
   };
 
-  const handleClickOutSide = (e:MouseEvent) => {
+  const handleClickOutSide = (e: MouseEvent) => {
     const el = targetRef.current as HTMLElement;
-    if (!checkIsClickOnElement(e,el))
-    action.togglePopup(false);
+    if (!checkIsClickOnElement(e, el)) action.togglePopup(false);
   };
 
   return (
