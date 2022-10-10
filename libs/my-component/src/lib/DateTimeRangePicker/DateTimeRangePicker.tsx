@@ -17,6 +17,7 @@ export type DateTimeRangePickerProps = {
   error?: TextFieldHelperText<TextFieldProps['error']>;
   success?: TextFieldHelperText<TextFieldProps['success']>;
   helperText?: TextFieldHelperText<TextFieldProps['helperText']>;
+  label?:TextFieldHelperText<string>;
   startDate?: Date | null;
   endDate?: Date | null;
 };
@@ -28,6 +29,7 @@ const defaultProps: Required<DateTimeRangePickerProps> = {
   success: { start: false, end: false },
   error: { start: false, end: false },
   helperText: { start: null, end: null },
+  label:{end:"",start:""},
   startDate: null,
   endDate: null,
 };
@@ -51,6 +53,7 @@ function WrappedComponent(props: DateTimeRangePickerProps) {
     helperText,
     startDate,
     endDate,
+    label
   } = newProps;
   const action = useDateTimeRangePickerStore((state) => state.action);
 
@@ -65,11 +68,12 @@ function WrappedComponent(props: DateTimeRangePickerProps) {
 
   const rootClassName = classNames('DateTimeRangePicker', className);
 
+
   return (
     <div className={rootClassName}>
       <DateTimeRangeInput
         mode="selectStart"
-        label="Start time"
+        label={label.start}
         onDateSelect={handleStartDateSelect}
         success={success.start}
         error={error.start}
@@ -78,7 +82,7 @@ function WrappedComponent(props: DateTimeRangePickerProps) {
       />
       <DateTimeRangeInput
         mode="selectEnd"
-        label="End time"
+        label={label.end}
         onDateSelect={handleEndDateSelect}
         success={success.end}
         error={error.end}
