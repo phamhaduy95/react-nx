@@ -7,7 +7,7 @@ export function findAllTasksInADayAmongTasksList(
   tasksList: TaskDataType[],
 ): TaskDataType[] {
   return tasksList.filter((task) => {
-    const range = { startDate: task.startDate, endDate: task.endDate };
+    const range = { startDate: task.startTime, endDate: task.endTime };
     return isDateWithinRange(date, range);
   });
 }
@@ -36,7 +36,7 @@ export function findsAllShowedTasksInTaskLine(
   if (isSunDay(date) ) {
     for (let line of taskLine) {
       const task = line.find((task) => {
-        const range = { startDate: task.startDate, endDate: task.endDate };
+        const range = { startDate: task.startTime, endDate: task.endTime };
         return isDateWithinRange(date, range);
       });
       if (task !== undefined) {
@@ -52,7 +52,7 @@ export function findsAllShowedTasksInTaskLine(
   }
   for (let line of taskLine) {
     const task = line.find((task) => {
-      return dayjs(date).isSame(task.startDate, 'day');
+      return dayjs(date).isSame(task.startTime, 'day');
     });
     if (task !== undefined) {
       const indexTasked = { ...task, index: lineNumber };
@@ -78,11 +78,11 @@ export function calculateTaskBarLengthInDayUnit(
   cellDate: Date,
   isTaskInSunDay: boolean
 ) {
-  const startDate = isTaskInSunDay ? cellDate : task.startDate;
+  const startDate = isTaskInSunDay ? cellDate : task.startTime;
   const nextSaturDay = findNextSaturday(startDate);
-  const endDate = dayjs(nextSaturDay).isBefore(task.endDate, 'day')
+  const endDate = dayjs(nextSaturDay).isBefore(task.endTime, 'day')
     ? nextSaturDay
-    : task.endDate;
+    : task.endTime;
   const currDayInWeek = startDate.getDay();
   const endDayInWeek = endDate.getDay();
   return endDayInWeek - currDayInWeek + 1;
@@ -101,11 +101,11 @@ export function sortTasksBaseOnStartDateAndThenLength(
 ) {
   const newTaskList = [...taskList]; // since sort will mutate the original array, get the copied version for taskList.
   return newTaskList.sort((a, b) => {
-    if (dayjs(a.startDate).isSame(b.startDate)) {
-      if (dayjs(a.endDate).isAfter(b.endDate)) return -1;
+    if (dayjs(a.startTime).isSame(b.startTime)) {
+      if (dayjs(a.endTime).isAfter(b.endTime)) return -1;
       return 1;
     }
-    if (dayjs(a.startDate).isBefore(b.startDate)) return -1;
+    if (dayjs(a.startTime).isBefore(b.startTime)) return -1;
     return 1;
   });
 }
@@ -137,7 +137,7 @@ function isTaskAddableToTaskLine(
 ) {
   if (taskLine.length === 0) return true;
   const lastTaskInLine = taskLine[taskLine.length - 1];
-  if (dayjs(task.startDate).isAfter(lastTaskInLine.endDate)) return true;
+  if (dayjs(task.startTime).isAfter(lastTaskInLine.endTime)) return true;
   return false;
 }
 

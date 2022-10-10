@@ -98,8 +98,8 @@ type TaskLineBlockProps = {
 
 function WeekTaskViewTaskLineBlock(props: TaskLineBlockProps) {
   const { taskData, linePos, currDate } = props;
-  const ref = useRef<HTMLDivElement>(null)
-  const {onTaskSelect} = useWeekScheduleSharedData();
+  const ref = useRef<HTMLDivElement>(null);
+  const { onTaskSelect } = useWeekScheduleSharedData();
   useEffect(() => {
     if (taskData === undefined) return;
     const taskBlockEl = ref.current;
@@ -109,12 +109,16 @@ function WeekTaskViewTaskLineBlock(props: TaskLineBlockProps) {
     positionTaskBlock(taskBlockEl, pos);
   }, [taskData, currDate, linePos]);
 
-  const handleClick = ()=>{
-      onTaskSelect(taskData);
-  }
+  const handleClick = () => {
+    onTaskSelect(taskData);
+  };
 
   return (
-    <div className="WeekSchedule__TimeFrame__TaskBlock" ref={ref}  onClick={handleClick}>
+    <div
+      className="WeekSchedule__TimeFrame__TaskBlock"
+      ref={ref}
+      onClick={handleClick}
+    >
       {taskData.title}
     </div>
   );
@@ -168,7 +172,7 @@ type TaskExpandButtonProps = {
 function WeekDayTasksExpandButton(props: TaskExpandButtonProps) {
   const { currDate, timeFrameRef } = props;
   const [isPopoverOpen, setPopoverOpen] = useState(false);
-  const {onTaskSelect} = useWeekScheduleSharedData();
+  const { onTaskSelect } = useWeekScheduleSharedData();
   const tasks = useWeekScheduleStore((state) => state.tasks);
   const tasksWithInDay = useMemo(
     () => findAllTasksInADayAmongTasksList(currDate, tasks),
@@ -184,7 +188,6 @@ function WeekDayTasksExpandButton(props: TaskExpandButtonProps) {
     setPopoverOpen(isOpen);
   };
 
-
   if (numberOfTasks < TASK_LIMIT) return <></>;
 
   return (
@@ -194,7 +197,7 @@ function WeekDayTasksExpandButton(props: TaskExpandButtonProps) {
         className="WeekSchedule__TimeFrame__TaskExpandButton"
         onClick={handleClick}
       >
-        +{numberOfTasks} more
+        +{numberOfTasks}
       </button>
       <TaskListPopover
         className=""

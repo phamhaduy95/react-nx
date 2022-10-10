@@ -6,6 +6,7 @@ import { ErrorsMessage, TaskDataInput, TaskDataSchema } from "../types";
 
 
 export type TaskEditDrawerState = {
+    type:"update"|"add";
     taskData: ReduxTaskData;
     errorMessages: ErrorsMessage<TaskDataSchema>;
     isOpen: boolean;

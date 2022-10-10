@@ -97,7 +97,7 @@ function renderTaskLines(tasksLines: DayScheduleState['tasksLine']) {
   const TaskBlocks: JSX.Element[] = [];
   for (let line of tasksLines) {
     for (let task of line) {
-      const { id } = task;
+      const { taskId: id } = task;
       TaskBlocks.push(
         <DayScheduleTaskBlock taskId={id} linePos={linePos} key={id} />
       );

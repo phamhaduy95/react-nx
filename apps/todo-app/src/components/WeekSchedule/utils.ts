@@ -27,7 +27,7 @@ function findAppropriateTaskLineForTask(
     const taskLine = linesArray[i];
     if (taskLine.length === 0) return i;
     const lastTaskInLine = taskLine[taskLine.length - 1];
-    if (dayjs(task.startDate).isBefore(lastTaskInLine.endDate, 'minute')) {
+    if (dayjs(task.startTime).isBefore(lastTaskInLine.endTime, 'minute')) {
       lastTaskInLine.width = 1;
       continue;
     }
@@ -49,7 +49,7 @@ function determineWidthForTaskLine(
             continue;
         }
         const lastTaskOnLine = comparedLine[comparedLine.length-1];
-        if (dayjs(task.startDate).isAfter(lastTaskOnLine.endDate,"minute")) {
+        if (dayjs(task.startTime).isAfter(lastTaskOnLine.endTime,"minute")) {
                 width++;
                 continue; 
         }
@@ -80,7 +80,7 @@ export function findTaskWhichStartsOnThisDate(
 ) {
   const taskLists = [];
   for (let task of tasks) {
-    const { startDate } = task;
+    const { startTime: startDate } = task;
     if (dayjs(startDate).isSame(date, 'day')) {
       taskLists.push(task);
     }

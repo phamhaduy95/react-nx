@@ -2,6 +2,7 @@ import {
   DateTimeRangePicker,
   DateTimeRangePickerProps,
   Drawer,
+  DrawerHeader,
   DrawerHeaderProps,
   DrawerProps,
   Select,
@@ -26,11 +27,15 @@ const options = ['Business', 'Family', 'Personal', 'ETC', 'Holiday'];
 export function TaskEditDrawer() {
   const dispatch = useAppDispatch();
   const reduxTaskData = useAppSelector(
-    (state) => state.taskEditDrawer.taskData,
+    (state) => state.taskEditDrawer.taskData
   );
 
-  const taskData = useMemo(()=>convertTaskReduxDataIntoTaskDataInput(reduxTaskData),[reduxTaskData]);
- 
+  const type = useAppSelector((state) => state.taskEditDrawer.type);
+
+  const taskData = useMemo(
+    () => convertTaskReduxDataIntoTaskDataInput(reduxTaskData),
+    [reduxTaskData]
+  );
 
   const errorsMessage = useAppSelector(
     (state) => state.taskEditDrawer.errorMessages,
@@ -45,21 +50,21 @@ export function TaskEditDrawer() {
   };
 
   const handleCategoryChange: SelectProps['onSelect'] = (value) => {
-    dispatch(action.taskEditDrawer.updateTaskData({ category: value }));
+    dispatch(action.taskEditDrawer.updateTaskData({ categoryId: value }));
   };
 
   const handleStartDateChange: DateTimeRangePickerProps['onStartTimeChange'] = (
     date
   ) => {
-    const dateStr = (date === null)?"":date.toString();
-    dispatch(action.taskEditDrawer.updateTaskData({ startDate: dateStr }));
+    const dateStr = date === null ? '' : date.toString();
+    dispatch(action.taskEditDrawer.updateTaskData({ startTime: dateStr }));
   };
 
   const handleEndDateChange: DateTimeRangePickerProps['onStartTimeChange'] = (
     date
   ) => {
-    const dateStr = (date === null)?"":date.toString();
-    dispatch(action.taskEditDrawer.updateTaskData({ endDate: dateStr}));
+    const dateStr = date === null ? '' : date.toString();
+    dispatch(action.taskEditDrawer.updateTaskData({ endTime: dateStr }));
   };
 
   const handleFormSubmit = async () => {
@@ -85,6 +90,8 @@ export function TaskEditDrawer() {
     dispatch(action.taskEditDrawer.toggleDrawerOpen(isOpen));
   };
 
+  const headerContext = type === 'update' ? 'Update Task' : 'Add Task';
+
   return (
     <Drawer
       isOpen={isOpen}
@@ -92,6 +99,9 @@ export function TaskEditDrawer() {
       className="TaskEditDrawer"
       onToggle={handleDrawerToggle}
     >
+      <DrawerHeader className="TextEditDrawer__Header" closeIcon>
+        <span>{headerContext}</span>
+      </DrawerHeader>
       <TextField
         className="TextEditDrawer__TitleInput"
         label="title:"
@@ -104,7 +114,7 @@ export function TaskEditDrawer() {
         label="category:"
         autoWidth
         onSelect={handleCategoryChange}
-        defaultValue={taskData.category}
+        defaultValue={taskData.categoryId}
         error={errorsMessage.category}
       >
         {renderSelectOptions()}
@@ -113,10 +123,10 @@ export function TaskEditDrawer() {
         className="TextEditDrawer__DateTimeRange"
         onStartTimeChange={handleStartDateChange}
         onEndTimeChange={handleEndDateChange}
-        startDate={taskData.startDate}
-        endDate={taskData.endDate}
+        startDate={taskData.startTime}
+        endDate={taskData.endTime}
         label={{ start: 'start time:', end: 'end time:' }}
-        error={{ start: errorsMessage.startDate, end: errorsMessage.endDate }}
+        error={{ start: errorsMessage.startTime, end: errorsMessage.endTime }}
       />
       <div className="TextEditDrawer__ActionBox">
         <button

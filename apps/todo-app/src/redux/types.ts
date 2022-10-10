@@ -1,8 +1,6 @@
-import { TaskDataType } from "../type/model";
+import { TaskDataType } from '../type/model';
 
-export type ReduxTaskData = Omit<TaskDataType,"startDate"|"endDate"> & {
-    startDate:string,
-    endDate:string,
-  }; 
-
-  
+export type ReduxTaskData = Omit<TaskDataType, 'startTime' | 'endTime'> & {
+  startTime: string;
+  endTime: string;
+};

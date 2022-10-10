@@ -6,8 +6,8 @@ function createErrorFlagsFromValidationError(error: any) {
   let ErrorMessage: ErrorsMessage<TaskDataSchema> = {
     title: false,
     category: false,
-    startDate: false,
-    endDate: false,
+    startTime: false,
+    endTime: false,
     description: false,
   };
   const errors = error.errors as ErrorObject[];
@@ -34,13 +34,13 @@ const stringMaxMessage: StringLocale['max'] = (a) => ({
 const schema: SchemaOf<TaskDataSchema> = object().shape({
   title: string().required(requiredMessage).max(50, stringMaxMessage),
   category: string().required(requiredMessage),
-  startDate: date()
+  startTime: date()
     .nullable()
     .defined()
     .test('test-non-nullable', requiredMessage, (value) => {
       return value !== null;
     }),
-  endDate: date()
+  endTime: date()
     .nullable()
     .defined()
     .test('test-non-nullable', requiredMessage, (value) => {

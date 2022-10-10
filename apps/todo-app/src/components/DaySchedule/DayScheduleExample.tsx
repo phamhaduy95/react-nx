@@ -11,16 +11,16 @@ const generateTask = (
   unit: dayjs.ManipulateType
 ): TaskDataType => {
   return {
-    id: uuidv4(),
-    category: '',
+    taskId: uuidv4(),
+    categoryId: '',
     description: '',
     title: title,
-    startDate: startDate,
-    endDate: dayjs(startDate).add(length, unit).toDate(),
+    startTime: startDate,
+    endTime: dayjs(startDate).add(length, unit).toDate(),
   };
 };
 
-export function getDayScheduleSampleData(){
+export function getDayScheduleSampleData() {
   const startTime = dayjs().hour(8).minute(0);
   const data: DayScheduleProps['data'] = {
     date: dayjs().toDate(),
@@ -33,15 +33,19 @@ export function getDayScheduleSampleData(){
       generateTask('task 19', startTime.toDate(), 40, 'minute'),
       generateTask('task 11', startTime.toDate(), 40, 'minute'),
       generateTask('task 13', startTime.toDate(), 40, 'minute'),
-      generateTask('task 4', startTime.add(30, 'minute').toDate(), 510, 'minute'),
+      generateTask(
+        'task 4',
+        startTime.add(30, 'minute').toDate(),
+        510,
+        'minute'
+      ),
     ],
-  }; 
+  };
   return data;
 }
 
-
 export function DayScheduleExample() {
-  const data = useMemo(()=>getDayScheduleSampleData(),[])
+  const data = useMemo(() => getDayScheduleSampleData(), []);
 
   const handleTaskSelect: DayScheduleProps['onTaskSelect'] = (task) => {
     console.log(task);

@@ -3,14 +3,14 @@ import { TaskDataInput } from '../types';
 export function convertTaskReduxDataIntoTaskDataInput(
   reduxTaskData: ReduxTaskData
 ): TaskDataInput {
-  const { startDate, endDate } = reduxTaskData;
+  const { startTime: startDate, endTime: endDate } = reduxTaskData;
 
   const startDateObject = startDate === '' ? null : new Date(startDate);
   const endDateObject = endDate === '' ? null : new Date(endDate);
   const newData = {
     ...reduxTaskData,
-    startDate: startDateObject,
-    endDate: endDateObject,
+    startTime: startDateObject,
+    endTime: endDateObject,
   } as TaskDataInput;
   return newData;
 }

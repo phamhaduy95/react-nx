@@ -18,9 +18,9 @@ export const DayScheduleTaskBlock = memo((props: DayScheduleTaskProps) => {
   const { onTaskSelect } = useDayScheduleSharedData();
   const taskData = useDayScheduleStore(
     (state) => {
-      return state.tasks.find((e) => e.id === taskId);
+      return state.tasks.find((e) => e.taskId === taskId);
     },
-    (a, b) => a?.id === b?.id
+    (a, b) => a?.taskId === b?.taskId
   );
 
   useEffect(() => {
@@ -54,7 +54,7 @@ function calculateTaskBlockOffsetPosition(
   baseDate: Date,
   linePos: number
 ): Position {
-  const { startDate, endDate } = taskData;
+  const { startTime: startDate, endTime: endDate } = taskData;
   const startPos = getTimeRatioInPercentage(startDate, baseDate);
   const endPos = getTimeRatioInPercentage(endDate, baseDate);
   const offsetPos = {

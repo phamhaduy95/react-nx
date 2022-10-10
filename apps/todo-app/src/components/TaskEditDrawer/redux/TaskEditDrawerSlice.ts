@@ -3,26 +3,27 @@ import { ReduxTaskData } from 'apps/todo-app/src/redux/types';
 import { TaskEditDrawerState } from './types';
 
 const initialState: TaskEditDrawerState = {
+  type: 'add',
   taskData: {
-    id: '',
+    taskId: '',
     title: '',
-    category: '',
+    categoryId: '',
     description: '',
-    endDate: '',
-    startDate: '',
+    endTime: '',
+    startTime: '',
   },
   errorMessages: {
     title: false,
     category: false,
     description: false,
-    endDate: false,
-    startDate: false,
+    endTime: false,
+    startTime: false,
   },
   isOpen: false,
 };
 
 const slice = createSlice({
-  name: 'TaskEditDrawer-slice',
+  name: 'TaskEditDrawer',
   initialState: initialState,
   reducers: {
     updateTaskData(state, action: PayloadAction<Partial<ReduxTaskData>>) {
@@ -48,6 +49,25 @@ const slice = createSlice({
     },
     clearTaskData(state) {
       state.taskData = initialState.taskData;
+    },
+    reset(state) {
+      state.errorMessages = initialState.errorMessages;
+      state.taskData = initialState.taskData;
+    },
+    editTask(state, action: PayloadAction<ReduxTaskData>) {
+      state.errorMessages = initialState.errorMessages;
+      state.taskData = initialState.taskData;
+      state.isOpen = true;
+      state.type = 'update';
+      state.taskData = action.payload;
+    },
+    addTask(state, action: PayloadAction<Partial<ReduxTaskData>>) {
+      const partialData = action.payload;
+      state.errorMessages = initialState.errorMessages;
+      state.taskData = initialState.taskData;
+      state.isOpen = true;
+      state.type = 'add';
+      state.taskData = { ...state.taskData, ...partialData };
     },
   },
 });

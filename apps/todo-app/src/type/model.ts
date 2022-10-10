@@ -1,8 +1,13 @@
+import { Omit } from "@reduxjs/toolkit/dist/tsHelpers";
+
 export type TaskDataType = {
-    id: string;
-    category: string;
+    taskId: string;
+    categoryId: string;
     title: string;
-    startDate: Date;
-    endDate: Date;
+    startTime: Date;
+    endTime: Date;
     description: string;
   };
+
+  // since redux does not allow any non-serializable data type ( in this case is Date ). startDate and endDate hove to be string instead.
+

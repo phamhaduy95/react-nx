@@ -3,7 +3,6 @@ import { calculateTaskBarLengthInDayUnit, isSunDay } from '../utils';
 import { MonthScheduleState } from './MonthScheduleStoreProvider';
 import { useMonthScheduleSharedData } from './MonthScheduleContextProvider';
 
-
 type MonthScheduleTaskProps = {
   cellDate: Date;
   cellRef: React.MutableRefObject<unknown>;
@@ -16,13 +15,12 @@ export function MonthScheduleTask(props: MonthScheduleTaskProps) {
   const taskBarRef = useRef<HTMLDivElement>(null);
   const isDateSunday = isSunDay(cellDate);
   const { title } = taskData;
-  const {onTaskSelect} = useMonthScheduleSharedData();
+  const { onTaskSelect } = useMonthScheduleSharedData();
   const taskBarWidthInDay = calculateTaskBarLengthInDayUnit(
     taskData,
     cellDate,
     isDateSunday
   );
-  
 
   // this useEffect register an resizeObserver which watch the changed of table cell and recalculate the size of the taskBar
   useEffect(() => {
@@ -56,16 +54,17 @@ export function MonthScheduleTask(props: MonthScheduleTaskProps) {
     taskBarEl.style.top = `${offsetTop}px`;
   }, [index]);
 
-
-  const handleClick = (e:React.MouseEvent)=>{
+  const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onTaskSelect(taskData);
-  }
+  };
   return (
-    <div className="TableDateCell__TaskLine" ref={taskBarRef} onClick={handleClick}>
+    <div
+      className="TableDateCell__TaskLine"
+      ref={taskBarRef}
+      onClick={handleClick}
+    >
       <span className="TableDateCell__TaskLine__title">{title}</span>
     </div>
   );
 }
-
-

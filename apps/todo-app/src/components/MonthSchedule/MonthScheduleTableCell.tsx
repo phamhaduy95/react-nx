@@ -38,7 +38,7 @@ export function MonthScheduleTableCell(props: MonthScheduleTableCellProps) {
           cellRef={cellRef}
           index={task.index}
           taskData={task}
-          key={task.id}
+          key={task.taskId}
         />
       );
     });

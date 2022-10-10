@@ -49,7 +49,7 @@ export function WeekScheduleTimeLine(props: WeekScheduleTimeLineProps) {
             linePos={lineNumber}
             taskData={task}
             width={task.width}
-            key={task.id}
+            key={task.taskId}
           />
         );
       }
@@ -106,7 +106,7 @@ function calculateTaskLinePosAndSize(
   linePos: number,
   taskWidth: number
 ): Position {
-  const { startDate, endDate } = taskData;
+  const { startTime: startDate, endTime: endDate } = taskData;
   const startTime = getTimeRatioInPercentage(startDate, startDate);
   const endTime = getTimeRatioInPercentage(endDate, startDate);
 

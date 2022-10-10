@@ -29,8 +29,8 @@ const defaultErrorsMessage: TaskEditDrawerState['errorMessages'] =
     title: false,
     category: false,
     description: false,
-    endDate: false,
-    startDate: false,
+    endTime: false,
+    startTime: false,
   });
 
 export function TaskEditDrawerStoreProvider(props: Props) {
@@ -39,12 +39,12 @@ export function TaskEditDrawerStoreProvider(props: Props) {
     () =>
       createStore<TaskEditDrawerState>((set) => ({
         taskData: {
-          id: '',
+          taskId: '',
           title: '',
-          category: '',
+          categoryId: '',
           description: '',
-          endDate: null,
-          startDate: null,
+          endTime: null,
+          startTime: null,
         },
         isOpen: true,
         errorMessages: defaultErrorsMessage,
