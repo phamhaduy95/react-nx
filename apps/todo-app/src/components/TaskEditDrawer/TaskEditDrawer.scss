@@ -1,51 +1,65 @@
 $gap-between-input: 0.5rem;
-
+@import '../sharedStyle.scss';
+@import '../utils.scss';
 .TaskEditDrawer {
-    >.Drawer__Popup {
-        width: 25rem; 
-        display: flex;
-        flex-direction: column;
-        min-width: unset;
-        >.TextEditDrawer__TitleInput{
-            width: 80%;
-            margin-bottom: $gap-between-input;
-            margin-left: auto;
-            margin-right: auto; 
-        }
-        >.TextEditDrawer__CategorySelect {
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: $gap-between-input;
-        }
-        >.TextEditDrawer__DateTimeRange {
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto; 
-            display: flex;
-            flex-direction: column;
-            >.DateTimeRangePicker__Input {
-                margin-bottom: $gap-between-input;
-                width: 100%;
-            } 
-        }
+  > .Drawer__Popup {
+    width: 25rem;
+    display: flex;
+    flex-direction: column;
+    min-width: unset;
 
-        >.TextEditDrawer__ActionBox {
-            width: 80%;
-            margin: 1rem auto;
-            display: flex;
-            >button {
-                padding: 0.25rem 0.5rem;
-            }
+    > .TextEditDrawer__Header {
+      position: relative;
+      padding: 0.5rem;
+      align-items: center;
 
-            >.TextEditDrawer__SubmitButton {
-                margin-left: auto;
-                margin-right: 1rem;
-            }
-         
-        }
+      > span {
+        font-size: 1.5rem;
+        font-weight: 560;
+        width: 100%;
+        text-align: center;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        user-select: none;
+      }
     }
-    
-    
 
+    > .TextEditDrawer__TitleInput {
+      width: 80%;
+      margin-bottom: $gap-between-input;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: $font-size-m;
+    }
+    > .TextEditDrawer__CategorySelect {
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: $gap-between-input;
+    }
+    > .TextEditDrawer__DateTimeRange {
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      flex-direction: column;
+      > .DateTimeRangePicker__Input {
+        margin-bottom: $gap-between-input;
+        width: 100%;
+      }
+    }
+
+    > .TextEditDrawer__ActionBox {
+      width: 80%;
+      margin: 1rem auto;
+      display: flex;
+      > button {
+        padding: 0.25rem 0.5rem;
+      }
+
+      > .TextEditDrawer__SubmitButton {
+        margin-left: auto;
+        margin-right: 1rem;
+      }
+    }
+  }
 }

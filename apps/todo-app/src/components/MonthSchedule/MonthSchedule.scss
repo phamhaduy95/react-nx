@@ -36,7 +36,7 @@
           user-select: none;
           cursor: pointer;
           margin-bottom: 0.25rem;
-          font-size: $font-size-m;
+          font-size: $font-size-s;
         }
         > .TableDateCell__TasksLines {
           position: relative;
@@ -48,7 +48,7 @@
             height: 18px;
             background-color: hsla(220, 80%, 80%, 0.5);
             border-radius: 5px;
-            font-size: $font-size-m;
+            font-size: $font-size-s;
             text-indent: 10px;
             cursor: pointer;
             white-space: nowrap;
@@ -63,7 +63,7 @@
           border: $border;
           border-radius: 5px;
           cursor: pointer;
-          font-size: $font-size-m;
+          font-size: $font-size-s;
           user-select: none;
         }
       }
