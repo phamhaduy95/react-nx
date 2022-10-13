@@ -63,6 +63,7 @@ function WrappedSelect(props: SelectProps) {
   const action = useSelectStore((state)=>state.action);
 
   useEffect(()=>{
+
         const value =  (defaultValue === "")?null:defaultValue; 
         action.selectItemByValue(value);
   },[defaultValue])

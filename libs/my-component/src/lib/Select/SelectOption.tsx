@@ -12,8 +12,8 @@ export interface SelectOption {
 }
 
 const defaultProps: Required<SelectOption> = {
-  value: 'option 1',
-  label: 'option 1',
+  value: '',
+  label: '',
   children: false,
   disabled: false,
 };
@@ -36,11 +36,8 @@ function SelectOptionWithId(props: SelectOption) {
   );
 
   useEffect(() => {
-    action.updateItemValue(id, value);
-  }, [value]);
-
-  useEffect(() => {
-    action.subscribe({ id, disabled, value });
+    const itemLabel = label ? label : value;
+    action.subscribe({ id, disabled, value, label: itemLabel });
     return () => {
       action.unsubscribe(id);
     };
@@ -48,12 +45,9 @@ function SelectOptionWithId(props: SelectOption) {
 
   // update disabled state of item in ItemList in store when then disabled prop is changed. This useEffect must always be put after the item subscription in store useEffect
   useEffect(() => {
-    if (disabled) {
-      action.disableItem(id);
-      return;
-    }
-    action.unDisableItem(id);
-  }, [disabled]);
+    const itemLabel = label ? label : value;
+      action.updateItemState(id, { disabled,value,label:itemLabel });
+  }, [disabled,value,label]);
 
   const itemRef = useRef(null);
   useSwitchFocus(itemRef, isHighLighted);

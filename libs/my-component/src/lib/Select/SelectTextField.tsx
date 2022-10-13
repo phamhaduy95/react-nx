@@ -51,8 +51,8 @@ export const SelectTextField = forwardRef<
   };
 
   const getInputValue = () => {
-    if (selectedItem?.value === undefined) return '';
-    return selectedItem.value;
+    if (selectedItem?.label === undefined) return '';
+    return selectedItem.label;
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
