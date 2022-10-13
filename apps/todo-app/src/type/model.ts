@@ -4,6 +4,7 @@ export type TaskDataType = {
     taskId: string;
     categoryId: string;
     title: string;
+    userId:string;
     startTime: Date;
     endTime: Date;
     description: string;
