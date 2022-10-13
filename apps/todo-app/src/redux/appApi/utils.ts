@@ -1,15 +1,28 @@
 import { DayScheduleProps } from '../../components/DaySchedule';
 import { MonthScheduleProps } from '../../components/MonthSchedule';
 import { WeekScheduleProps } from '../../components/WeekSchedule';
-import {
-  convertTaskDataIntoReduxState,
-  convertTaskDataReduxIntoTaskData,
-} from '../utils';
-import {
-  ReduxDayScheduleState,
-  ReduxMonthScheduleState,
-  ReduxWeekScheduleState,
-} from './type';
+import { TaskDataType } from '../../type/model';
+import { ReduxDayScheduleState, ReduxMonthScheduleState, ReduxTaskData, ReduxWeekScheduleState } from './type';
+
+export function convertTaskDataIntoReduxState(
+  taskData: TaskDataType
+): ReduxTaskData {
+  const startDate = taskData.startTime.toString();
+  const endDate = taskData.endTime.toString();
+  return {
+    ...taskData,
+    startTime: startDate,
+    endTime: endDate,
+  } as ReduxTaskData;
+}
+
+export function convertTaskDataReduxIntoTaskData(
+  taskRedux: ReduxTaskData
+): TaskDataType {
+  const startDate = new Date(taskRedux.startTime);
+  const endDate = new Date(taskRedux.endTime);
+  return { ...taskRedux, startTime: startDate, endTime: endDate };
+}
 
 export function convertDayScheduleDataFromReduxToProps(
   data: ReduxDayScheduleState

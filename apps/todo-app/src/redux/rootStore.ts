@@ -6,23 +6,22 @@ import {
   TaskEditDrawerAction,
   TaskEditDrawerReducer,
 } from '../components/TaskEditDrawer/redux';
-
+import { appApi } from './appApi';
 import {
   saveDateArgReducer,
   saveDateArgAction,
 } from './saveDateArgStore/slice';
-import { taskApi } from './taskApi';
 
 export const rootStore = configureStore({
   reducer: {
     taskEditDrawer: TaskEditDrawerReducer,
-
     saveDateArg: saveDateArgReducer,
-    [taskApi.reducerPath]: taskApi.reducer,
+    [appApi.reducerPath]: appApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(taskApi.middleware),
+    getDefaultMiddleware().concat(appApi.middleware),
 });
+
 
 setupListeners(rootStore.dispatch);
 
@@ -34,7 +33,9 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 const rootAction = Object.freeze({
   taskEditDrawer: TaskEditDrawerAction,
   saveDateArg: saveDateArgAction,
+  taskApi: appApi.endpoints,
 });
+
 
 export function useAppAction() {
   const action = useMemo(() => {
