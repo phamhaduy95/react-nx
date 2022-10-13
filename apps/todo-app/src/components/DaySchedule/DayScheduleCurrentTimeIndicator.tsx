@@ -21,13 +21,19 @@ export function DayScheduleCurrentTimeIndicator(props: TimeIndicatorProps) {
     const el = ref.current;
     const containerEl = containerRef.current;
     if (el === null || containerEl === null) return;
- 
+
     const timeRatio = getTimeRatioInPercentage(currTime, baseDate);
     el.style.left = `${timeRatio}%`;
   }, [ref.current, isToday]);
-   const time = dayjs(currTime).format("HH:mm");
+  const time = dayjs(currTime).format('HH:mm');
 
   if (isToday)
-    return <div className="DaySchedule__CurrentTimeIndicator" ref={ref} data-time={time}></div>;
+    return (
+      <div
+        className="DaySchedule__CurrentTimeIndicator"
+        ref={ref}
+        data-time={time}
+      ></div>
+    );
   return <></>;
 }

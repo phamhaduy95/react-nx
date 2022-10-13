@@ -41,7 +41,11 @@ export const DayScheduleTaskBlock = memo((props: DayScheduleTaskProps) => {
 
   if (taskData === undefined) return <></>;
   return (
-    <div className="DaySchedule__TaskBlock" ref={taskBlockRef} onClick={handleClick}>
+    <div
+      className="DaySchedule__TaskBlock"
+      ref={taskBlockRef}
+      onClick={handleClick}
+    >
       <span className="DaySchedule__TaskBlock__title">{taskData?.title}</span>
     </div>
   );
