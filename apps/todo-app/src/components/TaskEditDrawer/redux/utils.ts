@@ -8,7 +8,9 @@ export function convertTaskReduxDataIntoTaskDataInput(
   const startDateObject = startDate === '' ? null : new Date(startDate);
   const endDateObject = endDate === '' ? null : new Date(endDate);
   const newData = {
-    ...reduxTaskData,
+    title:reduxTaskData.title,
+    categoryId:reduxTaskData.categoryId,
+    description:reduxTaskData.description,
     startTime: startDateObject,
     endTime: endDateObject,
   } as TaskDataInput;

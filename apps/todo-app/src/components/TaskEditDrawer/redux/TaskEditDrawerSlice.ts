@@ -11,6 +11,7 @@ const initialState: TaskEditDrawerState = {
     description: '',
     endTime: '',
     startTime: '',
+    userId:'',
   },
   errorMessages: {
     title: false,
