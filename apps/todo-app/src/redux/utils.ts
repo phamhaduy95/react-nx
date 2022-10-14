@@ -4,8 +4,8 @@ import { ReduxTaskData } from './types';
 export function convertTaskDataIntoReduxState(
   taskData: TaskDataType
 ): ReduxTaskData {
-  const startDate = taskData.startTime.toString();
-  const endDate = taskData.endTime.toString();
+  const startDate = taskData.startTime.toISOString();
+  const endDate = taskData.endTime.toISOString();
   return {
     ...taskData,
     startTime: startDate,
