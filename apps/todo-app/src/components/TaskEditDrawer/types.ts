@@ -14,7 +14,7 @@ export type TaskDataInput = Omit<
 
 export interface TaskDataSchema {
   title: string;
-  category: string;
+  categoryId: string;
   startTime: Date | null;
   endTime: Date | null;
   description: string;

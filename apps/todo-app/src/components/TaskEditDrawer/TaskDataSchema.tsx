@@ -5,7 +5,7 @@ import type { ErrorsMessage, TaskDataInput, TaskDataSchema } from './types';
 function createErrorFlagsFromValidationError(error: any) {
   let ErrorMessage: ErrorsMessage<TaskDataSchema> = {
     title: false,
-    category: false,
+    categoryId: false,
     startTime: false,
     endTime: false,
     description: false,
@@ -33,7 +33,7 @@ const stringMaxMessage: StringLocale['max'] = (a) => ({
 
 const schema: SchemaOf<TaskDataSchema> = object().shape({
   title: string().required(requiredMessage).max(50, stringMaxMessage),
-  category: string().required(requiredMessage),
+  categoryId: string().required(requiredMessage),
   startTime: date()
     .nullable()
     .defined()

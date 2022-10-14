@@ -3,7 +3,6 @@ import {
   DateTimeRangePickerProps,
   Drawer,
   DrawerHeader,
-  DrawerHeaderProps,
   DrawerProps,
   Select,
   SelectOption,
@@ -21,16 +20,18 @@ import {
 import { validateInputData } from './TaskDataSchema';
 import { convertTaskReduxDataIntoTaskDataInput } from './redux/utils';
 import { useMemo } from 'react';
-
-const options = ['Business', 'Family', 'Personal', 'ETC', 'Holiday'];
+import { appApi, ReduxCategoryData } from '../../redux/appApi';
 
 export function TaskEditDrawer() {
   const dispatch = useAppDispatch();
   const reduxTaskData = useAppSelector(
     (state) => state.taskEditDrawer.taskData
   );
-
   const type = useAppSelector((state) => state.taskEditDrawer.type);
+  const [updateTask, updateResult] = appApi.useUpdateTaskMutation();
+  const [addTask, addResult] = appApi.useAddTaskMutation();
+
+  const { data: categories } = appApi.useGetAllForUserQuery(undefined, {});
 
   const taskData = useMemo(
     () => convertTaskReduxDataIntoTaskDataInput(reduxTaskData),
@@ -44,6 +45,7 @@ export function TaskEditDrawer() {
 
   const isOpen = useAppSelector((state) => state.taskEditDrawer.isOpen);
   const action = useAppAction();
+  console.log(isOpen);
 
   const handleTitleInputChange: TextFieldProps['onValueChange'] = (value) => {
     dispatch(action.taskEditDrawer.updateTaskData({ title: value }));
@@ -56,21 +58,30 @@ export function TaskEditDrawer() {
   const handleStartDateChange: DateTimeRangePickerProps['onStartTimeChange'] = (
     date
   ) => {
-    const dateStr = date === null ? '' : date.toString();
+    const dateStr = date === null ? '' : date.toISOString();
     dispatch(action.taskEditDrawer.updateTaskData({ startTime: dateStr }));
   };
 
   const handleEndDateChange: DateTimeRangePickerProps['onStartTimeChange'] = (
     date
   ) => {
-    const dateStr = date === null ? '' : date.toString();
+    const dateStr = date === null ? '' : date.toISOString();
     dispatch(action.taskEditDrawer.updateTaskData({ endTime: dateStr }));
   };
 
   const handleFormSubmit = async () => {
     const { result, error } = await validateInputData(taskData);
     if (result) {
-      console.log('success');
+      switch (type) {
+        case 'add':
+          addTask(reduxTaskData).unwrap();
+        
+          break;
+        case 'update':
+          updateTask(reduxTaskData);
+          break;
+      }
+      dispatch(action.taskEditDrawer.toggleDrawerOpen(false));
       return;
     }
     dispatch(action.taskEditDrawer.updateErrorMessage(error));
@@ -81,8 +92,15 @@ export function TaskEditDrawer() {
   };
 
   const renderSelectOptions: () => JSX.Element[] = () => {
-    return options.map((option, i) => {
-      return <SelectOption key={i} value={option} label={option} />;
+    if (categories === undefined) return [];
+    return categories.map((category, i) => {
+      return (
+        <SelectOption
+          key={i}
+          value={category.categoryId}
+          label={category.name}
+        />
+      );
     });
   };
 
@@ -115,7 +133,7 @@ export function TaskEditDrawer() {
         autoWidth
         onSelect={handleCategoryChange}
         defaultValue={taskData.categoryId}
-        error={errorsMessage.category}
+        error={errorsMessage.categoryId}
       >
         {renderSelectOptions()}
       </Select>

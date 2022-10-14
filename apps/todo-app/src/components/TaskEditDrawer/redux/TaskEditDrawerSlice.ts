@@ -15,7 +15,7 @@ const initialState: TaskEditDrawerState = {
   },
   errorMessages: {
     title: false,
-    category: false,
+    categoryId: false,
     description: false,
     endTime: false,
     startTime: false,

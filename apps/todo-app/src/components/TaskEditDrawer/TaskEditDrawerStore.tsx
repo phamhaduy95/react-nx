@@ -27,7 +27,7 @@ type Props = {
 const defaultErrorsMessage: TaskEditDrawerState['errorMessages'] =
   Object.freeze({
     title: false,
-    category: false,
+    categoryId: false,
     description: false,
     endTime: false,
     startTime: false,
