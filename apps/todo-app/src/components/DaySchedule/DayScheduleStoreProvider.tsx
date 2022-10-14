@@ -38,7 +38,7 @@ export function DayScheduleStoreProvider(props: Props) {
           updateDayData(date, tasks) {
             set((state) => {
               const sortedTask = sortTasksBaseOnStartDateAndThenLength(tasks);
-              const tasksLines = organizeTasksIntoSeriesOfTaskLine(sortedTask);
+              const tasksLines = organizeTasksIntoSeriesOfTaskLine(sortedTask,"minute");
               return { date: date, tasks: sortedTask, tasksLine: tasksLines };
             });
           },

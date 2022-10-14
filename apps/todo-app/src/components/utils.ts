@@ -112,13 +112,13 @@ export function sortTasksBaseOnStartDateAndThenLength(
 
 type TaskLineListType = TaskDataType[][];
 
-export function organizeTasksIntoSeriesOfTaskLine(taskList: TaskDataType[]) {
+export function organizeTasksIntoSeriesOfTaskLine(taskList: TaskDataType[],unit:dayjs.UnitType = "date") {
   const taskLineList: TaskLineListType = [[]];
   for (let task of taskList) {
     //n*m
     let isAdded = false;
     for (let taskLine of taskLineList) {
-      if (!isTaskAddableToTaskLine(task, taskLine)) continue;
+      if (!isTaskAddableToTaskLine(task, taskLine,unit)) continue;
       taskLine.push(task);
       isAdded = true;
       break;
@@ -133,11 +133,12 @@ export function organizeTasksIntoSeriesOfTaskLine(taskList: TaskDataType[]) {
 
 function isTaskAddableToTaskLine(
   task: TaskDataType,
-  taskLine: TaskLineListType[number]
+  taskLine: TaskLineListType[number],
+  unit:dayjs.UnitType
 ) {
   if (taskLine.length === 0) return true;
   const lastTaskInLine = taskLine[taskLine.length - 1];
-  if (dayjs(task.startTime).isAfter(lastTaskInLine.endTime)) return true;
+  if (dayjs(task.startTime).isAfter(lastTaskInLine.endTime,unit)) return true;
   return false;
 }
 
