@@ -1,0 +1,76 @@
+$gap-between-input: 0.5rem;
+@import '../sharedStyle.scss';
+@import '../utils.scss';
+.TaskEditModal {
+  > .Modal__Dialog  {
+    width: 30rem;
+    display: flex;
+    flex-direction: column;
+    min-width: unset;
+
+    > .TaskEditModal__Header {
+      position: relative;
+      padding: 0.5rem;
+      align-items: center;
+
+      > span {
+        font-size: 1.5rem;
+        font-weight: 560;
+        width: 100%;
+        text-align: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        user-select: none;
+      }
+    }
+    > .TaskEditModal__Body {
+      > .TaskEditModal__TitleInput {
+        width: 80%;
+        margin-bottom: $gap-between-input;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: $font-size-m;
+      }
+      > .TaskEditModal__CategorySelect {
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: $gap-between-input;
+      }
+      > .TaskEditModal__DateTimeRange {
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        flex-direction: column;
+        > .DateTimeRangePicker__Input {
+          margin-bottom: $gap-between-input;
+          width: 100%;
+        }
+      }
+
+      
+    }
+    > .TaskEditModal__Footer {
+      width: 80%;
+      margin: 1rem auto;
+      display: flex;
+      > button {
+        padding: 0.5em 1em;
+        border: $border;
+        border-radius: 5px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 0.9rem;
+        cursor: pointer;
+      }
+
+      > .TaskEditModal__SubmitButton {
+        margin-left: auto;
+        margin-right: 1rem;
+        background-color: $primary-color;
+        color: white;
+        
+    
+      }
+    }
+  }
+}

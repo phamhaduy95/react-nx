@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ReduxTaskData } from 'apps/todo-app/src/redux/types';
-import { TaskEditDrawerState } from './types';
+import { TaskEditModalState } from './types';
 
-const initialState: TaskEditDrawerState = {
+const initialState: TaskEditModalState = {
   type: 'add',
   taskData: {
     taskId: '',
@@ -21,28 +21,33 @@ const initialState: TaskEditDrawerState = {
     startTime: false,
   },
   isOpen: false,
+  restrictClose:false
 };
 
 const slice = createSlice({
-  name: 'TaskEditDrawer',
+  name: 'TaskEditModal',
   initialState: initialState,
   reducers: {
     updateTaskData(state, action: PayloadAction<Partial<ReduxTaskData>>) {
       const partialData = action.payload;
       state.taskData = { ...state.taskData, ...partialData };
     },
+    setRestrictClose(state,action:PayloadAction<TaskEditModalState["restrictClose"]>){
+        const restrictCloseFlag = action.payload;
+        state.restrictClose = restrictCloseFlag;
+    },
     updateErrorMessage(
       state,
-      action: PayloadAction<TaskEditDrawerState['errorMessages']>
+      action: PayloadAction<TaskEditModalState['errorMessages']>
     ) {
       const errors = action.payload;
       state.errorMessages = errors;
     },
     toggleDrawerOpen(
       state,
-      action: PayloadAction<TaskEditDrawerState['isOpen']>
+      action: PayloadAction<TaskEditModalState['isOpen']>
     ) {
-      const isOpen = action.payload;
+      let  isOpen = action.payload;
       state.isOpen = isOpen;
     },
     clearErrorMessage(state) {
@@ -73,5 +78,5 @@ const slice = createSlice({
   },
 });
 
-export const TaskEditDrawerReducer = slice.reducer;
-export const TaskEditDrawerAction = slice.actions;
+export const TaskEditModalReducer = slice.reducer;
+export const TaskEditModalAction = slice.actions;

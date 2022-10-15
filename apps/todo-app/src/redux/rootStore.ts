@@ -2,10 +2,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query/react';
 import { useMemo } from 'react';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import {
-  TaskEditDrawerAction,
-  TaskEditDrawerReducer,
-} from '../components/TaskEditDrawer/redux';
+import { TaskEditModalAction, TaskEditModalReducer } from '../components/TaskEditModal/redux';
+
 import { appApi } from './appApi';
 import {
   saveDateArgReducer,
@@ -14,8 +12,8 @@ import {
 
 export const rootStore = configureStore({
   reducer: {
-    taskEditDrawer: TaskEditDrawerReducer,
     saveDateArg: saveDateArgReducer,
+    taskEditModal: TaskEditModalReducer,
     [appApi.reducerPath]: appApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -30,11 +28,10 @@ type AppDispatch = typeof rootStore.dispatch;
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-const rootAction = Object.freeze({
-  taskEditDrawer: TaskEditDrawerAction,
+const rootAction = {
+  taskEditModal: TaskEditModalAction,
   saveDateArg: saveDateArgAction,
-  taskApi: appApi.endpoints,
-});
+};
 
 
 export function useAppAction() {
