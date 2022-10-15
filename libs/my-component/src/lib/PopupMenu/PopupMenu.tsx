@@ -1,9 +1,15 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import { createPortal } from 'react-dom';
 import ClickOutSideWatcher from '../ClickOutsideWatcher/ClickOutSideWatcher';
 import classNames from 'classnames';
 import { usePopupMenuStore } from './PopupMenuStoreProvider';
-import "./PopupMenu.scss"
+import './PopupMenu.scss';
 
 type ContextMenuPopupProps = {
   targetRef: React.MutableRefObject<HTMLElement | null>;
@@ -16,18 +22,21 @@ const defaultProps: Omit<Required<ContextMenuPopupProps>, 'targetRef'> = {
   className: '',
 };
 
-export const PopupMenu = forwardRef<HTMLDivElement|null,ContextMenuPopupProps>((props,ref)=>{
+export const PopupMenu = forwardRef<
+  HTMLDivElement | null,
+  ContextMenuPopupProps
+>((props, ref) => {
   const newProps = { ...defaultProps, ...props };
   const { targetRef, className, children } = newProps;
   const action = usePopupMenuStore((state) => state.action);
   const isOpen = usePopupMenuStore((state) => state.isPopupOpen);
-  const popupRef = useRef<HTMLDivElement|null>(null);
+  const popupRef = useRef<HTMLDivElement | null>(null);
   const PopupClassName = classNames('PopupMenu', className, {
     [`is-showed`]: isOpen,
   });
 
-  useImperativeHandle(ref,()=>{
-    return popupRef.current as HTMLDivElement      
+  useImperativeHandle(ref, () => {
+    return popupRef.current as HTMLDivElement;
   });
   // hide the context menu when window is scrolling
   useEffect(() => {
@@ -59,9 +68,9 @@ export const PopupMenu = forwardRef<HTMLDivElement|null,ContextMenuPopupProps>((
     if (!isOpen) action.highlightOne(null);
   }, [isOpen]);
 
-  const handleClickOutSide = () => {
+  const handleClickOutSide = useCallback(() => {
     action.togglePopup(false);
-  };
+  }, []);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     const key = e.key;
@@ -84,7 +93,6 @@ export const PopupMenu = forwardRef<HTMLDivElement|null,ContextMenuPopupProps>((
       }
     }
   };
-
 
   return createPortal(
     <ClickOutSideWatcher ref={ref} onClickOutSide={handleClickOutSide}>

@@ -28,7 +28,7 @@ export const ClickOutSideWatcher = forwardRef((props: Props, ref: any) => {
       return () => {
           document.removeEventListener("click",callback,true);
       };
-  }, [ref.current]);
+  }, [ref.current,onClickOutSide]);
 
   return <>{children}</>;
 });

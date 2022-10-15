@@ -1,10 +1,11 @@
 import classNames from 'classnames';
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { ClickOutSideWatcher } from '../ClickOutsideWatcher';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import { DrawerStoreProvider, useDrawerStore } from './DrawerStoreProvider';
 import './Drawer.scss';
+
 
 export type DrawerProps = {
   position?: 'top' | 'bottom' | 'left' | 'right';
@@ -60,9 +61,9 @@ export function WrappedDrawer(props: DrawerProps) {
 
 
   const positionStyle = positionDrawerPopup(position);
-  const handleClickOutsidePopup = () => {
+  const handleClickOutsidePopup = useCallback(() => {
     action.toggleOpen(false);
-  };
+  },[]);
 
   return (
     <DrawerPortal isShowed={isShowed} forceMount={forceMouth}>

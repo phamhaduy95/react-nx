@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PopupElement from '../Popup/PopupElement';
 import { TimePanel, TimePanelProps } from '../TimePanel';
 import { useTimePickerStore } from './TimePickerStoreProvider';
@@ -6,6 +6,7 @@ import { memo } from 'react';
 import { checkIsClickOnElement } from '../utils/utils';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import { TimePickerProps } from './TimePicker';
+
 
 interface TimePickerPopupProps {
   targetRef: React.MutableRefObject<HTMLElement | null>;
@@ -26,10 +27,10 @@ export const TimePickerPopup = memo((props: TimePickerPopupProps) => {
     onPopupToggle(isPopupOpen);
   }, [isPopupOpen]);
 
-  const handleClickOutsidePopup = (e: MouseEvent) => {
+  const handleClickOutsidePopup = useCallback((e: MouseEvent) => {
     const targetEl = targetRef.current as HTMLElement;
     if (!checkIsClickOnElement(e, targetEl)) action.togglePopup(false);
-  };
+  },[targetRef]);
 
   const handleTimeSelect: TimePanelProps['onTimeSelect'] = (time) => {
     action.selectTime(time);

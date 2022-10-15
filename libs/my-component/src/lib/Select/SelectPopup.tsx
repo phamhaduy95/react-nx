@@ -5,6 +5,7 @@ import { switchFocus } from './utils';
 import { useSwitchFocus } from '../utils/hooks';
 import { checkIsClickOnElement } from '../utils/utils';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
+import { useCallback } from 'react';
 
 interface SelectPopupProps {
   children: JSX.Element[] | JSX.Element;
@@ -64,10 +65,10 @@ export const SelectPopup = (props: SelectPopupProps) => {
     }
   };
 
-  const handleClickOutSide = (e: MouseEvent) => {
+  const handleClickOutSide = useCallback((e: MouseEvent) => {
     const el = targetRef.current as HTMLElement;
     if (!checkIsClickOnElement(e, el)) action.togglePopup(false);
-  };
+  },[]);
 
   return (
     <PopupElement
