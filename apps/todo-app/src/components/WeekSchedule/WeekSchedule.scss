@@ -1,4 +1,4 @@
-@import '../_sharedStyle.scss';
+@import "../sharedStyle";
 @import '../_utils.scss';
 
 $indicator-cell-width: clamp(25px,calc(25px + 2vw),50px);
@@ -7,9 +7,8 @@ $indicator-cell-width: clamp(25px,calc(25px + 2vw),50px);
   width: calc(100px + 55vw);
   min-width: 350px;
   max-width: 750px;
-  height: 700px;
+  height: 650px;
   border: $border;
-  border-radius: 5px;
   color: $text-color;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   @at-root .WeekSchedule__Container {
@@ -149,6 +148,7 @@ $indicator-cell-width: clamp(25px,calc(25px + 2vw),50px);
             margin: 0;
             position: sticky;
             top: 10px;
+            line-height: normal;
             font-size: $font-size-s;
             text-overflow: ellipsis;
             white-space: nowrap;

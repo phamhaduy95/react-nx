@@ -1,10 +1,11 @@
 @import '../_sharedStyle.scss';
 
 .DaySchedule {
-  width: 600px;
-  height: 500px;
-  border: 1px solid hsla(0, 0%, 50%, 0.7);
-  border-radius: 5px;
+  width: calc(90px + 55vw);
+  min-width: 350px;
+  max-width: 750px;
+  height: 650px;
+  border:$border;
   color: $text-color;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.9rem;
