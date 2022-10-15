@@ -105,10 +105,12 @@ function WrappedCalendar(props: CalendarProps) {
           <ArrowForwardIosIcon />
         </div>
       </div>
+      <div className='Calendar__TableContainer'>
       <table className="Calendar_Table">
         <CalendarTableHeader />
         <tbody className="Calendar__Table__Body">{CalendarRows}</tbody>
       </table>
+      </div>
     </div>
   );
 }
