@@ -17,7 +17,9 @@ $transitionDuration: 0.1s;
   &.is-open {
     transform: scale3d(1, 1, 1);
     opacity: 1;
+    visibility: visible;
     transition: transform $transitionDuration ease-in-out 0s,
+      visibility $transitionDuration ease-in-out 0s,
       opacity $transitionDuration ease-in-out 0s;
     transform-origin: center center;
 
@@ -29,7 +31,7 @@ $transitionDuration: 0.1s;
   &:not(.is-open) {
     transform: scale3d(0, 0, 1);
     opacity: 0;
-
+    visibility: collapse;
     > .Modal__Dialog {
       transition: transform 0.1s ease-out 0.2s;
       transform-origin: center center;
