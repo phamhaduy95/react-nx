@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 import { DropDown } from './DropDown';
 import { DropDownItem } from './DropDownItem';
 import { DropDownItemGroup } from './DropDownItemGroup';
@@ -18,6 +19,7 @@ export const Primary: ComponentStory<typeof DropDown> = (args) => {
   `;
 
   return (
+    <GlobalStyleProvider>
     <Container>
       <DropDown label="Item List">
         <DropDownItem>Item 1</DropDownItem>
@@ -34,6 +36,7 @@ export const Primary: ComponentStory<typeof DropDown> = (args) => {
         </DropDownItemGroup>
       </DropDown>
     </Container>
+    </GlobalStyleProvider>
   );
 };
 Primary.args = {};

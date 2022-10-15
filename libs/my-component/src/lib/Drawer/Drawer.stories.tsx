@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Drawer } from './Drawer';
 import { DrawerHeader } from './DrawerHeader';
 import { DrawerContent } from './DrawerContent';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 
 export default {
   component: Drawer,
@@ -22,6 +23,7 @@ export const Primary: ComponentStory<typeof Drawer> = (args) => {
   };
 
   return (
+    <GlobalStyleProvider>
     <div>
       <button onClick={handleClickToOpenDrawers}>Open Drawer</button>
       <Drawer
@@ -43,6 +45,7 @@ export const Primary: ComponentStory<typeof Drawer> = (args) => {
         </DrawerContent>
       </Drawer>
     </div>
+    </GlobalStyleProvider>
   );
 };
 

@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 
 import DualRangeSlider from "./DualRangeSlider"
 
@@ -11,7 +12,9 @@ export default {
 } as ComponentMeta<typeof DualRangeSlider>;
 
 const Template: ComponentStory<typeof DualRangeSlider> = (args) => (
+  <GlobalStyleProvider>
   <DualRangeSlider  {...args} />
+  </GlobalStyleProvider>
 );
 
 export const Primary = Template.bind({});

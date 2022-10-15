@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 import  ToolTips  from './ToolTips';
 import "./Tooltips.stories.scss"
 
@@ -23,9 +24,11 @@ Example.args = {
 Example.decorators = [
   (Story)=>{
     return (
+      <GlobalStyleProvider>
       <div style={{margin:"2rem auto",width:"90%"}}>
         <Story/>
       </div>
+      </GlobalStyleProvider>
     )
   }
 ]

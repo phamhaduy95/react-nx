@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { useRef } from 'react';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 import { ContextMenu } from './ContextMenu';
 import { ContextMenuItem } from './ContextMenuItem';
 import { ContextMenuItemGroup } from './ContextMenuItemGroup';
@@ -16,7 +17,7 @@ export const Example: ComponentStory<typeof ContextMenu> = (args) => {
   const targetRef = useRef<HTMLDivElement>(null);
   const Box = styled('div')`
     :root {
-      box-sizing:border-box;
+      box-sizing: border-box;
     }
     margin: 1rem auto;
     width: 200px;
@@ -24,21 +25,22 @@ export const Example: ComponentStory<typeof ContextMenu> = (args) => {
     border: 2px dashed grey;
   `;
   return (
-    <Box ref={targetRef}>
-      <ContextMenu targetRef={targetRef} placement={placement}>
-        <ContextMenuItem>Item 1</ContextMenuItem>
-        <ContextMenuItem prefix={<>a</>} suffix={<>aa</>}>
-          Item 2
-        </ContextMenuItem>
-        <ContextMenuItem disabled>Item 3</ContextMenuItem>
-        <ContextMenuItem>Item 4</ContextMenuItem>
-        <ContextMenuItemGroup label='group 1'>
-        <ContextMenuItem>Item 5</ContextMenuItem>
-        <ContextMenuItem>Item 6</ContextMenuItem>
-        </ContextMenuItemGroup>
-  
-      </ContextMenu>
-    </Box>
+    <GlobalStyleProvider>
+      <Box ref={targetRef}>
+        <ContextMenu targetRef={targetRef} placement={placement}>
+          <ContextMenuItem>Item 1</ContextMenuItem>
+          <ContextMenuItem prefix={<>a</>} suffix={<>aa</>}>
+            Item 2
+          </ContextMenuItem>
+          <ContextMenuItem disabled>Item 3</ContextMenuItem>
+          <ContextMenuItem>Item 4</ContextMenuItem>
+          <ContextMenuItemGroup label="group 1">
+            <ContextMenuItem>Item 5</ContextMenuItem>
+            <ContextMenuItem>Item 6</ContextMenuItem>
+          </ContextMenuItemGroup>
+        </ContextMenu>
+      </Box>
+    </GlobalStyleProvider>
   );
 };
 

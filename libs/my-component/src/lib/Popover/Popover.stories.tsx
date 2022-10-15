@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { useRef, useState } from 'react';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 import { Popover } from './Popover';
 
 export default {
@@ -13,13 +14,13 @@ const Template: ComponentStory<typeof Popover> = (args) => (
 );
 
 export const Primary: ComponentStory<typeof Popover> = (args) => {
-  const {positionOrigin,forceMount,fixedOnScroll,placement} = args;
+  const { positionOrigin, forceMount, fixedOnScroll, placement } = args;
   const [isOpen, setOpen] = useState(false);
   const ref = useRef<HTMLButtonElement>(null);
   const Container = styled('div')`
-    margin-top: 0.5rem ;
-    margin-right:auto;
-    margin-left:auto;
+    margin-top: 0.5rem;
+    margin-right: auto;
+    margin-left: auto;
     width: 10vw;
     height: 250px;
   `;
@@ -33,8 +34,8 @@ export const Primary: ComponentStory<typeof Popover> = (args) => {
     display: flex;
     flex-direction: column;
     width: 250px;
-    background-color:white;
-    z-index:10;
+    background-color: white;
+    z-index: 10;
     padding: 0.5rem;
     color: hsl(0, 0%, 20%);
     border: 1px solid hsl(0, 0%, 80%);
@@ -57,34 +58,37 @@ export const Primary: ComponentStory<typeof Popover> = (args) => {
     setOpen(isOpen);
   };
   return (
-   
-    <Container>
-      <MyButton onClick={handleClick} ref={ref}>Open Popover</MyButton>
-      <MyPopover
-        isOpen={isOpen}
-        positionOrigin={positionOrigin}
-        anchorRef={ref}
-        onOpen={handleOpen}
-        fixedOnScroll={fixedOnScroll}
-        forceMount={forceMount}
-        placement={placement}
-      >
+    <GlobalStyleProvider>
+      <Container>
+        <MyButton onClick={handleClick} ref={ref}>
+          Open Popover
+        </MyButton>
+        <MyPopover
+          isOpen={isOpen}
+          positionOrigin={positionOrigin}
+          anchorRef={ref}
+          onOpen={handleOpen}
+          fixedOnScroll={fixedOnScroll}
+          forceMount={forceMount}
+          placement={placement}
+        >
           <>
-          <div className="Popover__Title">OK</div>
-          <p className="Popover__Content">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae
-            cum reprehenderit id sequi aut ducimus, molestias ea accusantium
-            eius repellat? Asperiores a saepe id illum libero consequuntur modi
-            ipsum nostrum!
-          </p>
+            <div className="Popover__Title">OK</div>
+            <p className="Popover__Content">
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+              Molestiae cum reprehenderit id sequi aut ducimus, molestias ea
+              accusantium eius repellat? Asperiores a saepe id illum libero
+              consequuntur modi ipsum nostrum!
+            </p>
           </>
-      </MyPopover>
-    </Container>
+        </MyPopover>
+      </Container>
+    </GlobalStyleProvider>
   );
 };
 Primary.args = {
-  positionOrigin:{top:0,left:0},
-  forceMount:false,
-  fixedOnScroll:false,
-  placement:"bottom-left",
+  positionOrigin: { top: 0, left: 0 },
+  forceMount: false,
+  fixedOnScroll: false,
+  placement: 'bottom-left',
 };

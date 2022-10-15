@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 import { TimePicker } from './TimePicker';
 
 export default {
@@ -7,7 +8,10 @@ export default {
 } as ComponentMeta<typeof TimePicker>;
 
 const Template: ComponentStory<typeof TimePicker> = (args) => (
+  <GlobalStyleProvider>
   <TimePicker {...args} />
+  </GlobalStyleProvider>
+
 );
 
 export const Primary = Template.bind({});

@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 import Calendar from './Calendar';
 
 
@@ -11,7 +12,9 @@ export default {
 } as ComponentMeta<typeof Calendar>;
 
 const Template: ComponentStory<typeof Calendar> = (args) => (
+  <GlobalStyleProvider>
   <Calendar {...args} />
+  </GlobalStyleProvider>
 );
 
 export const Example = Template.bind({});
