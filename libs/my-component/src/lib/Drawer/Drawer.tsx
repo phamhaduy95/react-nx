@@ -50,7 +50,7 @@ export function WrappedDrawer(props: DrawerProps) {
   const popupClassName = classNames('Drawer__Popup', `--${position}`);
 
   useEffect(() => {
-    if (openSignal) action.toggleOpen(true);
+   action.toggleOpen(openSignal);
   }, [openSignal]);
 
   // trigger onToggle when internal state isOpen changes
