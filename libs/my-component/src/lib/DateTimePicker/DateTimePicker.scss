@@ -3,6 +3,7 @@
 @import '../mediaQuery.scss';
 
 .DateTimePicker {
+  width: 250px;
   > .DateTimePicker__TextField {
     width: 100%;
     .DateTimePicker__InputIcon {
@@ -20,25 +21,26 @@
     background-color: white;
     display: flex;
     flex-direction: column;
-    height: calc(220px + 10vw);
-    max-height: 350px;
+    width: max-content;
+    height: calc(200px + 10vw);
+    max-height: 330px;
     border: $border;
     border-radius: 5px;
-    @at-root  .DateTimePicker__Popup__Container {
+    @at-root .DateTimePicker__Popup__Container {
       border-radius: 5px;
       display: flex;
       height: 70%;
       flex-grow: 1;
       > .DateTimePicker__DatePanel {
-        width: max-content;
+        width: 200px;
         border: none;
         border-right: $border;
         height: 100%;
         flex-grow: 1;
         > .Calendar {
           border: 0;
-        height: 100%;
-          >.Calendar_Table{
+          height: 100%;
+          > .Calendar_Table {
             padding: 0;
             flex-grow: 0;
           }
@@ -48,6 +50,7 @@
         border: none;
         width: calc(40px + 5vw);
         height: 100%;
+        
       }
     }
 
