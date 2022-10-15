@@ -88,7 +88,7 @@ export function DateTimeRangeInput(props: DateTimeRangeInputProps) {
   };
 
   const handlePopupToggle = (isOpen:boolean)=>{
-    onPopupToggle(mode,isOpen);
+    onPopupToggle(isOpen,mode);
   }
 
   return (

@@ -20,7 +20,7 @@ export type DateTimeRangePickerProps = {
   label?: TextFieldHelperText<string>;
   startDate?: Date | null;
   endDate?: Date | null;
-  onPopupToggle?: (mode: Mode, isOpen: boolean) => void;
+  onPopupToggle?: ( isOpen: boolean,mode?: Mode) => void;
 };
 
 const defaultProps: Required<DateTimeRangePickerProps> = {
