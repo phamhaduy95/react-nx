@@ -5,13 +5,13 @@
   border: $border;
   display: flex;
   flex-direction: column;
-  width: calc(60px + 18vw);
-  max-width: 120px;
+  width: calc(60px + 10vw);
+  max-width: 100px;
   border-radius: 5px;
 
   &:not(.isSecondIncluded) {
-     width: calc(40px + 12vw);
-        max-width: 90px;
+     width: calc(30px + 5vw);
+        max-width: 80px;
   }
 
   @at-root .TimePanel__Header {
