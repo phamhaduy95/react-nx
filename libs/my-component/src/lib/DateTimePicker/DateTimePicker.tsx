@@ -31,6 +31,7 @@ export interface DateTimePickerProps {
   error?: TextFieldProps['error'];
   success?: TextFieldProps['success'];
   helperText?: TextFieldProps['helperText'];
+  onPopupToggle?: (isOpen: boolean) => void;
 }
 
 const defaultProps: Required<DateTimePickerProps> = {
@@ -47,6 +48,7 @@ const defaultProps: Required<DateTimePickerProps> = {
   DatePanel(props) {
     return <DatePanelSingle {...props} />;
   },
+  onPopupToggle(isOpen) {},
   error: false,
   success: false,
   helperText: null,
@@ -75,6 +77,7 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
     error,
     success,
     helperText,
+    onPopupToggle
   } = newProps;
   const dateTimeFormat = getDateTimeFormat(
     dateFormat,
@@ -90,10 +93,10 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
   const action = useDateTimePickerStore((state) => state.action);
   const isPopupOpen = useDateTimePickerStore((state) => state.isPopupOpen);
 
-  useEffect(()=>{
+  useEffect(() => {
     onSelect(value);
     action.submitDate(value);
-  },[value?.toString()])
+  }, [value?.toString()]);
 
   const displayedDate = useDateTimePickerStore(
     (state) => {
@@ -213,6 +216,7 @@ function WrappedDateTimePicker(props: DateTimePickerProps) {
         triggerRef={triggerRef}
         DatePanel={DatePanel}
         disabledDate={disabledDate}
+        onPopupToggle={onPopupToggle}
       />
     </div>
   );
