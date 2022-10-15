@@ -3,10 +3,10 @@
 @import '../_mediaQuery.scss';
 
 .DatePanelSingle {
-  width: calc(150px + 10vw);
-  max-width: 260px;
-  max-height: 350px;
-  height: max-content;
+  width: calc(120px + 10vw);
+  min-width: 180px;
+  max-width: 300px;
+  max-height: 320px;
   display: flex;
   flex-direction: column;
   > .Calendar {
