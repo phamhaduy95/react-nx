@@ -26,23 +26,25 @@ export interface DatePickerProps {
   className?: string | false;
   dateFormat?: string;
   label?: string;
-  value?:Date|null,
+  value?: Date | null;
   disabledDate?: CalendarProps['disabledDate'];
   onSelect?: (date: Date | null) => void;
   PanelComponent?: (props: DatePanelProps) => JSX.Element;
   error?: TextFieldProps['error'];
   success?: TextFieldProps['success'];
   helperText?: TextFieldProps['helperText'];
+  onPopupToggle?: (isOpen: boolean) => void;
 }
 const defaultPropsValue: Required<DatePickerProps> = {
   className: false,
-  value:null,
+  value: null,
   dateFormat: 'DD/MM/YYYY',
   label: '',
   disabledDate(currentDate) {
     return false;
   },
   onSelect(date) {},
+  onPopupToggle(isOpen) {},
   PanelComponent(props) {
     return <DatePanelSingle {...props} />;
   },
@@ -71,7 +73,8 @@ function WrappedDatePicker(props: DatePickerProps) {
     disabledDate,
     error,
     success,
-    helperText
+    helperText,
+    onPopupToggle
   } = newProps;
 
   const rootClassName = classNames('DatePicker', {
@@ -80,9 +83,9 @@ function WrappedDatePicker(props: DatePickerProps) {
   const textFieldRef = useRef<any>(null);
   const store = useStoreDirectly();
   // update internal state when the initial date value is provided.
-  useEffect(()=>{
+  useEffect(() => {
     action.submitDate(value);
-  },[value?.toDateString()])
+  }, [value?.toDateString()]);
 
   const submittedDate = useDatePickerStore(
     (state) => state.submittedDate,
@@ -214,6 +217,7 @@ function WrappedDatePicker(props: DatePickerProps) {
         disabledDate={disabledDate}
         PanelComponent={PanelComponent}
         onClickOutSide={handleClickOutSide}
+        onPopupToggle={onPopupToggle}
       />
     </div>
   );
