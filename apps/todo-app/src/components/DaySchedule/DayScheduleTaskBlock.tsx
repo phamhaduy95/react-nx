@@ -5,6 +5,7 @@ import { useDayScheduleStore } from './DayScheduleStoreProvider';
 import { getTimeRatioInPercentage } from './utils';
 import { Position, positionElement } from '../utils';
 import { useDayScheduleSharedData } from './DayScheduleContext';
+import shallow from 'zustand/shallow';
 
 type DayScheduleTaskProps = {
   taskId: string;
@@ -19,8 +20,7 @@ export const DayScheduleTaskBlock = memo((props: DayScheduleTaskProps) => {
   const taskData = useDayScheduleStore(
     (state) => {
       return state.tasks.find((e) => e.taskId === taskId);
-    },
-    (a, b) => a?.taskId === b?.taskId
+    }
   );
 
   useEffect(() => {
