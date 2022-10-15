@@ -7,17 +7,18 @@ import { DatePanelProps } from '../DatePanelSingle/DatePanelSingle';
 import { CalendarProps } from '../Calendar/Calendar';
 import { useDateTimePickerStore } from './DateTimePickerStoreProvider';
 import { checkIsClickOnElement, isElementFocus } from '../utils/utils';
+import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 
 interface DateTimePickerPopupProps {
   triggerRef: React.MutableRefObject<HTMLElement | null>;
   isSecondIncluded: boolean;
   DatePanel: NonNullable<DateTimePickerProps['DatePanel']>;
   disabledDate: CalendarProps['disabledDate'];
-  onPopupToggle:NonNullable<DateTimePickerProps["onPopupToggle"]>;
+  onPopupToggle: NonNullable<DateTimePickerProps['onPopupToggle']>;
 }
 
-export const DateTimePickerPopup =memo((props: DateTimePickerPopupProps)=>{
-  const { triggerRef, DatePanel, disabledDate,onPopupToggle } = props;
+export const DateTimePickerPopup = memo((props: DateTimePickerPopupProps) => {
+  const { triggerRef, DatePanel, disabledDate, onPopupToggle } = props;
   const action = useDateTimePickerStore((state) => state.action);
   const isPopupOpen = useDateTimePickerStore((state) => state.isPopupOpen);
   const displayDateTime = useDateTimePickerStore(
@@ -34,9 +35,9 @@ export const DateTimePickerPopup =memo((props: DateTimePickerPopupProps)=>{
       action.togglePopup(false);
   }, []);
 
-  useEffect(()=>{
-     onPopupToggle(isPopupOpen);
-  },[isPopupOpen])
+  useEffectSkipFirstRender(() => {
+    onPopupToggle(isPopupOpen);
+  }, [isPopupOpen]);
 
   const handleTimeSelect: TimePanelProps['onTimeSelect'] = (time) => {
     action.selectTime(time);
