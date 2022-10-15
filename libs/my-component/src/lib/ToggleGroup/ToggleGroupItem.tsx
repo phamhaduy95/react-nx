@@ -10,6 +10,7 @@ export type ToggleGroupItemProps = {
   children: JSX.Element | string;
   value: string;
   disabled?: boolean;
+  selected?:boolean
 };
 
 export function ToggleGroupItem(props: ToggleGroupItemProps) {
@@ -23,14 +24,23 @@ const defaultProps: Required<IndexedToggleGroupItemProps> = {
   value: '',
   disabled: false,
   index: 0,
+  selected:false,
 };
 
 function IndexedToggleGroupItem(props: IndexedToggleGroupItemProps) {
   const newProps = { ...defaultProps, ...props };
-  const { index, value, disabled, children } = newProps;
+  const { index, value, disabled, children,selected } = newProps;
   const itemRef = useRef<HTMLButtonElement>(null);
   const { onChange } = useToggleGroupSharedData();
   const action = useToggleGroupStore((state) => state.action);
+
+  useEffect(() => {
+    action.subscribe({ index, disabled, isSelected });
+    return () => {
+      action.unsubscribe(index);
+    };
+  }, []);
+
   const isSelected = useToggleGroupStore((state) => {
     const id = state.itemList.findIndex(
       (e) => e.isSelected && e.index === index
@@ -48,12 +58,11 @@ function IndexedToggleGroupItem(props: IndexedToggleGroupItemProps) {
 
   useSwitchFocus(itemRef, isFocus);
 
-  useEffect(() => {
-    action.subscribe({ index, disabled, isSelected });
-    return () => {
-      action.unsubscribe(index);
-    };
-  }, []);
+
+
+  useEffect(()=>{
+    action.toggleItem({index,isSelected:selected});
+  },[selected])
 
   useEffectSkipFirstRender(() => {
     if (disabled) action.disableItem(index);

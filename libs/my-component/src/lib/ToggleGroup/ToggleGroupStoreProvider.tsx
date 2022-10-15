@@ -2,8 +2,10 @@ import React, { createContext, useContext, useMemo } from 'react';
 import { createStore, StoreApi, useStore } from 'zustand';
 import shallow from 'zustand/shallow';
 
+type ItemStateType = { index: number; isSelected: boolean; disabled: boolean };
+
 type ToggleGroupState = {
-  itemList: { index: number; isSelected: boolean; disabled: boolean }[];
+  itemList:ItemStateType[];
   highLightedItem: { index: number } | null;
   settings: {
     mode: 'single' | 'multi';
@@ -42,7 +44,6 @@ export function ToggleGroupStoreProvider(props: Props) {
         toggleItem(item) {
           set((state) => {
             const { index, isSelected } = item;
-
             const { mode } = state.settings;
             const itemList = [...state.itemList];
             if (mode === 'single' && isSelected) {
