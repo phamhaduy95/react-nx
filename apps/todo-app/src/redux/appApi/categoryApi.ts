@@ -1,11 +1,14 @@
 import { baseApi } from "./baseApi";
 import { ReduxCategoryData, ResponseCategoryData } from "./type";
-
+const userId = 'c0e86673-bce3-4608-8c32-06763581e952';
 export const apiV1 = baseApi.injectEndpoints({
     endpoints:(build)=>({
         getAllForUser: build.query<ReduxCategoryData[], undefined>({
             query: () => ({
               url: `categories/all`,
+              params: {
+                userId:userId
+              }
             }),
             transformResponse(
               response: ResponseCategoryData[],
