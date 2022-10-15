@@ -9,6 +9,7 @@ import {
   DateRangePanelStoreProvider,
   useDateRangePanelStore,
 } from './DateRangePanelStoreProvider';
+import { useEffect } from 'react';
 
 export interface DateRangePanelProps {
   range?: Pick<DateRangePanelState, 'endDate' | 'startDate'>;
@@ -68,12 +69,14 @@ function WrappedElement(props: DateRangePanelProps) {
       return a?.toDateString() === b?.toDateString();
     }
   );
+  
+
   // update startDate and endDate when the props value is changed
-  useEffectSkipFirstRender(() => {
+  useEffect(() => {
     if (checkIsDateInputDisabled(range.endDate, disabledDate)) return;
     action.selectEndDate(range.endDate);
   }, [range.endDate?.toDateString()]);
-  useEffectSkipFirstRender(() => {
+  useEffect(() => {
     if (checkIsDateInputDisabled(range.startDate, disabledDate)) return;
     action.selectStartDate(range.startDate);
   }, [range.startDate?.toDateString()]);
