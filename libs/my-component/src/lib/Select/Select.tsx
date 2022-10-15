@@ -17,6 +17,7 @@ export interface SelectProps {
   success?: string | false;
   autoWidth?: boolean;
   defaultValue?: string;
+  onPopupToggle?: (isOpen: boolean) => void;
 }
 
 // change select interface.
@@ -30,7 +31,8 @@ const defaultPropsValue: Required<SelectProps> = {
   error: false,
   success: false,
   autoWidth: false,
-  defaultValue: "",
+  defaultValue: '',
+  onPopupToggle(isOpen) {},
 };
 
 export function Select(props: SelectProps) {
@@ -53,6 +55,7 @@ function WrappedSelect(props: SelectProps) {
     error,
     success,
     defaultValue,
+    onPopupToggle,
   } = newProps;
   const textFieldRef = useRef<any>(null);
   const IndexedItems = giveIndexToSelectOptions(children);
@@ -60,13 +63,12 @@ function WrappedSelect(props: SelectProps) {
     'auto-width': autoWidth,
   });
 
-  const action = useSelectStore((state)=>state.action);
+  const action = useSelectStore((state) => state.action);
 
-  useEffect(()=>{
-
-        const value =  (defaultValue === "")?null:defaultValue; 
-        action.selectItemByValue(value);
-  },[defaultValue])
+  useEffect(() => {
+    const value = defaultValue === '' ? null : defaultValue;
+    action.selectItemByValue(value);
+  }, [defaultValue]);
 
   return (
     <div className={rootClassName}>
@@ -78,7 +80,9 @@ function WrappedSelect(props: SelectProps) {
         ref={textFieldRef}
         onSelect={onSelect}
       />
-      <SelectPopup targetRef={textFieldRef}>{IndexedItems}</SelectPopup>
+      <SelectPopup targetRef={textFieldRef} onPopupToggle={onPopupToggle}>
+        {IndexedItems}
+      </SelectPopup>
     </div>
   );
 }

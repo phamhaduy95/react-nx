@@ -4,14 +4,16 @@ import { useSelectStore } from './SelectStoreProvider';
 import { switchFocus } from './utils';
 import { useSwitchFocus } from '../utils/hooks';
 import { checkIsClickOnElement } from '../utils/utils';
+import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 
 interface SelectPopupProps {
   children: JSX.Element[] | JSX.Element;
   targetRef: React.MutableRefObject<any>;
+  onPopupToggle:(isOpen:boolean)=>void;
 }
 
 export const SelectPopup = (props: SelectPopupProps) => {
-  const { children, targetRef } = props;
+  const { children, targetRef,onPopupToggle } = props;
   const menuRef = useRef<HTMLDivElement>(null);
 
   const isShowed = useSelectStore((state) => state.isPopupOpen);
@@ -19,6 +21,10 @@ export const SelectPopup = (props: SelectPopupProps) => {
   const isMenuFocused = useSelectStore((state) => {
     return state.isPopupOpen === true && state.highLightedItem === null;
   });
+
+  useEffectSkipFirstRender(()=>{
+      onPopupToggle(isShowed);
+  },[isShowed])
 
   useSwitchFocus(menuRef, isMenuFocused);
   // when popup is closed, reset the highlightedItem in store and move focus back to TextField
