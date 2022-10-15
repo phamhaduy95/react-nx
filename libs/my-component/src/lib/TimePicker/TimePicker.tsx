@@ -21,24 +21,26 @@ dayjs.extend(customParseFormat);
 export type TimePickerProps = {
   className?: string;
   isSecondIncluded?: boolean;
-  value?:Time|null,
+  value?: Time | null;
   delimiter?: string;
   disabled?: boolean;
   label?: TextFieldProps['label'];
   helperText?: TextFieldProps['helperText'];
   onTimeSelect?: (time: Time | null) => void;
+  onPopupToggle?: (isOpen: boolean) => void;
 };
 
-const DefaultProps: Required<TimePickerProps> = {
+const DefaultProps: Required<TimePickerProps> = Object.freeze({
   className: '',
-  value:null,
+  value: null,
   isSecondIncluded: false,
   delimiter: ':',
   onTimeSelect(time) {},
   disabled: false,
   label: '',
   helperText: null,
-};
+  onPopupToggle(isOpen) {},
+});
 
 export function TimePicker(props: TimePickerProps) {
   return (
@@ -58,6 +60,7 @@ function WrappedTimePicker(props: TimePickerProps) {
     onTimeSelect,
     label,
     helperText,
+    onPopupToggle,
   } = newProps;
   const rootClassName = classNames('TimePicker', className);
   const timeFormat = getTimeFormat(isSecondIncluded, delimiter);
@@ -65,10 +68,10 @@ function WrappedTimePicker(props: TimePickerProps) {
   const textFieldRef = useRef(null);
   const [inputValue, setInputValue] = useState('');
   // update internal state when initial value is provided
-  useEffect(()=>{
-      action.submitTime(value);
-  },[value?.hour,value?.minute,value?.second])
-  
+  useEffect(() => {
+    action.submitTime(value);
+  }, [value?.hour, value?.minute, value?.second]);
+
   const action = useTimePickerStore((state) => state.action);
   const displayedTime = useTimePickerStore((state) => {
     const { isPopupOpen, selectedTime, submittedTime } = state;
@@ -138,6 +141,7 @@ function WrappedTimePicker(props: TimePickerProps) {
       <TimePickerPopup
         targetRef={textFieldRef}
         isSecondInCluded={isSecondIncluded}
+        onPopupToggle={onPopupToggle}
       />
     </div>
   );
