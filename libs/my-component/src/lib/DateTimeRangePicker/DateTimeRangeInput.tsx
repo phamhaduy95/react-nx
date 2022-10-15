@@ -5,19 +5,30 @@ import { CalendarProps } from '../Calendar';
 import dayjs from 'dayjs';
 import { useDateTimeRangePickerStore } from './DateTimeRangePickerStoreProvider';
 import { TextFieldProps } from '../TextField';
+import { DateTimeRangePickerProps } from './DateTimeRangePicker';
 
 export interface DateTimeRangeInputProps {
   label: DateTimePickerProps['label'];
   onDateSelect: NonNullable<DateTimePickerProps['onSelect']>;
-  mode: DateRangePanelProps['mode'];
+  mode: NonNullable<DateRangePanelProps['mode']>,
   error: TextFieldProps['error'];
   success: TextFieldProps['success'];
   helperText: TextFieldProps['helperText'];
-  value:Date|null,
+  value: Date | null;
+  onPopupToggle: NonNullable<DateTimeRangePickerProps['onPopupToggle']>;
 }
 
 export function DateTimeRangeInput(props: DateTimeRangeInputProps) {
-  const { label, onDateSelect, mode, error, success, helperText,value } = props;
+  const {
+    label,
+    onDateSelect,
+    mode,
+    error,
+    success,
+    helperText,
+    value,
+    onPopupToggle,
+  } = props;
   const startDate = useDateTimeRangePickerStore(
     (state) => state.startDate,
     (a, b) => a?.toString() === b?.toString()
@@ -44,7 +55,6 @@ export function DateTimeRangeInput(props: DateTimeRangeInputProps) {
         startDate: mode === 'selectStart' ? dateValue : startDate,
         endDate: mode === 'selectEnd' ? dateValue : endDate,
       };
-
       const handleDateSelect: DateRangePanelProps['onSelect'] = (
         type,
         value
@@ -77,6 +87,9 @@ export function DateTimeRangeInput(props: DateTimeRangeInputProps) {
     return false;
   };
 
+  const handlePopupToggle = (isOpen:boolean)=>{
+    onPopupToggle(mode,isOpen);
+  }
 
   return (
     <DateTimePicker
@@ -89,6 +102,7 @@ export function DateTimeRangeInput(props: DateTimeRangeInputProps) {
       success={success}
       error={error}
       helperText={helperText}
+      onPopupToggle={handlePopupToggle}
     />
   );
 }

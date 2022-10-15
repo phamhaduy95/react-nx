@@ -5,10 +5,10 @@ import {
 } from './DateTimeRangePickerStoreProvider';
 import classNames from 'classnames';
 import { TextFieldProps } from '../TextField';
-import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
-import { useEffect } from 'react';
 
 type TextFieldHelperText<T> = { start: T; end: T };
+
+type Mode = 'selectStart' | 'selectEnd';
 
 export type DateTimeRangePickerProps = {
   className?: string;
@@ -17,19 +17,21 @@ export type DateTimeRangePickerProps = {
   error?: TextFieldHelperText<TextFieldProps['error']>;
   success?: TextFieldHelperText<TextFieldProps['success']>;
   helperText?: TextFieldHelperText<TextFieldProps['helperText']>;
-  label?:TextFieldHelperText<string>;
+  label?: TextFieldHelperText<string>;
   startDate?: Date | null;
   endDate?: Date | null;
+  onPopupToggle?: (mode: Mode, isOpen: boolean) => void;
 };
 
 const defaultProps: Required<DateTimeRangePickerProps> = {
   className: '',
   onEndTimeChange(date) {},
   onStartTimeChange(date) {},
+  onPopupToggle(isOpen) {},
   success: { start: false, end: false },
   error: { start: false, end: false },
   helperText: { start: null, end: null },
-  label:{end:"",start:""},
+  label: { end: '', start: '' },
   startDate: null,
   endDate: null,
 };
@@ -53,7 +55,8 @@ function WrappedComponent(props: DateTimeRangePickerProps) {
     helperText,
     startDate,
     endDate,
-    label
+    label,
+    onPopupToggle,
   } = newProps;
   const action = useDateTimeRangePickerStore((state) => state.action);
 
@@ -68,7 +71,6 @@ function WrappedComponent(props: DateTimeRangePickerProps) {
 
   const rootClassName = classNames('DateTimeRangePicker', className);
 
-
   return (
     <div className={rootClassName}>
       <DateTimeRangeInput
@@ -79,6 +81,7 @@ function WrappedComponent(props: DateTimeRangePickerProps) {
         error={error.start}
         helperText={helperText.start}
         value={startDate}
+        onPopupToggle={onPopupToggle}
       />
       <DateTimeRangeInput
         mode="selectEnd"
@@ -88,6 +91,7 @@ function WrappedComponent(props: DateTimeRangePickerProps) {
         error={error.end}
         helperText={helperText.end}
         value={endDate}
+        onPopupToggle={onPopupToggle}
       />
     </div>
   );
