@@ -1,7 +1,7 @@
 import { GetDayScheduleDataArg, GetMonthScheduleDataArg, GetWeekScheduleDataArg } from "../appApi";
 
 export type State = {
-  monthArg: GetMonthScheduleDataArg|null;
-  dateArg: GetDayScheduleDataArg|null;
-  weekArg: GetWeekScheduleDataArg|null;
+  monthArg: GetMonthScheduleDataArg;
+  dateArg: GetDayScheduleDataArg;
+  weekArg: GetWeekScheduleDataArg;
 };
