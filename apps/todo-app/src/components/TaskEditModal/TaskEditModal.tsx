@@ -24,7 +24,7 @@ import { convertTaskReduxDataIntoTaskDataInput } from './redux/utils';
 import { useMemo } from 'react';
 import { appApi, ReduxCategoryData } from '../../redux/appApi';
 
-export function TaskEditDrawer() {
+export function TaskEditModal() {
   const dispatch = useAppDispatch();
   const reduxTaskData = useAppSelector(
     (state) => state.taskEditModal.taskData
