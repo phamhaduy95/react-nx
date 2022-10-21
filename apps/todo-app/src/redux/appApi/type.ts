@@ -30,9 +30,10 @@ export interface ErrorResponse {
   message: string;
 }
 
-export interface ErrorResponse {
-  message: string;
+export interface AddTaskResponse {
+  taskId:string;
 }
+
 
 type DateStr = string;
 

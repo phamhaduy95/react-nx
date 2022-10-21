@@ -1,6 +1,8 @@
 import { TaskDataType } from '../../type/model';
 import { apiV1 } from './categoryApi';
+import { RootState } from '../rootStore';
 import {
+  AddTaskResponse,
   GetDayScheduleDataArg,
   GetMonthScheduleDataArg,
   GetWeekScheduleDataArg,
@@ -9,6 +11,7 @@ import {
   ReduxTaskData,
   ReduxWeekScheduleState,
 } from './type';
+import dayjs from 'dayjs';
 
 const userId = 'c0e86673-bce3-4608-8c32-06763581e952';
 
@@ -23,6 +26,22 @@ export const apiV2 = apiV1.injectEndpoints({
         return result;
       },
     }),
+    getAllTaskInCurrentHour: build.query<ReduxTaskData[],undefined>({
+      query:()=>{
+          const startDate = dayjs().startOf("hour").toISOString();
+          const endDate = dayjs().endOf("hour").toISOString();
+          return {
+            url: `tasks/within-range`,
+            params: {
+              userId: userId,
+              startDate:startDate,
+              endDate:endDate,
+            }
+          }
+      },
+    }),
+
+    
     getMonthScheduleData: build.query<
       ReduxMonthScheduleState,
       GetMonthScheduleDataArg
@@ -36,10 +55,9 @@ export const apiV2 = apiV1.injectEndpoints({
           offset: -new Date().getTimezoneOffset(),
         },
       }),
-
+      keepUnusedDataFor: 1,
       providesTags: (result, error, arg) => [
         { type: 'Tasks', id: `Month` },
-        { type: 'Tasks', id: `${JSON.stringify(arg)}` },
       ],
       // transform response data;
       transformResponse(
@@ -71,7 +89,6 @@ export const apiV2 = apiV1.injectEndpoints({
       }),
       providesTags: (result, error, arg) => [
         { type: 'Tasks', id: `Day` },
-        { type: 'Tasks', id: `${JSON.stringify(arg)}` },
       ],
       transformResponse(
         response: ReduxTaskData[],
@@ -83,9 +100,7 @@ export const apiV2 = apiV1.injectEndpoints({
           tasks: response,
         };
       },
-      onCacheEntryAdded(arg, api) {
-        console.log('day data update');
-      },
+      keepUnusedDataFor: 1,
     }),
     getWeekScheduleData: build.query<
       ReduxWeekScheduleState,
@@ -112,11 +127,11 @@ export const apiV2 = apiV1.injectEndpoints({
       },
       providesTags: (result, error, arg) => [
         { type: 'Tasks', id: 'Week' },
-        { type: 'Tasks', id: `${JSON.stringify(arg)}` },
       ],
       onCacheEntryAdded(arg, api) {
         console.log('week data update');
       },
+      keepUnusedDataFor: 1,
     }),
     updateTask: build.mutation<
       Response,
@@ -135,12 +150,56 @@ export const apiV2 = apiV1.injectEndpoints({
       }),
       invalidatesTags: (result, error, arg) => [
         { type: 'Tasks', id: `${arg.taskId}` },
-        { type: 'Tasks', id: 'Month' },
-        { type: 'Tasks', id: 'Day' },
-        { type: 'Tasks', id: 'Week' },
+        // { type: 'Tasks', id: 'Month' },
+        // { type: 'Tasks', id: 'Day' },
+        // { type: 'Tasks', id: 'Week' },
       ],
+      async onQueryStarted(arg, api) {
+        const { queryFulfilled, getState, dispatch } = api;
+        const rootState = getState() as RootState;
+        const taskId = arg.taskId;
+        try {
+          const response = await queryFulfilled;
+
+          const dayArg = rootState.saveDateArg.dateArg;
+          dispatch(
+            apiV2.util.updateQueryData(
+              'getDayScheduleData',
+              dayArg,
+              (draft) => {
+                const index = draft.tasks.findIndex((e) => e.taskId === taskId);
+                if (index === -1) return;
+                const taskToUpdate = draft.tasks[index];
+                draft.tasks[index] = { ...taskToUpdate, ...arg };
+              }
+            )
+          );
+          const monthArg = rootState.saveDateArg.monthArg;
+          dispatch(
+            apiV2.util.updateQueryData(
+              'getMonthScheduleData',
+              monthArg,
+              (draft) => {
+                const index = draft.tasks.findIndex((e) => e.taskId === taskId);
+                if (index === -1) return;
+                const taskToUpdate = draft.tasks[index];
+                draft.tasks[index] = { ...taskToUpdate, ...arg };
+              }
+            )
+          );
+          const week = rootState.saveDateArg.weekArg;
+          dispatch(
+            apiV2.util.updateQueryData('getWeekScheduleData', week, (draft) => {
+              const index = draft.tasks.findIndex((e) => e.taskId === taskId);
+              if (index === -1) return;
+              const taskToUpdate = draft.tasks[index];
+              draft.tasks[index] = { ...taskToUpdate, ...arg };
+            })
+          );
+        } catch (e) {}
+      },
     }),
-    addTask: build.mutation<any, Omit<ReduxTaskData, 'taskId'>>({
+    addTask: build.mutation<AddTaskResponse, Omit<ReduxTaskData, 'taskId'>>({
       query: (arg) => ({
         url: `tasks`,
         method: 'POST',
@@ -154,10 +213,48 @@ export const apiV2 = apiV1.injectEndpoints({
         } as ReduxTaskData,
       }),
       invalidatesTags: (result, error, arg) => [
-        { type: 'Tasks', id: 'Month' },
-        { type: 'Tasks', id: 'Day' },
-        { type: 'Tasks', id: 'Week' },
+        // { type: 'Tasks', id: 'Month' },
+        // { type: 'Tasks', id: 'Day' },
+        // { type: 'Tasks', id: 'Week' },
       ],
+      async onQueryStarted(arg, api) {
+        const { queryFulfilled, dispatch, getState } = api;
+        const rootState = getState() as RootState;
+
+        try {
+          const response = await queryFulfilled;
+          const taskId = response.data.taskId;
+          const dayArg = rootState.saveDateArg.dateArg;
+          dispatch(
+            apiV2.util.updateQueryData(
+              'getDayScheduleData',
+              dayArg,
+              (draft) => {
+                const task: ReduxTaskData = { ...arg, taskId };
+                draft.tasks.push(task);
+              }
+            )
+          );
+          const monthArg = rootState.saveDateArg.monthArg;
+          dispatch(
+            apiV2.util.updateQueryData(
+              'getMonthScheduleData',
+              monthArg,
+              (draft) => {
+                const task: ReduxTaskData = { ...arg, taskId };
+                draft.tasks.push(task);
+              }
+            )
+          );
+          const week = rootState.saveDateArg.weekArg;
+          dispatch(
+            apiV2.util.updateQueryData('getWeekScheduleData', week, (draft) => {
+              const task: ReduxTaskData = { ...arg, taskId };
+              draft.tasks.push(task);
+            })
+          );
+        } catch (e) {}
+      },
     }),
     deleteTask: build.mutation<any, ReduxTaskData['taskId']>({
       query: (id) => ({
