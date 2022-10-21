@@ -5,15 +5,17 @@ import dayjs from 'dayjs';
 import { defaultDatePanelProps } from '../DatePanelSingle/DatePanelSingle';
 import { useDateRangePickerStore } from './DateRangePickerStoreProvider';
 import { useDatePickerStore } from '../DatePicker/DatePickerStoreProvider';
+import { DateRangePickerProps } from './DateRangePicker';
 
 export interface DateRangeInputFieldProps {
   label: string;
   mode: NonNullable<DateRangePanelProps['mode']>;
   onDateSelect: DatePickerProps['onSelect'];
+  onPopupToggle:NonNullable<DateRangePickerProps["onPopupToggle"]>
 }
 
 export default function DateRangeInputField(props: DateRangeInputFieldProps) {
-  const { label, mode, onDateSelect } = props;
+  const { label, mode, onDateSelect,onPopupToggle } = props;
   const startDate = useDateRangePickerStore((state)=>state.startDate,(a,b)=>a?.toDateString() === b?.toDateString());
   const endDate = useDateRangePickerStore((state)=>state.endDate,(a,b)=>a?.toDateString() === b?.toDateString());
 
@@ -21,7 +23,7 @@ export default function DateRangeInputField(props: DateRangeInputFieldProps) {
     return (props) => {
       const newProps = {...defaultDatePanelProps,...props};
       const action = useDatePickerStore((state)=>state.action);
-      const { dateValue, onSelect,disabledDate } = newProps;
+      const { dateValue, onSelect,disabledDate, } = newProps;
       const range: DateRangePanelProps['range'] = {
         startDate: mode === 'selectStart' ? dateValue : startDate,
         endDate: mode === 'selectEnd' ? dateValue : endDate,
@@ -58,6 +60,10 @@ export default function DateRangeInputField(props: DateRangeInputFieldProps) {
     return false
   } 
 
+  const handlePopupToggle = (isOpen:boolean)=>{
+    onPopupToggle(isOpen,mode);
+  }
+
   return (
     <div className={'DateRangePicker__Input'} tabIndex={1}>
       <DatePicker
@@ -66,6 +72,7 @@ export default function DateRangeInputField(props: DateRangeInputFieldProps) {
         PanelComponent={InputDatePanel}
         onSelect={onDateSelect}
         disabledDate = {disabledDate}
+        onPopupToggle={handlePopupToggle}
       />
     </div>
   );
