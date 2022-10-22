@@ -90,7 +90,8 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
       error,
       success,
       value,
-      typeable
+      typeable,
+      type
     } = newProps;
     const inputRef = useRef<HTMLInputElement>(null);
     // the error flag has higher priority than success
@@ -193,6 +194,7 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
               value={inputValue}
               disabled={disabled}
               ref={inputRef}
+              type={type}
             />
             {renderSuffix()}
           </div>
