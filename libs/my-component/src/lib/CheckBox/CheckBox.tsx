@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import './CheckBox.scss';
+import { useEffectSkipFirstRender } from '../../../../../apps/todo-app/src/utils/hooks';
 export type CheckBoxProps = {
   isSelected?: boolean;
   onSelected?: (value: string, isSelected: boolean) => void;
@@ -37,9 +38,13 @@ export function CheckBox(props: CheckBoxProps) {
     ['selected']: isSelected,
   });
 
+  useEffectSkipFirstRender(()=>{
+      onSelected(value,isSelected);
+  },[isSelected])
+
   const handleClick = () => {
     setSelected((prev) => !prev);
-    onSelected(value, isSelected);
+   
   };
 
   const handleOnKeyDown = (e: React.KeyboardEvent) => {
@@ -48,7 +53,6 @@ export function CheckBox(props: CheckBoxProps) {
     switch (key) {
       case 'Enter': {
         setSelected((prev) => !prev);
-        onSelected(value, isSelected);
         return;
       }
     }
