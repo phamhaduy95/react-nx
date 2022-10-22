@@ -1,6 +1,6 @@
 import { Action } from '@reduxjs/toolkit';
 import { ReduxTaskData } from 'apps/todo-app/src/redux/types';
-import { ErrorsMessage, TaskDataInput, TaskDataSchema } from '../types';
+import { ErrorsMessage, TaskDataInput, TaskDataSchema } from '../../components/TaskEditModal/types';
 
 export type TaskEditModalState = {
   type: 'update' | 'add';

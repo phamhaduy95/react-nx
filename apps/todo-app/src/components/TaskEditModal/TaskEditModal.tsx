@@ -20,19 +20,23 @@ import {
   useAppSelector,
 } from '../../redux/rootStore';
 import { validateInputData } from './TaskDataSchema';
-import { convertTaskReduxDataIntoTaskDataInput } from './redux/utils';
-import { useMemo } from 'react';
-import { appApi, ReduxCategoryData } from '../../redux/appApi';
+import { useCallback, useEffect, useMemo } from 'react';
+import { appApi } from '../../redux/appApi';
+import { convertTaskReduxDataIntoTaskDataInput } from './utils';
 
 export function TaskEditModal() {
   const dispatch = useAppDispatch();
-  const reduxTaskData = useAppSelector(
-    (state) => state.taskEditModal.taskData
-  );
+  const reduxTaskData = useAppSelector((state) => state.taskEditModal.taskData);
   const type = useAppSelector((state) => state.taskEditModal.type);
   const [updateTask, updateResult] = appApi.useUpdateTaskMutation();
   const [addTask, addResult] = appApi.useAddTaskMutation();
 
+  const isLoading =
+    type === 'add' ? addResult.isLoading : updateResult.isLoading;
+  const isError = type === 'add' ? addResult.isError : updateResult.isError;
+  const isSuccess =
+    type === 'add' ? addResult.isSuccess : updateResult.isSuccess;
+  const isIdle = !(isLoading || isError || isSuccess);
   const { data: categories } = appApi.useGetAllForUserQuery(undefined, {});
 
   const taskData = useMemo(
@@ -50,6 +54,13 @@ export function TaskEditModal() {
   const restrictClose = useAppSelector(
     (state) => state.taskEditModal.restrictClose
   );
+
+  useEffect(() => {
+    if (isOpen) {
+      updateResult.reset();
+      addResult.reset();
+    }
+  }, [isOpen]);
 
   const handleTitleInputChange: TextFieldProps['onValueChange'] = (value) => {
     dispatch(action.taskEditModal.updateTaskData({ title: value }));
@@ -78,14 +89,12 @@ export function TaskEditModal() {
     if (result) {
       switch (type) {
         case 'add':
-          addTask(reduxTaskData).unwrap();
-
+          addTask(reduxTaskData);
           break;
         case 'update':
           updateTask(reduxTaskData);
           break;
       }
-      dispatch(action.taskEditModal.toggleDrawerOpen(false));
       return;
     }
     dispatch(action.taskEditModal.updateErrorMessage(error));
@@ -108,69 +117,103 @@ export function TaskEditModal() {
     });
   };
 
-  const handleDrawerToggle: ModalProps['onToggle'] = (isOpen) => {
+  const handleDrawerToggle: ModalProps['onToggle'] = useCallback((isOpen) => {
     dispatch(action.taskEditModal.toggleDrawerOpen(isOpen));
-  };
+  }, []);
 
-  const handlePopupOpen = (isOpen: boolean, mode: any) => {
+  const handlePopupOpen = useCallback((isOpen: boolean, mode: any) => {
     dispatch(action.taskEditModal.setRestrictClose(isOpen));
+  }, []);
+
+  const closeModalSignal = () => {
+    dispatch(action.taskEditModal.toggleDrawerOpen(false));
   };
-
-  console.log('restrict', restrictClose);
-  const clickOutSide = !restrictClose;
-
-  const headerContext = type === 'update' ? 'Update Task' : 'Add Task';
 
   return (
     <Modal
       isOpen={isOpen}
       className="TaskEditModal"
       onToggle={handleDrawerToggle}
-      clickOutsideToClose={clickOutSide}
+      clickOutsideToClose={!restrictClose}
     >
       <ModalHeader className="TaskEditModal__Header">
-        <span>{headerContext}</span>
+        <span>{type === 'update' ? 'Update Task' : 'Add Task'}</span>
       </ModalHeader>
+
       <ModalBody className="TaskEditModal__Body">
-        <TextField
-          className="TaskEditModal__TitleInput"
-          label="title:"
-          onValueChange={handleTitleInputChange}
-          value={taskData.title}
-          error={errorsMessage.title}
-        />
-        <Select
-          className="TaskEditModal__CategorySelect"
-          label="category:"
-          autoWidth
-          onSelect={handleCategoryChange}
-          defaultValue={taskData.categoryId}
-          error={errorsMessage.categoryId}
-          // onPopupToggle={handlePopupOpen}
-        >
-          {renderSelectOptions()}
-        </Select>
-        <DateTimeRangePicker
-          className="TaskEditModal__DateTimeRange"
-          onStartTimeChange={handleStartDateChange}
-          onEndTimeChange={handleEndDateChange}
-          startDate={taskData.startTime}
-          endDate={taskData.endTime}
-          label={{ start: 'start time:', end: 'end time:' }}
-          error={{ start: errorsMessage.startTime, end: errorsMessage.endTime }}
-          onPopupToggle={handlePopupOpen}
-        />
+        {isIdle && (
+          <>
+            <TextField
+              className="TaskEditModal__TitleInput"
+              label="title:"
+              onValueChange={handleTitleInputChange}
+              value={taskData.title}
+              error={errorsMessage.title}
+            />
+            <Select
+              className="TaskEditModal__CategorySelect"
+              label="category:"
+              autoWidth
+              onSelect={handleCategoryChange}
+              defaultValue={taskData.categoryId}
+              error={errorsMessage.categoryId}
+              // onPopupToggle={handlePopupOpen}
+            >
+              {renderSelectOptions()}
+            </Select>
+            <DateTimeRangePicker
+              className="TaskEditModal__DateTimeRange"
+              onStartTimeChange={handleStartDateChange}
+              onEndTimeChange={handleEndDateChange}
+              startDate={taskData.startTime}
+              endDate={taskData.endTime}
+              label={{ start: 'start time:', end: 'end time:' }}
+              error={{
+                start: errorsMessage.startTime,
+                end: errorsMessage.endTime,
+              }}
+              onPopupToggle={handlePopupOpen}
+            />
+          </>
+        )}
+        {isLoading && <div className="LoadingMessage">Loading</div>}
+        {isError && <div className="ErrorMessage">Error</div>}
+        {isSuccess && <div className="">Success</div>}
       </ModalBody>
       <ModalFooter className="TaskEditModal__Footer">
-        <button
-          className="TaskEditModal__SubmitButton"
-          onClick={handleFormSubmit}
-        >
-          Submit
-        </button>
-        <button className="TaskEditModal__ClearButton" onClick={handleClear}>
-          Clear
-        </button>
+        {isIdle && (
+          <>
+            <button
+              className="TaskEditModal__SubmitButton"
+              onClick={handleFormSubmit}
+            >
+              Submit
+            </button>
+            <button
+              className="TaskEditModal__ClearButton"
+              onClick={handleClear}
+            >
+              Clear
+            </button>
+          </>
+        )}
+        {isLoading && <></>}
+        {isError && (
+          <button
+            className="TaskEditModal__CloseButton"
+            onClick={closeModalSignal}
+          >
+            Close
+          </button>
+        )}
+        {isSuccess && (
+          <button
+            className="TaskEditModal__CloseButton"
+            onClick={closeModalSignal}
+          >
+            Continue
+          </button>
+        )}
       </ModalFooter>
     </Modal>
   );
