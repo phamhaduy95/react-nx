@@ -27,3 +27,4 @@ export * from './lib/ClickOutsideWatcher';
 export * from './lib/Drawer';
 export * from './lib/Popover';
 export * from './lib/Modal';
+export * from "./lib/CheckBox"
