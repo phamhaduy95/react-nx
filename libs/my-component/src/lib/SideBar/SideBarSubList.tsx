@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Collapsible } from '../Collapsible';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { useSideBarContext } from './SideBarContext';
-import { useGenerateUUID } from './hooks';
+
 export interface SideBarSubListProps {
   headerText: string;
   headerIcon?: React.ReactElement;
-  items: string[];
-  listStyle?: React.ReactElement | boolean;
+  children: JSX.Element[] | JSX.Element;
 }
 
+const defaultProps: Required<Omit<SideBarSubListProps, 'children'>> = {
+  headerIcon: <></>,
+  headerText: '',
+};
+
 export function SideBarSubList(props: SideBarSubListProps) {
-  const { items, headerText, headerIcon } = props;
+  const newProps = { ...defaultProps, ...props };
+  const { children, headerText, headerIcon } = newProps;
   const [selected, setSelected] = useState(false);
   const handleClick = () => {
     setSelected((prev) => !prev);
@@ -22,12 +25,6 @@ export function SideBarSubList(props: SideBarSubListProps) {
     if (headerIcon)
       return <div className="SidBar__SubList__HeaderIcon">{headerIcon}</div>;
     return <></>;
-  };
-
-  const renderItems = () => {
-    return items.map((item, index) => {
-      return <SideBarItem key={index} item={item} />;
-    });
   };
 
   const applySelect = () => {
@@ -45,35 +42,9 @@ export function SideBarSubList(props: SideBarSubListProps) {
 
       <div className="SideBar__SubList__List">
         <Collapsible direction="vertical" showed={selected}>
-          {renderItems()}
+          {children}
         </Collapsible>
       </div>
     </div>
   );
 }
-
-type SideBarSubListItemProps = {
-  item: SideBarSubListProps['items'][number];
-};
-
-function SideBarItem(props: SideBarSubListItemProps) {
-  const { item } = props;
-  const { state, action } = useSideBarContext();
-  const id = useGenerateUUID();
-  const handleSelectItem = () => {
-    action.changeSelectItem(id);
-  };
-
-  const applySelected = ()=>{
-    if (state.selectedItemId === id) return "selected";
-    return ""
-  }
-
-  return (
-    <li className={`SideBar__SubList__ListItem ${applySelected()}`} onClick={handleSelectItem}>
-      {item}
-    </li>
-  );
-}
-
-export default SideBarSubList;

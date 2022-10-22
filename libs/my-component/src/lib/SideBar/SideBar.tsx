@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import classNames from 'classnames';
 import './SideBar.scss';
-import SideBarContextProvider from './SideBarContext';
 import SideBarHeader from './SideBarHeader';
+import { useSideBarStore, SideBarStoreProvider } from './SideBarStoreProvider';
 
 /* eslint-disable-next-line */
 export interface SideBarProps {
@@ -12,24 +12,24 @@ export interface SideBarProps {
 
 function WrappedSideBar(props: SideBarProps) {
   const { BranchIcon, BranchText, children } = props;
-  const [isExpanded, setExpanded] = useState(true);
+  const action = useSideBarStore((state) => state.action);
+  const isExpanded = useSideBarStore((state) => state.isExpanded);
   const handleMouseOver = () => {
-    setExpanded(true);
+    action.toggleExpand(true);
   };
 
   const handleMouseOut = () => {
-    setExpanded(false);
+    action.toggleExpand(false);
   };
 
-  const applyExpandedStyle = () => {
-    if (isExpanded) return 'expanded';
-    return '';
-  };
+  const containerClassName = classNames('SideBar__Container', {
+    ['expanded']: isExpanded,
+  });
 
   return (
     <div className="SideBar">
       <div
-        className={`SideBar__Container ${applyExpandedStyle()}`}
+        className={containerClassName}
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}
       >
@@ -40,13 +40,12 @@ function WrappedSideBar(props: SideBarProps) {
   );
 }
 
-export function SideBar(props: SideBarProps){
-    return (
-      <SideBarContextProvider>
-        <WrappedSideBar {...props} />
-      </SideBarContextProvider>
-    )
-
+export function SideBar(props: SideBarProps) {
+  return (
+    <SideBarStoreProvider>
+      <WrappedSideBar {...props} />
+    </SideBarStoreProvider>
+  );
 }
 
 export default SideBar;
