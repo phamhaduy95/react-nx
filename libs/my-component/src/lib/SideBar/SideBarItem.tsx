@@ -9,6 +9,7 @@ export interface SideBarItemProps {
   disabled?: boolean;
   value?: string;
   onSelected?: (value: string) => void;
+  type?:"button"|"nav";
 }
 
 const defaultProps: Required<SideBarItemProps> = {
@@ -16,12 +17,13 @@ const defaultProps: Required<SideBarItemProps> = {
   label: "",
   value: '',
   disabled: false,
+  type:"nav",
   onSelected(value) {},
 };
 
 export function SideBarItem(props: SideBarItemProps) {
   const newProps = { ...defaultProps, ...props };
-  const { Icon, label, disabled, value, onSelected } = newProps;
+  const { Icon, label, disabled, value, onSelected,type } = newProps;
   const id = useGenerateUUID();
   const action = useSideBarStore((state) => state.action);
   const isSelected = useSideBarStore((state) => state.selectedItem?.id === id);
@@ -38,7 +40,9 @@ export function SideBarItem(props: SideBarItemProps) {
   }, [value, disabled]);
 
   const handleSelectItem = (e: React.MouseEvent) => {
-    action.selectItem({ id });
+    if (type === "nav"){
+      action.selectItem({ id });
+    }
     onSelected(value);
   };
 

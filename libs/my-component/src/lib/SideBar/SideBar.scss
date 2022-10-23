@@ -52,7 +52,8 @@ $IconColor: hsla(0, 0%, 20%, 0.8);
 
   @at-root .SideBar__Container {
     position: fixed;
-    width: 260px;
+
+    width: 62px;
     top: 0;
     left: 0;
     height: 100%;
@@ -62,7 +63,6 @@ $IconColor: hsla(0, 0%, 20%, 0.8);
     border: $border;
     overflow-x: hidden;
     transition: width 0.3s ease-in;
-
     @at-root .SideBar__Header {
       width: 100%;
       display: flex;
@@ -84,6 +84,7 @@ $IconColor: hsla(0, 0%, 20%, 0.8);
         font-size: 1.25rem;
         user-select: none;
         cursor: pointer;
+        opacity: 0;
         font-weight: 600;
         color: rgba(76, 78, 100, 0.87);
         transition: opacity 0.3s ease-in;
@@ -104,7 +105,7 @@ $IconColor: hsla(0, 0%, 20%, 0.8);
           list-style: none;
         }
 
-        > .SideBar__List__SubHeader {
+        @at-root .SideBar__List__SubHeader {
           margin-left: 0;
           margin-bottom: 0.5rem;
           overflow: hidden;
@@ -114,7 +115,8 @@ $IconColor: hsla(0, 0%, 20%, 0.8);
             width: 100%;
             height: 1px;
             border-top: 1px dotted hsl(0, 0%, 40%);
-            margin-left: -100%;
+
+            margin-left: 0;
             opacity: 1;
             transition: opacity 0.3s ease-in, margin-left 0.2s ease-in;
           }
@@ -123,7 +125,7 @@ $IconColor: hsla(0, 0%, 20%, 0.8);
             color: hsl(0, 0%, 50%);
             font-weight: 550;
             text-transform: uppercase;
-
+            opacity: 0;
             transition: opacity 0.3s ease-in;
           }
         }
@@ -135,14 +137,16 @@ $IconColor: hsla(0, 0%, 20%, 0.8);
           }
           > .SideBar__Item__Text {
             @include ItemTextStyle();
+            opacity: 0;
             transition: opacity 0.3s ease-in;
           }
         }
-        > .SideBar__List__Divider {
+        @at-root .SideBar__List__Divider {
           border-top: 1px solid hsla(0, 0%, 50%, 0.6);
           width: 100%;
           margin: 0.5rem 0;
           height: 1px;
+          user-select: none;
         }
         @at-root .SideBar__SubList {
           display: flex;
@@ -150,7 +154,7 @@ $IconColor: hsla(0, 0%, 20%, 0.8);
           flex-direction: column;
           cursor: pointer;
           align-items: flex-start;
-          > .SideBar__SubList__Header {
+          @at-root .SideBar__SubList__Header {
             @include ListItemStyle();
 
             > .SidBar__SubList__HeaderIcon {
@@ -165,6 +169,7 @@ $IconColor: hsla(0, 0%, 20%, 0.8);
               fill: $IconColor;
               width: 1.25rem;
               height: 1.25rem;
+              opacity: 0;
               transition: transform 0.2s ease-in, opacity 0.3s ease;
             }
           }
@@ -173,6 +178,7 @@ $IconColor: hsla(0, 0%, 20%, 0.8);
             flex-direction: column;
             align-items: flex-start;
             width: 100%;
+            height: 0;
 
             > .collapsible {
               width: 100%;
@@ -200,11 +206,45 @@ $IconColor: hsla(0, 0%, 20%, 0.8);
         }
       }
     }
+
+    &.expanded {
+      width: 260px;
+      .SideBar__Header {
+        > .SideBar__Header__Text {
+          opacity: 1;
+        }
+      }
+
+      .SideBar__Item {
+        .SideBar__Item__Text {
+          opacity: 1;
+        }
+      }
+
+      .SideBar__List {
+        > .SideBar__List__SubHeader {
+          > .SubHeader__Line {
+            margin-left: -100%;
+            opacity: 1;
+          }
+          > .SubHeader__Text {
+            opacity: 1;
+          }
+        }
+      }
+      .SideBar__SubList {
+        > .SideBar__SubList__Header {
+          > .SideBar__SubList__HeaderArrow {
+            opacity: 1;
+          }
+        }
+        > .SideBar__SubList__List {
+          height: unset;
+        }
+      }
+    }
   }
 }
-
-
-
 
 .SideBar__Item.selected {
   background-color: hsla(210, 80%, 40%);
@@ -218,7 +258,6 @@ $IconColor: hsla(0, 0%, 20%, 0.8);
   }
 }
 
-
 // define style when subList is selected
 .SideBar__SubList.selected {
   > .SideBar__SubList__Header {
@@ -230,39 +269,3 @@ $IconColor: hsla(0, 0%, 20%, 0.8);
 }
 
 // declare style for whole sidebar when it is expanded
-.SideBar__Container:not(.expanded) {
-  width: 62px;
-  .SideBar__Header {
-    > .SideBar__Header__Text {
-      opacity: 0;
-    }
-  }
-  .SideBar__List {
-    > .SideBar__List__SubHeader {
-      > .SubHeader__Line {
-        margin-left: 0;
-        opacity: 1;
-      }
-      > .SubHeader__Text {
-        opacity: 0;
-      }
-    }
-
-    > .SideBar__Item {
-      > .SideBar__Item__Text {
-        opacity: 0;
-      }
-    }
-
-    > .SideBar__SubList {
-      > .SideBar__SubList__Header {
-        > .SideBar__SubList__HeaderArrow {
-          opacity: 0;
-        }
-      }
-      > .SideBar__SubList__List {
-        height: 0;
-      }
-    }
-  }
-}
