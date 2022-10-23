@@ -82,10 +82,15 @@ function WrappedModal(props: ModalProps) {
     action.toggleOpen(false);
   },[clickOutsideToClose]);
 
+  const handleCloseModal = ()=>{
+    console.log("click X to close")
+    action.toggleOpen(false);
+  }
+
   const renderCloseIcon = () => {
     if (closeIcon)
       return (
-        <div className="Modal__CloseIcon" onClick={handleClickOutSide}>
+        <div className="Modal__CloseIcon" onClick={handleCloseModal}>
           {closeIcon}
         </div>
       );

@@ -61,6 +61,7 @@ $transitionDuration: 0.1s;
       right: 0.5rem;
       padding: 0.25rem;
       cursor: pointer;
+      z-index: 1;
       user-select: none;
       > * {
         width: 1rem;
