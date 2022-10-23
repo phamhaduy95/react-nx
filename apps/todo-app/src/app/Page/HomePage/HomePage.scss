@@ -1,0 +1,35 @@
+.HomePage {
+  display: flex;
+
+  > .HomePage__SideBar {
+    width: 62px;
+
+    > .SideBar__Container {
+      background-color: white;
+
+      &:not(.expanded) {
+        width: 62px;
+        border-left: none;
+        border-top: none;
+        border-bottom: none;
+        background-color: white;
+      }
+
+      &.expanded {
+        box-shadow: 0px -2px 10px 0px hsla(0, 0%, 0%, 0.2);
+      }
+
+      .SideBar__Item {
+        line-height: 1.1;
+        &.selected {
+          background: hsl(210, 80%, 60%);
+        }
+      }
+    }
+  }
+  > .HomePage__View {
+    background-color: hsla(0, 0%, 85%, 0.5);
+    width: 100%;
+    min-height: 100vh;
+  }
+}
