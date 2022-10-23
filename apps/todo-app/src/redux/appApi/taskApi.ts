@@ -13,35 +13,32 @@ import {
 } from './type';
 import dayjs from 'dayjs';
 
-const userId = 'c0e86673-bce3-4608-8c32-06763581e952';
-
 export const apiV2 = apiV1.injectEndpoints({
   endpoints: (build) => ({
     getTask: build.query<ReduxTaskData, TaskDataType['taskId']>({
       query: (id) => ({
         url: `tasks/${id}`,
+        credentials: 'include',
       }),
       providesTags: (result, error, arg) => [{ type: 'Tasks', id: `${arg}` }],
       transformResponse(result: ReduxTaskData, meta, arg) {
         return result;
       },
     }),
-    getAllTaskInCurrentHour: build.query<ReduxTaskData[],undefined>({
-      query:()=>{
-          const startDate = dayjs().startOf("hour").toISOString();
-          const endDate = dayjs().endOf("hour").toISOString();
-          return {
-            url: `tasks/within-range`,
-            params: {
-              userId: userId,
-              startDate:startDate,
-              endDate:endDate,
-            }
-          }
+    getAllTaskInCurrentHour: build.query<ReduxTaskData[], undefined>({
+      query: () => {
+        const startDate = dayjs().startOf('hour').toISOString();
+        const endDate = dayjs().endOf('hour').toISOString();
+        return {
+          url: `tasks/within-range`,
+          params: {
+            startDate: startDate,
+            endDate: endDate,
+          },
+        };
       },
     }),
 
-    
     getMonthScheduleData: build.query<
       ReduxMonthScheduleState,
       GetMonthScheduleDataArg
@@ -49,16 +46,14 @@ export const apiV2 = apiV1.injectEndpoints({
       query: (arg) => ({
         url: `tasks/within-a-month`,
         params: {
-          userId: userId,
           month: arg.month,
           year: arg.year,
           offset: -new Date().getTimezoneOffset(),
         },
+        credentials: 'include',
       }),
       keepUnusedDataFor: 1,
-      providesTags: (result, error, arg) => [
-        { type: 'Tasks', id: `Month` },
-      ],
+      providesTags: (result, error, arg) => [{ type: 'Tasks', id: `Month` }],
       // transform response data;
       transformResponse(
         response: ReduxTaskData[],
@@ -79,17 +74,15 @@ export const apiV2 = apiV1.injectEndpoints({
     >({
       query: (arg) => ({
         url: `tasks/within-a-day`,
+        credentials: 'include',
         params: {
-          userId: userId,
           date: arg.date,
           month: arg.month,
           year: arg.year,
           offset: -new Date().getTimezoneOffset(),
         },
       }),
-      providesTags: (result, error, arg) => [
-        { type: 'Tasks', id: `Day` },
-      ],
+      providesTags: (result, error, arg) => [{ type: 'Tasks', id: `Day` }],
       transformResponse(
         response: ReduxTaskData[],
         meta,
@@ -109,10 +102,10 @@ export const apiV2 = apiV1.injectEndpoints({
       query: (arg) => ({
         url: `tasks/within-range`,
         params: {
-          userId: userId,
           startTime: arg.startDate,
           endTime: arg.endDate,
         },
+        credentials: 'include',
       }),
       transformResponse(
         response: ReduxTaskData[],
@@ -125,12 +118,8 @@ export const apiV2 = apiV1.injectEndpoints({
           tasks: response,
         };
       },
-      providesTags: (result, error, arg) => [
-        { type: 'Tasks', id: 'Week' },
-      ],
-      onCacheEntryAdded(arg, api) {
-        console.log('week data update');
-      },
+      providesTags: (result, error, arg) => [{ type: 'Tasks', id: 'Week' }],
+
       keepUnusedDataFor: 1,
     }),
     updateTask: build.mutation<
@@ -142,10 +131,10 @@ export const apiV2 = apiV1.injectEndpoints({
       query: ({ taskId, ...args }) => ({
         url: `tasks/${taskId}`,
         method: 'PUT',
+        credentials: 'include',
         body: {
           ...args,
           taskId: taskId,
-          userId: userId,
         } as ReduxTaskData,
       }),
       invalidatesTags: (result, error, arg) => [
@@ -203,13 +192,13 @@ export const apiV2 = apiV1.injectEndpoints({
       query: (arg) => ({
         url: `tasks`,
         method: 'POST',
+        credentials: 'include',
         body: {
           title: arg.title,
           categoryId: arg.categoryId,
           description: arg.description,
           endTime: arg.endTime,
           startTime: arg.startTime,
-          userId: userId,
         } as ReduxTaskData,
       }),
       invalidatesTags: (result, error, arg) => [
@@ -260,6 +249,7 @@ export const apiV2 = apiV1.injectEndpoints({
       query: (id) => ({
         url: `tasks/${id}`,
         method: 'DELETE',
+        credentials: 'include',
       }),
       invalidatesTags: (result, error, arg) => [
         { type: 'Tasks', id: `${arg}` },

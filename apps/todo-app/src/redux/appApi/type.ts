@@ -1,5 +1,6 @@
 import { TaskDataType } from '../../type/model';
 
+/* #region  categoryAPi */
 export type ReduxCategoryData = {
   categoryId: string;
   name: string;
@@ -11,6 +12,9 @@ export type ResponseCategoryData = {
   userId: string;
 };
 
+/* #endregion */
+
+/* #region  taskApi */
 export type ReduxTaskData = Omit<TaskDataType, 'startTime' | 'endTime'> & {
   startTime: string;
   endTime: string;
@@ -26,14 +30,13 @@ export type GetDayScheduleDataArg = {
 
 export type GetWeekScheduleDataArg = { startDate: string; endDate: string };
 
-export interface ErrorResponse {
+export interface ServerResponseType {
   message: string;
 }
 
 export interface AddTaskResponse {
-  taskId:string;
+  taskId: string;
 }
-
 
 type DateStr = string;
 
@@ -52,3 +55,18 @@ export type ReduxWeekScheduleState = {
   endDate: DateStr;
   tasks: ReduxTaskData[];
 };
+/* #endregion */
+
+/* #region  loginApi */
+
+export type LoginModel = {
+  email: string;
+  password: string;
+};
+
+export type UserData = {
+  name:string,
+  email:string,
+}
+
+/* #endregion */
