@@ -1,28 +1,48 @@
-import { CheckBox, CheckBoxProps } from "@phduylib/my-component";
-import { useCallback, useState } from "react";
+import { CheckBox, CheckBoxProps } from '@phduylib/my-component';
+import { useCallback, useEffect, useState } from 'react';
+import { appApi } from '../../../redux/appApi';
+import { useAppAction, useAppDispatch, useAppSelector } from '../../../redux';
+import { shallowEqual } from 'react-redux';
 
-const categoriesList = ['Business', 'Personal', 'Family', 'Another', 'School'];
+const categoriesList = [];
 const SHOW_LIMIT = 4;
 
 export function CalendarAppCategoryFilterBox() {
-  const [isCheckAll, setCheckAll] = useState(false);
+  const action = useAppAction();
+  const dispatch = useAppDispatch();
+  const filterOptions = useAppSelector((state)=>state.taskFilter.categories,shallowEqual);
+  const [isCheckAll, setCheckAll] = useState(true);
   const isOverLimit = categoriesList.length > SHOW_LIMIT;
-  
+  const { data: categories } = appApi.useGetAllForUserQuery(undefined);
+
+  useEffect(() => {}, []);
 
   const handleClickCheckAll: NonNullable<CheckBoxProps['onSelected']> =
     useCallback((value, isSelected) => {
       setCheckAll(isSelected);
     }, []);
 
+  const handelCategorySelect: NonNullable<CheckBoxProps['onSelected']> =
+    useCallback((value, isSelected) => {
+      if (isSelected) {
+        dispatch(action.taskFilter.addNewCategoryFilter({ categoryId: value }));
+        return;
+      }
+      dispatch(action.taskFilter.removeCategoryFilter({ categoryId: value }));
+    }, []);
+
   const renderCategoryOptions = () => {
-    return categoriesList.slice(0, SHOW_LIMIT).map((value, i) => {
+    if (categories === undefined) return;
+    return categories.slice(0, SHOW_LIMIT).map((category, i) => {
+      const { categoryId, name } = category;
       return (
         <CheckBox
           className="CalendarApp__Category"
-          value={value}
-          label={value}
-          key={value}
+          value={categoryId}
+          label={name}
+          key={categoryId}
           isSelected={isCheckAll}
+          onSelected={handelCategorySelect}
         />
       );
     });

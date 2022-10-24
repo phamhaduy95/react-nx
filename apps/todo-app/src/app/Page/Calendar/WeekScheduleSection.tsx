@@ -15,6 +15,7 @@ import {
 } from '../../../components/WeekSchedule/WeekSchedule';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { createPredicateFunctionFromFilterOptions } from '../../../redux/taskFilterOption/utils';
 
 
 export function WeekScheduleSection() {
@@ -24,11 +25,19 @@ export function WeekScheduleSection() {
     (state) => state.saveDateArg.weekArg,
     shallowEqual
   );
+  
+  const filterOptions = useAppSelector((state) => state.taskFilter);
 
   const { data: reduxData } = appApi.useGetWeekScheduleDataQuery(weekArg);
 
+
   const inputData: WeekScheduleProps['data'] = useMemo(() => {
-    if (reduxData) return convertWeekScheduleDataFromReduxToProps(reduxData);
+    if (reduxData) { 
+      const filterFunction = createPredicateFunctionFromFilterOptions(filterOptions);
+      const filteredTasks = reduxData.tasks.filter((task)=>filterFunction(task));
+      const newData:typeof reduxData = {...reduxData,tasks:filteredTasks};
+      return convertWeekScheduleDataFromReduxToProps(newData);
+    }
     return {
       range: {
         startDate: new Date(weekArg.startDate),
@@ -36,7 +45,7 @@ export function WeekScheduleSection() {
       },
       tasks: [],
     };
-  }, [reduxData]);
+  }, [reduxData,filterOptions]);
 
   const handleTaskSelect: NonNullable<WeekScheduleProps['onTaskSelect']> =
     useCallback((task) => {

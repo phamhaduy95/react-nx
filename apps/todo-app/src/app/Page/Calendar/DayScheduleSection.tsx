@@ -17,6 +17,7 @@ import {
 import dayjs from 'dayjs';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { createPredicateFunctionFromFilterOptions } from '../../../redux/taskFilterOption';
 
 
 export function DayScheduleSection() {
@@ -27,14 +28,26 @@ export function DayScheduleSection() {
     shallowEqual
   );
   const { data: reduxData } = appApi.useGetDayScheduleDataQuery(dayArg);
+  const filterOption = useAppSelector((state)=>state.taskFilter);
+  
 
   const data: DayScheduleProps['data'] = useMemo(() => {
-    if (reduxData) return convertDayScheduleDataFromReduxToProps(reduxData);
-    return {
+    if (reduxData) {
+      console.log(filterOption.categories);
+      const filterPredicate =  createPredicateFunctionFromFilterOptions(filterOption);
+      const filterTasks = reduxData.tasks.filter((task)=>filterPredicate(task));
+      console.log(filterTasks)
+      const newData = {...reduxData,tasks:filterTasks};
+      return convertDayScheduleDataFromReduxToProps(newData);
+    }
+      return {
       date: new Date(dayArg.year, dayArg.month - 1, dayArg.date),
       tasksList: [],
     };
-  }, [reduxData]);
+  }, [reduxData,filterOption]);
+
+  
+
 
   const handleTaskSelect: NonNullable<DayScheduleProps['onTaskSelect']> =
     useCallback((task) => {
