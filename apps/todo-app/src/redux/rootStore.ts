@@ -14,6 +14,8 @@ import {
 } from './saveDateArgStore/slice';
 import { TaskEditModalAction, TaskEditModalReducer } from './TaskEditModal';
 import { signOutModalReducer, signOutModalActions } from './SignOutModal/slice';
+import { taskFilterOptionReducer } from './taskFilterOption';
+import { taskFilterOptionAction } from './taskFilterOption/slice';
 
 export const rootStore = configureStore({
   reducer: {
@@ -21,6 +23,7 @@ export const rootStore = configureStore({
     taskEditModal: TaskEditModalReducer,
     addCategoryModal: addCategoryModalReducer,
     signOutModal: signOutModalReducer,
+    taskFilter:taskFilterOptionReducer,
     [appApi.reducerPath]: appApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -39,6 +42,7 @@ const rootAction = {
   saveDateArg: saveDateArgAction,
   addCategoryModal: addCategoryModalActions,
   signOutModal:signOutModalActions,
+  taskFilter:taskFilterOptionAction,
 };
 
 export function useAppAction() {
