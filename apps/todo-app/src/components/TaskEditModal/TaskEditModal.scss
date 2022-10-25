@@ -2,42 +2,98 @@ $gap-between-input: 0.5rem;
 @import '../sharedStyle.scss';
 @import '../utils.scss';
 .TaskEditModal {
-  > .Modal__Dialog  {
+  > .Modal__Dialog {
     width: 30rem;
     display: flex;
     flex-direction: column;
     min-width: unset;
+    padding: 1rem 0.5rem;
+    font-family: 'Roboto', sans-serif;
 
     > .TaskEditModal__Header {
       position: relative;
-      padding: 0.5rem;
       align-items: center;
-
-      > span {
+      margin-bottom: 1rem;
+      display: flex;
+    
+      > .TaskEditModal__Title {
         font-size: 1.5rem;
         font-weight: 560;
-        width: 100%;
         text-align: center;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+       
         user-select: none;
+        margin-left: 1.5rem;
+      }
+      .TaskEditModal__HeaderControl {
+        margin-left: auto;
+        margin-right: 1rem;
+        display: flex;
+      }
+
+      .TaskEditModal__DeleteTaskButton,
+      .TaskEditModal__CloseButton {
+        color:$text-color;
+        @include centerElement();
+        border-radius: 50%;
+        padding: 0.5rem;
+        font-size: 1rem;
+        background-color: transparent;
+        border: none;
+        &:hover {
+          background-color: hsla(0, 0%, 80%, 0.6);
+        }
+      }
+      .TaskEditModal__DeleteTaskButton {
+        margin-right: 0.5rem;
       }
     }
     > .TaskEditModal__Body {
-      > .TaskEditModal__TitleInput {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+
+      > .TaskEditModal__SuccessIcon,
+      > .TaskEditModal__Spinner,
+      > .TaskEditModal__ErrorIcon {
+        width: 5rem;
+        height: 5rem;
+        margin: auto;
+
+        > svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      > .TaskEditModal__SuccessIcon {
+        color: hsl(120, 60%, 40%);
+      }
+      > .TaskEditModal__ErrorIcon {
+        color: hsl(0, 60%, 50%);
+      }
+
+      > .TaskEditModal__Message {
+        font-size: 1.1rem;
+        font-family: inherit;
+        text-align: center;
         width: 80%;
+        margin: 1rem auto;
+      }
+
+      > .TaskEditModal__TitleInput {
+        width: 90%;
         margin-bottom: $gap-between-input;
         margin-left: auto;
         margin-right: auto;
         font-size: $font-size-m;
       }
       > .TaskEditModal__CategorySelect {
-        width: 80%;
+        width: 90%;
         margin-left: auto;
         margin-right: auto;
         margin-bottom: $gap-between-input;
       }
       > .TaskEditModal__DateTimeRange {
-        width: 80%;
+        width: 90%;
         margin-left: auto;
         margin-right: auto;
         display: flex;
@@ -47,12 +103,10 @@ $gap-between-input: 0.5rem;
           width: 100%;
         }
       }
-
-      
     }
     > .TaskEditModal__Footer {
-      width: 80%;
-      margin: 1rem auto;
+      width: 95%;
+      margin: 0.25rem auto;
       display: flex;
       > button {
         padding: 0.5em 1em;
@@ -68,8 +122,12 @@ $gap-between-input: 0.5rem;
         margin-right: 1rem;
         background-color: $primary-color;
         color: white;
-        
-    
+      }
+      > .TaskEditModal__ReturnButton {
+        margin-left: auto;
+        margin-right: auto;
+        background-color: $primary-color;
+        color: white;
       }
     }
   }
