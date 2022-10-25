@@ -18,14 +18,14 @@ import { DeleteTaskModal } from './DeleteTaskModal';
 export function TaskEditModal() {
   const dispatch = useAppDispatch();
   const action = useAppAction();
-  const isOpen = useAppSelector((state) => state.taskEditModal.isOpen);
+  const isOpen = useAppSelector((state) => state.TaskEditModal.isOpen);
   const isinIdleState = useAppSelector(
-    (state) => state.taskEditModal.state === 'idle'
+    (state) => state.TaskEditModal.state === 'idle'
   );
-  const type = useAppSelector((state) => state.taskEditModal.type);
+  const type = useAppSelector((state) => state.TaskEditModal.type);
 
   const restrictClose = useAppSelector(
-    (state) => state.taskEditModal.restrictClose
+    (state) => state.TaskEditModal.restrictClose
   );
   const [, updateResult] = appApi.useUpdateTaskMutation({
     fixedCacheKey: 'shared-update-task',
@@ -45,8 +45,8 @@ export function TaskEditModal() {
       deleteResult.isLoading
     ) {
    
-      dispatch(action.taskEditModal.toggleDrawerOpen(true));
-      dispatch(action.taskEditModal.switchModalState('loading'));
+      dispatch(action.TaskEditModal.toggleDrawerOpen(true));
+      dispatch(action.TaskEditModal.switchModalState('loading'));
       return;
     }
     if (
@@ -54,16 +54,16 @@ export function TaskEditModal() {
       addResult.isSuccess ||
       deleteResult.isSuccess
     ) {
-      dispatch(action.taskEditModal.toggleDrawerOpen(true));
-      dispatch(action.taskEditModal.switchModalState('success'));
+      dispatch(action.TaskEditModal.toggleDrawerOpen(true));
+      dispatch(action.TaskEditModal.switchModalState('success'));
       return;
     }
     if (updateResult.isError || addResult.isError || deleteResult.isError) {
-      dispatch(action.taskEditModal.toggleDrawerOpen(true));
-      dispatch(action.taskEditModal.switchModalState('error'));
+      dispatch(action.TaskEditModal.toggleDrawerOpen(true));
+      dispatch(action.TaskEditModal.switchModalState('error'));
       return;
     }
-      dispatch(action.taskEditModal.switchModalState("idle"));
+      dispatch(action.TaskEditModal.switchModalState("idle"));
   }, [updateResult, addResult,deleteResult]);
 
   useEffect(() => {
@@ -75,11 +75,11 @@ export function TaskEditModal() {
   }, [isOpen]);
 
   const handleModalToggle: ModalProps['onToggle'] = useCallback((isOpen) => {
-    dispatch(action.taskEditModal.toggleDrawerOpen(isOpen));
+    dispatch(action.TaskEditModal.toggleDrawerOpen(isOpen));
   }, []);
 
   const closeModalSignal = () => {
-    dispatch(action.taskEditModal.toggleDrawerOpen(false));
+    dispatch(action.TaskEditModal.toggleDrawerOpen(false));
   };
 
   const renderModalContent = () => {
@@ -100,7 +100,7 @@ export function TaskEditModal() {
   };
 
   const handleDeleteButtonClick = () => {
-    dispatch(action.taskEditModal.switchModalType('delete'));
+    dispatch(action.TaskEditModal.switchModalType('delete'));
   };
 
   const DeleteTaskButton = isinIdleState && type === 'update' && (

@@ -21,8 +21,8 @@ export function AddAndEditTaskModal() {
   const dispatch = useAppDispatch();
   const action = useAppAction();
 
-  const reduxTaskData = useAppSelector((state) => state.taskEditModal.taskData);
-  const type = useAppSelector((state) => state.taskEditModal.type);
+  const reduxTaskData = useAppSelector((state) => state.TaskEditModal.taskData);
+  const type = useAppSelector((state) => state.TaskEditModal.type);
   const [updateTask] = appApi.useUpdateTaskMutation({
     fixedCacheKey: 'shared-update-task',
   });
@@ -37,30 +37,30 @@ export function AddAndEditTaskModal() {
   );
 
   const errorsMessage = useAppSelector(
-    (state) => state.taskEditModal.errorMessages,
+    (state) => state.TaskEditModal.errorMessages,
     shallowEqual
   );
 
   const handleTitleInputChange: TextFieldProps['onValueChange'] = (value) => {
-    dispatch(action.taskEditModal.updateTaskData({ title: value }));
+    dispatch(action.TaskEditModal.updateTaskData({ title: value }));
   };
 
   const handleCategoryChange: SelectProps['onSelect'] = (value) => {
-    dispatch(action.taskEditModal.updateTaskData({ categoryId: value }));
+    dispatch(action.TaskEditModal.updateTaskData({ categoryId: value }));
   };
 
   const handleStartDateChange: DateTimeRangePickerProps['onStartTimeChange'] = (
     date
   ) => {
     const dateStr = date === null ? '' : date.toISOString();
-    dispatch(action.taskEditModal.updateTaskData({ startTime: dateStr }));
+    dispatch(action.TaskEditModal.updateTaskData({ startTime: dateStr }));
   };
 
   const handleEndDateChange: DateTimeRangePickerProps['onStartTimeChange'] = (
     date
   ) => {
     const dateStr = date === null ? '' : date.toISOString();
-    dispatch(action.taskEditModal.updateTaskData({ endTime: dateStr }));
+    dispatch(action.TaskEditModal.updateTaskData({ endTime: dateStr }));
   };
 
   const handleFormSubmit = async () => {
@@ -76,15 +76,15 @@ export function AddAndEditTaskModal() {
       }
       return;
     }
-    dispatch(action.taskEditModal.updateErrorMessage(error));
+    dispatch(action.TaskEditModal.updateErrorMessage(error));
   };
   const handleClear = () => {
-    dispatch(action.taskEditModal.clearErrorMessage());
-    dispatch(action.taskEditModal.clearTaskData());
+    dispatch(action.TaskEditModal.clearErrorMessage());
+    dispatch(action.TaskEditModal.clearTaskData());
   };
 
   const handlePopupOpen = useCallback((isOpen: boolean, mode: any) => {
-    dispatch(action.taskEditModal.setRestrictClose(isOpen));
+    dispatch(action.TaskEditModal.setRestrictClose(isOpen));
   }, []);
 
   const renderSelectOptions: () => JSX.Element[] = () => {

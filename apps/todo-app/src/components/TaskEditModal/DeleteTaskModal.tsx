@@ -6,7 +6,7 @@ import { appApi } from '../../redux/appApi';
 export function DeleteTaskModal() {
   const action = useAppAction();
   const dispatch = useAppDispatch();
-  const taskId = useAppSelector((state) => state.taskEditModal.taskData.taskId);
+  const taskId = useAppSelector((state) => state.TaskEditModal.taskData.taskId);
   const [deleteTask] = appApi.useDeleteTaskMutation({
     fixedCacheKey: 'shared-delete-task',
   });
@@ -16,7 +16,7 @@ export function DeleteTaskModal() {
   };
 
   const handleCancelButtonClick = () => {
-    dispatch(action.taskEditModal.switchModalType("update"));
+    dispatch(action.TaskEditModal.switchModalType("update"));
   };
 
   return (

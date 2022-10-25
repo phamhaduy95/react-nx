@@ -33,7 +33,7 @@ export function HomePage() {
     }, []);
 
   const handleSelectLogOut:NonNullable<SideBarItemProps['onSelected']> =()=>{
-    dispatch(action.signOutModal.toggleOpen(true));
+    dispatch(action.SignOutModal.toggleOpen(true));
   }
 
   return (
@@ -74,6 +74,10 @@ export function HomePage() {
         </SideBarItemList>
       </SideBar>
       <div className="HomePage__View">
+        <div className='HomePage__HeaderBar'>
+            
+
+        </div>
         <Outlet/>
       </div>
       <SignOutModal/>

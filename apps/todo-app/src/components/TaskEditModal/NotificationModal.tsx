@@ -9,12 +9,12 @@ import { useAppSelector } from '../../redux/rootStore';
 export type NotificationModalProps = {};
 
 export const NotificationModal = memo((props: NotificationModalProps) => {
-  const state = useAppSelector((state) => state.taskEditModal.state);
+  const state = useAppSelector((state) => state.TaskEditModal.state);
 
   const action = useAppAction();
   const dispatch = useAppDispatch();
   const closeModalSignal = () => {
-    dispatch(action.taskEditModal.toggleDrawerOpen(false));
+    dispatch(action.TaskEditModal.toggleDrawerOpen(false));
   };
 
   const renderModalBody = () => {

@@ -11,11 +11,11 @@ import CloseIcon from '@mui/icons-material/Close';
 
 export function AddCategoryModal() {
   const action = useAppAction();
-  const isOpen = useAppSelector((state) => state.addCategoryModal.isOpen);
+  const isOpen = useAppSelector((state) => state.AddCategoryModal.isOpen);
   const dispatch = useAppDispatch();
 
   const handleModalOpen: NonNullable<ModalProps['onToggle']> = (isOpen) => {
-    dispatch(action.addCategoryModal.toggleOpen(isOpen));
+    dispatch(action.AddCategoryModal.toggleOpen(isOpen));
   };
 
   return (

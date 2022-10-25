@@ -15,21 +15,20 @@ export function SignOutModal() {
   const action = useAppAction();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const isOpen = useAppSelector((state) => state.signOutModal.isOpen);
+  const isOpen = useAppSelector((state) => state.SignOutModal.isOpen);
   const [signOut] = appApi.useSignOutMutation();
 
   const handleModalOpen = useCallback((isOpen: boolean) => {
-    console.log(isOpen);
-    dispatch(action.signOutModal.toggleOpen(isOpen));
+    dispatch(action.SignOutModal.toggleOpen(isOpen));
   }, []);
 
   const handleCloseModal = () => {
-    dispatch(action.signOutModal.toggleOpen(false));
+    dispatch(action.SignOutModal.toggleOpen(false));
   };
 
   const handleSignOut = async () => {
     const result = await signOut(undefined);
-    console.log(result);
+    dispatch(action.SignOutModal.toggleOpen(false));
     navigate('/login');
   };
 
