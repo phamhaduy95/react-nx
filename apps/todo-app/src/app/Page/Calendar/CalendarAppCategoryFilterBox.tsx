@@ -10,12 +10,9 @@ const SHOW_LIMIT = 4;
 export function CalendarAppCategoryFilterBox() {
   const action = useAppAction();
   const dispatch = useAppDispatch();
-  const filterOptions = useAppSelector((state)=>state.taskFilter.categories,shallowEqual);
   const [isCheckAll, setCheckAll] = useState(true);
   const isOverLimit = categoriesList.length > SHOW_LIMIT;
   const { data: categories } = appApi.useGetAllForUserQuery(undefined);
-
-  useEffect(() => {}, []);
 
   const handleClickCheckAll: NonNullable<CheckBoxProps['onSelected']> =
     useCallback((value, isSelected) => {
@@ -25,10 +22,10 @@ export function CalendarAppCategoryFilterBox() {
   const handelCategorySelect: NonNullable<CheckBoxProps['onSelected']> =
     useCallback((value, isSelected) => {
       if (isSelected) {
-        dispatch(action.taskFilter.addNewCategoryFilter({ categoryId: value }));
+        dispatch(action.CalendarApp.addNewCategoryFilter({ categoryId: value }));
         return;
       }
-      dispatch(action.taskFilter.removeCategoryFilter({ categoryId: value }));
+      dispatch(action.CalendarApp.removeCategoryFilter({ categoryId: value }));
     }, []);
 
   const renderCategoryOptions = () => {

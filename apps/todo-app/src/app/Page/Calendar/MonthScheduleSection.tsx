@@ -17,17 +17,20 @@ import {
 import dayjs from 'dayjs';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { createPredicateFunctionFromFilterOptions } from '../../../redux/taskFilterOption/utils';
+import { createPredicateFunctionFromFilterOptions } from '../../../redux/CalendarApp';
+
 
 export function MonthScheduleSection() {
   const dispatch = useAppDispatch();
   const action = useAppAction();
   const monthArg = useAppSelector(
-    (state) => state.saveDateArg.monthArg,
+    (state) => state.CalendarApp.dateArgs.monthArg,
     shallowEqual
   );
 
-  const filterOptions = useAppSelector((state) => state.taskFilter);
+  const filterOptions = useAppSelector(
+    (state) => state.CalendarApp.taskFilterOptions
+  );
 
   const { data: reduxData } = appApi.useGetMonthScheduleDataQuery(monthArg);
 
@@ -52,45 +55,20 @@ export function MonthScheduleSection() {
     useCallback((task) => {
       const taskRedux = convertTaskDataIntoReduxState(task);
 
-      dispatch(action.taskEditModal.editTask(taskRedux));
+      dispatch(action.TaskEditModal.editTask(taskRedux));
     }, []);
   const handleDateSelect: NonNullable<MonthScheduleProps['onDateSelect']> =
     useCallback((date) => {
       const startDate = date.toISOString();
-      dispatch(action.taskEditModal.addTask({ startTime: startDate }));
+      dispatch(action.TaskEditModal.addTask({ startTime: startDate }));
     }, []);
 
-  const renderMonthString = () => {
-    const date = new Date(monthArg.year, monthArg.month - 1);
-    const dayStr = dayjs(date).format('MMM YYYY');
-    return <div className="CalendarApp__DateString">{dayStr}</div>;
-  };
-
-  function handleGotoNextMonth() {
-    dispatch(action.saveDateArg.goToNextMonth());
-  }
-  function handleGotoPreviousMonth() {
-    dispatch(action.saveDateArg.goToPreviousMonth());
-  }
-
   return (
-    <>
-      <div className="CalendarApp__DateNavigationBox">
-        <ArrowBackIosIcon
-          className="CalendarApp__PreviousIcon"
-          onClick={handleGotoPreviousMonth}
-        />
-        <ArrowForwardIosIcon
-          className="CalendarApp__NextIcon"
-          onClick={handleGotoNextMonth}
-        />
-        {renderMonthString()}
-      </div>
-      <MonthSchedule
-        data={data}
-        onTaskSelect={handleTaskSelect}
-        onDateSelect={handleDateSelect}
-      />
-    </>
+    <MonthSchedule
+      className="CalendarApp__MonthSchedule"
+      data={data}
+      onTaskSelect={handleTaskSelect}
+      onDateSelect={handleDateSelect}
+    />
   );
 }
