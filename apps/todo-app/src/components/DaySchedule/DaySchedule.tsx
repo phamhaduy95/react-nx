@@ -12,8 +12,10 @@ import { DayScheduleTaskBlock } from './DayScheduleTaskBlock';
 import { DayScheduleCurrentTimeIndicator } from './DayScheduleCurrentTimeIndicator';
 import { DayScheduleContextProvider } from './DayScheduleContext';
 import { DayScheduleTimeFrame } from './DayScheduleTimeFrame';
+import classNames from 'classnames';
 
 export type DayScheduleProps = {
+  className?:string;
   data: {
     date: Date;
     tasksList: TaskDataType[];
@@ -33,15 +35,19 @@ export function DaySchedule(props: DayScheduleProps) {
 }
 
 function WrappedDaySchedule(props: DayScheduleProps) {
-  const { data } = props;
+  const { data,className } = props;
   const action = useDayScheduleStore((state) => state.action);
 
   useEffect(() => {
     action.updateDayData(data.date, data.tasksList);
   }, [data]);
 
+  const rootClassName = classNames("DaySchedule",{
+    [`${className}`]:className,
+  })
+
   return (
-    <div className="DaySchedule">
+    <div className={rootClassName}>
       <div className="DaySchedule__Container">
         <TimeAxis />
         <DayScheduleTimeLine />

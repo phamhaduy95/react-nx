@@ -11,8 +11,10 @@ import './WeekSchedule.scss';
 import { WeekScheduleWeeksTaskView } from './WeekScheduleWeekTasksView';
 import { TaskDataType } from '../../type/model';
 import { WeekScheduleContextProvider } from './WeekScheduleContextProvider';
+import classNames from 'classnames';
 
 export type WeekScheduleProps = {
+  className?: string;
   data: {
     range: WeekScheduleState['range'];
     tasks: WeekScheduleState['tasks'];
@@ -32,7 +34,7 @@ export function WeekSchedule(props: WeekScheduleProps) {
 }
 
 function WrappedWeekSchedule(props: WeekScheduleProps) {
-  const { data } = props;
+  const { data, className } = props;
   const action = useWeekScheduleStore((state) => state.action);
   useEffect(() => {
     action.updateWeekTaskData(data.range, data.tasks);
@@ -45,8 +47,12 @@ function WrappedWeekSchedule(props: WeekScheduleProps) {
     return renderTimeIndicator();
   }, []);
 
+  const rootClassName = classNames('DaySchedule', {
+    [`${className}`]: className,
+  });
+
   return (
-    <div className="WeekSchedule">
+    <div className={rootClassName}>
       <div className="WeekSchedule__Container">
         <div className="WeekSchedule__Header">
           <WeekScheduleDateDisplayRow />

@@ -14,8 +14,10 @@ import {
 import './MonthSchedule.scss';
 import { TaskDataType } from '../../type/model';
 import { MonthScheduleContextProvider } from './MonthScheduleContextProvider';
+import classNames from 'classnames';
 
 export type MonthScheduleProps = {
+  className?: string;
   data: Omit<MonthScheduleState, 'action' | 'taskLines'>;
   onTaskSelect?: (taskData: TaskDataType) => void;
   onDateSelect?: (date: Date) => void;
@@ -32,7 +34,7 @@ export function MonthSchedule(props: MonthScheduleProps) {
 }
 
 function WrappedMonthSchedule(props: MonthScheduleProps) {
-  const { data } = props;
+  const { data, className } = props;
   const action = useMonthScheduleStore((state) => state.action);
 
   useEffect(() => {
@@ -46,9 +48,10 @@ function WrappedMonthSchedule(props: MonthScheduleProps) {
     }
   );
   const calendarTable = useGenerateCalendarData(month);
+  const rootClassName = classNames('MonthSchedule', className);
 
   return (
-    <table className="MonthSchedule">
+    <table className={rootClassName}>
       <MonthScheduleHeader />
       <tbody>{renderCalendarTable(calendarTable)}</tbody>
     </table>
