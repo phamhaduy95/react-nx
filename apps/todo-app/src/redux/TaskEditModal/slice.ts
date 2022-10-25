@@ -1,9 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ReduxTaskData } from 'apps/todo-app/src/redux/types';
-import { TaskEditModalState } from './types';
+import {
+  TaskEditModalState,
+  SwitchModalStateAction,
+  SwitchModalTypeAction,
+} from './types';
 
 const initialState: TaskEditModalState = {
   type: 'add',
+  state: 'idle',
   taskData: {
     taskId: '',
     title: '',
@@ -11,7 +16,7 @@ const initialState: TaskEditModalState = {
     description: '',
     endTime: '',
     startTime: '',
-    userId:'',
+    userId: '',
   },
   errorMessages: {
     title: false,
@@ -21,7 +26,7 @@ const initialState: TaskEditModalState = {
     startTime: false,
   },
   isOpen: false,
-  restrictClose:false
+  restrictClose: false,
 };
 
 const slice = createSlice({
@@ -32,9 +37,12 @@ const slice = createSlice({
       const partialData = action.payload;
       state.taskData = { ...state.taskData, ...partialData };
     },
-    setRestrictClose(state,action:PayloadAction<TaskEditModalState["restrictClose"]>){
-        const restrictCloseFlag = action.payload;
-        state.restrictClose = restrictCloseFlag;
+    setRestrictClose(
+      state,
+      action: PayloadAction<TaskEditModalState['restrictClose']>
+    ) {
+      const restrictCloseFlag = action.payload;
+      state.restrictClose = restrictCloseFlag;
     },
     updateErrorMessage(
       state,
@@ -47,7 +55,7 @@ const slice = createSlice({
       state,
       action: PayloadAction<TaskEditModalState['isOpen']>
     ) {
-      let  isOpen = action.payload;
+      let isOpen = action.payload;
       state.isOpen = isOpen;
     },
     clearErrorMessage(state) {
@@ -74,6 +82,16 @@ const slice = createSlice({
       state.isOpen = true;
       state.type = 'add';
       state.taskData = { ...state.taskData, ...partialData };
+    },
+    switchModalState(state, action: SwitchModalStateAction) {
+      const newModalState = action.payload;
+      state.state = newModalState;
+    },
+    switchModalType(state, action: SwitchModalTypeAction) {
+      const newType = action.payload;
+      if (state.isOpen) {
+        state.type = newType;
+      }
     },
   },
 });
