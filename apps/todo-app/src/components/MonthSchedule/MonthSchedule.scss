@@ -9,6 +9,7 @@
   border-collapse: collapse;
   border: $border;
   table-layout: fixed;
+  caret-color: transparent;
   > thead {
     th {
       height: 30px;
