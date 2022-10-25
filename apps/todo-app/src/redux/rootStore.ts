@@ -8,22 +8,18 @@ import {
 } from './AddCategoryModal';
 
 import { appApi } from './appApi';
-import {
-  saveDateArgReducer,
-  saveDateArgAction,
-} from './saveDateArgStore/slice';
+
 import { TaskEditModalAction, TaskEditModalReducer } from './TaskEditModal';
 import { signOutModalReducer, signOutModalActions } from './SignOutModal/slice';
-import { taskFilterOptionReducer } from './taskFilterOption';
-import { taskFilterOptionAction } from './taskFilterOption/slice';
+
+import { CalendarAppReducer, CalendarAppAction } from './CalendarApp/slice';
 
 export const rootStore = configureStore({
   reducer: {
-    saveDateArg: saveDateArgReducer,
-    taskEditModal: TaskEditModalReducer,
-    addCategoryModal: addCategoryModalReducer,
-    signOutModal: signOutModalReducer,
-    taskFilter:taskFilterOptionReducer,
+    AddCategoryModal:addCategoryModalReducer,
+    TaskEditModal: TaskEditModalReducer,
+    SignOutModal: signOutModalReducer,
+    CalendarApp:CalendarAppReducer,
     [appApi.reducerPath]: appApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -38,11 +34,10 @@ export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 const rootAction = {
-  taskEditModal: TaskEditModalAction,
-  saveDateArg: saveDateArgAction,
-  addCategoryModal: addCategoryModalActions,
-  signOutModal:signOutModalActions,
-  taskFilter:taskFilterOptionAction,
+  TaskEditModal: TaskEditModalAction,
+  SignOutModal:signOutModalActions,
+  CalendarApp:CalendarAppAction,
+  AddCategoryModal:addCategoryModalActions,
 };
 
 export function useAppAction() {

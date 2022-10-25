@@ -146,11 +146,12 @@ export const apiV2 = apiV1.injectEndpoints({
       async onQueryStarted(arg, api) {
         const { queryFulfilled, getState, dispatch } = api;
         const rootState = getState() as RootState;
+        const dateArgs = rootState.CalendarApp.dateArgs;
         const taskId = arg.taskId;
         try {
           const response = await queryFulfilled;
 
-          const dayArg = rootState.saveDateArg.dateArg;
+          const dayArg = dateArgs.dateArg;
           dispatch(
             apiV2.util.updateQueryData(
               'getDayScheduleData',
@@ -163,7 +164,7 @@ export const apiV2 = apiV1.injectEndpoints({
               }
             )
           );
-          const monthArg = rootState.saveDateArg.monthArg;
+          const monthArg = dateArgs.monthArg;
           dispatch(
             apiV2.util.updateQueryData(
               'getMonthScheduleData',
@@ -176,7 +177,7 @@ export const apiV2 = apiV1.injectEndpoints({
               }
             )
           );
-          const week = rootState.saveDateArg.weekArg;
+          const week = dateArgs.weekArg;
           dispatch(
             apiV2.util.updateQueryData('getWeekScheduleData', week, (draft) => {
               const index = draft.tasks.findIndex((e) => e.taskId === taskId);
@@ -209,11 +210,11 @@ export const apiV2 = apiV1.injectEndpoints({
       async onQueryStarted(arg, api) {
         const { queryFulfilled, dispatch, getState } = api;
         const rootState = getState() as RootState;
-
+        const dateArgs = rootState.CalendarApp.dateArgs;
         try {
           const response = await queryFulfilled;
           const taskId = response.data.taskId;
-          const dayArg = rootState.saveDateArg.dateArg;
+          const dayArg = dateArgs.dateArg;
           dispatch(
             apiV2.util.updateQueryData(
               'getDayScheduleData',
@@ -224,7 +225,7 @@ export const apiV2 = apiV1.injectEndpoints({
               }
             )
           );
-          const monthArg = rootState.saveDateArg.monthArg;
+          const monthArg = dateArgs.monthArg;
           dispatch(
             apiV2.util.updateQueryData(
               'getMonthScheduleData',
@@ -235,7 +236,7 @@ export const apiV2 = apiV1.injectEndpoints({
               }
             )
           );
-          const week = rootState.saveDateArg.weekArg;
+          const week = dateArgs.weekArg;
           dispatch(
             apiV2.util.updateQueryData('getWeekScheduleData', week, (draft) => {
               const task: ReduxTaskData = { ...arg, taskId };
