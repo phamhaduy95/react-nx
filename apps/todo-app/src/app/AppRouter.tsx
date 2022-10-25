@@ -3,14 +3,13 @@ import {
   createRoutesFromElements,
   Route,
 } from 'react-router-dom';
-import HomePage from './app';
 import {
   CalendarApp,
   DayScheduleSection,
   MonthScheduleSection,
   WeekScheduleSection,
 } from './Page/Calendar';
-
+import { HomePage } from './Page/HomePage/HomePage';
 import { LoginPage } from './Page/Login/LoginPage';
 
 export const appRouter = createBrowserRouter(
