@@ -82,6 +82,9 @@ $indicator-cell-width: clamp(25px,calc(25px + 2vw),50px);
               border-radius: 5px;
               display: flex;
               align-items: center;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
               font-size: $font-size-s;
               text-indent: 0.5em;
               cursor: pointer;
@@ -145,7 +148,6 @@ $indicator-cell-width: clamp(25px,calc(25px + 2vw),50px);
           padding: 0.25rem;
           cursor: pointer;
           > .WeekDayTimeLine__TaskTitle {
-            margin: 0;
             position: sticky;
             top: 10px;
             line-height: normal;
