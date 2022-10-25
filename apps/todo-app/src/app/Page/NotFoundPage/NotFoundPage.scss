@@ -1,0 +1,36 @@
+.NotFoundPage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+
+  > .NotFound {
+    margin-top: 25vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Roboto', sans-serif;
+
+    > .NotFound__ErrorCode {
+      align-self: center;
+      font-size: 150px;
+      font-weight: 700;
+      margin: 0px;
+      color: #262626;
+      text-transform: uppercase;
+      caret-color: transparent;
+      span {
+        color: #00b7ff;
+      }
+    }
+    > .NotFound__Message {
+      align-self: center;
+      margin-top: 1rem;
+      font-family: 'Roboto', sans-serif;
+      font-size: 22px;
+      font-weight: 400;
+      text-transform: uppercase;
+      color: #151515;
+    }
+  }
+}
