@@ -7,7 +7,8 @@ type LoginPageState = {
   errorMessage: LoginErrorsMessage;
   action: {
     updateLoginData: (data: Partial<LoginData>) => void;
-    updateErrorMessage: (error: LoginErrorsMessage) => void;
+    updateErrorMessage: (error: Partial<LoginErrorsMessage>) => void;
+    clearErrorMessage: () => void;
   };
 };
 
@@ -18,6 +19,7 @@ const context = createContext<ContextValueType>(null);
 const initialErrorMessage: LoginErrorsMessage = Object.freeze({
   email: false,
   password: false,
+  connection:false,
 });
 
 const initialLoginData: LoginData = Object.freeze({
@@ -33,12 +35,17 @@ export function LoginPageStoreProvider(props: { children: JSX.Element }) {
         loginData: initialLoginData,
         action: {
           updateErrorMessage(error) {
-            set(() => ({ errorMessage: error }));
+            set((state) => ({
+              errorMessage: { ...state.errorMessage, ...error },
+            }));
           },
           updateLoginData(data) {
             set((state) => ({
               loginData: { ...state.loginData, ...data },
             }));
+          },
+          clearErrorMessage() {
+            set(() => ({ errorMessage: initialErrorMessage }));
           },
         },
       })),

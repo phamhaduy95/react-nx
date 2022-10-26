@@ -6,6 +6,7 @@ function createErrorFlagsFromValidationError(error: any) {
   let ErrorMessage: LoginErrorsMessage = {
     email: false,
     password: false,
+    connection:false,
   };
   const errors = error.errors as ErrorObject[];
   for (let error of errors) {
@@ -18,7 +19,7 @@ function createErrorFlagsFromValidationError(error: any) {
 
 const requiredMessage: MixedLocale['required'] = (a) => ({
   key: a.path,
-  message: `required`,
+  message: `${a.path} is required`,
 });
 
 const schema: SchemaOf<LoginData> = object().shape({

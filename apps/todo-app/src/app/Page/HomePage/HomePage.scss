@@ -2,13 +2,14 @@
   display: flex;
 
   > .HomePage__SideBar {
-    width: 62px;
-
+    width: 65px;
+  
     > .SideBar__Container {
       background-color: white;
+      border-color: white;
 
       &:not(.expanded) {
-        width: 62px;
+        width: 65px;
         border-left: none;
         border-top: none;
         border-bottom: none;
@@ -16,7 +17,8 @@
       }
 
       &.expanded {
-        box-shadow: 0px -2px 10px 0px hsla(0, 0%, 0%, 0.2);
+        width: 250px;
+        box-shadow: 0px -2px 10px 0px rgba(0, 0, 0, 0.2);
       }
 
       .SideBar__Item {
@@ -31,5 +33,18 @@
     background-color: hsla(0, 0%, 85%, 0.5);
     width: 100%;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    >.HomePage__HeaderBar {
+      position:sticky;
+      top:0;
+      z-index: 5;
+      width: 100%;
+      height: 3.5rem;
+      background: white;
+      margin-bottom: 0.5rem;
+      padding: 1rem;
+
+    }
   }
 }
