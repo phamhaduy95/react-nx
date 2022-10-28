@@ -54,6 +54,12 @@ $text-color: hsla(0, 0%, 20%, 1);
         white-space: nowrap;
         overflow: hidden;
 
+        &.disabled {
+          cursor: not-allowed;
+          color: var(--phDuylib-secondary-color-active);
+        }
+
+
         &.selected {
           background-color: var(--phDuylib-primary-color);
           color: var(--phDuylib-text-color-dark);

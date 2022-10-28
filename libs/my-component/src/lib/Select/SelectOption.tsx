@@ -67,6 +67,7 @@ function SelectOptionWithId(props: SelectOption) {
   const className = classNames('Select__Option', {
     selected: isSelected,
     [`is-highlighted`]: isHighLighted,
+    ["disabled"] :disabled,
   });
 
   const handleKeyPressed = (e: React.KeyboardEvent) => {
