@@ -16,7 +16,6 @@ export default {
 export const Example: ComponentStory<typeof Select> = (args) => {
   const { autoWidth, label } = args;
   return (
-    <GlobalStyleProvider>
       <Select label={label} autoWidth={autoWidth}>
         <SelectSubHeader>Section1</SelectSubHeader>
         <SelectOption value="12" label={'12'} disabled></SelectOption>
@@ -24,7 +23,6 @@ export const Example: ComponentStory<typeof Select> = (args) => {
         <SelectOption value="60" label={'60'}></SelectOption>
         <SelectOption value="70" label={'70'}></SelectOption>
       </Select>
-    </GlobalStyleProvider>
   );
 };
 Example.args = {

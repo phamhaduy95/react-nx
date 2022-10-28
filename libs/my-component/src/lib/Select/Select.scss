@@ -7,11 +7,8 @@ $text-color: hsla(0, 0%, 20%, 1);
   width: 120px;
   display: flex;
   flex-direction: column;
-  color: $text-color;
-
   > .Select__TextField {
     width: 100%;
-
     .TextField__InputField {
       caret-color: transparent;
       cursor: pointer;
@@ -29,9 +26,9 @@ $text-color: hsla(0, 0%, 20%, 1);
     .Select__Menu {
       background-color: white;
       padding: 0.5rem 0;
-      color: $text-color;
+      color: var(--phDuylib-text-color);
       display: flex;
-      border: $border;
+      border: var(--phDuylib-border);
       border-radius: 5px;
       flex-direction: column;
       &:focus-visible {
@@ -58,16 +55,16 @@ $text-color: hsla(0, 0%, 20%, 1);
         overflow: hidden;
 
         &.selected {
-          background-color: $primary-color;
-          color: hsla(0, 0%, 90%);
+          background-color: var(--phDuylib-primary-color);
+          color: var(--phDuylib-text-color-dark);
         }
 
         &.is-highlighted:not(.selected) {
-          background-color: hsl(0, 0%, 90%, 0.5);
+          background-color: var(--phDuylib-secondary-color-hover);
         }
 
         &.is-highlighted.selected {
-          background-color: hsla(220, 80%, 60%, 0.7);
+          background-color: var(--phDuylib-primary-color-hover);
         }
 
         &:focus-visible {

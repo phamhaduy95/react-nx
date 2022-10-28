@@ -6,6 +6,7 @@ import { TextFieldProps } from '../TextField';
 import { SelectStoreProvider, useSelectStore } from './SelectStoreProvider';
 import { SelectTextField } from './SelectTextField';
 import { giveIndexToSelectOptions } from './SelectOption';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 
 export interface SelectProps {
   className?: string;
@@ -71,19 +72,21 @@ function WrappedSelect(props: SelectProps) {
   }, [defaultValue]);
 
   return (
-    <div className={rootClassName}>
-      <SelectTextField
-        label={label}
-        helperText={helperText}
-        success={success}
-        error={error}
-        ref={textFieldRef}
-        onSelect={onSelect}
-      />
-      <SelectPopup targetRef={textFieldRef} onPopupToggle={onPopupToggle}>
-        {IndexedItems}
-      </SelectPopup>
-    </div>
+    <GlobalStyleProvider>
+      <div className={rootClassName}>
+        <SelectTextField
+          label={label}
+          helperText={helperText}
+          success={success}
+          error={error}
+          ref={textFieldRef}
+          onSelect={onSelect}
+        />
+        <SelectPopup targetRef={textFieldRef} onPopupToggle={onPopupToggle}>
+          {IndexedItems}
+        </SelectPopup>
+      </div>
+    </GlobalStyleProvider>
   );
 }
 

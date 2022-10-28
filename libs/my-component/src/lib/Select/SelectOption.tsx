@@ -109,10 +109,12 @@ export function giveIndexToSelectOptions(
 ) {
   const childrenArray = ensureElementsListAsArray(children);
   return childrenArray
-    .filter((e) => e.type.name === SelectOption.name)
     .map((e, i) => {
-      const props = e.props;
-      const newProps = { ...props, index: i };
-      return <SelectOptionWithId {...newProps} key={i} />;
+      if (e.type.name === SelectOption.name){
+        const props = e.props;
+        const newProps = { ...props, index: i };
+        return <SelectOptionWithId {...newProps} key={`item-${i}`} />;
+      }
+      return e;
     });
 }
