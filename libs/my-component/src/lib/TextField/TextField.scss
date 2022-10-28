@@ -23,9 +23,8 @@
   @at-root .TextField__Label {
     margin-bottom: 0.25rem;
     margin-left: 0.25rem;
-    font-size: 0.75rem;
-    color: $text-color;
-    font-size: 1rem;
+    font-size: var(--phDuylib-font-size-sml);
+    color: var(--phDuylib-text-color);
   }
   @at-root .TextField__InputContainer {
     display: flex;
@@ -36,8 +35,8 @@
       border-bottom-left-radius: 5px;
       width: max-content;
       padding: 0 0.5rem;
-      border: $border;
-      color: $text-color;
+      border: var(--phDuylib-border);
+      color: var(--phDuylib-text-color);
       border-right: unset;
     }
 
@@ -46,7 +45,7 @@
       border-bottom-right-radius: 5px;
       width: max-content;
       padding: 0 0.5rem;
-      border: $border;
+      border: var(--phDuylib-border);
       border-left: unset;
     }
 
@@ -54,7 +53,7 @@
       width: 100%;
       background-color: white;
       height: 100%;
-      border: $border;
+      border: var(--phDuylib-border);
       padding: 0.5rem 0.1rem;
       border-radius: 5px;
       user-select: none;
@@ -67,7 +66,7 @@
         flex-shrink: 0;
         @include centerElement();
         margin: 0 0.5rem;
-        font-size: 1rem;
+        font-size: var(--phDuylib-font-size-med);
         color: $text-color;
         @include setChildElementsSize(1.25rem, 1.25rem);
       }
@@ -79,9 +78,9 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        color: $text-color;
+        color: var(--phDuylib-text-color);
         border: none;
-        font-size: 1rem;
+        font-size: var(--phDuylib-font-size-med);
         margin-left: 0.25rem;
       }
 
@@ -99,13 +98,13 @@
       &:focus-visible {
         outline: none;
         border-color: hsla(220, 80%, 50%, 0.9);
-        box-shadow: 0 0 2px 2px hsla(220, 80%, 50%, 0.5);
+        box-shadow: var(--phDuylib-box-shadow-focus);
       }
     }
   }
   @at-root .TextField__HelperText {
-    color: hsl(0, 0%, 50%);
-    font-size: 1rem;
+    color: #838f95;
+    font-size:  var(--phDuylib-font-size-sml);
     margin-left: 0.25rem;
     user-select: none;
     margin-top: 0.25rem;
@@ -113,58 +112,57 @@
 
   &.disabled {
     > .TextField__InputContainer {
-      >.TextField__InputField {
-        border-color: hsl(0, 0%, 75%);
-        background-color: hsl(0, 0%, 95%);
-     
+        user-select: none;
+        cursor: not-allowed;
+      > .TextField__InputField {
+        border-color: var(--phDuylib-secondary-color);
+        background-color: var(--phDuylib-secondary-color-hover);
+
         > .TextField__InputPrefix {
-          color: hsl(0, 0%, 50%);
+          color: var(--phDuylib-secondary-color);
         }
         > .TextField__InputSuffix {
-          color: hsl(0, 0%, 50%);
+          color: var(--phDuylib-secondary-color);
         }
         > .TextField__Input {
-          color: hsl(0, 0%, 50%);
+          color: var(--phDuylib-secondary-color);
           caret-color: transparent;
         }
       }
     }
   }
 
-  &:not(.disabled).error {
-
-    .TextField__InputField{
-     border-color: hsla(0, 80%, 50%, 0.9);
-      
+  &.error {
+    .TextField__InputField {
+      border-color: var(--phDuylib-error-color);
       &:focus-within,
       &:focus-visible {
         outline: none;
-        border-color: hsla(0, 80%, 50%, 0.9);
-        box-shadow: 0 0 2px 2px hsla(0, 80%, 60%, 0.5);
+        border-color: var(--phDuylib-error-color);
+        box-shadow: var(--phDuylib-box-shadow-error);
       }
 
-      >.TextField__Input{
-        color:hsla(0, 80%, 50%, 0.9);
+      > .TextField__Input {
+        color: var(--phDuylib-error-color);
       }
-  }
-    >.TextField__HelperText{
-        color:hsla(0, 80%, 50%, 0.9)
+    }
+    > .TextField__HelperText {
+      color: var(--phDuylib-error-color);
     }
   }
-  &:not(.disabled).success {
- 
-    .TextField__InputField{
-     border-color: hsla(110, 50%, 50%, 0.8);
-      
+  &.success {
+    .TextField__InputField {
+      border-color: var(--phDuylib-success-color);
+
       &:focus-within,
       &:focus-visible {
         outline: none;
-        border-color: hsla(110, 50%, 50%, 0.8);
-        box-shadow: 0 0 2px 2px hsla(110, 50%, 50%, 0.5);
+        border-color: var(--phDuylib-success-color);
+        box-shadow: var(--phDuylib-box-shadow-success);
       }
-  }
-    >.TextField__HelperText{
-        color:hsla(110, 50%, 50%, 0.8)
+    }
+    > .TextField__HelperText {
+      color: var(--phDuylib-success-color);
     }
   }
 }

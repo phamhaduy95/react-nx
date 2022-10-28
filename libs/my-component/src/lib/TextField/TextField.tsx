@@ -2,12 +2,13 @@ import classNames from 'classnames';
 import React, {
   HTMLInputTypeAttribute,
   useEffect,
-  useImperativeHandle,
   useRef,
   useState,
 } from 'react';
 import './TextField.scss';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
+import GlobalStyleProvider from '../GlobalStyleProvider';
+
 
 export type TextFieldProps = {
   className?: string | null;
@@ -31,10 +32,12 @@ export type TextFieldProps = {
   onBlur?: (e: React.FormEvent) => void;
   onKeyDown?: (e: React.KeyboardEvent) => void;
   type?: HTMLInputTypeAttribute;
+  autocomplete?: string;
+  name?: string;
   autoFocusWhenChanged?: boolean;
   error?: string | false;
   success?: string | false;
-  typeable?:boolean,
+  typeable?: boolean;
 };
 
 const defaultProps: Required<TextFieldProps> = {
@@ -45,6 +48,8 @@ const defaultProps: Required<TextFieldProps> = {
   required: false,
   disabled: false,
   label: '',
+  autocomplete: 'off',
+  name: '',
   labelPosition: 'top',
   helperText: null,
   prefix: null,
@@ -62,7 +67,7 @@ const defaultProps: Required<TextFieldProps> = {
   onKeyDown(e) {},
   error: false,
   success: false,
-  typeable:true,
+  typeable: true,
 };
 
 export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
@@ -91,7 +96,9 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
       success,
       value,
       typeable,
-      type
+      type,
+      name,
+      autocomplete,
     } = newProps;
     const inputRef = useRef<HTMLInputElement>(null);
     // the error flag has higher priority than success
@@ -158,7 +165,7 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
     };
 
     const handleInputChange = (e: React.FormEvent) => {
-      if (!typeable) return;  
+      if (!typeable) return;
       onChange(e);
       const target = e.target as HTMLInputElement;
       const value = target.value;
@@ -176,6 +183,7 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
     };
 
     return (
+    <GlobalStyleProvider>
       <div className={rootClassName}>
         <label className="TextField__Label">{label}</label>
         <div className="TextField__InputContainer">
@@ -184,7 +192,8 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
             {renderPrefix()}
             <input
               className="TextField__Input"
-              autoComplete="hidden"
+              autoComplete={autocomplete}
+              name={name}
               placeholder={placeHolder ? placeHolder : ''}
               onChange={handleInputChange}
               onFocus={onFocus}
@@ -202,6 +211,7 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
         </div>
         {renderHelpText()}
       </div>
+      </GlobalStyleProvider>
     );
   }
 );
