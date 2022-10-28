@@ -2,6 +2,8 @@ import './Accordion.scss';
 import AccordionStoreProvider from './AccordionStoreProvider';
 import { useEffect } from 'react';
 import { useAccordionStore } from './AccordionStoreProvider';
+import GlobalStyleProvider from '../GlobalStyleProvider';
+import classNames from 'classnames';
 
 export type AccordionProps = {
   children: JSX.Element[] | JSX.Element;
@@ -16,22 +18,24 @@ const defaultProps: Required<AccordionProps> = {
 };
 
 export function Accordion(props: AccordionProps) {
-
   return (
-      <AccordionStoreProvider>
-        <WrappedAccordion {...props}/>
-      </AccordionStoreProvider>
+    <AccordionStoreProvider>
+      <WrappedAccordion {...props} />
+    </AccordionStoreProvider>
   );
 }
-function WrappedAccordion(props:AccordionProps) {
+function WrappedAccordion(props: AccordionProps) {
   const newPros = { ...defaultProps, ...props };
   const { className, children, isAlwaysOpen } = newPros;
-  const action = useAccordionStore((state)=>state.action);
-  useEffect(()=>{
-      action.changeSettings({isAlwaysOpen})
-  },[isAlwaysOpen])
+  const action = useAccordionStore((state) => state.action);
+  const rootClassName = classNames('Accordion', className);
+  useEffect(() => {
+    action.changeSettings({ isAlwaysOpen });
+  }, [isAlwaysOpen]);
 
-return (
-  <div className={`Accordion ${className}`}>{children}</div>
-)
+  return (
+    <GlobalStyleProvider>
+      <div className={rootClassName}>{children}</div>
+    </GlobalStyleProvider>
+  );
 }
