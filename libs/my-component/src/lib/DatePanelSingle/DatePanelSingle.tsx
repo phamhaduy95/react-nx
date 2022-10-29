@@ -8,6 +8,7 @@ import {
   useDatePanelStore,
 } from './DatePanelStoreProvider';
 import { useEffect, useMemo } from 'react';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 
 export type DatePanelProps = {
   className?: string;
@@ -35,9 +36,11 @@ export const defaultDatePanelProps: Required<DatePanelProps> = {
 
 export function DatePanelSingle(props: DatePanelProps) {
   return (
+    <GlobalStyleProvider>
     <DatePanelStoreProvider>
       <WrappedDatePanelSingle {...props} />
     </DatePanelStoreProvider>
+    </GlobalStyleProvider>
   );
 }
 

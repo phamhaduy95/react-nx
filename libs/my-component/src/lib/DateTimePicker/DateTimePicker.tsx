@@ -17,6 +17,7 @@ import {
 } from './DateTimePickerStoreProvider';
 import './DateTimePicker.scss';
 import { TextFieldProps } from '../TextField/TextField';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 
 export interface DateTimePickerProps {
   className?: string;
@@ -56,9 +57,11 @@ const defaultProps: Required<DateTimePickerProps> = {
 
 export function DateTimePicker(props: DateTimePickerProps) {
   return (
+    <GlobalStyleProvider>
     <DateTimePickerStoreProvider>
       <WrappedDateTimePicker {...props} />
     </DateTimePickerStoreProvider>
+    </GlobalStyleProvider>
   );
 }
 

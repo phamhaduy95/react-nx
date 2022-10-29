@@ -10,6 +10,7 @@ import {
   useDateRangePanelStore,
 } from './DateRangePanelStoreProvider';
 import { useEffect } from 'react';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 
 export interface DateRangePanelProps {
   range?: Pick<DateRangePanelState, 'endDate' | 'startDate'>;
@@ -42,11 +43,13 @@ const defaultProps: Required<DateRangePanelProps> = {
 export function DateRangePanel(props: DateRangePanelProps) {
   const newProps = { ...defaultProps, ...props };
   return (
+    <GlobalStyleProvider>
     <DateRangePanelSharedDataContext {...newProps}>
       <DateRangePanelStoreProvider>
         <WrappedElement {...props} />
       </DateRangePanelStoreProvider>
     </DateRangePanelSharedDataContext>
+    </GlobalStyleProvider>
   );
 }
 

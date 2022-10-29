@@ -1,14 +1,13 @@
 @import '../_utils.scss';
 @import '../_sharedStyle.scss';
-@import "../_mediaQuery.scss";
+@import '../_mediaQuery.scss';
 
 .DateRangePanel {
-  width: calc(130px + 8vw);
-  max-width: 250px;
-  max-height: 300px;
-  height: max-content;
   display: flex;
   flex-direction: column;
+  width: max-content;
+  max-width: 310px;
+  max-height: 360px;
   > .Calendar {
     width: 100%;
     max-width: unset;
@@ -21,7 +20,7 @@
         color: white;
         z-index: 2;
         &::before {
-          background-color: $primary-color;
+          background-color: var(--phDuylib-primary-color);
           visibility: visible;
           z-index: -1;
         }
@@ -31,16 +30,16 @@
         &::before {
           border-top-right-radius: 0;
           border-bottom-right-radius: 0;
+          right: 0;
         }
-        left: 1%;
       }
 
       &.is-end-date {
         &::before {
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
+          left: 0;
         }
-        right: 1%;
       }
 
       &.is-end-date.is-start-date {
@@ -52,16 +51,17 @@
       &.is-date-in-range {
         z-index: 1;
         &::before {
-          background-color: hsla(220, 80%, 90%, 0.5);
+          background-color: var(--phDuylib-primary-color);
+          opacity: 0.2;
           visibility: visible;
-
-          left: -3%;
-          right: -3%;
+          left: 0;
+          right: 0;
           border-radius: 0;
         }
 
         &:hover::before {
-          background-color: hsla(220, 80%, 70%, 0.6);
+          background-color: var(--phDuylib-primary-color-hover);
+          opacity: 0.5;
         }
       }
     }

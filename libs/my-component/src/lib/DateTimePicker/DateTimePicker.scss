@@ -4,77 +4,87 @@
 
 .DateTimePicker {
   width: 250px;
+  font-size: var(--phDuylib-font-size-med);
+
   > .DateTimePicker__TextField {
     width: 100%;
+
     .DateTimePicker__InputIcon {
       cursor: pointer;
       margin-right: 0.25rem;
       margin-left: auto;
       @include centerElement();
-      @include setChildElementsSize(1.5rem, 1.5rem);
+      @include setChildElementsSize(1.5em, 1.5em);
+
       > svg {
         fill: $text-color;
       }
     }
   }
-  @at-root .DateTimePicker__Popup {
-    background-color: white;
+
+  @at-root .Popup__Content.DateTimePicker__Popup {
     display: flex;
     flex-direction: column;
-    width: max-content;
-    height: calc(200px + 10vw);
-    min-height: 220px;
-    max-height: 330px;
-    border: $border;
+    width: 22em;
+    height: max-content;
+    max-height: 100vh;
+    background-color: white;
+    border: var(--phDuylib-border);
     border-radius: 5px;
+    font-size: var(--phDuylib-font-size-med);
+
     @at-root .DateTimePicker__Popup__Container {
-      border-radius: 5px;
       display: flex;
-      height: 70%;
-      flex-grow: 1;
+      border-radius: 5px;
+      height: 21em;
+      flex-grow: 1; 
       > .DateTimePicker__DatePanel {
         border: none;
-        border-right: $border;
+        border-right: var(--phDuylib-border);
         height: 100%;
         flex-grow: 1;
         > .Calendar {
           border: 0;
           height: 100%;
-          > .Calendar_Table {
-            padding: 0;
-            flex-grow: 0;
+          .Calendar__Table__DateCell {
+            width: 2.5em;
+            height: 2.5em;
           }
         }
       }
+
       > .DateTimePicker__TimePanel {
         border: none;
-        width: calc(40px + 5vw);
+        width: 5em;
+        flex-shrink: 0;
         height: 100%;
-        
+        flex-grow: 1;
       }
     }
 
     > .DateTimePicker__Control {
-      height: calc(20px + 3vw);
-      min-height: 30px;
-      max-height: 40px;
-      border-top: $border;
+      height: 3em;
+      flex-grow: 0;
+      border-top: var(--phDuylib-border);
       @include centerElement();
+
       > button {
-        border: $border;
+        border: var(--phDuylib-border);
         border-radius: 3px;
-        padding: 0.25em 0.5em;
-        font-size: $font-size-m;
+        padding: 0.3em 0.6em;
+        font-size: var(--phDuylib-font-size-med);
         cursor: pointer;
       }
+
       > .DateTimePicker__ClearButton {
         margin-left: auto;
         background-color: white;
       }
+
       > .DateTimePicker__SubmitButton {
-        margin-left: 0.5rem;
-        margin-right: 0.5rem;
-        background-color: $primary-color;
+        margin-left: 1em;
+        margin-right: 1em;
+        background-color: var(--phDuylib-primary-color);
         color: white;
       }
     }

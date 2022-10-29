@@ -3,12 +3,11 @@
 @import '../_mediaQuery.scss';
 
 .DatePanelSingle {
-  width: calc(120px + 10vw);
-  min-width: 180px;
-  max-width: 300px;
-  max-height: 320px;
   display: flex;
   flex-direction: column;
+  width: max-content;
+  max-width: 310px;
+  max-height: 360px;  
   > .Calendar {
     width: 100%;
     max-width: unset;
@@ -20,7 +19,7 @@
         color: white;
         z-index: 2;
         &::before {
-          background-color: $primary-color;
+          background-color: var(--phDuylib-primary-color);
           visibility: visible;
           z-index: -1;
         }
@@ -31,11 +30,11 @@
     display: flex;
     flex-grow: 0;
     align-items: center;
+    width: 100%;
     height: calc(20px + 3vw);
     min-height: 30px;
     max-height: 40px;
-    width: 100%;
-    border-top: $border;
+    border-top: var(--phDuylib-border);
     > button {
       padding: 0.25em 0.75em;
       border: $border;
