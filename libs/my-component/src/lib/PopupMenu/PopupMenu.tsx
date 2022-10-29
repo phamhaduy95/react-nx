@@ -10,6 +10,7 @@ import ClickOutSideWatcher from '../ClickOutsideWatcher/ClickOutSideWatcher';
 import classNames from 'classnames';
 import { usePopupMenuStore } from './PopupMenuStoreProvider';
 import './PopupMenu.scss';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 
 type ContextMenuPopupProps = {
   targetRef: React.MutableRefObject<HTMLElement | null>;
@@ -95,19 +96,21 @@ export const PopupMenu = forwardRef<
   };
 
   return createPortal(
-    <ClickOutSideWatcher ref={ref} onClickOutSide={handleClickOutSide}>
-      <div
-        className={PopupClassName}
-        ref={popupRef}
-        onContextMenu={(e) => {
-          e.preventDefault();
-        }}
-        tabIndex={-1}
-        onKeyDown={handleKeyDown}
-      >
-        {children}
-      </div>
-    </ClickOutSideWatcher>,
+    <GlobalStyleProvider>
+      <ClickOutSideWatcher ref={ref} onClickOutSide={handleClickOutSide}>
+        <div
+          className={PopupClassName}
+          ref={popupRef}
+          onContextMenu={(e) => {
+            e.preventDefault();
+          }}
+          tabIndex={-1}
+          onKeyDown={handleKeyDown}
+        >
+          {children}
+        </div>
+      </ClickOutSideWatcher>
+    </GlobalStyleProvider>,
     document.body
   );
 });

@@ -10,7 +10,7 @@ import './PopupElement.scss';
 import { forwardRef } from 'react';
 import { useRepositionPopupOnResize } from './useRepositionPopupOnResize';
 import usePopupWidthHandler from './usePopupWidthHandler';
-
+import GlobalStyleProvider from '../GlobalStyleProvider';
 
 export type PopupElementProps = {
   className?: string;
@@ -21,7 +21,7 @@ export type PopupElementProps = {
   isShowed: boolean;
   triggerRef: MutableRefObject<any>;
   width?: 'auto' | 'fit-content' | number;
-  onClickOutside?: (e:MouseEvent) => void;
+  onClickOutside?: (e: MouseEvent) => void;
 };
 
 const defaultProps: Required<PopupElementProps> = {
@@ -36,51 +36,59 @@ const defaultProps: Required<PopupElementProps> = {
   onClickOutside: () => {},
 };
 
-export const PopupElement = forwardRef<HTMLElement,PopupElementProps>((props,ref) => {
-  const newProps = { ...defaultProps, ...props };
-  const {
-    isShowed,
-    className,
-    children,
-    padding,
-    placement,
-    arrowEnable,
-    triggerRef,
-    width,
-    onClickOutside,
-  } = newProps;
+export const PopupElement = forwardRef<HTMLElement, PopupElementProps>(
+  (props, ref) => {
+    const newProps = { ...defaultProps, ...props };
+    const {
+      isShowed,
+      className,
+      children,
+      padding,
+      placement,
+      arrowEnable,
+      triggerRef,
+      width,
+      onClickOutside,
+    } = newProps;
 
-  const arrowRef = useRef<HTMLDivElement>(null);
-  const popupRef = useRef<HTMLDivElement>(null);
-  useImperativeHandle(ref,()=>popupRef.current as HTMLElement,[popupRef.current])
+    const arrowRef = useRef<HTMLDivElement>(null);
+    const popupRef = useRef<HTMLDivElement>(null);
+    useImperativeHandle(ref, () => popupRef.current as HTMLElement, [
+      popupRef.current,
+    ]);
 
+    usePopupPlacement(triggerRef, popupRef, placement, isShowed);
+    useMovePopupOnScroll(triggerRef, popupRef, placement, isShowed);
+    usePopupWidthHandler(triggerRef, popupRef, width, placement);
+    useRepositionPopupOnResize(triggerRef, popupRef, placement, isShowed);
+    usePopupPadding(popupRef, placement, padding);
 
-  usePopupPlacement(triggerRef, popupRef, placement, isShowed);
-  useMovePopupOnScroll(triggerRef,popupRef,placement,isShowed);
-  usePopupWidthHandler(triggerRef,popupRef,width,placement);
-  useRepositionPopupOnResize(triggerRef,popupRef,placement,isShowed);
-  usePopupPadding(popupRef,placement,padding);
+    const rootClassName = classNames('Popup', {
+      showed: isShowed,
+    });
 
+    const PopupContentClassName = classNames('Popup__Content', {
+      [`${className}`]: className,
+    });
 
-  const rootClassName = classNames('Popup', {
-    showed: isShowed,
-  });
-
-  const PopupContentClassName = classNames('Popup__Content', {
-    [`${className}`]: className,
-  });
-
-  return ReactDOM.createPortal(
-    <ClickOutSideWatcher ref={popupRef} onClickOutSide={onClickOutside}>
-      <div className={rootClassName} ref={popupRef}>
-        <div className={PopupContentClassName}>
-          <div className="Popup__Arrow" ref={arrowRef} hidden={!arrowEnable} />
-          {children}
-        </div>
-      </div>
-    </ClickOutSideWatcher>,
-    document.body
-  );
-});
+    return ReactDOM.createPortal(
+      <GlobalStyleProvider>
+        <ClickOutSideWatcher ref={popupRef} onClickOutSide={onClickOutside}>
+          <div className={rootClassName} ref={popupRef}>
+            <div className={PopupContentClassName}>
+              <div
+                className="Popup__Arrow"
+                ref={arrowRef}
+                hidden={!arrowEnable}
+              />
+              {children}
+            </div>
+          </div>
+        </ClickOutSideWatcher>
+      </GlobalStyleProvider>,
+      document.body
+    );
+  }
+);
 
 export default PopupElement;

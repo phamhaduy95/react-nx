@@ -7,8 +7,8 @@
     overflow: auto;
     isolation: isolate;
     z-index: 100;
-
-
+    box-shadow: var(--phDuylib-box-shadow-popup);
+    border: var(--phDuylib-border);
     &:not(.is-open) {
         visibility: collapse;
         opacity: 0;
