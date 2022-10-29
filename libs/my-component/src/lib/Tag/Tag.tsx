@@ -1,7 +1,8 @@
-import React, { useRef, useState } from "react";
-import { ReactComponent as CloseIcon } from "./close-icon.svg";
-import ClickOutSideWatcher from "../ClickOutsideWatcher/ClickOutSideWatcher";
-import "./Tag.scss";
+import React, { useRef, useState } from 'react';
+import { ReactComponent as CloseIcon } from './close-icon.svg';
+import ClickOutSideWatcher from '../ClickOutsideWatcher/ClickOutSideWatcher';
+import './Tag.scss';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 type Props = {
   onRemove?: () => void;
   onClick?: () => void;
@@ -15,7 +16,7 @@ const defaultProps: Required<Props> = {
   onRemove: () => {},
   onClick: () => {},
   disabled: false,
-  text: "",
+  text: '',
   removable: false,
   clickable: true,
 };
@@ -27,22 +28,22 @@ export default function Tag(props: Props) {
   const ref = useRef(null);
 
   function makeDisabled() {
-    if (disabled) return " disabled";
-    return "";
+    if (disabled) return ' disabled';
+    return '';
   }
   function applyClickedStyle() {
-    if (clickable) return " clickable";
-    return "";
+    if (clickable) return ' clickable';
+    return '';
   }
   function makeActive() {
-    if (!clickable) return "";
-    if (isActive) return " active";
-    return "";
+    if (!clickable) return '';
+    if (isActive) return ' active';
+    return '';
   }
 
   function applyRemovableStyle() {
-    if (removable) return " removable";
-    return "";
+    if (removable) return ' removable';
+    return '';
   }
 
   function handleClick() {
@@ -72,11 +73,13 @@ export default function Tag(props: Props) {
     .concat(makeActive());
 
   return (
-    <ClickOutSideWatcher ref={ref} onClickOutSide={handleClickOutSide}>
-      <div className={TagClassName} onClick={handleClick} ref={ref}>
-        <p className="Tag__Text">{text}</p>
-        <CloseIcon className="Tag__Close-icon" onClick={handleClose} />
-      </div>
-    </ClickOutSideWatcher>
+    <GlobalStyleProvider>
+      <ClickOutSideWatcher ref={ref} onClickOutSide={handleClickOutSide}>
+        <div className={TagClassName} onClick={handleClick} ref={ref}>
+          <p className="Tag__Text">{text}</p>
+          <CloseIcon className="Tag__Close-icon" onClick={handleClose} />
+        </div>
+      </ClickOutSideWatcher>
+    </GlobalStyleProvider>
   );
 }
