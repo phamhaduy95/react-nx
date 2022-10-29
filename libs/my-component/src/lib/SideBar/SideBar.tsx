@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 import './SideBar.scss';
 import SideBarHeader from './SideBarHeader';
 import { useSideBarStore, SideBarStoreProvider } from './SideBarStoreProvider';
@@ -53,9 +54,11 @@ function WrappedSideBar(props: SideBarProps) {
 
 export function SideBar(props: SideBarProps) {
   return (
+    <GlobalStyleProvider>
     <SideBarStoreProvider>
       <WrappedSideBar {...props} />
     </SideBarStoreProvider>
+    </GlobalStyleProvider>
   );
 }
 
