@@ -5,7 +5,7 @@ import { ModalStoreProvider, useModalStore } from './ModalStoreProvider';
 import './Modal.scss';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import classNames from 'classnames';
-
+import GlobalStyleProvider from '../GlobalStyleProvider';
 
 export type ModalProps = {
   children: JSX.Element[] | JSX.Element;
@@ -15,7 +15,7 @@ export type ModalProps = {
   timeToExpire?: number;
   closeIcon?: React.ReactNode | false;
   forceMount?: boolean;
-  clickOutsideToClose?:boolean;
+  clickOutsideToClose?: boolean;
 };
 
 const defaultPropsValue: Required<Omit<ModalProps, 'children'>> = {
@@ -25,14 +25,16 @@ const defaultPropsValue: Required<Omit<ModalProps, 'children'>> = {
   timeToExpire: 0,
   closeIcon: true,
   forceMount: false,
-  clickOutsideToClose:true
+  clickOutsideToClose: true,
 };
 
 export function Modal(props: ModalProps) {
   return (
-    <ModalStoreProvider>
-      <WrappedModal {...props} />
-    </ModalStoreProvider>
+    <GlobalStyleProvider>
+      <ModalStoreProvider>
+        <WrappedModal {...props} />
+      </ModalStoreProvider>
+    </GlobalStyleProvider>
   );
 }
 
@@ -46,7 +48,7 @@ function WrappedModal(props: ModalProps) {
     timeToExpire,
     forceMount,
     closeIcon,
-    clickOutsideToClose
+    clickOutsideToClose,
   } = newProps;
   // provide default value incase no user input for these properties
   const action = useModalStore((state) => state.action);
@@ -76,16 +78,15 @@ function WrappedModal(props: ModalProps) {
     ['is-open']: isOpen,
   });
 
-
-  const handleClickOutSide = useCallback (() => {
+  const handleClickOutSide = useCallback(() => {
     if (!clickOutsideToClose) return;
     action.toggleOpen(false);
-  },[clickOutsideToClose]);
+  }, [clickOutsideToClose]);
 
-  const handleCloseModal = ()=>{
-    console.log("click X to close")
+  const handleCloseModal = () => {
+    console.log('click X to close');
     action.toggleOpen(false);
-  }
+  };
 
   const renderCloseIcon = () => {
     if (closeIcon)

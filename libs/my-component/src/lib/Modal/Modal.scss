@@ -40,17 +40,18 @@ $transitionDuration: 0.1s;
   }
 
   @at-root .Modal__Dialog {
-    color: $text-color;
     position: relative;
     display: flex;
+    width: 50vw;
     padding: 0.5rem;
     flex-direction: column;
     margin: 10vh auto;
     min-width: 30vw;
-    width: 50vw;
-    background-color: $bgColor;
     border-radius: 4px;
-    box-shadow: 0 5px 10px 2px hsla(0, 0%, 30%, 0.6);
+    color: var(--phDuylib-text-color);
+    background-color: var(--phDuylib-secondary-color-hover);
+    font-size: var(--phDuylib-font-size-med);
+    box-shadow: var(--phDuylib-box-shadow-popup);
     transition: transform $transitionDuration ease-in $transitionDuration,
       opacity $transitionDuration ease-in $transitionDuration;
 
@@ -75,10 +76,16 @@ $transitionDuration: 0.1s;
     }
 
     @at-root .Modal__Header {
+      padding: 0.5rem;
       margin-bottom: 0.5rem;
+      font-size: var(--phDuylib-font-size-big);
     }
     @at-root .Modal__Body {
+      padding: 0.5rem;
       margin-bottom: 0.5rem;
+    }
+    @at-root .Modal__Footer {
+      padding: 0.5rem;
     }
   }
 }
