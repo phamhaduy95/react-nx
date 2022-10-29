@@ -5,7 +5,7 @@ import { ClickOutSideWatcher } from '../ClickOutsideWatcher';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import { DrawerStoreProvider, useDrawerStore } from './DrawerStoreProvider';
 import './Drawer.scss';
-
+import GlobalStyleProvider from '../GlobalStyleProvider';
 
 export type DrawerProps = {
   position?: 'top' | 'bottom' | 'left' | 'right';
@@ -26,9 +26,11 @@ const defaultProps: Required<Omit<DrawerProps, 'children'>> = {
 
 export function Drawer(props: DrawerProps) {
   return (
-    <DrawerStoreProvider>
-      <WrappedDrawer {...props} />
-    </DrawerStoreProvider>
+    <GlobalStyleProvider>
+      <DrawerStoreProvider>
+        <WrappedDrawer {...props} />
+      </DrawerStoreProvider>
+    </GlobalStyleProvider>
   );
 }
 
@@ -51,7 +53,7 @@ export function WrappedDrawer(props: DrawerProps) {
   const popupClassName = classNames('Drawer__Popup', `--${position}`);
 
   useEffect(() => {
-   action.toggleOpen(openSignal);
+    action.toggleOpen(openSignal);
   }, [openSignal]);
 
   // trigger onToggle when internal state isOpen changes
@@ -59,11 +61,10 @@ export function WrappedDrawer(props: DrawerProps) {
     onToggle(isShowed);
   }, [isShowed]);
 
-
   const positionStyle = positionDrawerPopup(position);
   const handleClickOutsidePopup = useCallback(() => {
     action.toggleOpen(false);
-  },[]);
+  }, []);
 
   return (
     <DrawerPortal isShowed={isShowed} forceMount={forceMouth}>
@@ -104,10 +105,10 @@ function positionDrawerPopup(
       return { top: 0, width: '100%' };
     }
     case 'left': {
-      return { left: 0,height:"100%" };
+      return { left: 0, height: '100%' };
     }
     case 'right': {
-      return { right: 0,height:"100%" };
+      return { right: 0, height: '100%' };
     }
   }
 }
