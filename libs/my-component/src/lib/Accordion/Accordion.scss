@@ -1,9 +1,10 @@
 .Accordion {
   display: flex;
   flex-direction: column;
-  width: 500px;
-  border-bottom: 0px;
+  width: 18em;
+  border-bottom: none;
   border-radius: 0.2em;
+  caret-color: transparent;
  
   @at-root .Accordion__Item {
     display: flex;
@@ -46,10 +47,12 @@
     }
 
     @at-root .Accordion__Body {
-      border: 1px solid hsla(0, 0%, 60%, 0.65);
+      border: var(--phDuylib-border);
       border-top: 0;
       transition: height 0.2s ease;
       overflow: hidden;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
 
       @at-root .Accordion__Body__Content {
         padding: 1em 0.5em;
