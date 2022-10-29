@@ -7,10 +7,12 @@ $text-color: hsla(0, 0%, 20%, 1);
   width: 120px;
   display: flex;
   flex-direction: column;
+  font-family: var(--phDuylib-font-family);
+  caret-color: transparent;
   > .Select__TextField {
     width: 100%;
     .TextField__InputField {
-      caret-color: transparent;
+
       cursor: pointer;
       input {
         cursor: inherit;
@@ -58,7 +60,6 @@ $text-color: hsla(0, 0%, 20%, 1);
           cursor: not-allowed;
           color: var(--phDuylib-secondary-color-active);
         }
-
 
         &.selected {
           background-color: var(--phDuylib-primary-color);
