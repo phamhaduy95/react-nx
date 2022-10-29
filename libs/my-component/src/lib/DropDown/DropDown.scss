@@ -1,4 +1,3 @@
-@import '../_sharedStyle.scss';
 @import '../_utils.scss';
 
 .DropDown {
@@ -7,10 +6,11 @@
   background-color: white;
 
   .DropDown__Trigger {
-    color: $text-color;
+    color: var(--phDuylib-text-color);
     width: 100%;
-    border: $border;
-    padding: 0.5rem;
+    border: var(--phDuylib-border);
+    padding: 0.5em 0.75em;
+    font-size: var(--phDuylib-font-size-med);
     user-select: none;
     border-radius: 5px;
     &:focus,
@@ -21,8 +21,10 @@
 
   @at-root .DropDown__Popup {
     > .DropDown__Menu {
-      padding: 0.25rem;
-      border: $border;
+      padding: 0.25em;
+      border: var(--phDuylib-border);
+      color: var(--phDuylib-text-color);
+      font-size: var(--phDuylib-font-size-med);
       border-radius: 5px;
       &:focus-visible {
         outline: none;

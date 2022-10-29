@@ -6,33 +6,36 @@ import {
 } from './DropDownStoreProvider';
 import './DropDown.scss';
 import { reDefineMenuItem } from '../PopupMenu/PopupMenuItem';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 
 
 export type DropDownProps = {
   children: JSX.Element | JSX.Element[];
   className?: string;
-  label:string;
+  label: string;
 };
 
 const DropDownDefaultProps: Required<DropDownProps> = {
   className: '',
   children: <></>,
-  label:"",
+  label: '',
 };
 export function DropDown(props: DropDownProps) {
   return (
-    <DropDownStoreProvider>
-      <WrappedDropDown {...props} />
-    </DropDownStoreProvider>
+    <GlobalStyleProvider>
+      <DropDownStoreProvider>
+        <WrappedDropDown {...props} />
+      </DropDownStoreProvider>
+    </GlobalStyleProvider>
   );
 }
 
 function WrappedDropDown(props: DropDownProps) {
   const newProps = { ...DropDownDefaultProps, ...props };
-  const { children, className,label } = newProps;
+  const { children, className, label } = newProps;
   const ref = useRef<HTMLDivElement>(null);
   const action = useDropDownStore((state) => state.action);
-  const Items = reDefineMenuItem(children)
+  const Items = reDefineMenuItem(children);
   const handleClickToOpenPopup = () => {
     action.togglePopup(true);
   };
@@ -58,7 +61,7 @@ function WrappedDropDown(props: DropDownProps) {
   };
 
   return (
-    <div className="DropDown" >
+    <div className="DropDown">
       <div
         className="DropDown__Trigger"
         onClick={handleClickToOpenPopup}
