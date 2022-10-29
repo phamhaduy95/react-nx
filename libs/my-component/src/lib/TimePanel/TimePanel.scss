@@ -2,37 +2,32 @@
 @import '../_sharedStyle.scss';
 
 .TimePanel {
-  border: $border;
+  border: var(--phDuylib-border);
   display: flex;
   flex-direction: column;
-  width: calc(60px + 10vw);
-  max-width: 100px;
   border-radius: 5px;
-
-  &:not(.isSecondIncluded) {
-     width: calc(30px + 5vw);
-        max-width: 80px;
-  }
-
   @at-root .TimePanel__Header {
-    height: calc(20px + 3vw);
-    min-height: 30px;
-    max-height: 40px;
-    border-bottom: $border;
+    height: 2.5em;
+    padding: 0.72em 0;
+    border-bottom: var(--phDuylib-border);
+    font-size: var(--phDuylib-font-size-big);
     @include centerElement();
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: $text-color;
+    font-family: var(--phDuylib-font-family);
+    color: var(--phDuylib-text-color);
     font-weight: 600;
-    font-size: $font-size-b;
+    flex-shrink: 0;
   }
   @at-root .TimePanel__Container {
     display: flex;
     height: 70%;
     flex-grow: 1;
+    font-size: var(--phDuylib-font-size-med);
+ 
 
     > .ScrollableDataColumn {
-      width: 30%;
+      width: 33%;
       height: 100%;
+      color: var(--phDuylib-text-color);
       border-right: none;
       border-top: none;
       border-bottom: none;
@@ -47,7 +42,6 @@
     }
   }
   &:not(.isSecondIncluded) {
-    width: 100px;
     > .TimePanel__Container {
       > .ScrollableDataColumn {
         width: 50%;

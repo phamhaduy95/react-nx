@@ -18,24 +18,29 @@
       }
     }
   }
-  @at-root .TimePicker__Popup {
-    @at-root .TimePicker__TimePanel {
+  @at-root .Popup__Content.TimePicker__Popup {
+    .TimePicker__TimePanel {
       border-radius: 5px;
-      min-height: 180px;
-      height: calc(170px + 9vw);
-      max-height: 250px;
-      font-size: min($font-size-m, 1.15rem);
-    
-      > .TimePanel__Header {
-        font-size: $font-size-b;
-      }  
-      >.TimePanel__Footer {
-        > button{
-          font-size: $font-size-m;
-        }
-      
+      height: 18em;
+
+      > .TimePanel__Container {
+        width: 6em;
+        flex-grow: 1;
       }
 
+      > .TimePanel__Footer {
+        flex-shrink: 0;
+        height: 2.5em;
+        > button {
+          font-size: $font-size-m;
+        }
+      }
+
+      &.isSecondIncluded {
+        > .TimePanel__Container {
+          width: 9em;
+        }
+      }
     }
   }
 }

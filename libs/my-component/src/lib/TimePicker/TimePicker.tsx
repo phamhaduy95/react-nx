@@ -16,6 +16,7 @@ import shallow from 'zustand/shallow';
 import { convertDateToTimeObject, convertTimeToDateType } from './utils';
 import { Time } from '../TimePanel/types';
 import { TimePickerPopup } from './TimePickerPopup';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 dayjs.extend(customParseFormat);
 
 export type TimePickerProps = {
@@ -44,9 +45,11 @@ const DefaultProps: Required<TimePickerProps> = Object.freeze({
 
 export function TimePicker(props: TimePickerProps) {
   return (
-    <TimePickerStoreProvider>
-      <WrappedTimePicker {...props} />
-    </TimePickerStoreProvider>
+    <GlobalStyleProvider>
+      <TimePickerStoreProvider>
+        <WrappedTimePicker {...props} />
+      </TimePickerStoreProvider>
+    </GlobalStyleProvider>
   );
 }
 

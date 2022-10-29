@@ -1,4 +1,4 @@
-import {TimePanelDataColumn} from './TimePanelDataColumn';
+import { TimePanelDataColumn } from './TimePanelDataColumn';
 import { useColumnDataGenerator, getDefaultTimeValue } from './utils';
 import classNames from 'classnames';
 import { useCallback, useEffect, useMemo } from 'react';
@@ -12,6 +12,8 @@ import {
   useTimePanelStore,
 } from './TimePanelStoreProvider';
 import shallow from 'zustand/shallow';
+import GlobalStyleProvider from '../GlobalStyleProvider';
+
 
 export type TimePanelProps = {
   value?: Time | null;
@@ -39,9 +41,11 @@ const defaultProps: Required<TimePanelProps> = {
 
 export function TimePanel(props: TimePanelProps) {
   return (
-    <TimePanelStoreProvider>
-      <WrappedTimePanel {...props} />
-    </TimePanelStoreProvider>
+    <GlobalStyleProvider>
+      <TimePanelStoreProvider>
+        <WrappedTimePanel {...props} />
+      </TimePanelStoreProvider>
+    </GlobalStyleProvider>
   );
 }
 
@@ -67,7 +71,6 @@ export function WrappedTimePanel(props: TimePanelProps) {
     action.selectTime(value);
   }, [value?.hour, value?.minute, value?.second]);
 
-
   useEffect(() => {
     onTimeSelect(selectedTime);
   }, [selectedTime]);
@@ -75,8 +78,8 @@ export function WrappedTimePanel(props: TimePanelProps) {
   const rootClassName = classNames('TimePanel', className, {
     isSecondIncluded: isSecondInclude,
   });
-  // this emptyArray is used as the temporary disabled value for time. 
-  const emptyArray = useMemo(()=>[],[]);
+  // this emptyArray is used as the temporary disabled value for time.
+  const emptyArray = useMemo(() => [], []);
 
   const hourData = useColumnDataGenerator('hour', emptyArray);
   const secondData = useColumnDataGenerator('second', emptyArray);
@@ -84,15 +87,15 @@ export function WrappedTimePanel(props: TimePanelProps) {
 
   const handleHourSelect = useCallback((value: any) => {
     action.selectHour(value);
-  },[])
+  }, []);
 
   const handleMinuteSelect = useCallback((value: any) => {
     action.selectMinute(value);
-  },[]);
+  }, []);
 
   const handleSecondSelect = useCallback((value: any) => {
     action.selectSecond(value);
-  },[]);
+  }, []);
 
   const renderColumnForSecond = () => {
     if (isSecondInclude)
