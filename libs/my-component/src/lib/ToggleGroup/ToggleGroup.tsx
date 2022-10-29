@@ -2,8 +2,12 @@ import { useEffect } from 'react';
 
 import { giveIndexToGroupItems } from './ToggleGroupItem';
 import './ToggleGroup.scss';
-import { ToggleGroupStoreProvider, useToggleGroupStore } from './ToggleGroupStoreProvider';
+import {
+  ToggleGroupStoreProvider,
+  useToggleGroupStore,
+} from './ToggleGroupStoreProvider';
 import { ToggleGroupSharedDataContextProvider } from './SharedDataContextProvider';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 export type ToggleGroupProps = {
   children: JSX.Element[] | JSX.Element;
   className?: string;
@@ -23,14 +27,16 @@ const defaultProps: Required<ToggleGroupProps> = {
 };
 
 export function ToggleGroup(props: ToggleGroupProps) {
-  const newProps = {...defaultProps,...props};
+  const newProps = { ...defaultProps, ...props };
   const { onChange } = newProps;
   return (
-    <ToggleGroupStoreProvider>
-      <ToggleGroupSharedDataContextProvider onChange={onChange}>
-      <WrappedToggleGroup {...props}/>
-      </ToggleGroupSharedDataContextProvider>
-    </ToggleGroupStoreProvider>
+    <GlobalStyleProvider>
+      <ToggleGroupStoreProvider>
+        <ToggleGroupSharedDataContextProvider onChange={onChange}>
+          <WrappedToggleGroup {...props} />
+        </ToggleGroupSharedDataContextProvider>
+      </ToggleGroupStoreProvider>
+    </GlobalStyleProvider>
   );
 }
 
@@ -38,15 +44,12 @@ export function ToggleGroup(props: ToggleGroupProps) {
  * The Wrapped component for ButtonBox so that it can access to the context value of ComboBoxContext.
  */
 function WrappedToggleGroup(props: ToggleGroupProps) {
-  const newProps = {...defaultProps,...props};
-  const { children, className, onChange, disabled,mode } = newProps;
-  const action = useToggleGroupStore((state)=>state.action);
-  useEffect(()=>{
-    action.changeSettings({mode});
-  },[mode])
+  const newProps = { ...defaultProps, ...props };
+  const { children, className, onChange, disabled, mode } = newProps;
+  const action = useToggleGroupStore((state) => state.action);
+  useEffect(() => {
+    action.changeSettings({ mode });
+  }, [mode]);
   const indexItems = giveIndexToGroupItems(children);
   return <div className={`ToggleGroup ${className}`}>{indexItems}</div>;
 }
-
-
-
