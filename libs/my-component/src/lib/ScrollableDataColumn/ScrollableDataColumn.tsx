@@ -6,6 +6,7 @@ import { DummyRow } from './ScrollableColumnDummyRow';
 import DataColumnStoreProvider from './DataColumnStoreProvider';
 import { useDataColumnStore } from './DataColumnStoreProvider';
 import { DataColumnRow } from './ScrollableDateColumnRow';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 
 type ColumnDataType = {
   value: number | string;
@@ -37,11 +38,13 @@ export function ScrollableDataColumn(props: ScrollableDataColumnProps) {
   };
 
   return (
+    <GlobalStyleProvider>
     <SharedDataContextProvider sharedData={sharedData}>
       <DataColumnStoreProvider>
         <WrappedDataColumn {...props} />
       </DataColumnStoreProvider>
     </SharedDataContextProvider>
+    </GlobalStyleProvider>
   );
 }
 

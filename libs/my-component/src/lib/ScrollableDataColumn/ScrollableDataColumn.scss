@@ -1,10 +1,10 @@
 @import '../_utils.scss';
-@import "../sharedStyle.scss";
+@import '../sharedStyle.scss';
 
 .ScrollableDataColumn {
   overflow-y: hidden;
   overflow-x: hidden;
-  border: $border;
+  border: var(--phDuylib-border);
   position: relative;
   display: flex;
   width: 56px;
@@ -12,15 +12,14 @@
   padding-right: 0;
   height: 30vh;
 
-  > .ScrollableDataColumn__Row {
+  @at-root .ScrollableDataColumn__Row {
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    font-size: 1rem;
-    font-size: $font-size-m;
-    color: $text-color;
+    font-size: var(--phDuylib-font-size-med);
+    color: var(--phDuylib-text-color);
     text-align: left;
-    text-indent: 0.3rem;
+    text-indent: 0.3em;
     user-select: none;
     cursor: pointer;
     &:not(.selected):not(.disabled):hover {
@@ -28,17 +27,17 @@
     }
 
     &.selected {
-      background-color: $primary-color;
-      color: $text-color-dark;
+      background-color: var(--phDuylib-primary-color);
+      color: var(--phDuylib-text-color-dark);
     }
 
     &.disabled {
-      color: hsl(0, 0%, 80%);
-      cursor:no-drop;
+      color: var(--phDuylib-secondary-color-hover);
+      cursor: not-allowed;
     }
   }
 
-  > .ScrollableDataColumn__DummyRow {
+  @at-root .ScrollableDataColumn__DummyRow {
     height: auto;
     color: transparent;
     flex-shrink: 0;
@@ -46,8 +45,6 @@
   }
 
   /* Works on Chrome, Edge, and Safari */
-
-
 
   &:hover {
     overflow-y: scroll;
