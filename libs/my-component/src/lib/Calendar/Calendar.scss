@@ -1,5 +1,4 @@
 @import '../_utils.scss';
-@import '../sharedStyle.scss';
 @import '../_mediaQuery.scss';
 @mixin centerElement {
   display: flex;
@@ -28,105 +27,88 @@
 }
 
 .Calendar {
-  width: max-content;
-  max-width: 260px;
-  height: max-content;
-  max-height: 300px;
   display: flex;
   flex-direction: column;
-  caret-color: transparent;
-  border: $border;
-  color: $text-color;
+  width: max-content;
+  height: max-content;
+  border: var(--phDuylib-border);
   border-radius: 5px;
+  caret-color: transparent;
+  color: var(--phDuylib-text-color);
+  font-size: var(--phDuylib-font-size-med);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   @at-root .Calendar__DatePicker {
     display: flex;
     align-items: center;
-    border-bottom: $border;
-    height: calc(20px + 3vw);
-    min-height: 30px;
-    max-height: 40px;
-    font-size: $font-size-b;
+    height: 2.5em;
+    padding: 0.5em 0;
+    border-bottom: var(--phDuylib-border);
+    font-size: var(--phDuylib-font-size-big);
     > .Calendar__DatePicker__BackwardArrow {
-      margin-right: auto;
-      margin-left: 0.2rem;
-      padding: 0.25rem;
-      cursor: pointer;
       @include centerElement();
-      @include addCircleHooverEffect(100%);
+      padding: 0.1em;
+      margin-right: auto;
+      margin-left: 0.2em;
+      cursor: pointer;
+      @include addCircleHooverEffect(105%);
       > svg {
-        width: $font-size-b;
-        height: $font-size-b;
+        width: 0.8em;
+        height: 0.8em;
       }
     }
 
     @at-root .Calendar__DatePicker__DateBrowser {
       margin: auto;
       font-size: inherit;
-      font-weight: 500;
+      font-weight: 600;
       user-select: none;
     }
     > .Calendar__DatePicker__ForwardArrow {
-      margin-left: auto;
-      margin-right: 0.2rem;
-      padding: 0.25rem;
-      cursor: pointer;
       @include centerElement();
-      @include addCircleHooverEffect(100%);
+      padding: 0.2em;
+      margin-left: auto;
+      margin-right: 0.2em;
+      cursor: pointer;
+      @include addCircleHooverEffect(105%);
       > svg {
-        width: $font-size-b;
-        height: $font-size-b;
-      }
-    }
-    @include media-breakpoint-up($lg) {
-      font-size: 1.1rem;
-      svg {
-        width: 1.25rem;
-        height: 1.25rem;
+        width: 0.8em;
+        height: 0.8em;
       }
     }
   }
 
   @at-root .Calendar__TableContainer {
-    padding: 0.25rem;
+    padding: 0.25em;
     @at-root .Calendar_Table {
       width: 100%;
       flex-grow: 1;
-
+      gap:0.2em;
       @at-root .Calendar__Table__HeaderRow {
         th {
+          padding: 0.5em 0;
           text-align: center;
-          padding: 0.5rem 0;
           user-select: none;
-          font-size: $font-size-m;
         }
       }
       @at-root .Calendar__Table__Body {
         @at-root .Calendar__Table__Row {
           @at-root .Calendar__Table__DateCell {
+            width: 2.5em;
+            height: 2.5em;
             user-select: none;
             cursor: pointer;
             text-align: center;
             vertical-align: middle;
-            font-size: $font-size-m;
-            width: calc(1.2rem + 1vw);
-            max-width: 2rem;
-            height: calc(1.2rem + 1vw);
-            max-height: 2rem;
-            @include media-breakpoint-up($lg) {
-              font-size: 1rem;
-            }
-
             @include addCircleHooverEffect(96%);
             &.blurred {
-              color: hsla(0, 0%, 50%, 0.8);
+              color: var(--phDuylib-secondary-color);
             }
 
             &.selected {
               color: white;
               z-index: 2;
               &::before {
-                background-color: $primary-color;
+                background-color: var(--phDuylib-primary-color);
                 visibility: visible;
                 z-index: -1;
               }
@@ -136,7 +118,7 @@
               color: hsla(0, 0%, 70%);
               z-index: 2;
               &::before {
-                background-color: hsla(0, 0%, 90%, 0.6);
+                background-color: var(--phDuylib-secondary-color-hover);
                 visibility: visible;
                 z-index: -1;
               }

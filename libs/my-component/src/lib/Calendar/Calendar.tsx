@@ -16,6 +16,7 @@ import {
 } from './CalendarStoreProvider';
 import { useStore } from 'zustand';
 import shallow from 'zustand/shallow';
+import GlobalStyleProvider from '../GlobalStyleProvider';
 
 function getDateString(year: number, month: number) {
   const date = dayjs().year(year).month(month);
@@ -48,11 +49,13 @@ export function Calendar(props: CalendarProps) {
   const newProps = { ...defaultCalendarProps, ...props };
   const sharedData = extractSharedDataFromProps(newProps);
   return (
-    <CalendarSharedDataContextProvider {...sharedData}>
-      <CalendarStoreProvider>
-        <WrappedCalendar {...props} />
-      </CalendarStoreProvider>
-    </CalendarSharedDataContextProvider>
+    <GlobalStyleProvider>
+      <CalendarSharedDataContextProvider {...sharedData}>
+        <CalendarStoreProvider>
+          <WrappedCalendar {...props} />
+        </CalendarStoreProvider>
+      </CalendarSharedDataContextProvider>
+    </GlobalStyleProvider>
   );
 }
 
@@ -105,11 +108,11 @@ function WrappedCalendar(props: CalendarProps) {
           <ArrowForwardIosIcon />
         </div>
       </div>
-      <div className='Calendar__TableContainer'>
-      <table className="Calendar_Table">
-        <CalendarTableHeader />
-        <tbody className="Calendar__Table__Body">{CalendarRows}</tbody>
-      </table>
+      <div className="Calendar__TableContainer">
+        <table className="Calendar_Table">
+          <CalendarTableHeader />
+          <tbody className="Calendar__Table__Body">{CalendarRows}</tbody>
+        </table>
       </div>
     </div>
   );
