@@ -1,11 +1,15 @@
-$arrow-size : 0.5rem;
+$arrow-size: 0.5rem;
 
-.ToolTips_Wrapper {
-    width: max-content;
-    @at-root .Tooltips__Popup {
-            background-color: hsl(0, 0%, 30%, 0.75);
-            color:hsl(0, 0%, 90%);
-            padding: 0.5rem;
-            border-radius: 5px;
-    }
+.ToolTips__Trigger {
+  width: max-content;
+
+  @at-root .Tooltips__Popup {
+    width: 15em;
+    font-family: var(--phDuylib-font-family);
+    font-size: var(--phDuylib-font-size-med);
+    background-color: hsla(210, 10%, 25%, 0.5);
+    color: hsl(0, 0%, 95%);
+    padding: 1em;
+    border-radius: 5px;
+  }
 }

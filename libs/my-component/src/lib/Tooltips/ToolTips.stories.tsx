@@ -1,35 +1,31 @@
+import styled from '@emotion/styled';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import GlobalStyleProvider from '../GlobalStyleProvider';
-import  ToolTips  from './ToolTips';
-import "./Tooltips.stories.scss"
+import { Button } from '../Button';
+import { ToolTips } from './ToolTips';
+import './Tooltips.stories.scss';
 
 export default {
   component: ToolTips,
   title: 'my-component/ToolTips',
 } as ComponentMeta<typeof ToolTips>;
 
-const Template: ComponentStory<typeof ToolTips> = (args) => (
-  <ToolTips {...args} />
-);
+export const Example: ComponentStory<typeof ToolTips> = (arg) => {
+  const Container = styled('div')`
+    width: max-content;
+    margin: 2rem 1rem;
+  `;
 
-export const Example = Template.bind({});
-Example.args = {
-    children:<div className={".child"}>Hover Me</div>,
-    text:"tooltips",
-    placement:"bottom-center",
-    trigger:"hover",
-    padding:5,
+  return (
+    <Container>
+      <ToolTips {...arg}>
+        <Button className="Button">Click</Button>
+      </ToolTips>
+    </Container>
+  );
 };
-
-Example.decorators = [
-  (Story)=>{
-    return (
-      <GlobalStyleProvider>
-      <div style={{margin:"2rem auto",width:"90%"}}>
-        <Story/>
-      </div>
-      </GlobalStyleProvider>
-    )
-  }
-]
-
+Example.args = {
+  text: ' Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aut unde excepturi sunt laborum porro rem inventore quo. Molestiae adipisci exercitationem amet ipsam ut. Veritatis consequuntur voluptatem exercitationem, quasi illum numquam.',
+  placement: 'bottom-center',
+  padding: 5,
+  enterDelay: 100,
+};
