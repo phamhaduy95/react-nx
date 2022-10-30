@@ -5,7 +5,6 @@ import ClickOutSideWatcher from '../ClickOutsideWatcher/ClickOutSideWatcher';
 import { Placement } from './types';
 import { usePopupPlacement } from './usePopupPlacement';
 import { useMovePopupOnScroll } from './useMovePopupOnScroll';
-import usePopupPadding from './usePopupPadding';
 import './PopupElement.scss';
 import { forwardRef } from 'react';
 import { useRepositionPopupOnResize } from './useRepositionPopupOnResize';
@@ -57,11 +56,16 @@ export const PopupElement = forwardRef<HTMLElement, PopupElementProps>(
       popupRef.current,
     ]);
 
-    usePopupPlacement(triggerRef, popupRef, placement, isShowed);
+    usePopupPlacement(triggerRef, popupRef, placement, padding, isShowed);
     useMovePopupOnScroll(triggerRef, popupRef, placement, isShowed);
     usePopupWidthHandler(triggerRef, popupRef, width, placement);
-    useRepositionPopupOnResize(triggerRef, popupRef, placement, isShowed);
-    usePopupPadding(popupRef, placement, padding);
+    useRepositionPopupOnResize(
+      triggerRef,
+      popupRef,
+      placement,
+      padding,
+      isShowed
+    );
 
     const rootClassName = classNames('Popup', {
       showed: isShowed,

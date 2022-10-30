@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
 import { Placement } from './types';
-import {
-  recalculateAndPositionPopup,
-} from './utilities';
+import { addPaddingToPopup, recalculateAndPositionPopup } from './utilities';
 
 export function usePopupPlacement(
   triggerRef: React.MutableRefObject<HTMLElement | null>,
   popupRef: React.MutableRefObject<HTMLElement | null>,
   placement: Placement,
+  padding: number,
   isOpen: boolean
 ) {
   useEffect(() => {
@@ -15,8 +14,7 @@ export function usePopupPlacement(
     const triggerEl = triggerRef.current;
     const popupEl = popupRef.current;
     if (triggerEl === null || popupEl === null) return;
-
-    recalculateAndPositionPopup(triggerEl, popupEl, placement);
-  }, [placement, isOpen]);
+    const newPlacement = recalculateAndPositionPopup(triggerEl, popupEl, placement);
+    addPaddingToPopup(popupEl,newPlacement,padding);
+  }, [placement, isOpen, padding]);
 }
-

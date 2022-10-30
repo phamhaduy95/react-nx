@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Placement } from './types';
 import {
+  addPaddingToPopup,
   recalculateAndPositionPopup,
 } from './utilities';
 
@@ -8,6 +9,7 @@ export function useRepositionPopupOnResize(
   triggerRef: React.MutableRefObject<HTMLElement | null>,
   popupRef: React.MutableRefObject<HTMLElement | null>,
   placement: Placement,
+  padding:number,
   isOpen: boolean
 ) {
   useEffect(() => {
@@ -16,7 +18,8 @@ export function useRepositionPopupOnResize(
     const popupEl = popupRef.current;
     if (triggerEl === null || popupEl === null) return;
     const callback = () => {
-        recalculateAndPositionPopup(triggerEl, popupEl, placement);
+      const newPlacement = recalculateAndPositionPopup(triggerEl, popupEl, placement);
+      addPaddingToPopup(popupEl,newPlacement,padding);
     };
     window.addEventListener('resize', callback);
     return () => {

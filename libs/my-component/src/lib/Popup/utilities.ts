@@ -1,10 +1,9 @@
-import { PopupPositionCalculator } from "./PopupPositionCalculator";
-import { Placement, Position } from "./types";
+import { PopupPositionCalculator } from './PopupPositionCalculator';
+import { Placement, Position } from './types';
 
 export function getClientPositionOfElement(element: HTMLElement) {
   const { top, left } = element.getBoundingClientRect();
-  return { top,left
-  };
+  return { top, left };
 }
 export function getSizeOf(element: HTMLElement) {
   const { width, height } = element.getBoundingClientRect();
@@ -27,14 +26,16 @@ export function recalculateAndPositionPopup(
     initialPos,
     placement
   );
+
   const finalPos = calculatePositionForPopupBasedOnPlacement(
     triggerEl,
     popupEl,
     newPlacement
   );
-  positionPopup(popupEl, finalPos);
-}
 
+  positionPopup(popupEl, finalPos);
+  return newPlacement;
+}
 
 function calculatePositionForPopupBasedOnPlacement(
   triggerEl: HTMLElement,
@@ -60,15 +61,15 @@ function findCorrectPlacementForPopup(
   const popupWidth = popupEl.clientWidth;
   let newFirst = first;
   let newSecond = second;
-  
-  if (initialPosition.top - popupHeight < 0) {
+
+  if (initialPosition.top < 0) {
     if (first === 'top') newFirst = 'bottom';
-    if (first === 'left' || first === 'right') newSecond = 'bottom';
+    if (first === 'left' || first === 'right') newSecond = 'top';
   } else if (initialPosition.top + popupHeight > viewPortSize.height) {
     if (first === 'bottom') newFirst = 'top';
-    if (first === 'left' || first === 'right') newSecond = 'top';
+    if (first === 'left' || first === 'right') newSecond = 'bottom';
   }
-  if (initialPosition.left - popupWidth < 0) {
+  if (initialPosition.left < 0) {
     if (first === 'left') newFirst = 'right';
     if (first === 'bottom' || first === 'top') newSecond = 'left';
   } else if (initialPosition.left + popupWidth > viewPortSize.width) {
@@ -84,7 +85,7 @@ type DimensionType = {
   first: 'bottom' | 'top' | 'left' | 'right';
   second: 'bottom' | 'top' | 'left' | 'right' | 'center';
 };
- 
+
 function getDimensionFromPlacement(placement: Placement) {
   const [first, second] = placement.split('-');
   return { first, second } as DimensionType;
@@ -100,4 +101,30 @@ function getViewportSize() {
 export function positionPopup(popupEl: HTMLElement, position: Position) {
   popupEl.style.top = `${position.top}px`;
   popupEl.style.left = `${position.left}px`;
+}
+
+export function addPaddingToPopup(
+  popup: HTMLElement,
+  placement: Placement,
+  padding: number
+) {
+  popup.style.padding = 'none';
+  if (placement.startsWith('bottom')) {
+    popup.style.paddingTop = `${padding}px`;
+    return;
+  }
+  if (placement.startsWith('top')) {
+    popup.style.paddingBottom = `${padding}px`;
+    return;
+  }
+
+  if (placement.startsWith('right')) {
+    popup.style.paddingLeft = `${padding}px`;
+    return;
+  }
+
+  if (placement.startsWith('left')) {
+    popup.style.paddingRight = `${padding}px`;
+    return;
+  }
 }
