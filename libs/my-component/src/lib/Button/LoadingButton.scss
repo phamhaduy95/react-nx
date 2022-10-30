@@ -1,0 +1,14 @@
+.LoadingButton {
+  display: flex;
+  align-items: center;
+  > .LoadingButton__Spinner {
+    width: 1.2em;
+    height: 1.2em;
+    &.--start {
+      margin-right: 0.5em;
+    }
+    &.--end {
+      margin-left: 0.5em;
+    }
+  }
+}

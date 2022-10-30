@@ -1,70 +1,131 @@
-$fontSize: calc(0.5rem + 0.5vw);
-$button-padding:0.5rem 1rem;
-
-@function getHoverColor($colors,$darken:0) {
-    $color: map-get($colors, bg-color);
-    @return darken($color, $darken);
-}
-@mixin getButtonVariant($name,$styles) {
-    .button-#{$name}{
-        color: map-get($styles, text-color);
-        background-color: map-get($styles, bg-color);
-        border-color: map-get($styles, border-color);
-        &:hover{
-            background-color: getHoverColor($styles,10)
-        }
-        &:hover:disabled{
-            background-color: getHoverColor($styles)
-        }
-    }       
-}
-
-$primary: (text-color: #fff, bg-color:#0d6efd, border-color:#0d6efd);
-$secondary: (text-color: #fff, bg-color:#6c757d, border-color:#6c757d);
-$success: (text-color: #fff, bg-color:#198754, border-color:#198754);
-$warning: (text-color: #000, bg-color:#ffc107, border-color:#ffc107);
-$danger: (text-color: #fff, bg-color:#bb2d3b, border-color:#bb2d3b);
-$info: (text-color: #fff, bg-color:#31d2f2, border-color:#31d2f2);
-$default: (text-color: #000, bg-color:#f9fafb, border-color:hsl(0, 0%, 81%));
-
-
-[type="button"]:not(:disabled),
-[type="reset"]:not(:disabled),
-[type="submit"]:not(:disabled),
-button:not(:disabled) {
-    cursor: pointer;
-}
-
-
-.button:disabled{
-    opacity: 0.6;
-    pointer-events: none
-}
-
-.button {
-    width: max-content;
-    text-align: center;
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    text-decoration: none;
+.Button {
+  padding: 0.5em 1em;
+  border: var(--phDuylib-border);
+  border-radius: 5px;
+  color: var(--phDuylib-text-color-dark);
+  font-size: var(--phDuylib-font-size-med);
+  font-family: var(--phDuylib-font-family);
+  font-weight: 580;
+  text-transform: uppercase;
+  background-color: transparent;
+  caret-color: transparent;
+  cursor: pointer;
+  
+  &:focus-visible {
     outline: none;
-    border: 1px solid transparent;
+  }
+  
+  &.--filled:focus-visible {
+      box-shadow: 0 2px 2px 0 hsla(0,0%,20%,0.5);
+      transform: translateY(-1px);
+  } 
+
+  &:not(.disabled) {
+    &.--primary {
+      border-color: var(--phDuylib-primary-color);
+      &.--filled {
+        background-color: var(--phDuylib-primary-color);
+        &:hover {
+          border-color: var(--phDuylib-primary-color-active);
+          background-color: var(--phDuylib-primary-color-active);
+        }
+      }
+      &.--outlined {
+        color: var(--phDuylib-primary-color);
+        &:hover,&:focus-visible {
+          border-color: var(--phDuylib-primary-color-active);
+          color: var(--phDuylib-primary-color-active);
+          background-color: var(--phDuylib-primary-color-hover);
+        }
+      }
+    }
+    &.--danger {
+      border-color: var(--phDuylib-error-color);
+      &.--filled {
+        background-color: var(--phDuylib-error-color);
+        &:hover {
+          background-color: var(--phDuylib-error-color-active);
+          border-color: var(--phDuylib-error-color-active);
+        }
+      }
+      &.--outlined {
+        color: var(--phDuylib-error-color);
+        &:hover,&:focus-visible {
+          border-color: var(--phDuylib-error-color-active);
+          color: var(--phDuylib-error-color-active);
+          background-color: var(--phDuylib-error-color-hover);
+        }
+      }
+    }
+    &.--success {
+      border-color: var(--phDuylib-success-color);
+      &.--filled {
+        background-color: var(--phDuylib-success-color);
+        border-color: var(--phDuylib-success-color);
+        &:hover {
+          background-color: var(--phDuylib-success-color-active);
+        }
+      }
+
+      &.--outlined {
+        color: var(--phDuylib-success-color);
+        &:hover,&:focus-visible {
+          background-color: var(--phDuylib-success-color-hover);
+          border-color: var(--phDuylib-success-color-active);
+          color: var(--phDuylib-success-color-active);
+        }
+      }
+    }
+    &.--secondary {
+      border-color: var(--phDuylib-text-color);
+      &.--filled {
+        background-color: var(--phDuylib-secondary-color-hover);
+        border-color: var(--phDuylib-secondary-color);
+        color: var(--phDuylib-text-color);
+        &:hover {
+          background-color:var(--phDuylib-secondary-color);
+        }
+      }
+
+      &.--outlined {
+        background-color: transparent;
+        border-color: hsl(0, 0%, 40%);
+        color: hsl(0, 0%, 40%);
+        &:hover,&:focus-visible {
+          background-color: var(--phDuylib-secondary-color-hover);
+        }
+      }
+    }
+
+    &.--warning {
+      border-color: var(--phDuylib-warning-color);
+      &.--filled {
+        background-color: var(--phDuylib-warning-color);
+        &:hover {
+          background-color: var(--phDuylib-warning-color-active);
+          border-color: var(--phDuylib-warning-color-active);
+        }
+      }
+      &.--outlined {
+        color: var(--phDuylib-warning-color);
+        &:hover,&:focus-visible {
+          background-color: var(--phDuylib-warning-color-hover);
+          border-color: var(--phDuylib-warning-color-active);
+          color: var(--phDuylib-warning-color-active);
+        }
+      }
+    }
+  }
+  &.disabled {
+    cursor: not-allowed;
+    border-color: var(--phDuylib-secondary-color);
+    &.--filled {
+      background-color: hsl(0,0%,90%);
+      color: white;
+    }
+
+    &.--outlined {
+      color: var(--phDuylib-secondary-color-active);
+    }
+  }
 }
-
-
-.button-defaultStyle {
-    font-size: $fontSize;
-    padding: $button-padding;
-    border-radius: 3px;
-
-}
-
-
-@include getButtonVariant("primary",$primary);
-@include getButtonVariant("secondary",$secondary);
-@include getButtonVariant("success",$success);
-@include getButtonVariant("warning",$warning );
-@include getButtonVariant("danger",$danger);
-@include getButtonVariant("info",$info );
-@include getButtonVariant("default",$default )
