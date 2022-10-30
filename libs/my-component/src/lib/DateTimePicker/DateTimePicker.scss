@@ -37,7 +37,7 @@
       display: flex;
       border-radius: 5px;
       height: 21em;
-      flex-grow: 1; 
+      flex-grow: 1;
       > .DateTimePicker__DatePanel {
         border: none;
         border-right: var(--phDuylib-border);
@@ -63,29 +63,23 @@
     }
 
     > .DateTimePicker__Control {
-      height: 3em;
-      flex-grow: 0;
+      height: 3.5em;
+      width: 100%;
       border-top: var(--phDuylib-border);
       @include centerElement();
 
       > button {
-        border: var(--phDuylib-border);
         border-radius: 3px;
         padding: 0.3em 0.6em;
-        font-size: var(--phDuylib-font-size-med);
-        cursor: pointer;
       }
 
       > .DateTimePicker__ClearButton {
         margin-left: auto;
-        background-color: white;
+        margin-right: 1em;
       }
 
       > .DateTimePicker__SubmitButton {
-        margin-left: 1em;
         margin-right: 1em;
-        background-color: var(--phDuylib-primary-color);
-        color: white;
       }
     }
   }

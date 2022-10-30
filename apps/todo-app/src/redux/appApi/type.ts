@@ -64,6 +64,12 @@ export type LoginModel = {
   password: string;
 };
 
+export type SignUpModel = {
+  userName: string,
+  email:string,
+  password: string,
+}
+
 export type UserData = {
   name:string,
   email:string,

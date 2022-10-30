@@ -13,7 +13,7 @@ import {
 } from './TimePanelStoreProvider';
 import shallow from 'zustand/shallow';
 import GlobalStyleProvider from '../GlobalStyleProvider';
-
+import { Button} from '../Button';
 
 export type TimePanelProps = {
   value?: Time | null;
@@ -123,9 +123,9 @@ export function WrappedTimePanel(props: TimePanelProps) {
     if (actionIncluded)
       return (
         <div className="TimePanel__Footer">
-          <button className="TimePanel__Submit" onClick={handleTimeSubmit}>
+          <Button className="TimePanel__Submit" onClick={handleTimeSubmit}>
             OK
-          </button>
+          </Button>
         </div>
       );
     return <></>;

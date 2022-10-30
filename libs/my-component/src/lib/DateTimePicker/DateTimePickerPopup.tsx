@@ -8,6 +8,7 @@ import { CalendarProps } from '../Calendar/Calendar';
 import { useDateTimePickerStore } from './DateTimePickerStoreProvider';
 import { checkIsClickOnElement, isElementFocus } from '../utils/utils';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
+import { Button } from '../Button';
 
 interface DateTimePickerPopupProps {
   triggerRef: React.MutableRefObject<HTMLElement | null>;
@@ -85,18 +86,19 @@ export const DateTimePickerPopup = memo((props: DateTimePickerPopupProps) => {
         />
       </div>
       <div className="DateTimePicker__Control">
-        <button
+        <Button
           className="DateTimePicker__ClearButton"
+          type="outlined"
           onClick={handleClearDate}
         >
           Clear
-        </button>
-        <button
+        </Button>
+        <Button
           className="DateTimePicker__SubmitButton"
           onClick={handleDateSubmit}
         >
           OK
-        </button>
+        </Button>
       </div>
     </PopupElement>
   );

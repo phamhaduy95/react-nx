@@ -1,5 +1,5 @@
 import { apiV2 } from './taskApi';
-import { LoginModel, ServerResponseType, UserData } from './type';
+import { LoginModel, ServerResponseType, UserData, SignUpModel } from './type';
 
 
 export const apiV3 = apiV2.injectEndpoints({
@@ -13,7 +13,7 @@ export const apiV3 = apiV2.injectEndpoints({
                     email:arg.email,
                     password:arg.password,
                     client:"browser",
-                }
+                },
             }),
         }),
         signOut:build.mutation<ServerResponseType,undefined>({
@@ -29,7 +29,21 @@ export const apiV3 = apiV2.injectEndpoints({
                 method:"POST",
                 credentials:"include",
             })
+        }),
+        signUp:build.mutation<ServerResponseType,SignUpModel>({
+            query:(arg)=> ({
+                url:"sign-up",
+                method:"POST",
+                credentials:"include",
+                body: {
+                    email:arg.email,
+                    userName:arg.userName,
+                    password:arg.password,
+                    client:"browser",
+                },
+            }),
         })
+
     }),
     overrideExisting:false,
 })

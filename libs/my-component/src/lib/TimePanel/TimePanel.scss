@@ -50,18 +50,13 @@
   }
 
   @at-root .TimePanel__Footer {
-    height: calc(20px + 3vw);
-    min-height: 30px;
-    max-height: 40px;
+    height: 3.5em;
     @include centerElement();
-    border-top: $border;
+    border-top: var(--phDuylib-border);
     > .TimePanel__Submit {
       border-radius: 5px;
       margin: 0 auto;
-      padding: 0.25em 0.5em;
-      background-color: $primary-color;
-      color: white;
-      border: $border;
+      padding: 0.3em 0.6em;
     }
   }
 }

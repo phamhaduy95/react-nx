@@ -9,6 +9,7 @@ import {
 } from './DatePanelStoreProvider';
 import { useEffect, useMemo } from 'react';
 import GlobalStyleProvider from '../GlobalStyleProvider';
+import { Button } from '../Button';
 
 export type DatePanelProps = {
   className?: string;
@@ -37,9 +38,9 @@ export const defaultDatePanelProps: Required<DatePanelProps> = {
 export function DatePanelSingle(props: DatePanelProps) {
   return (
     <GlobalStyleProvider>
-    <DatePanelStoreProvider>
-      <WrappedDatePanelSingle {...props} />
-    </DatePanelStoreProvider>
+      <DatePanelStoreProvider>
+        <WrappedDatePanelSingle {...props} />
+      </DatePanelStoreProvider>
     </GlobalStyleProvider>
   );
 }
@@ -83,18 +84,19 @@ function WrappedDatePanelSingle(props: DatePanelProps) {
     if (actionEnabled)
       return (
         <div className="DatePanelSingle__Action">
-          <button
+          <Button
             className="DatePanelSingle__Clear"
             onClick={handleClickToClear}
+            type="outlined"
           >
             Clear
-          </button>
-          <button
-            className="DatePanelSingle__Submit"
+          </Button>
+          <Button
+            className="DataPanelSingle__Submit"
             onClick={handleClickToSubmit}
           >
             OK
-          </button>
+          </Button>
         </div>
       );
     return <></>;
