@@ -1,0 +1,95 @@
+.LoadingSpinnerV1,
+.LoadingSpinnerV2,
+.LoadingSpinnerV3 {
+  width: 3em;
+  height: 3em;
+  caret-color: transparent;
+  transition-property: transform;
+  animation-name: rotate;
+  animation-duration: 1.2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.LoadingSpinnerV1 {
+  border: 4px solid hsla(0, 0%, 100%, 0.7);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  &.--primary {
+    border: 4px solid var(--phDuylib-primary-color-hover);
+    border-top: 4px solid var(--phDuylib-primary-color);
+  }
+  &.--danger {
+    border: 4px solid var(--phDuylib-error-color-hover);
+    border-top: 4px solid var(--phDuylib-error-color);
+  }
+  &.--success {
+    border: 4px solid var(--phDuylib-success-color-hover);
+    border-top: 4px solid var(--phDuylib-success-color);
+  }
+  &.--warning {
+    border: 4px solid var(--phDuylib-warning-color-hover);
+    border-top: 4px solid var(--phDuylib-warning-color);
+  }
+}
+
+.LoadingSpinnerV2 {
+  &.--primary {
+    circle {
+      fill: var(--phDuylib-primary-color);
+    }
+  }
+  &.--danger {
+    circle {
+      fill: var(--phDuylib-error-color);
+    }
+  }
+  &.--success {
+    circle {
+      fill: var(--phDuylib-success-color);
+    }
+  }
+  &.--warning {
+    circle {
+      fill: var(--phDuylib-warning-color);
+    }
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.LoadingSpinnerV3 {
+  overflow: visible;
+  > circle {
+    stroke: white;
+    transform-origin: 50px 50px;
+    animation: spin1 1.2s linear infinite;
+  }
+  &.--primary {
+    circle {
+      stroke: var(--phDuylib-primary-color);
+    }
+  }
+  &.--danger {
+    circle {
+      stroke: var(--phDuylib-error-color);
+    }
+  }
+  &.--success {
+    circle {
+      stroke: var(--phDuylib-success-color);
+    }
+  }
+  &.--warning {
+    circle {
+      stroke: var(--phDuylib-warning-color);
+    }
+  }
+}
