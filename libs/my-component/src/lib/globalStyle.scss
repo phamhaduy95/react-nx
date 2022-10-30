@@ -1,84 +1,165 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-    box-sizing: border-box;
-    --phDuylib-font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    --phDuylib-primary-color: #1980e6;
-    --phDuylib-primary-color-hover:#6eb3f780;
-    --phDuylib-primary-color-active:#0b62da;
-    --phDuylib-secondary-color: #cccccc;
-    --phDuylib-secondary-color-hover: #ebebeb;
-    --phDuylib-secondary-color-active: #bfbfbf;
-    --phDuylib-success-color:#55bf40;
-    --phDuylib-success-color-active:#7ad65c;
-    --phDuylib-success-hover-color:#3b9933;
-    --phDuylib-error-color:#d33131;
-    --phDuylib-error-color-hover:#f07575;
-    --phDuylib-error-color-active:#ad1f1f;
-    --phDuylib-warning-color: #b18457;
-    --phDuylib-warning-color-hover: #ffd166;
-    --phDuylib-warning-color-active: #c2600a;
-    --phDuylib-border:1px solid #cccccc;
-    --phDuylib-text-color:#1f292e;
-    --phDuylib-text-color-dark:#e8f6fc;
-    --phDuylib-font-size-big:min(calc(0.9rem + 0.4vw),1.2rem);
-    --phDuylib-font-size-med:min(calc(0.8rem + 0.4vw),1rem);
-    --phDuylib-font-size-sml:min(calc(0.7rem + 0.4vw),0.8rem);
-    --phDuylib-box-shadow-popup: 0 2px 8px 1px #66666666;
-    --phDuylib-box-shadow-focus:0 0 2px 2px #195ee680;
-    --phDuylib-box-shadow-success:0 0 2px 2px #19e61980;
-    --phDuylib-box-shadow-error:0 0 2px 2px #eb474780;
-  }
-  
-  *,
-  *::after,
-  *::before {
-    box-sizing: inherit;
-  }
-  
-  /* http://meyerweb.com/eric/tools/css/reset/ 
+  box-sizing: border-box;
+  --phDuylib-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --phDuylib-primary-color: #1980e6;
+  --phDuylib-primary-color-hover: hsla(210, 90%, 95%);
+  --phDuylib-primary-color-active: #0b62da;
+  --phDuylib-secondary-color: #cccccc;
+  --phDuylib-secondary-color-hover: #ebebeb;
+  --phDuylib-secondary-color-active: #bfbfbf;
+  --phDuylib-success-color: #4dcc33;
+  --phDuylib-success-color-hover: #edfee7;
+  --phDuylib-success-color-active: #3b9933;
+  --phDuylib-error-color: #d33131;
+  --phDuylib-error-color-hover: #ffe5e5cc;
+  --phDuylib-error-color-active: #ad1f1f;
+  --phDuylib-warning-color: hsl(30, 90%, 50%);
+  --phDuylib-warning-color-hover: hsl(40, 100%, 90%);
+  --phDuylib-warning-color-active: hsl(25, 70%, 50%);
+  --phDuylib-border: 1px solid #cccccc;
+  --phDuylib-text-color: hsl(208, 20%, 25%);
+  --phDuylib-text-color-dark: #f7f7f7;
+  --phDuylib-font-size-big: min(calc(0.9rem + 0.4vw), 1.2rem);
+  --phDuylib-font-size-med: min(calc(0.8rem + 0.4vw), 1rem);
+  --phDuylib-font-size-sml: min(calc(0.7rem + 0.4vw), 0.8rem);
+  --phDuylib-box-shadow-popup: 0 2px 8px 1px #66666666;
+  --phDuylib-box-shadow-focus: 0 0 2px 2px #195ee680;
+  --phDuylib-box-shadow-success: 0 0 2px 2px #19e61980;
+  --phDuylib-box-shadow-error: 0 0 2px 2px #eb474780;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
      v2.0 | 20110126
      License: none (public domain)
   */
-  
-  html, body, div, span, applet, object, iframe,
-  h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-  a, abbr, acronym, address, big, cite, code,
-  del, dfn, em, img, ins, kbd, q, s, samp,
-  small, strike, strong, sub, sup, tt, var,
-  b, u, i, center,
-  dl, dt, dd, ol, ul, li,
-  fieldset, form, label, legend,
-  table, caption, tbody, tfoot, thead, tr, th, td,
-  article, aside, canvas, details, embed, 
-  figure, figcaption, footer, header, hgroup, 
-  menu, nav, output, ruby, section, summary,
-  time, mark, audio, video {
-      margin: 0;
-      padding: 0;
-      border: 0;
-      font-size: 100%;
-      font: inherit;
-  }
-  /* HTML5 display-role reset for older browsers */
-  article, aside, details, figcaption, figure, 
-  footer, header, hgroup, menu, nav, section {
-      display: block;
-  }
-  body {
-      line-height: 1;
-  }
-  ol, ul {
-      list-style: none;
-  }
-  blockquote, q {
-      quotes: none;
-  }
-  blockquote:before, blockquote:after,
-  q:before, q:after {
-      content: '';
-      content: none;
-  }
-  table {
-      border-collapse: collapse;
-      border-spacing: 0;
-  }
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
