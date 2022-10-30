@@ -1,9 +1,11 @@
 import classNames from 'classnames';
 import React, { memo } from 'react';
+import { defaultSpinnerProps } from './LoadingSpinnerV1';
 import { LoadingSpinnerProps } from './type';
 
 export const LoadingSpinnerV2 = memo((props: LoadingSpinnerProps) => {
-  const { className, variant } = props;
+    const newProps = {...defaultSpinnerProps,...props};
+    const { className, variant } = newProps;
   const rootClassName = classNames(
     'LoadingSpinnerV2',
     className,

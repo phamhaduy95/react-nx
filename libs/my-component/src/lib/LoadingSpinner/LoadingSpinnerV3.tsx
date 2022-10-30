@@ -1,8 +1,10 @@
 import classNames from 'classnames';
+import { defaultSpinnerProps } from './LoadingSpinnerV1';
 import { LoadingSpinnerProps } from './type';
 
 export function LoadingSpinnerV3(props: LoadingSpinnerProps) {
-  const { className, variant } = props;
+  const newProps = { ...defaultSpinnerProps, ...props };
+  const { className, variant } = newProps;
   const rootClassName = classNames(
     'LoadingSpinnerV3',
     className,
