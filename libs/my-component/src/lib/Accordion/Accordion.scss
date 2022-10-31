@@ -23,14 +23,15 @@
       outline: none;
       background-color: var(--phDuylib-secondary-color-hover);
       font-size: var(--phDuylib-font-size-big);
+      transition: background-color 0.12s ease-in;
       cursor: pointer;
       > p {
         margin-right: auto;
         margin-left: 0.5em;
       }
 
-      &:hover {
-        background-color: hsla(0,0%,97%,0.7);
+      &:hover,&:focus-visible {
+        background-color: white;
       }
 
       @at-root .Accordion__Header__Arrow-icon {
@@ -41,9 +42,7 @@
         transition: transform 0.2s ease 0s;
       }
 
-      &:focus {
-        box-shadow: var(--phDuylib-box-shadow-focus);
-      }
+    
     }
 
     @at-root .Accordion__Body {

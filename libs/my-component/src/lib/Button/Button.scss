@@ -1,4 +1,7 @@
 .Button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 0.5em 1em;
   border: var(--phDuylib-border);
   border-radius: 5px;
@@ -10,29 +13,33 @@
   background-color: transparent;
   caret-color: transparent;
   cursor: pointer;
-  
+  transition: transform 0.1s ease, box-shadow 0.1s ease-in,
+    background-color 0.1s ease;
+
   &:focus-visible {
     outline: none;
   }
-  
+
   &.--filled:focus-visible {
-      box-shadow: 0 2px 2px 0 hsla(0,0%,20%,0.5);
-      transform: translateY(-1px);
-  } 
+    box-shadow: 0 2px 5px 0 hsla(0, 0%, 20%, 0.5);
+    transform: translateY(-2px);
+  }
 
   &:not(.disabled) {
     &.--primary {
       border-color: var(--phDuylib-primary-color);
       &.--filled {
         background-color: var(--phDuylib-primary-color);
-        &:hover {
+        &:hover,
+        &:focus-visible {
           border-color: var(--phDuylib-primary-color-active);
           background-color: var(--phDuylib-primary-color-active);
         }
       }
       &.--outlined {
         color: var(--phDuylib-primary-color);
-        &:hover,&:focus-visible {
+        &:hover,
+        &:focus-visible {
           border-color: var(--phDuylib-primary-color-active);
           color: var(--phDuylib-primary-color-active);
           background-color: var(--phDuylib-primary-color-hover);
@@ -43,14 +50,16 @@
       border-color: var(--phDuylib-error-color);
       &.--filled {
         background-color: var(--phDuylib-error-color);
-        &:hover {
+        &:hover,
+        &:focus-visible {
           background-color: var(--phDuylib-error-color-active);
           border-color: var(--phDuylib-error-color-active);
         }
       }
       &.--outlined {
         color: var(--phDuylib-error-color);
-        &:hover,&:focus-visible {
+        &:hover,
+        &:focus-visible {
           border-color: var(--phDuylib-error-color-active);
           color: var(--phDuylib-error-color-active);
           background-color: var(--phDuylib-error-color-hover);
@@ -62,14 +71,17 @@
       &.--filled {
         background-color: var(--phDuylib-success-color);
         border-color: var(--phDuylib-success-color);
-        &:hover {
+        &:hover,
+        &:focus-visible {
           background-color: var(--phDuylib-success-color-active);
+          border-color: var(--phDuylib-success-color-active);
         }
       }
 
       &.--outlined {
         color: var(--phDuylib-success-color);
-        &:hover,&:focus-visible {
+        &:hover,
+        &:focus-visible {
           background-color: var(--phDuylib-success-color-hover);
           border-color: var(--phDuylib-success-color-active);
           color: var(--phDuylib-success-color-active);
@@ -82,8 +94,9 @@
         background-color: var(--phDuylib-secondary-color-hover);
         border-color: var(--phDuylib-secondary-color);
         color: var(--phDuylib-text-color);
-        &:hover {
-          background-color:var(--phDuylib-secondary-color);
+        &:hover,
+        &:focus-visible {
+          background-color: var(--phDuylib-secondary-color);
         }
       }
 
@@ -91,7 +104,8 @@
         background-color: transparent;
         border-color: hsl(0, 0%, 40%);
         color: hsl(0, 0%, 40%);
-        &:hover,&:focus-visible {
+        &:hover,
+        &:focus-visible {
           background-color: var(--phDuylib-secondary-color-hover);
         }
       }
@@ -101,14 +115,16 @@
       border-color: var(--phDuylib-warning-color);
       &.--filled {
         background-color: var(--phDuylib-warning-color);
-        &:hover {
+        &:hover,
+        &:focus-visible {
           background-color: var(--phDuylib-warning-color-active);
           border-color: var(--phDuylib-warning-color-active);
         }
       }
       &.--outlined {
         color: var(--phDuylib-warning-color);
-        &:hover,&:focus-visible {
+        &:hover,
+        &:focus-visible {
           background-color: var(--phDuylib-warning-color-hover);
           border-color: var(--phDuylib-warning-color-active);
           color: var(--phDuylib-warning-color-active);
@@ -120,7 +136,7 @@
     cursor: not-allowed;
     border-color: var(--phDuylib-secondary-color);
     &.--filled {
-      background-color: hsl(0,0%,90%);
+      background-color: hsl(0, 0%, 90%);
       color: white;
     }
 

@@ -11,41 +11,48 @@
   background-color: transparent;
   caret-color: transparent;
   cursor: pointer;
-
-    &:focus-visible {
-        outline: none;
-    
-    }   
+  transition: transform 0.1s ease, box-shadow 0.1s ease-in,
+    background-color 0.1s ease;
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 2px 5px 0 hsla(0, 0%, 20%, 0.4);
+    transform: translateY(-2px);
+  }
 
   &:not(.disabled) {
     &.--primary {
       color: var(--phDuylib-primary-color);
-      &:hover,&:focus-visible {
+      &:hover,
+      &:focus-visible {
         background-color: var(--phDuylib-primary-color-hover);
       }
     }
     &.--danger {
       color: var(--phDuylib-error-color);
-      &:hover,&:focus-visible {
+      &:hover,
+      &:focus-visible {
         background-color: var(--phDuylib-error-color-hover);
       }
     }
     &.--success {
       color: var(--phDuylib-success-color);
-      &:hover,&:focus-visible {
+      &:hover,
+      &:focus-visible {
         background-color: var(--phDuylib-success-color-hover);
       }
     }
     &.--secondary {
       color: var(--phDuylib-text-color);
-      &:hover,&:focus-visible {
+      &:hover,
+      &:focus-visible {
         background-color: var(--phDuylib-secondary-color-hover);
       }
     }
 
     &.--warning {
       color: var(--phDuylib-warning-color);
-      &:hover,&:focus-visible {
+      &:hover,
+      &:focus-visible {
         background-color: var(--phDuylib-warning-color-hover);
       }
     }

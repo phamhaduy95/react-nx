@@ -1,7 +1,9 @@
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
+import GlobalStyleProvider from '../GlobalStyleProvider';
+import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import './CheckBox.scss';
-import { useEffectSkipFirstRender } from '../../../../../apps/todo-app/src/utils/hooks';
+
 export type CheckBoxProps = {
   isSelected?: boolean;
   onSelected?: (value: string, isSelected: boolean) => void;
@@ -38,13 +40,12 @@ export function CheckBox(props: CheckBoxProps) {
     ['selected']: isSelected,
   });
 
-  useEffectSkipFirstRender(()=>{
-      onSelected(value,isSelected);
-  },[isSelected])
+  useEffectSkipFirstRender(() => {
+    onSelected(value, isSelected);
+  }, [isSelected]);
 
   const handleClick = () => {
     setSelected((prev) => !prev);
-   
   };
 
   const handleOnKeyDown = (e: React.KeyboardEvent) => {
@@ -59,11 +60,13 @@ export function CheckBox(props: CheckBoxProps) {
   };
 
   return (
-    <div className={rootClassName} tabIndex={0} onKeyDown={handleOnKeyDown}>
-      <div className="CheckBox__Box" onClick={handleClick}>
-        <div className="CheckBox__BoxInner">&#x2713;</div>
+    <GlobalStyleProvider>
+      <div className={rootClassName} tabIndex={0} onKeyDown={handleOnKeyDown}>
+        <div className="CheckBox__Box" onClick={handleClick}>
+          <div className="CheckBox__BoxInner">&#x2713;</div>
+        </div>
+        <span className="CheckBox__Label">{label}</span>
       </div>
-      <span className="CheckBox__Label">{label}</span>
-    </div>
+    </GlobalStyleProvider>
   );
 }

@@ -55,7 +55,7 @@ $text-color: hsla(0, 0%, 20%, 1);
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
-
+        transition: background-color 0.1s ease-in;
         &.disabled {
           cursor: not-allowed;
           color: var(--phDuylib-secondary-color-active);
@@ -71,7 +71,7 @@ $text-color: hsla(0, 0%, 20%, 1);
         }
 
         &.is-highlighted.selected {
-          background-color: var(--phDuylib-primary-color-hover);
+          background-color: var(--phDuylib-primary-color-active);
         }
 
         &:focus-visible {

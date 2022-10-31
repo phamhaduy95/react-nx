@@ -5,7 +5,7 @@
   display: flex;
   width: 100%;
   height: max-content;
-  
+
   @at-root .ToggleGroup__Item {
     width: max-content;
     padding: 0.5em 1em;
@@ -15,11 +15,17 @@
     color: var(--phDuylib-text-color);
     font-size: var(--phDuylib-font-size-med);
     user-select: none;
+    transition: transform 0.1s ease, background-color 0.1s ease-in;
 
     cursor: pointer;
     > svg {
       width: 1em;
       height: 1em;
+    }
+
+    &:focus-visible,&:hover {
+      outline: none;
+      transform: translateY(-1px);
     }
 
     &:first-child {
@@ -29,18 +35,26 @@
     }
 
     &:last-child {
-      border-right:  var(--phDuylib-border);
+      border-right: var(--phDuylib-border);
       border-bottom-right-radius: 5px;
       border-top-right-radius: 5px;
     }
 
     &.is-selected {
       background-color: var(--phDuylib-primary-color);
+      border-color: var(--phDuylib-primary-color);
       color: var(--phDuylib-text-color-dark);
+      &:hover,
+      &:focus-visible {
+        background-color: var(--phDuylib-primary-color-active);
+      }
     }
 
-    &:not(.is-selected):not(:disabled):hover {
-      background-color: var(--phDuylib-secondary-color-hover);
+    &:not(.is-selected):not(:disabled) {
+      &:hover,
+      &:focus-visible {
+        background-color: var(--phDuylib-primary-color-hover);
+      }
     }
 
     &:disabled {
