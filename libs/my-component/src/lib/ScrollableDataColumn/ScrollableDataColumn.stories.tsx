@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 import { range } from '../utils/range';
 import { ScrollableDataColumn } from './ScrollableDataColumn';
 

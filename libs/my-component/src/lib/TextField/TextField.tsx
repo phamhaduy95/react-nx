@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import './TextField.scss';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 
 
 export type TextFieldProps = {

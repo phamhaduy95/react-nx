@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 import { Select } from './Select';
 import { SelectOption } from './SelectOption';
 import { SelectSubHeader } from './SelectSubHeader';

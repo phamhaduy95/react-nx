@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import { GlobalStyleProvider } from '../GlobalStyleProvider';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import './CheckBox.scss';
 

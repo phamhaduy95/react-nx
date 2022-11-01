@@ -12,7 +12,7 @@ import {
   useTimePanelStore,
 } from './TimePanelStoreProvider';
 import shallow from 'zustand/shallow';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 import { Button} from '../Button';
 
 export type TimePanelProps = {

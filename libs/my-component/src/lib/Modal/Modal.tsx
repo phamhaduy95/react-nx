@@ -5,7 +5,7 @@ import { ModalStoreProvider, useModalStore } from './ModalStoreProvider';
 import './Modal.scss';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import classNames from 'classnames';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 
 export type ModalProps = {
   children: JSX.Element[] | JSX.Element;
@@ -54,6 +54,7 @@ function WrappedModal(props: ModalProps) {
   const action = useModalStore((state) => state.action);
   const isOpen = useModalStore((state) => state.isOpen);
   const ref = useRef(null);
+  const modalRef = useRef<HTMLDivElement>(null);
   // make Modal open when the outside signal isOpen is on.
   useEffect(() => {
     action.toggleOpen(openSignal);
@@ -84,7 +85,6 @@ function WrappedModal(props: ModalProps) {
   }, [clickOutsideToClose]);
 
   const handleCloseModal = () => {
-    console.log('click X to close');
     action.toggleOpen(false);
   };
 
@@ -98,9 +98,24 @@ function WrappedModal(props: ModalProps) {
     return <></>;
   };
 
+  useEffect(() => {
+    const el = modalRef.current;
+    if (el === null) return;
+    if (isOpen) {
+      document.body.style.setProperty('overflow', 'hidden');
+      document.body.style.setProperty('overscroll-behavior', 'contain');
+      return;
+    }
+    document.body.style.overflow = '';
+  }, [isOpen]);
+
+  const handleScroll = (e: React.UIEvent) => {
+    if (isOpen) e.preventDefault();
+  };
+
   return (
     <ModalPortal forceMount={forceMount} isShowed={isOpen}>
-      <div className={rootClassName}>
+      <div className={rootClassName} ref={modalRef} onScroll={handleScroll}>
         <ClickOutSideWatcher ref={ref} onClickOutSide={handleClickOutSide}>
           <div className="Modal__Dialog" ref={ref}>
             {renderCloseIcon()}

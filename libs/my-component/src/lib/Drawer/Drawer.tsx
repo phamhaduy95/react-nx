@@ -5,7 +5,7 @@ import { ClickOutSideWatcher } from '../ClickOutsideWatcher';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import { DrawerStoreProvider, useDrawerStore } from './DrawerStoreProvider';
 import './Drawer.scss';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import { GlobalStyleProvider } from '../GlobalStyleProvider';
 
 export type DrawerProps = {
   position?: 'top' | 'bottom' | 'left' | 'right';
@@ -65,6 +65,13 @@ export function WrappedDrawer(props: DrawerProps) {
   const handleClickOutsidePopup = useCallback(() => {
     action.toggleOpen(false);
   }, []);
+
+  useEffect(() => {
+    if (isShowed) {
+      document.body.style.setProperty('overflow', 'hidden');
+    }
+    document.body.style.overflow = '';
+  }, [isShowed]);
 
   return (
     <DrawerPortal isShowed={isShowed} forceMount={forceMouth}>

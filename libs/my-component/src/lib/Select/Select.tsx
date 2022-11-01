@@ -6,7 +6,7 @@ import { TextFieldProps } from '../TextField';
 import { SelectStoreProvider, useSelectStore } from './SelectStoreProvider';
 import { SelectTextField } from './SelectTextField';
 import { giveIndexToSelectOptions } from './SelectOption';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 
 export interface SelectProps {
   className?: string;

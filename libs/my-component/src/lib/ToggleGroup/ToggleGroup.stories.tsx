@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { ToggleGroup } from './ToggleGroup';
 import { ToggleGroupItem } from './ToggleGroupItem';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 
 export default {
   component: ToggleGroup,

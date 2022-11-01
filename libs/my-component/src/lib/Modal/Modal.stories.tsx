@@ -6,7 +6,7 @@ import { ModalHeader } from './ModalHeader';
 import { ModalBody } from './ModalBody';
 import CloseIcon from '@mui/icons-material/Close';
 import { ModalFooter } from './ModalFooter';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 
 export default {
   component: Modal,

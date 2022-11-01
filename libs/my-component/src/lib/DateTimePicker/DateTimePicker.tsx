@@ -17,7 +17,7 @@ import {
 } from './DateTimePickerStoreProvider';
 import './DateTimePicker.scss';
 import { TextFieldProps } from '../TextField/TextField';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 
 export interface DateTimePickerProps {
   className?: string;

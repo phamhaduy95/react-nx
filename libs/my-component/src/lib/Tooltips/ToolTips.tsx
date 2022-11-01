@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './ToolTips.scss';
 import PopupElement from '../Popup/PopupElement';
 import { Placement } from '../Popup/types';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 import classNames from 'classnames';
 
 type Props = {

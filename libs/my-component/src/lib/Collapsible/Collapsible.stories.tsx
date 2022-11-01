@@ -1,6 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { useState } from 'react';
-import GlobalStyleProvider from '../GlobalStyleProvider';
 import { Collapsible } from './Collapsible';
 
 export default {
@@ -21,12 +20,10 @@ export const Example: ComponentStory<typeof Collapsible> = (args) => {
 
   return (
     <>
-      <GlobalStyleProvider>
-        <button onClick={handleClick}>Show collapsible area</button>
-        <Collapsible direction={direction} showed={open}>
-          <span>Ok</span>
-        </Collapsible>
-      </GlobalStyleProvider>
+      <button onClick={handleClick}>Show collapsible area</button>
+      <Collapsible direction={direction} showed={open}>
+        <span>Ok</span>
+      </Collapsible>
     </>
   );
 };

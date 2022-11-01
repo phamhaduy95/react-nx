@@ -10,7 +10,7 @@ import {
   useDateRangePanelStore,
 } from './DateRangePanelStoreProvider';
 import { useEffect } from 'react';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 
 export interface DateRangePanelProps {
   range?: Pick<DateRangePanelState, 'endDate' | 'startDate'>;

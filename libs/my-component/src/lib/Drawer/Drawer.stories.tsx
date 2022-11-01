@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Drawer } from './Drawer';
 import { DrawerHeader } from './DrawerHeader';
 import { DrawerContent } from './DrawerContent';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 
 export default {
   component: Drawer,

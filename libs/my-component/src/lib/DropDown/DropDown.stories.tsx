@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 import { DropDown } from './DropDown';
 import { DropDownItem } from './DropDownItem';
 import { DropDownItemGroup } from './DropDownItemGroup';

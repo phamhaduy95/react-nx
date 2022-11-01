@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 import { IconButtonProps } from './type';
 import { forwardRef } from 'react';
 import './IconButton.scss';

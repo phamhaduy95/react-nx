@@ -7,7 +7,7 @@ import {
   useToggleGroupStore,
 } from './ToggleGroupStoreProvider';
 import { ToggleGroupSharedDataContextProvider } from './SharedDataContextProvider';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 export type ToggleGroupProps = {
   children: JSX.Element[] | JSX.Element;
   className?: string;

@@ -2,7 +2,7 @@ import { useEffect, useState, forwardRef } from 'react';
 import './Button.scss';
 import { ButtonProps } from './type';
 import classNames from 'classnames';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 
 const defaultProps: Required<Omit<ButtonProps, 'children'>> = Object.freeze({
   className: '',

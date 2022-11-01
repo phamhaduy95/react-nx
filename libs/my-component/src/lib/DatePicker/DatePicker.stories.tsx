@@ -1,5 +1,4 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import GlobalStyleProvider from '../GlobalStyleProvider';
 import { DatePicker } from './DatePicker';
 
 export default {
@@ -14,11 +13,7 @@ export default {
 const Template: ComponentStory<typeof DatePicker> = (args) => {
   const { dateFormat, label } = args;
 
-  return (
-    <GlobalStyleProvider>
-      <DatePicker dateFormat={dateFormat} label={label} />
-    </GlobalStyleProvider>
-  );
+  return <DatePicker dateFormat={dateFormat} label={label} />;
 };
 
 export const Primary = Template.bind({});

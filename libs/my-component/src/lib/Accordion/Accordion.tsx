@@ -2,7 +2,7 @@ import './Accordion.scss';
 import AccordionStoreProvider from './AccordionStoreProvider';
 import { useEffect } from 'react';
 import { useAccordionStore } from './AccordionStoreProvider';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import { GlobalStyleProvider } from '../GlobalStyleProvider';
 import classNames from 'classnames';
 
 export type AccordionProps = {

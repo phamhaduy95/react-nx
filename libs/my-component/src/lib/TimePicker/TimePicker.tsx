@@ -16,7 +16,7 @@ import shallow from 'zustand/shallow';
 import { convertDateToTimeObject, convertTimeToDateType } from './utils';
 import { Time } from '../TimePanel/types';
 import { TimePickerPopup } from './TimePickerPopup';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 dayjs.extend(customParseFormat);
 
 export type TimePickerProps = {

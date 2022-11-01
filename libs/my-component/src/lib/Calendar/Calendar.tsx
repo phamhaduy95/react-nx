@@ -16,7 +16,7 @@ import {
 } from './CalendarStoreProvider';
 import { useStore } from 'zustand';
 import shallow from 'zustand/shallow';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 
 function getDateString(year: number, month: number) {
   const date = dayjs().year(year).month(month);

@@ -6,7 +6,7 @@ import { DummyRow } from './ScrollableColumnDummyRow';
 import DataColumnStoreProvider from './DataColumnStoreProvider';
 import { useDataColumnStore } from './DataColumnStoreProvider';
 import { DataColumnRow } from './ScrollableDateColumnRow';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 
 type ColumnDataType = {
   value: number | string;

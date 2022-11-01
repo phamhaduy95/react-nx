@@ -7,8 +7,7 @@ import {
   DatePanelStoreProvider,
   useDatePanelStore,
 } from './DatePanelStoreProvider';
-import { useEffect, useMemo } from 'react';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import { GlobalStyleProvider } from '../GlobalStyleProvider';
 import { Button } from '../Button';
 
 export type DatePanelProps = {

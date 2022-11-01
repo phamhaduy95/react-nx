@@ -10,7 +10,7 @@ import ClickOutSideWatcher from '../ClickOutsideWatcher/ClickOutSideWatcher';
 import classNames from 'classnames';
 import { usePopupMenuStore } from './PopupMenuStoreProvider';
 import './PopupMenu.scss';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 
 type ContextMenuPopupProps = {
   targetRef: React.MutableRefObject<HTMLElement | null>;

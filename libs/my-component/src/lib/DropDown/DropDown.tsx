@@ -6,7 +6,7 @@ import {
 } from './DropDownStoreProvider';
 import './DropDown.scss';
 import { reDefineMenuItem } from '../PopupMenu/PopupMenuItem';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 
 
 export type DropDownProps = {

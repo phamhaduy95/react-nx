@@ -1,12 +1,11 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import GlobalStyleProvider from '../GlobalStyleProvider';
 import { DateTimePicker } from './DateTimePicker';
 
 export default {
   component: DateTimePicker,
   title: 'my-component/DateTimePicker',
   argTypes: {
-    onSelect: { action: 'onSelect executed!' }
+    onSelect: { action: 'onSelect executed!' },
   },
 } as ComponentMeta<typeof DateTimePicker>;
 
@@ -15,7 +14,6 @@ export const Primary: ComponentStory<typeof DateTimePicker> = (args) => {
     args;
 
   return (
-    <GlobalStyleProvider>
     <DateTimePicker
       className={className}
       isSecondIncluded={isSecondIncluded}
@@ -23,7 +21,6 @@ export const Primary: ComponentStory<typeof DateTimePicker> = (args) => {
       dateFormat={dateFormat}
       timeDelimiters={timeDelimiters}
     />
-    </GlobalStyleProvider>
   );
 };
 

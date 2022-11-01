@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { ReactComponent as CloseIcon } from './close-icon.svg';
 import ClickOutSideWatcher from '../ClickOutsideWatcher/ClickOutSideWatcher';
 import './Tag.scss';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 type Props = {
   onRemove?: () => void;
   onClick?: () => void;
