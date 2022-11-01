@@ -11,6 +11,9 @@ import {
 } from './Page/Calendar';
 import { HomePage } from './Page/HomePage/HomePage';
 import { LoginPage } from './Page/Login/LoginPage';
+import { NotFoundPage } from './Page/NotFoundPage';
+import { SignUpPage } from './Page/SignUpPage/SignUpPage';
+import { TestPage } from './Page/TestPage/TestPage';
 
 export const appRouter = createBrowserRouter(
   createRoutesFromElements(
@@ -25,6 +28,9 @@ export const appRouter = createBrowserRouter(
         <Route path="settings" element={<></>} />
       </Route>
       <Route path="login" element={<LoginPage />} />
+      <Route path='sign-up' element={<SignUpPage/>}/>
+      <Route path='test' element={<TestPage/>}/>
+      <Route path="*" element={<NotFoundPage />}></Route>
     </>
   )
 );

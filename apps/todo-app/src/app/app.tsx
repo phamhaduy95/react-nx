@@ -1,15 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Badge, ToolTips } from '@phduylib/my-component';
-import styles from './app.module.scss';
-import NxWelcome from './nx-welcome';
+import { Link, Outlet } from 'react-router-dom';
 
-export function App() {
+
+
+
+export function Test() {
   return (
-    <>
-      <NxWelcome title="todo-app" />
-      <div />
-    </>
+    <div className=''>
+
+
+    </div>
   );
 }
 
-export default App;
