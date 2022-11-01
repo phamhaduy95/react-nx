@@ -1,4 +1,5 @@
 import {
+  Button,
   Modal,
   ModalBody,
   ModalFooter,
@@ -10,6 +11,7 @@ import './SignOutModal.scss';
 import CloseIcon from '@mui/icons-material/Close';
 import { appApi } from '../../redux/appApi/appApi';
 import { useNavigate } from 'react-router-dom';
+import { IconButton } from '../../../../../libs/my-component/src/lib/Button/IconButton';
 
 export function SignOutModal() {
   const action = useAppAction();
@@ -33,28 +35,31 @@ export function SignOutModal() {
   };
 
   return (
-    <Modal
-      className="SignOutModal"
-      isOpen={isOpen}
-      onToggle={handleModalOpen}
-      closeIcon={<CloseIcon />}
-    >
+    <Modal className="SignOutModal" isOpen={isOpen} onToggle={handleModalOpen}>
       <ModalHeader>
         <p className="SignOutModal__Title">Sign Out</p>
+        <IconButton
+          className="SignOutModal__CloseIcon"
+          onClick={handleCloseModal}
+          variant="secondary"
+        >
+          <CloseIcon />
+        </IconButton>
       </ModalHeader>
       <ModalBody>
         <p className="SignOutModal__Message">Do you want to sign out?</p>
       </ModalBody>
       <ModalFooter>
-        <button className="SignOutModal__SubmitButton" onClick={handleSignOut}>
+        <Button className="SignOutModal__SubmitButton" onClick={handleSignOut}>
           Sign Out
-        </button>
-        <button
+        </Button>
+        <Button
           className="SignOutModal__CancelButton"
           onClick={handleCloseModal}
+          type="outlined"
         >
           Continue
-        </button>
+        </Button>
       </ModalFooter>
     </Modal>
   );

@@ -3,48 +3,38 @@
 
 .SignOutModal {
   > .Modal__Dialog {
-    width: 30rem;
     display: flex;
     flex-direction: column;
+    caret-color: transparent;
+    width: 30em;
+    padding: 1em;
+    background-color: white;
+    font-size: var(--phDuylib-font-size-med);
+    font-family: "Inter",sans-serif;
     min-width: unset;
-    .Modal__CloseIcon {
-        z-index: 1;
-    }
     > .Modal__Header {
-      position: relative;
-      padding: 0.5rem;
+      display: flex;
+      padding: 0.5em 0;
       align-items: center;
-      
+      font-weight: 600;
+      font-size: var(--phDuylib-font-size-big);
+      >.SignOutModal__CloseIcon {
+        margin-left: auto;
+      }
     }
     > .Modal__Body {
       > .SignOutModal__Message {
-        margin-left: 2rem;
-        font-size: 1.25rem;
-        line-height: 1.5;
+        margin: 1em 0;
+        line-height: 1.1;
       }
     }
     > .Modal__Footer {
-      width: 80%;
-      margin: 1rem auto;
       display: flex;
-      > button {
-        padding: 0.5em 1em;
-        border: $border;
-        border-radius: 5px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 0.9rem;
-        cursor: pointer;
-      }
-
+      
       > .SignOutModal__SubmitButton {
         margin-left: auto;
         margin-right: 1rem;
-        background-color: $primary-color;
-        color: white;
-      }
-      > .SignOutModal__CancelButton {
-        background-color: white;
-        border-color: $primary-color;
+      
       }
     }
   }
