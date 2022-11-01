@@ -1,8 +1,8 @@
 import * as ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
-
 import { appRouter } from './app/AppRouter';
+import { AppStyleProvider } from './AppStyleProvider';
 import { rootStore } from './redux/rootStore';
 
 const root = ReactDOM.createRoot(
@@ -10,7 +10,9 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <Provider store={rootStore}>
-    <RouterProvider router={appRouter} />
-  </Provider>
+  <AppStyleProvider>
+    <Provider store={rootStore}>
+      <RouterProvider router={appRouter} />
+    </Provider>
+  </AppStyleProvider>
 );
