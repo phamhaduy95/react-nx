@@ -1,7 +1,7 @@
 import { CheckBox, CheckBoxProps, IconButton } from '@phduylib/my-component';
 import { useCallback, useEffect, useState } from 'react';
 import { appApi } from '../../../redux/appApi';
-import { useAppAction, useAppDispatch, useAppSelector } from '../../../redux';
+import { ModalType, useAppAction, useAppDispatch, useAppSelector } from '../../../redux';
 import AddIcon from '@mui/icons-material/Add';
 
 const categoriesList = [];
@@ -15,7 +15,7 @@ export function CalendarAppCategoryFilterBox() {
   const { data: categories } = appApi.useGetAllForUserQuery(undefined);
 
   const handleClickToOpenAddCategoryModal = ()=>{
-    dispatch(action.AddCategoryModal.toggleOpen(true));
+    dispatch(action.AppModal.openModal(ModalType.addCategory));
   }
 
   const handleClickCheckAll: NonNullable<CheckBoxProps['onSelected']> =

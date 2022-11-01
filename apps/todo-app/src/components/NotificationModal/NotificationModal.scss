@@ -1,0 +1,44 @@
+.AppModal {
+  .AppModal__Body {
+    @at-root .AppModal__SuccessIcon,
+      .AppModal__Spinner,
+      .AppModal__ErrorIcon {
+      width: 5em;
+      height: 5em;
+      margin: auto;
+
+      > svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    @at-root .AppModal__SuccessIcon {
+      color: var(--phDuylib-success-color);
+    }
+    @at-root .AppModal__ErrorIcon {
+      color: var(--phDuylib-error-color);
+    }
+
+    @at-root .AppModal__Message {
+      margin: 0.5em auto;
+      font-weight: 580;
+
+      &.--Loading {
+        color: var(--phDuylib-primary-color);
+      }
+      &.--Success {
+        color: var(--phDuylib-success-color);
+      }
+      &.--Error {
+        color: var(--phDuylib-error-color);
+      }
+    }
+  }
+  > .AppModal__Footer {
+    @at-root .AppModal__ReturnButton {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}

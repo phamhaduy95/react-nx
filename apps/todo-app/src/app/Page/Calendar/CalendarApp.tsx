@@ -8,7 +8,6 @@ import {
 } from '@phduylib/my-component';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import './CalendarApp.scss';
-import { TaskEditModal } from '../../../components/TaskEditModal';
 import { CalendarAppCategoryFilterBox } from './CalendarAppCategoryFilterBox';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -19,7 +18,7 @@ import {
 } from '../../../redux/rootStore';
 import { CalendarAppState } from 'apps/todo-app/src/redux/CalendarApp';
 import { getDayString, getWeekString, getMonthString } from './utils';
-import { AddCategoryModal } from '../../../components/AddCategoryModal/AddCategoryModal';
+import { AppModal } from '../../../components/AppModal/AppModal';
 
 const calendarTypes = ['Month', 'Week', 'Day'];
 // Note: since the Redux toolkit integrate the immer lib for handling updating state, the state within redux store will be freezed so  that it cannot be altered or mutated. As the result, any future code which {use state should use  tactic copy.
@@ -80,7 +79,7 @@ export function CalendarApp() {
                 onClick={handleClickPrevious}
                 variant="secondary"
               >
-                <ArrowBackIosIcon className="BackIcon"/>
+                <ArrowBackIosIcon className="BackIcon" />
               </IconButton>
               <IconButton
                 className="CalendarApp__NextIcon"
@@ -103,8 +102,7 @@ export function CalendarApp() {
           </div>
         </div>
       </div>
-      <TaskEditModal />
-      <AddCategoryModal/>
+      <AppModal />
     </>
   );
 }

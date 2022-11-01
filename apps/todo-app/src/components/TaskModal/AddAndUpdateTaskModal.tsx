@@ -1,7 +1,9 @@
+import React, { useCallback, useMemo } from 'react';
 import {
   Button,
   DateTimeRangePicker,
   DateTimeRangePickerProps,
+  IconButton,
   ModalBody,
   ModalFooter,
   ModalHeader,
@@ -11,19 +13,29 @@ import {
   TextField,
   TextFieldProps,
 } from '@phduylib/my-component';
-import { useCallback, useMemo } from 'react';
-import { shallowEqual } from 'react-redux';
-import { useAppAction, useAppDispatch, useAppSelector } from '../../redux';
+import {
+  useAppDispatch,
+  useAppAction,
+  useAppSelector,
+  ModalType,
+} from '../../redux';
+import CloseIcon from '@mui/icons-material/Close';
 import { appApi } from '../../redux/appApi';
-import { validateInputData } from './TaskDataSchema';
+import { shallowEqual } from 'react-redux';
+import { validateTaskData } from './TaskDataValidation';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { convertTaskReduxDataIntoTaskDataInput } from './utils';
+import './TaskModal.scss';
 
-export function AddAndEditTaskModal() {
+export function AddAndUpdateTaskModal() {
   const dispatch = useAppDispatch();
   const action = useAppAction();
-
+  const closeModalSignal = () => {
+    dispatch(action.AppModal.closeModal());
+  };
   const reduxTaskData = useAppSelector((state) => state.TaskEditModal.taskData);
   const type = useAppSelector((state) => state.TaskEditModal.type);
+
   const [updateTask] = appApi.useUpdateTaskMutation({
     fixedCacheKey: 'shared-update-task',
   });
@@ -65,7 +77,7 @@ export function AddAndEditTaskModal() {
   };
 
   const handleFormSubmit = async () => {
-    const { result, error } = await validateInputData(taskData);
+    const { result, error } = await validateTaskData(taskData);
     if (result) {
       switch (type) {
         case 'add':
@@ -84,9 +96,23 @@ export function AddAndEditTaskModal() {
     dispatch(action.TaskEditModal.clearTaskData());
   };
 
-  const handlePopupOpen = useCallback((isOpen: boolean, mode: any) => {
-    dispatch(action.TaskEditModal.setRestrictClose(isOpen));
+  const handlePopupOpen = useCallback((isOpen: boolean) => {
+    dispatch(action.AppModal.toggleCloseOnClickOutside(!isOpen));
   }, []);
+
+  const handleDeleteButtonClick = () => {
+    dispatch(action.AppModal.openModal(ModalType.deleteTask));
+  };
+
+  const DeleteTaskButton = type === 'update' && (
+    <IconButton
+      className="TaskEditModal__DeleteTaskButton"
+      onClick={handleDeleteButtonClick}
+      variant="secondary"
+    >
+      <DeleteForeverIcon />
+    </IconButton>
+  );
 
   const renderSelectOptions: () => JSX.Element[] = () => {
     if (categories === undefined) return [];
@@ -100,18 +126,41 @@ export function AddAndEditTaskModal() {
       );
     });
   };
+
+  const renderTitle = () => {
+    switch (type) {
+      case 'update':
+        return 'Update Task';
+      case 'add':
+        return 'Add Task';
+    }
+  };
+
   return (
     <>
-      <ModalBody className="TaskEditModal__Body">
+      <ModalHeader className="AppModal__Header">
+        <span className="AppModal__Title">{renderTitle()}</span>
+        <div className="AppModal__HeaderControl">
+          {DeleteTaskButton}
+          <IconButton
+            className="AppModal__CloseButton"
+            onClick={closeModalSignal}
+            variant="secondary"
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+      </ModalHeader>
+      <ModalBody className="AppModal__Body">
         <TextField
-          className="TaskEditModal__TitleInput"
+          className="AppModal__TitleInput"
           label="title:"
           onValueChange={handleTitleInputChange}
           value={taskData.title}
           error={errorsMessage.title}
         />
         <Select
-          className="TaskEditModal__CategorySelect"
+          className="AppModal__CategorySelect"
           label="category:"
           autoWidth
           onSelect={handleCategoryChange}
@@ -121,7 +170,7 @@ export function AddAndEditTaskModal() {
           {renderSelectOptions()}
         </Select>
         <DateTimeRangePicker
-          className="TaskEditModal__DateTimeRange"
+          className="AppModal__DateTimeRange"
           onStartTimeChange={handleStartDateChange}
           onEndTimeChange={handleEndDateChange}
           startDate={taskData.startTime}
@@ -134,15 +183,12 @@ export function AddAndEditTaskModal() {
           onPopupToggle={handlePopupOpen}
         />
       </ModalBody>
-      <ModalFooter className="TaskEditModal__Footer">
-        <Button
-          className="TaskEditModal__SubmitButton"
-          onClick={handleFormSubmit}
-        >
+      <ModalFooter className="AppModal__Footer">
+        <Button className="AppModal__SubmitButton" onClick={handleFormSubmit}>
           {type === 'update' ? 'Update' : 'Add'}
         </Button>
         <Button
-          className="TaskEditModal__ClearButton"
+          className="AppModal__ClearButton"
           onClick={handleClear}
           type="outlined"
         >

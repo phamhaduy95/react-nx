@@ -1,7 +1,14 @@
-import { Button, ModalBody, ModalFooter } from '@phduylib/my-component';
-import React from 'react';
+import {
+  Button,
+  IconButton,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+} from '@phduylib/my-component';
 import { useAppAction, useAppDispatch, useAppSelector } from '../../redux';
 import { appApi } from '../../redux/appApi';
+import CloseIcon from '@mui/icons-material/Close';
+import './TaskModal.scss';
 
 export function DeleteTaskModal() {
   const action = useAppAction();
@@ -11,6 +18,10 @@ export function DeleteTaskModal() {
     fixedCacheKey: 'shared-delete-task',
   });
 
+  const closeModalSignal = () => {
+    dispatch(action.AppModal.closeModal());
+  };
+
   const handleSubmitButtonClick = () => {
     deleteTask(taskId);
   };
@@ -18,23 +29,34 @@ export function DeleteTaskModal() {
   const handleCancelButtonClick = () => {
     dispatch(action.TaskEditModal.switchModalType('update'));
   };
-
   return (
     <>
-      <ModalBody className="TaskEditModal__Body">
-        <span className="TaskEditModal__Message">
+      <ModalHeader className="AppModal__Header">
+        <span className="AppModal__Title">Delete Task</span>
+        <div className="AppModal__HeaderControl">
+          <IconButton
+            className="AppModal__CloseButton"
+            onClick={closeModalSignal}
+            variant="secondary"
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+      </ModalHeader>
+      <ModalBody className="AppModal__Body">
+        <span className="AppModal__Message">
           Do want to delete this task from schedule permanently?
         </span>
       </ModalBody>
-      <ModalFooter className="TaskEditModal__Footer">
+      <ModalFooter className="AppModal__Footer">
         <Button
-          className="TaskEditModal__SubmitButton"
+          className="AppModal__SubmitButton"
           onClick={handleSubmitButtonClick}
         >
           Delete
         </Button>
         <Button
-          className="TaskEditModal__CancelButton"
+          className="AppModal__CancelButton"
           onClick={handleCancelButtonClick}
           type="outlined"
         >

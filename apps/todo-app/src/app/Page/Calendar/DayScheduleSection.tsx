@@ -23,9 +23,9 @@ export function DayScheduleSection() {
     (state) => state.CalendarApp.dateArgs.dateArg,
     shallowEqual
   );
-  
+
   const { data: reduxData } = appApi.useGetDayScheduleDataQuery(dayArg);
-    
+
   const filterOption = useAppSelector(
     (state) => state.CalendarApp.taskFilterOptions
   );
@@ -33,7 +33,6 @@ export function DayScheduleSection() {
   console.log(filterOption);
   const data: DayScheduleProps['data'] = useMemo(() => {
     if (reduxData) {
-
       const filterPredicate =
         createPredicateFunctionFromFilterOptions(filterOption);
       const filterTasks = reduxData.tasks.filter((task) =>
@@ -48,17 +47,16 @@ export function DayScheduleSection() {
     };
   }, [reduxData, filterOption]);
 
-
   const handleTaskSelect: NonNullable<DayScheduleProps['onTaskSelect']> =
     useCallback((task) => {
       const taskRedux = convertTaskDataIntoReduxState(task);
-      dispatch(action.TaskEditModal.toggleDrawerOpen(true));
+      
       dispatch(action.TaskEditModal.editTask(taskRedux));
     }, []);
   const handleDateSelect: NonNullable<DayScheduleProps['onDateSelect']> =
     useCallback((date) => {
       const startDate = date.toString();
-      dispatch(action.TaskEditModal.toggleDrawerOpen(true));
+     
       dispatch(action.TaskEditModal.addTask({ startTime: startDate }));
     }, []);
 

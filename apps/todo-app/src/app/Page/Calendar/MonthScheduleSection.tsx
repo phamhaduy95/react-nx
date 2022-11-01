@@ -14,11 +14,8 @@ import {
   MonthSchedule,
   MonthScheduleProps,
 } from '../../../components/MonthSchedule/MonthSchedule';
-import dayjs from 'dayjs';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { createPredicateFunctionFromFilterOptions } from '../../../redux/CalendarApp';
-
+import { ModalType } from 'apps/todo-app/src/redux';
 
 export function MonthScheduleSection() {
   const dispatch = useAppDispatch();
@@ -54,12 +51,13 @@ export function MonthScheduleSection() {
   const handleTaskSelect: NonNullable<MonthScheduleProps['onTaskSelect']> =
     useCallback((task) => {
       const taskRedux = convertTaskDataIntoReduxState(task);
-
+      dispatch(action.AppModal.openModal(ModalType.addAndUpdateTask));
       dispatch(action.TaskEditModal.editTask(taskRedux));
     }, []);
   const handleDateSelect: NonNullable<MonthScheduleProps['onDateSelect']> =
     useCallback((date) => {
       const startDate = date.toISOString();
+      dispatch(action.AppModal.openModal(ModalType.addAndUpdateTask));
       dispatch(action.TaskEditModal.addTask({ startTime: startDate }));
     }, []);
 

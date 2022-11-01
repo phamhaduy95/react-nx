@@ -6,7 +6,7 @@ export type ErrorsMessage<T> = {
 
 export type TaskDataInput = Omit<
   TaskDataType,
-  'startTime' | 'endTime' | 'userId'|"taskId"
+  'startTime' | 'endTime' | 'userId' | 'taskId'
 > & {
   startTime: Date | null;
   endTime: Date | null;

@@ -1,0 +1,46 @@
+$gap-between-input: 0.5rem;
+@import '../sharedStyle.scss';
+@import '../utils.scss';
+.AppModal {
+  > .Modal__Dialog {
+    @at-root .AppModal__Header {
+      .AppModal__HeaderControl {
+        margin-left: auto;
+        margin-right: 1rem;
+        display: flex;
+      }
+      .AppModal__DeleteTaskButton {
+        margin-right: 0.5rem;
+      }
+    }
+    @at-root .AppModal__Body {
+      > .TextField,
+      > .Select {
+        width: 90%;
+        margin: 0 auto 1em auto;
+      }
+      @at-root .AppModal__DateTimeRange {
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        flex-direction: column;
+        > .DateTimeRangePicker__Input {
+          margin-bottom: 1em;
+          width: 100%;
+        }
+      }
+    }
+    @at-root .AppModal__Footer {
+      // display: flex;
+      // width: 95%;
+      @at-root .AppModal__SubmitButton {
+        margin-left: auto;
+        margin-right: 1rem;
+      }
+      @at-root .AppModal__CancelButton {
+        margin-left: 0;
+      }
+    }
+  }
+}

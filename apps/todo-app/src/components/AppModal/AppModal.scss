@@ -1,0 +1,47 @@
+$gap-between-input: 0.5rem;
+@import '../sharedStyle.scss';
+@import '../utils.scss';
+.AppModal {
+  > .Modal__Dialog {
+    width: 30em;
+    margin-top: 2em;
+    display: flex;
+    flex-direction: column;
+    min-width: unset;
+    background-color: white;
+    padding: 1em 0.5em;
+    font-family: 'Inter', sans-serif;
+
+    > .AppModal__Header {
+      position: relative;
+      align-items: center;
+      margin-bottom: 0.5em;
+      display: flex;
+
+      @at-root .AppModal__Title {
+        font-size: 1.5rem;
+        font-weight: 560;
+        text-align: center;
+        user-select: none;
+        margin-left: 1.5rem;
+      }
+
+    }
+    > .AppModal__Body {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 0.5em;
+
+      @at-root .AppModal__Message {
+        margin: 0.5em auto;
+        font-weight: 580;
+      }
+    }
+    > .AppModal__Footer {
+      display: flex;
+      width: 95%;
+      margin: 0.25rem auto;
+     
+    }
+  }
+}

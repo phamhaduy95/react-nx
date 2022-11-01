@@ -1,0 +1,50 @@
+$gap-between-input: 0.5rem;
+@import '../sharedStyle.scss';
+@import '../utils.scss';
+.AppModal {
+  > .Modal__Dialog {
+    @at-root .AppModal__Body {
+        .AppModal__Label {
+            margin-bottom: 0.5em;
+            margin-left: 0.5em;
+            display: block;
+            font-size: var(--phDuylib-font-size-sml);
+          }
+      
+        @at-root .AppModal__ColorPicker {
+        width: 90%;
+        margin: 0 auto 1em auto;
+        > input {
+          width: 100%;
+          background-color: white;
+          border: 1px solid hsl(0, 0%, 70%);
+          height: 3em;
+          padding: 0.2rem 0.4rem;
+          border-radius: 5px;
+        }
+      }
+
+      @at-root .AppModal__Description {
+        width: 90%;
+        margin: 0 auto 0.5em auto;
+        @at-root .AppModal__TextArea {
+          padding: 0.5em;
+          text-indent: 0.5em;
+          width: 100%;
+          color: inherit;
+          font-family: inherit;
+          height: 8rem;
+          font-size: 1em;
+          border: 1px solid hsl(0, 0%, 70%);
+          caret-color: auto;
+          border-radius: 5px;
+
+          &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 2px 2px hsla(220, 80%, 50%, 0.8);
+          }
+        }
+      }
+    }
+  }
+}
