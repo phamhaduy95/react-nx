@@ -2,14 +2,15 @@
   display: flex;
 
   > .HomePage__SideBar {
-    width: 65px;
+      width: 3.8em;
   
     > .SideBar__Container {
       background-color: white;
       border-color: white;
-
+   
+  
       &:not(.expanded) {
-        width: 65px;
+        width: 3.8em;
         border-left: none;
         border-top: none;
         border-bottom: none;
@@ -17,14 +18,13 @@
       }
 
       &.expanded {
-        width: 250px;
         box-shadow: 0px -2px 10px 0px rgba(0, 0, 0, 0.2);
       }
 
       .SideBar__Item {
         line-height: 1.1;
         &.selected {
-          background: hsl(210, 80%, 60%);
+          background: var(--phDuylib-primary-color);
         }
       }
     }
