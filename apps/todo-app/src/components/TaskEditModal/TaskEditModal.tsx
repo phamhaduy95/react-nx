@@ -1,4 +1,4 @@
-import { Modal, ModalHeader, ModalProps } from '@phduylib/my-component';
+import { IconButton, Modal, ModalHeader, ModalProps } from '@phduylib/my-component';
 import './TaskEditModal.scss';
 import {
   useAppAction,
@@ -14,6 +14,7 @@ import { NotificationModal } from './NotificationModal';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { DeleteTaskModal } from './DeleteTaskModal';
+
 
 export function TaskEditModal() {
   const dispatch = useAppDispatch();
@@ -104,12 +105,13 @@ export function TaskEditModal() {
   };
 
   const DeleteTaskButton = isinIdleState && type === 'update' && (
-    <button
+    <IconButton
       className="TaskEditModal__DeleteTaskButton"
       onClick={handleDeleteButtonClick}
+      variant="secondary"
     >
       <DeleteForeverIcon />
-    </button>
+    </IconButton>
   );
 
   return (
@@ -123,12 +125,13 @@ export function TaskEditModal() {
         <span className="TaskEditModal__Title">{renderTitle()}</span>
         <div className="TaskEditModal__HeaderControl">
           {DeleteTaskButton}
-          <button
+          <IconButton
             className="TaskEditModal__CloseButton"
             onClick={closeModalSignal}
+            variant="secondary"
           >
             <CloseIcon />
-          </button>
+          </IconButton>
         </div>
       </ModalHeader>
       {renderModalContent()}

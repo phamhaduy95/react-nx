@@ -1,4 +1,4 @@
-import { ModalBody, ModalFooter } from '@phduylib/my-component';
+import { Button, ModalBody, ModalFooter } from '@phduylib/my-component';
 import React from 'react';
 import { useAppAction, useAppDispatch, useAppSelector } from '../../redux';
 import { appApi } from '../../redux/appApi';
@@ -16,7 +16,7 @@ export function DeleteTaskModal() {
   };
 
   const handleCancelButtonClick = () => {
-    dispatch(action.TaskEditModal.switchModalType("update"));
+    dispatch(action.TaskEditModal.switchModalType('update'));
   };
 
   return (
@@ -27,18 +27,19 @@ export function DeleteTaskModal() {
         </span>
       </ModalBody>
       <ModalFooter className="TaskEditModal__Footer">
-        <button
+        <Button
           className="TaskEditModal__SubmitButton"
           onClick={handleSubmitButtonClick}
         >
           Delete
-        </button>
-        <button
+        </Button>
+        <Button
           className="TaskEditModal__CancelButton"
           onClick={handleCancelButtonClick}
+          type="outlined"
         >
           Return
-        </button>
+        </Button>
       </ModalFooter>
     </>
   );

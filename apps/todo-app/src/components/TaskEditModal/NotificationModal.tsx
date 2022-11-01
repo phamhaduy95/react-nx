@@ -1,6 +1,10 @@
 import { memo } from 'react';
-import { ModalBody, ModalFooter } from '@phduylib/my-component';
-import { Spinner } from '../Spinner/Spinner';
+import {
+  Button,
+  LoadingSpinnerV2,
+  ModalBody,
+  ModalFooter,
+} from '@phduylib/my-component';
 import { useAppAction, useAppDispatch } from '../../redux';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
@@ -72,12 +76,14 @@ function SuccessModalFooter(props: ModalFooterProps) {
   const { closeSignal } = props;
   return (
     <>
-      <button
+      <Button
         className="TaskEditModal__ReturnButton"
         onClick={closeSignal}
+        type="outlined"
+        variant="success"
       >
         Return to App
-      </button>
+      </Button>
     </>
   );
 }
@@ -85,7 +91,7 @@ function SuccessModalFooter(props: ModalFooterProps) {
 function LoadingModalBody() {
   return (
     <>
-      <Spinner className="TaskEditModal__Spinner" />
+      <LoadingSpinnerV2 className="TaskEditModal__Spinner" variant="primary" />
       <span className="TaskEditModal__Message --Loading">Loading...</span>
     </>
   );
@@ -97,7 +103,7 @@ function ErrorModalBody() {
       <div className="TaskEditModal__ErrorIcon">
         <ErrorOutlineIcon />
       </div>
-      <span className="TaskEditModal__Message --Error">Loading...</span>
+      <span className="TaskEditModal__Message --Error">Error!</span>
     </>
   );
 }
@@ -106,18 +112,12 @@ function ErrorModalFooter(props: ModalFooterProps) {
   const { closeSignal } = props;
   return (
     <>
-      <button
-        className="TaskEditModal__SubmitButton"
-        onClick={closeSignal}
-      >
+      <Button className="TaskEditModal__SubmitButton" onClick={closeSignal}>
         Return to app
-      </button>
-      <button
-        className="TaskEditModal__CloseButton"
-        onClick={closeSignal}
-      >
+      </Button>
+      <Button className="TaskEditModal__CloseButton" onClick={closeSignal}>
         Retry
-      </button>
+      </Button>
     </>
   );
 }

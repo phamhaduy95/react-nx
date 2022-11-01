@@ -1,4 +1,5 @@
 import {
+  Button,
   DateTimeRangePicker,
   DateTimeRangePickerProps,
   ModalBody,
@@ -134,15 +135,19 @@ export function AddAndEditTaskModal() {
         />
       </ModalBody>
       <ModalFooter className="TaskEditModal__Footer">
-        <button
+        <Button
           className="TaskEditModal__SubmitButton"
           onClick={handleFormSubmit}
         >
           {type === 'update' ? 'Update' : 'Add'}
-        </button>
-        <button className="TaskEditModal__ClearButton" onClick={handleClear}>
+        </Button>
+        <Button
+          className="TaskEditModal__ClearButton"
+          onClick={handleClear}
+          type="outlined"
+        >
           Clear
-        </button>
+        </Button>
       </ModalFooter>
     </>
   );
