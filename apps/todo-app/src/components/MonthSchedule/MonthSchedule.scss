@@ -7,54 +7,50 @@
   max-width: 750px;
   height: 700px;
   border-collapse: collapse;
-  border: $border;
+  border: var(--phDuylib-border);
   table-layout: fixed;
   caret-color: transparent;
-  font-family: "";
   > thead {
     th {
-      height: 50px;
+      height: 2.8em;
       text-align: center;
-      border: $border;
-      color: $text-color;
-      font-size: $font-size-b;
+      border:var(--phDuylib-border);
+      font-size: var(--phDuylib-font-size-big);
       user-select: none;
     }
   }
   > tbody {
     td {
       vertical-align: top;
-      padding: 0.5rem;
-      border: $border;
+      padding: 0.5em;
+      border: var(--phDuylib-border);
       > .TableDateCell__Container {
         position: relative;
         width: 100%;
         height: 100%;
         display: flex;
         flex-direction: column;
-        color: $text-color;
         > .TableDateCell__DateNumber {
           user-select: none;
           cursor: pointer;
           margin-bottom: 0.25rem;
-          font-size: $font-size-s;
+          font-size: var(--phDuylib-font-size-sml);
         }
         > .TableDateCell__TasksLines {
           position: relative;
           width: 100%;
-          min-height: calc(2 * 20px);
+          min-height: calc(2 * 2em);
           caret-color: transparent;
           > .TableDateCell__TaskLine {
             position: absolute;
             display: flex;
             align-items: center;
-            height: 18px;
-            background-color: hsla(220, 80%, 80%, 0.5);
+            height: 2em;
             border-radius: 5px;
-            font-size: $font-size-s;
+            background-color: hsla(220, 80%, 80%, 0.5);
+            font-size:  var(--phDuylib-font-size-sml);
             text-indent: 10px;
             cursor: pointer;
-            
             white-space: nowrap;
             overflow: hidden;
             z-index: 2;
@@ -62,13 +58,16 @@
         }
         > .TableDateCell__TasksExpandButton {
           @include centerElement();
-          margin-top: auto;
-          padding: 0.1rem;
-          border: $border;
+          padding: 0.3em 0.6em;
+          border: var(--phDuylib-border);
           border-radius: 5px;
+          margin-top: auto;
           cursor: pointer;
-          font-size: $font-size-s;
+          font-size: var(--phDuylib-font-size-sml);
           user-select: none;
+          &:hover {
+            background-color: var(--phDuylib-primary-color-hover);
+          }
         }
       }
       &:not(.is-day-within-month) {

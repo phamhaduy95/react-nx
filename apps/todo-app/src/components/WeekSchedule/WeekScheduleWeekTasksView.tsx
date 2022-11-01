@@ -131,9 +131,9 @@ type Position = {
   height: string;
 };
 
-const BLOCK_HEIGHT = 21; // in pixel
-const VER_BLOCK_GAP = 8; // in pixel
-const HOR_BLOCK_GAP = 8; // in %
+const BLOCK_HEIGHT = 1.9; // in em
+const VER_BLOCK_GAP = 0.8; // in em
+const HOR_BLOCK_GAP = 12; // in %
 function calculateTaskBlockSize(
   taskData: TaskDataType,
   linePos: number,
@@ -145,8 +145,8 @@ function calculateTaskBlockSize(
     isSunDay(currDate)
   );
   return {
-    top: `${linePos * (BLOCK_HEIGHT + VER_BLOCK_GAP) + VER_BLOCK_GAP}px`,
-    height: `${BLOCK_HEIGHT}px`,
+    top: `${linePos * (BLOCK_HEIGHT + VER_BLOCK_GAP) + VER_BLOCK_GAP}em`,
+    height: `${BLOCK_HEIGHT}em`,
     left: `${HOR_BLOCK_GAP}%`,
     width: `${widthInDayUnit * 100 - 2 * HOR_BLOCK_GAP}%`,
   };

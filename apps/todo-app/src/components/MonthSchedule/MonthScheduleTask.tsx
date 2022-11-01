@@ -50,8 +50,8 @@ export function MonthScheduleTask(props: MonthScheduleTaskProps) {
   useEffect(() => {
     const taskBarEl = taskBarRef.current;
     if (taskBarEl === null) return;
-    const offsetTop = index * 22;
-    taskBarEl.style.top = `${offsetTop}px`;
+    const offsetTop = index * 2.5;
+    taskBarEl.style.top = `${offsetTop}em`;
   }, [index]);
 
   const handleClick = (e: React.MouseEvent) => {

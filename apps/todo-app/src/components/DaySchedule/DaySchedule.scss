@@ -5,10 +5,7 @@
   min-width: 350px;
   max-width: 750px;
   height: 650px;
-  border:$border;
-  color: $text-color;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.9rem;
+  border: var(--phDuylib-border);
   > .DaySchedule__Container {
     position: relative;
     height: 100%;
@@ -17,21 +14,21 @@
     overflow: auto;
 
     > .DaySchedule__TimeAxis {
-      display: flex;
       position: sticky;
       top: 0;
+      display: flex;
       flex-wrap: nowrap;
-      height: 50px;
+      height: 2.8em;
       width: 600%;
       z-index: 2;
-      font-size: $font-size-b;
+      font-size: var(--phDuylib-font-size-big);
 
       > .DaySchedule__TimeIndicator {
         display: flex;
         justify-content: center;
         align-items: center;
         width: calc(100% / 24);
-        border-bottom: $border;
+        border-bottom: var(--phDuylib-border);
         // border-right:$border;
         background-color: hsl(0, 0%, 100%);
         &:last-child {
@@ -44,35 +41,36 @@
       display: flex;
       flex-wrap: nowrap;
       width: 600%;
-      
 
       > .DaySchedule__TimeFrame {
         width: calc(100% / 24);
         flex-grow: 1;
         flex-shrink: 1;
         height: inherit;
-        background-color: hsla(0, 0%, 95%, 0.5);
-        border-right: 1px dashed hsla(0, 0%, 70%, 0.7);
+        background-color: var(--phDuylib-secondary-color-hover);
+        opacity: 0.8;
+        border-right: 1px dashed var(--phDuylib-secondary-color-active);
         &:last-child {
           border-right: none;
         }
       }
       > .DaySchedule__TaskBlock {
         position: absolute;
-        background-color: hsla(220, 80%, 80%, 0.5);
         display: flex;
-        justify-content: first baseline;
+        justify-content: baseline;
         align-items: center;
+        padding: 0.5em;
         border-radius: 5px;
-        padding: 0.5rem;
+
         user-select: none;
+        background-color: hsla(220, 80%, 80%, 0.5);
         cursor: pointer;
-        line-height: normal;
+        line-height: 1.1;
 
         > .DaySchedule__TaskBlock__title {
-          margin-left: 0.5rem;
           position: sticky;
-          left: 0.5rem;
+          left: 0.5em;
+          margin-left: 0.5em;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;

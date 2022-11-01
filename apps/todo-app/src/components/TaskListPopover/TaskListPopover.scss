@@ -3,42 +3,40 @@
 
 @at-root .Popover.TaskListPopover {
   > .TaskListPopover__Container {
-    background-color: white;
-    color: $text-color;
-    font-size: $font-size-s;
-    overflow: hidden;
-    width: 130px;
-    border-radius: 5px;
     display: flex;
     flex-direction: column;
+    width: 12em;
+    border-radius: 5px;
+    background-color: white;
+    color: var(--phDuylib-text-color);
+    font-family: "inter",sans-serif;
+    overflow: hidden;
 
     > .TaskListPopover__Header {
-      padding: 0.5rem;
       display: flex;
-      background-color: hsla(0, 0%, 80%, 0.5);
+      padding: 0.25em 0.5em;
+      font-size: var(--phDuylib-font-size-big);
+      background-color: var(--phDuylib-primary-color-hover);
       align-items: center;
 
       > .TaskListPopover__CloseIcon {
-        font-size: 1rem;
         margin-left: auto;
-        cursor: pointer;
       }
     }
     > .TaskListPopover__Lists {
-      padding: 0.25rem 0.5rem;
       display: flex;
       flex-direction: column;
       height: 100%;
-      max-height: 160px;
+      max-height: 10em;
+      padding: 0.5em;
       overflow-y: auto;
       > .TaskListPopover__TaskData {
-        margin-bottom: 0.5rem;
-        height: max-content;
         flex-shrink: 0;
-
-        padding: 0.1rem 0;
-        border-radius: 5px;
+        height: max-content;
+        padding: 0.5em 0;
         padding-left: 0.8em;
+        border-radius: 5px;
+        margin-bottom: 0.7rem;
         overflow-x: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

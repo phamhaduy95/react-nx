@@ -1,4 +1,4 @@
-import { Popover, PopoverProps } from '@phduylib/my-component';
+import { IconButton, Popover, PopoverProps } from '@phduylib/my-component';
 import React, { useState } from 'react';
 import { TaskDataType } from '../../type/model';
 import CloseIcon from '@mui/icons-material/Close';
@@ -65,10 +65,13 @@ export default function TaskListPopover(props: TaskListPopoverProps) {
       <div className="TaskListPopover__Container" onClick={handleClick}>
         <div className="TaskListPopover__Header">
           Tasks
-          <CloseIcon
+          <IconButton
             className="TaskListPopover__CloseIcon"
             onClick={handleClickToClose}
-          />
+            variant="secondary"
+          >
+            <CloseIcon />
+          </IconButton>
         </div>
         <div className="TaskListPopover__Lists">{viewTasks}</div>
       </div>
