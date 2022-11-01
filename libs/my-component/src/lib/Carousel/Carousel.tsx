@@ -8,8 +8,8 @@ import { ScrollEventHandler } from './ScrollEventHandler';
 import { mapEachSlideToOneIndicator } from './CarouselIndicator';
 import { CarouselControlNext } from './CarouselControlNext';
 import { CarouselControlPrev } from './CarouselControlPrev';
-import "./Carousel.scss";
-
+import { GlobalStyleProvider } from '../GlobalStyleProvider';
+import './Carousel.scss';
 
 export type CarouselProps = {
   children: JSX.Element[] | JSX.Element;
@@ -17,9 +17,11 @@ export type CarouselProps = {
 
 export function Carousel(props: CarouselProps) {
   return (
-    <CarouselStoreProvider>
-      <WrappedCarousel {...props} />
-    </CarouselStoreProvider>
+    <GlobalStyleProvider>
+      <CarouselStoreProvider>
+        <WrappedCarousel {...props} />
+      </CarouselStoreProvider>
+    </GlobalStyleProvider>
   );
 }
 
@@ -57,8 +59,8 @@ function WrappedCarousel(props: CarouselProps) {
         {indexedCarouselSlides}
       </div>
       <div className="Carousel__IndicatorBox">{indicators}</div>
-        <CarouselControlPrev />
-        <CarouselControlNext />
+      <CarouselControlPrev />
+      <CarouselControlNext />
     </div>
   );
 }

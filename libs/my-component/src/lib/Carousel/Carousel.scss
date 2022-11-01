@@ -1,6 +1,7 @@
 .Carousel {
-  width: 400px;
-  height: 400px;
+  width: 21em;
+  height: 21em;
+  font-size: var(--phDuylib-font-size-med);
   position: relative;
 
   > .Carousel__Viewport {
@@ -62,8 +63,8 @@
   }
 
   .Carousel__ArrowIcon {
-    width: 1.5rem;
-    height: 2rem;
+    width: 1.5em;
+    height: 2em;
     color: hsl(0, 0%, 90%, 1);
   }
 }
