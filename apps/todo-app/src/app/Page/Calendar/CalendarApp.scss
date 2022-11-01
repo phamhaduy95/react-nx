@@ -2,45 +2,46 @@
 @import '../../../components/utils';
 
 .CalendarApp {
-  width: 95%;
-  margin: 1rem auto;
-  background-color: white;
-  padding: 0.5rem;
   display: flex;
+  width: 95%;
+  padding: 0.5em;
   border-radius: 5px;
+  margin: 1em auto;
+  background-color: white;
   font-family: 'Inter', sans-serif;
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.2);
   > .CalendarApp__SideBox {
     width: 280px;
     flex-shrink: 0;
-    padding: 1rem;
+    padding: 1em;
     display: flex;
     flex-direction: column;
     > .CalendarApp__AddButton {
-      padding: 0.5rem 1rem;
-      color: white;
-      font-size: 1rem;
-      background-color: hsl(210, 80%, 60%);
-      border: none;
-      box-shadow: 0px 2px 3px 1px hsla(0, 0%, 0%, 0.23);
+      padding: 0.5em 1em;
       border-radius: 5px;
       margin-bottom: 40px;
     }
 
     .CalendarApp__BoxHeader {
-      font-size: 1rem;
+      font-size: 1.2em;
       text-transform: uppercase;
       color: hsl(0, 0%, 60%);
       font-weight: 200;
+      display: flex;
+      align-items: center;
+      > .CalendarApp__AddCategoryButton {
+        margin-left: 0.5em;
+      }
     }
 
     > .CalendarApp__CategoryFilterBox {
       > .CalendarApp__CategoriesList {
-        margin-top: 1.5rem;
+        margin-top: 1.5em;
         display: flex;
         flex-direction: column;
+
         > .CalendarApp__Category {
-          margin-top: 1rem;
+          margin-top: 1em;
           align-items: flex-end;
 
           > .CheckBox__Box {
@@ -53,10 +54,10 @@
           }
         }
         > .CalendarApp__OverShowCategoryLimitSign {
-          margin-top: 0.5rem;
-          margin-left: 2rem;
+          margin-top: 0.5em;
+          margin-left: 2em;
           user-select: none;
-          font-size: 1.2rem;
+          font-size: 1.2em;
           cursor: pointer;
           &:hover {
             color: hsl(210, 80%, 60%);
@@ -67,36 +68,31 @@
   }
 
   > .CalendarApp__Content {
-    padding: 1rem;
+    padding: 1em;
     flex-grow: 1;
     > .CalendarApp__Control {
       width: 100%;
       display: flex;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.5em;
 
-      > .CalendarApp__DateNavigationBox {
-        width: 100%;
+      > .CalendarApp__NavigationButton {
+        width: max-content;
         display: flex;
-        align-items: center;
-        color: hsla(0, 0%, 30%);
-        padding: 0.5rem 0;
-
-        > .CalendarApp__PreviousIcon,
-        > .CalendarApp__NextIcon {
-          font-size: 1.2rem;
-        }
-
         > .CalendarApp__PreviousIcon {
-          margin-left: 0.5rem;
+          margin-right: 0.5em;
+          .BackIcon {
+            transform: translateX(0.2em);
+          }
         }
       }
 
       > .CalendarApp__DateString {
-        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
         margin: 0 auto;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-weight: 560;
-        line-height: 100%;
+        font-size: 1.5em;
+        font-weight: 580;
+        line-height: 1.1;
       }
 
       > .CalendarApp__ToggleGroup {
@@ -104,7 +100,6 @@
         margin-left: auto;
         border-radius: 5px;
         > .ToggleGroup__Item {
-          font-size: 1rem;
           padding: 0.5em 1em;
           &:not(.is-selected) {
             background-color: white;

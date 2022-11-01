@@ -1,8 +1,8 @@
-import { CheckBox, CheckBoxProps } from '@phduylib/my-component';
+import { CheckBox, CheckBoxProps, IconButton } from '@phduylib/my-component';
 import { useCallback, useEffect, useState } from 'react';
 import { appApi } from '../../../redux/appApi';
 import { useAppAction, useAppDispatch, useAppSelector } from '../../../redux';
-import { shallowEqual } from 'react-redux';
+import AddIcon from '@mui/icons-material/Add';
 
 const categoriesList = [];
 const SHOW_LIMIT = 4;
@@ -14,6 +14,10 @@ export function CalendarAppCategoryFilterBox() {
   const isOverLimit = categoriesList.length > SHOW_LIMIT;
   const { data: categories } = appApi.useGetAllForUserQuery(undefined);
 
+  const handleClickToOpenAddCategoryModal = ()=>{
+    dispatch(action.AddCategoryModal.toggleOpen(true));
+  }
+
   const handleClickCheckAll: NonNullable<CheckBoxProps['onSelected']> =
     useCallback((value, isSelected) => {
       setCheckAll(isSelected);
@@ -22,7 +26,9 @@ export function CalendarAppCategoryFilterBox() {
   const handelCategorySelect: NonNullable<CheckBoxProps['onSelected']> =
     useCallback((value, isSelected) => {
       if (isSelected) {
-        dispatch(action.CalendarApp.addNewCategoryFilter({ categoryId: value }));
+        dispatch(
+          action.CalendarApp.addNewCategoryFilter({ categoryId: value })
+        );
         return;
       }
       dispatch(action.CalendarApp.removeCategoryFilter({ categoryId: value }));
@@ -47,7 +53,16 @@ export function CalendarAppCategoryFilterBox() {
 
   return (
     <div className="CalendarApp__CategoryFilterBox">
-      <div className="CalendarApp__BoxHeader">Categories</div>
+      <div className="CalendarApp__BoxHeader">
+        Categories
+        <IconButton
+          className="CalendarApp__AddCategoryButton"
+          variant="secondary"
+          onClick={handleClickToOpenAddCategoryModal}
+        >
+          <AddIcon />
+        </IconButton>
+      </div>
       <ul className="CalendarApp__CategoriesList">
         <CheckBox
           className="CalendarApp__Category"

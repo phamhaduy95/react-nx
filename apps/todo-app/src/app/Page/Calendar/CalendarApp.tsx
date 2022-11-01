@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
+  Button,
+  IconButton,
   ToggleGroup,
   ToggleGroupItem,
   ToggleGroupProps,
@@ -17,6 +19,7 @@ import {
 } from '../../../redux/rootStore';
 import { CalendarAppState } from 'apps/todo-app/src/redux/CalendarApp';
 import { getDayString, getWeekString, getMonthString } from './utils';
+import { AddCategoryModal } from '../../../components/AddCategoryModal/AddCategoryModal';
 
 const calendarTypes = ['Month', 'Week', 'Day'];
 // Note: since the Redux toolkit integrate the immer lib for handling updating state, the state within redux store will be freezed so  that it cannot be altered or mutated. As the result, any future code which {use state should use  tactic copy.
@@ -66,20 +69,26 @@ export function CalendarApp() {
     <>
       <div className="CalendarApp">
         <div className="CalendarApp__SideBox">
-          <button className="CalendarApp__AddButton">Add Task</button>
+          <Button className="CalendarApp__AddButton">Add Task</Button>
           <CalendarAppCategoryFilterBox />
         </div>
         <div className="CalendarApp__Content">
           <div className="CalendarApp__Control">
             <div className="CalendarApp__NavigationButton">
-              <ArrowBackIosIcon
+              <IconButton
                 className="CalendarApp__PreviousIcon"
                 onClick={handleClickPrevious}
-              />
-              <ArrowForwardIosIcon
+                variant="secondary"
+              >
+                <ArrowBackIosIcon className="BackIcon"/>
+              </IconButton>
+              <IconButton
                 className="CalendarApp__NextIcon"
                 onClick={handleClickToNext}
-              />
+                variant="secondary"
+              >
+                <ArrowForwardIosIcon />
+              </IconButton>
             </div>
             <CalendarDateString />
             <ToggleGroup
@@ -90,22 +99,12 @@ export function CalendarApp() {
             </ToggleGroup>
           </div>
           <div className="CalendarApp__View">
-            {/* <div className="CalendarApp__DateNavigationBox">
-        <ArrowBackIosIcon
-          className="CalendarApp__PreviousIcon"
-          onClick={handleGotoPreviousWeek}
-        />
-        <ArrowForwardIosIcon
-          className="CalendarApp__NextIcon"
-          onClick={handleGotoNextWeek}
-        />
-        {renderWeekString()}
-      </div> */}
             <Outlet />
           </div>
         </div>
       </div>
       <TaskEditModal />
+      <AddCategoryModal/>
     </>
   );
 }
