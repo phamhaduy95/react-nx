@@ -1,5 +1,7 @@
+import { PaddingProps } from '@mui/system';
 import { PopupPositionCalculator } from './PopupPositionCalculator';
 import { Placement, Position } from './types';
+type Error = 'bottom' | 'top' | 'left' | 'right';
 
 export function getClientPositionOfElement(element: HTMLElement) {
   const { top, left } = element.getBoundingClientRect();
@@ -10,34 +12,48 @@ export function getSizeOf(element: HTMLElement) {
   return { width, height };
 }
 
-export function recalculateAndPositionPopup(
+export function recalculatePopupPosition(
   triggerEl: HTMLElement,
   popupEl: HTMLElement,
-  placement: Placement
+  placement: Placement,
+  padding: number
 ) {
-  const initialPos = calculatePositionForPopupBasedOnPlacement(
+  const initialPos = calculatePopupPositionForPlacement(
     triggerEl,
     popupEl,
     placement
   );
+  debugger;
 
-  const newPlacement = findCorrectPlacementForPopup(
-    popupEl,
-    initialPos,
-    placement
-  );
+  const firstCheck = checkPopupPositionAppropriate(popupEl, initialPos);
+  if (firstCheck.result) {
+    positionPopup(popupEl, initialPos);
+    addPaddingToPopup(popupEl, placement, padding);
+    return;
+  }
 
-  const finalPos = calculatePositionForPopupBasedOnPlacement(
+  const newPlacement = findNewPopupPlacement(firstCheck.error, placement);
+  const newPosition = calculatePopupPositionForPlacement(
     triggerEl,
     popupEl,
     newPlacement
   );
 
-  positionPopup(popupEl, finalPos);
-  return newPlacement;
+  const secondCheck = checkPopupPositionAppropriate(popupEl, newPosition);
+  if (secondCheck.result) {
+    positionPopup(popupEl, newPosition);
+    addPaddingToPopup(popupEl, newPlacement, padding);
+    return;
+  }
+  const movedPosition = movePopupPosition(
+    popupEl,
+    initialPos,
+    firstCheck.error
+  );
+  positionPopup(popupEl, movedPosition);
 }
 
-function calculatePositionForPopupBasedOnPlacement(
+function calculatePopupPositionForPlacement(
   triggerEl: HTMLElement,
   popupEl: HTMLElement,
   placement: Placement
@@ -47,32 +63,28 @@ function calculatePositionForPopupBasedOnPlacement(
     triggerEl,
     placement
   ).getValue();
-  return pos;
+  return pos as Position;
 }
 
-function findCorrectPlacementForPopup(
-  popupEl: HTMLElement,
-  initialPosition: Position,
-  initialPlacement: Placement
-) {
-  const viewPortSize = getViewportSize();
+function findNewPopupPlacement(errors: Error[], initialPlacement: Placement) {
   const { first, second } = getDimensionFromPlacement(initialPlacement);
-  const popupHeight = popupEl.clientHeight;
-  const popupWidth = popupEl.clientWidth;
   let newFirst = first;
   let newSecond = second;
 
-  if (initialPosition.top < 0) {
-    if (first === 'top') newFirst = 'bottom';
-    if (first === 'left' || first === 'right') newSecond = 'top';
-  } else if (initialPosition.top + popupHeight > viewPortSize.height) {
+  if (errors.includes('bottom')) {
     if (first === 'bottom') newFirst = 'top';
     if (first === 'left' || first === 'right') newSecond = 'bottom';
   }
-  if (initialPosition.left < 0) {
+  if (errors.includes('top')) {
+    if (first === 'top') newFirst = 'bottom';
+    if (first === 'left' || first === 'right') newSecond = 'top';
+  }
+
+  if (errors.includes('left')) {
     if (first === 'left') newFirst = 'right';
     if (first === 'bottom' || first === 'top') newSecond = 'left';
-  } else if (initialPosition.left + popupWidth > viewPortSize.width) {
+  }
+  if (errors.includes('right')) {
     if (first === 'right') newFirst = 'left';
     if (first === 'bottom' || first === 'top') newSecond = 'right';
   }
@@ -127,4 +139,63 @@ export function addPaddingToPopup(
     popup.style.paddingRight = `${padding}px`;
     return;
   }
+}
+
+function checkPopupPositionAppropriate(
+  popupEl: HTMLElement,
+  position: Position
+) {
+  const popupHeight = popupEl.clientHeight;
+  const popupWidth = popupEl.clientWidth;
+  const viewPortSize = getViewportSize();
+  let result = true;
+  let error: Error[] = [];
+  if (position.top < 0) {
+    result = false;
+    error.push('top');
+  }
+  if (position.top + popupHeight > viewPortSize.height) {
+    result = false;
+    error.push('bottom');
+  }
+  if (position.left < 0) {
+    result = false;
+    error.push('left');
+  }
+  if (position.left + popupWidth > viewPortSize.width) {
+    result = false;
+    error.push('right');
+  }
+  return { result, error };
+}
+
+function movePopupPosition(
+  popupEl: HTMLElement,
+  position: Position,
+  errors: Error[]
+) {
+  const newPosition = { ...position };
+  const popupHeight = popupEl.clientHeight;
+  const popupWidth = popupEl.clientWidth;
+  const viewPortSize = getViewportSize();
+
+  if (errors.includes('bottom')) {
+    if (errors.includes('top')) {
+      newPosition.top = 2;
+    }
+    newPosition.top = viewPortSize.height - popupHeight -2;
+  } else if (errors.includes('top')) {
+    newPosition.top = 2;
+  }
+
+  if (errors.includes('right')) {
+    if (errors.includes('left')) {
+      newPosition.left =2;
+    }
+    newPosition.left = viewPortSize.width - popupWidth - 2;
+  }
+  if (errors.includes('left')) {
+    newPosition.left = 2;
+  }
+  return newPosition;
 }

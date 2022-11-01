@@ -1,6 +1,7 @@
+import { padding } from '@mui/system';
 import { useEffect } from 'react';
 import { PopupElementProps } from './PopupElement';
-import {recalculateAndPositionPopup } from './utilities';
+import {recalculatePopupPosition } from './utilities';
 
 
 export default function usePopupWidthHandler(
@@ -26,7 +27,7 @@ export default function usePopupWidthHandler(
       for (let entry of entries) {
         const newWidth = entry.borderBoxSize[0].inlineSize;
         popupEl.style.width = `${newWidth}px`;
-        recalculateAndPositionPopup(triggerEl,popupEl,placement);
+        recalculatePopupPosition(triggerEl,popupEl,placement,5);
       }
     });
     observer.observe(triggerEl);

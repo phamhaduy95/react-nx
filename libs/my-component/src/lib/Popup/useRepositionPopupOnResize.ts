@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Placement } from './types';
 import {
   addPaddingToPopup,
-  recalculateAndPositionPopup,
+  recalculatePopupPosition,
 } from './utilities';
 
 export function useRepositionPopupOnResize(
@@ -18,8 +18,7 @@ export function useRepositionPopupOnResize(
     const popupEl = popupRef.current;
     if (triggerEl === null || popupEl === null) return;
     const callback = () => {
-      const newPlacement = recalculateAndPositionPopup(triggerEl, popupEl, placement);
-      addPaddingToPopup(popupEl,newPlacement,padding);
+      recalculatePopupPosition(triggerEl, popupEl, placement,padding);
     };
     window.addEventListener('resize', callback);
     return () => {

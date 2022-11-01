@@ -9,7 +9,7 @@ import './PopupElement.scss';
 import { forwardRef } from 'react';
 import { useRepositionPopupOnResize } from './useRepositionPopupOnResize';
 import usePopupWidthHandler from './usePopupWidthHandler';
-import GlobalStyleProvider from '../GlobalStyleProvider';
+import {GlobalStyleProvider} from '../GlobalStyleProvider';
 
 export type PopupElementProps = {
   className?: string;
