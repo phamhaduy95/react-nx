@@ -14,6 +14,7 @@ export type DrawerProps = {
   onToggle?: (isOpen: boolean) => void;
   children: JSX.Element[] | JSX.Element;
   isOpen: boolean;
+  closeOnClickOutSide?: boolean;
 };
 
 const defaultProps: Required<Omit<DrawerProps, 'children'>> = {
@@ -22,6 +23,7 @@ const defaultProps: Required<Omit<DrawerProps, 'children'>> = {
   forceMouth: false,
   position: 'right',
   isOpen: false,
+  closeOnClickOutSide: true,
 };
 
 export function Drawer(props: DrawerProps) {
@@ -42,11 +44,13 @@ export function WrappedDrawer(props: DrawerProps) {
     forceMouth,
     className,
     children,
+    closeOnClickOutSide,
     isOpen: openSignal,
   } = newProps;
   const action = useDrawerStore((state) => state.action);
   const isShowed = useDrawerStore((state) => state.isOpen);
   const popupRef = useRef(null);
+  const backgroundRef = useRef<HTMLDivElement>(null);
   const rootClassName = classNames('Drawer', className, {
     ['is-open']: isShowed,
   });
@@ -63,19 +67,26 @@ export function WrappedDrawer(props: DrawerProps) {
 
   const positionStyle = positionDrawerPopup(position);
   const handleClickOutsidePopup = useCallback(() => {
-    action.toggleOpen(false);
-  }, []);
+    if (closeOnClickOutSide) action.toggleOpen(false);
+  }, [closeOnClickOutSide]);
 
   useEffect(() => {
+    const backgroundEl = backgroundRef.current;
+    if (backgroundEl === null) return;
     if (isShowed) {
       document.body.style.setProperty('overflow', 'hidden');
+      document.body.style.setProperty('pointer-events', 'none');
+      backgroundEl.style.setProperty('pointer-events', 'auto');
+      return;
     }
     document.body.style.overflow = '';
+    document.body.style.setProperty('pointer-events', 'auto');
+    backgroundEl.style.setProperty('pointer-events', '');
   }, [isShowed]);
 
   return (
     <DrawerPortal isShowed={isShowed} forceMount={forceMouth}>
-      <div className={rootClassName}>
+      <div className={rootClassName} ref={backgroundRef}>
         <ClickOutSideWatcher
           ref={popupRef}
           onClickOutSide={handleClickOutsidePopup}

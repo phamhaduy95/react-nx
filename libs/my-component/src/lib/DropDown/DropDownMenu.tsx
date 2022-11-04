@@ -5,18 +5,25 @@ import { useSwitchFocus } from '../utils/hooks';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import { checkIsClickOnElement } from '../utils/utils';
 import { useCallback } from 'react';
+import { DropDownProps } from './DropDown';
 
 type DropDownMenuProps = {
-  targetRef: React.MutableRefObject<HTMLElement | null>;
+  triggerRef: React.MutableRefObject<HTMLElement | null>;
   children: React.ReactNode;
+  onPopupToggle: NonNullable<DropDownProps['onPopupToggle']>;
+  placement:NonNullable<DropDownProps["popupPlacement"]>,
 };
 
 export function DropDownMenu(props: DropDownMenuProps) {
-  const { targetRef, children } = props;
+  const { triggerRef, children, onPopupToggle,placement } = props;
 
   const menuRef = useRef<HTMLDivElement>(null);
   const action = useDropDownStore((state) => state.action);
   const isPopupOpen = useDropDownStore((state) => state.isPopupOpen);
+
+  useEffect(() => {
+    onPopupToggle(isPopupOpen);
+  }, [isPopupOpen]);
 
   const isMenuFocused = useDropDownStore((state) => {
     return state.isPopupOpen === true && state.highLightedItem === null;
@@ -27,16 +34,16 @@ export function DropDownMenu(props: DropDownMenuProps) {
   useEffectSkipFirstRender(() => {
     if (isPopupOpen) return;
     action.highlightOne(null);
-    switchFocus(targetRef, true);
+    switchFocus(triggerRef, true);
   }, [isPopupOpen]);
 
-  const handleClickOutSidePopup = useCallback((e:MouseEvent) => {
-    const el = targetRef.current as HTMLElement;
-    if (!checkIsClickOnElement(e,el))
-    action.togglePopup(false);
-  },[]);
+  const handleClickOutSidePopup = useCallback((e: MouseEvent) => {
+    const el = triggerRef.current as HTMLElement;
+    if (!checkIsClickOnElement(e, el)) action.togglePopup(false);
+  }, []);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    e.stopPropagation();
     e.preventDefault();
     const key = e.key;
     switch (key) {
@@ -55,13 +62,11 @@ export function DropDownMenu(props: DropDownMenuProps) {
     }
   };
 
-
-
   return (
     <PopupElement
       className="DropDown__Popup"
-      placement="bottom-left"
-      triggerRef={targetRef}
+      placement={placement}
+      triggerRef={triggerRef}
       isShowed={isPopupOpen}
       padding={5}
       onClickOutside={handleClickOutSidePopup}
@@ -71,7 +76,6 @@ export function DropDownMenu(props: DropDownMenuProps) {
         tabIndex={-1}
         onKeyDown={handleKeyDown}
         ref={menuRef}
-
       >
         {children}
       </div>

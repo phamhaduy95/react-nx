@@ -5,7 +5,7 @@
   height: max-content;
   background-color: white;
 
-  .DropDown__Trigger {
+  @at-root .DropDown__Trigger {
     color: var(--phDuylib-text-color);
     width: 100%;
     border: var(--phDuylib-border);
@@ -20,7 +20,8 @@
   }
 
   @at-root .DropDown__Popup {
-    > .DropDown__Menu {
+    background-color: white;
+    @at-root .DropDown__Menu {
       padding: 0.25em;
       border: var(--phDuylib-border);
       color: var(--phDuylib-text-color);

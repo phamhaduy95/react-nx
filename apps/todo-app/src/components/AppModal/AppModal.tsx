@@ -13,6 +13,9 @@ import { SuccessModal } from '../NotificationModal/SuccessModal';
 import { appApi } from '../../redux/appApi';
 import './AppModal.scss';
 import { AddAndUpdateCategoryModal } from '../CategoryModal/AddAndUpdateCategoryModal';
+import { ManageCategoriesModal } from '../CategoryModal';
+import { DeleteCategoryModal } from '../CategoryModal/DeleteCategoryModal';
+import CategoryFilterModal from '../CategoryFilterModal/CategoryFilterModal';
 
 export function AppModal() {
   const action = useAppAction();
@@ -39,36 +42,71 @@ export function AppModal() {
     fixedCacheKey: 'shared-delete-task',
   });
 
+  const [, addCategoryResult] = appApi.useAddCategoryMutation({
+    fixedCacheKey: 'shared-add-category',
+  });
+
+  const [, updateCategoryResult] = appApi.useUpdateCategoryMutation({
+    fixedCacheKey: 'shared-update-category',
+  });
+
+  const [, deleteCategoryResult] = appApi.useDeleteCategoryMutation({
+    fixedCacheKey: 'shared-delete-category',
+  });
+
   useEffect(() => {
     if (
       updateResult.isLoading ||
       addResult.isLoading ||
-      deleteResult.isLoading
+      deleteResult.isLoading ||
+      addCategoryResult.isLoading ||
+      updateCategoryResult.isLoading ||
+      deleteCategoryResult.isLoading
     ) {
       dispatch(action.AppModal.openModal(ModalType.loading));
-
       return;
     }
     if (
       updateResult.isSuccess ||
       addResult.isSuccess ||
-      deleteResult.isSuccess
+      deleteResult.isSuccess ||
+      addCategoryResult.isSuccess ||
+      updateCategoryResult.isSuccess ||
+      deleteCategoryResult.isSuccess
     ) {
       dispatch(action.AppModal.openModal(ModalType.success));
       return;
     }
-    if (updateResult.isError || addResult.isError || deleteResult.isError) {
+    if (
+      updateResult.isError ||
+      addResult.isError ||
+      deleteResult.isError ||
+      addCategoryResult.isError ||
+      updateCategoryResult.isError ||
+      deleteCategoryResult.isError
+    ) {
       dispatch(action.AppModal.openModal(ModalType.error));
       return;
     }
-  }, [updateResult, addResult, deleteResult]);
+  }, [
+    updateResult,
+    addResult,
+    deleteResult,
+    addCategoryResult,
+    updateCategoryResult,
+    deleteCategoryResult,
+  ]);
 
   useEffect(() => {
     if (isOpen) {
       updateResult.reset();
       addResult.reset();
       deleteResult.reset();
+      addCategoryResult.reset();
+      updateCategoryResult.reset();
+      deleteCategoryResult.reset();
     }
+    dispatch(action.AppModal.toggleCloseOnClickOutside(true));
   }, [isOpen]);
 
   const renderModalContent = () => {
@@ -83,8 +121,14 @@ export function AppModal() {
         return <LoadingModal />;
       case ModalType.success:
         return <SuccessModal />;
-      case ModalType.addCategory:
+      case ModalType.addAndUpdateCategory:
         return <AddAndUpdateCategoryModal />;
+      case ModalType.manageCategories:
+        return <ManageCategoriesModal />;
+      case ModalType.deleteCategory:
+        return <DeleteCategoryModal />;
+      case ModalType.filterCategory:
+        return <CategoryFilterModal/>
       default:
         return <></>;
     }

@@ -10,7 +10,7 @@ export function TestPage() {
   const action = useAppAction();
   const dispatch = useAppDispatch();
   const handleClickModalOpen = () => {
-    dispatch(action.AddCategoryModal.toggleOpen(true));
+    // dispatch(action.AddAndUpdateCategoryModal.toggleOpen(true));
   };
 
   return (

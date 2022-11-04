@@ -1,0 +1,77 @@
+$sm: 512px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$xxl: 1440px;
+
+/** mobile first */
+@mixin media-breakpoint-up($size) {
+  @if ($size == $sm) {
+    @media (min-width: $sm) {
+      @content;
+    }
+  } @else if ($size == $md) {
+    @media (min-width: $md) {
+      @content;
+    }
+  } @else if ($size == $lg) {
+    @media (min-width: $lg) {
+      @content;
+    }
+  } @else if ($size == $xl) {
+    @media (min-width: $xl) {
+      @content;
+    }
+  } @else if ($size == $xxl) {
+    @media (min-width: $xl) {
+      @content;
+    }
+  }
+}
+
+/** desktop firsts*/
+@mixin media-breakpoint-down($size) {
+  @if ($size == $sm) {
+    @media (max-width: $sm) {
+      @content;
+    }
+  } @else if ($size == $md) {
+    @media (max-width: $md) {
+      @content;
+    }
+  } @else if ($size == $lg) {
+    @media (max-width: $lg) {
+      @content;
+    }
+  } @else if ($size == $xl) {
+    @media (max-width: $xl) {
+      @content;
+    }
+  }
+}
+
+@mixin media-breakpoint-range($bottom, $top) {
+  @media (min-width: $bottom) and (max-width: $top) {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-only($size) {
+  @if ($size == $sm) {
+    @media (max-width: $sm) {
+      @content;
+    }
+  } @else if ($size == $md) {
+    @media (min-width: $md) and (max-width: $lg) {
+      @content;
+    }
+  } @else if ($size == $lg) {
+    @media (min-width: $lg) and (max-width: $xl) {
+      @content;
+    }
+  } @else if ($size == $xl) {
+    @media (min-width: $xl) and (max-width: $xxl) {
+      @content;
+    }
+  }
+}

@@ -7,8 +7,10 @@ export enum ModalType {
   loading,
   addAndUpdateTask,
   deleteTask,
-  addCategory,
-  updateCategory,
+  addAndUpdateCategory,
+  manageCategories,
+  deleteCategory,
+  filterCategory
 }
 
 export type AppModalState = {

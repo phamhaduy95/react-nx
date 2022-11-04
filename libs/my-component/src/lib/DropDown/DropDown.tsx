@@ -6,19 +6,25 @@ import {
 } from './DropDownStoreProvider';
 import './DropDown.scss';
 import { reDefineMenuItem } from '../PopupMenu/PopupMenuItem';
-import {GlobalStyleProvider} from '../GlobalStyleProvider';
-
+import { GlobalStyleProvider } from '../GlobalStyleProvider';
+import { Placement } from '../Popup/types';
+import classNames from 'classnames';
 
 export type DropDownProps = {
   children: JSX.Element | JSX.Element[];
   className?: string;
-  label: string;
+  triggerEL: React.ReactNode;
+  popupPlacement?: Placement;
+  onPopupToggle?: (isOpen: boolean) => void;
 };
 
-const DropDownDefaultProps: Required<DropDownProps> = {
+const DropDownDefaultProps: Required<
+  Omit<DropDownProps, 'children' | 'triggerEl'>
+> = {
   className: '',
-  children: <></>,
-  label: '',
+  triggerEL: <></>,
+  popupPlacement: 'bottom-right',
+  onPopupToggle(isOpen) {},
 };
 export function DropDown(props: DropDownProps) {
   return (
@@ -32,15 +38,19 @@ export function DropDown(props: DropDownProps) {
 
 function WrappedDropDown(props: DropDownProps) {
   const newProps = { ...DropDownDefaultProps, ...props };
-  const { children, className, label } = newProps;
-  const ref = useRef<HTMLDivElement>(null);
+  const { children, className, triggerEL, onPopupToggle, popupPlacement } =
+    newProps;
+  const triggerRef = useRef<HTMLDivElement>(null);
   const action = useDropDownStore((state) => state.action);
   const Items = reDefineMenuItem(children);
+
+  const rootClassName = classNames('DropDown', className);
   const handleClickToOpenPopup = () => {
     action.togglePopup(true);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
+    e.stopPropagation();
     const keyPressed = e.key;
     switch (keyPressed) {
       case 'ArrowDown': {
@@ -61,17 +71,23 @@ function WrappedDropDown(props: DropDownProps) {
   };
 
   return (
-    <div className="DropDown">
+    <div className={rootClassName}>
       <div
         className="DropDown__Trigger"
         onClick={handleClickToOpenPopup}
         tabIndex={0}
         onKeyDown={handleKeyPress}
-        ref={ref}
+        ref={triggerRef}
       >
-        {label}
+        {triggerEL}
       </div>
-      <DropDownMenu targetRef={ref}>{Items}</DropDownMenu>
+      <DropDownMenu
+        triggerRef={triggerRef}
+        onPopupToggle={onPopupToggle}
+        placement={popupPlacement}
+      >
+        {Items}
+      </DropDownMenu>
     </div>
   );
 }

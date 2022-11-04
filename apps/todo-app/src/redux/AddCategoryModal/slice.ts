@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { UpdateCategoryAction } from './type';
 import {
   AddCategoryModalState,
-  ToggleModalOpenAction,
   UpdateCategoryDataAction,
   UpdateErrorMessageAction,
 } from './type';
@@ -14,13 +14,14 @@ const defaultErrorsMessage: AddCategoryModalState['errorMessage'] =
   });
 
 const defaultCategoryData: AddCategoryModalState['data'] = Object.freeze({
+  categoryId: '',
   name: '',
   color: '#B9E0FF',
   description: '',
 });
 
 const initialState: AddCategoryModalState = {
-  isOpen: false,
+  type: 'add',
   data: defaultCategoryData,
   errorMessage: defaultErrorsMessage,
 };
@@ -29,10 +30,6 @@ const slice = createSlice({
   name: 'addCategoryModal',
   initialState: initialState,
   reducers: {
-    toggleOpen: (state, action: ToggleModalOpenAction) => {
-      const isOpen = action.payload;
-      state.isOpen = isOpen;
-    },
     updateCategoryData: (state, action: UpdateCategoryDataAction) => {
       const data = action.payload;
       state.data = { ...state.data, ...data };
@@ -46,6 +43,18 @@ const slice = createSlice({
     },
     clearCategoryData: (state) => {
       state.data = defaultCategoryData;
+    },
+    addCategory: (state) => {
+      state.type = 'add';
+      state.errorMessage = defaultErrorsMessage;
+      state.data = defaultCategoryData;
+    },
+    updateCategory: (state, action: UpdateCategoryAction) => {
+      const data = action.payload;
+      state.type = 'update';
+      console.log(data);
+      state.data = data;
+      state.errorMessage = defaultErrorsMessage;
     },
   },
 });

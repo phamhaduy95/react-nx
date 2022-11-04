@@ -11,14 +11,21 @@ import { TaskEditModalAction, TaskEditModalReducer } from './TaskEditModal';
 import { signOutModalReducer, signOutModalActions } from './SignOutModal/slice';
 import { CalendarAppReducer, CalendarAppAction } from './CalendarApp/slice';
 import { AppModalReducer, AppModalActions } from './AppModal/slice';
+import { HomePageReducer, HomePageAction } from './HomePage/slice';
+import {
+  DeleteCategoryModalReducer,
+  DeleteCategoryModalAction,
+} from './DeleteCategoryModal/slice';
 
 export const rootStore = configureStore({
   reducer: {
     AppModal: AppModalReducer,
-    AddCategoryModal: addCategoryModalReducer,
+    AddAndUpdateCategoryModal: addCategoryModalReducer,
+    DeleteCategoryModal: DeleteCategoryModalReducer,
     TaskEditModal: TaskEditModalReducer,
     SignOutModal: signOutModalReducer,
     CalendarApp: CalendarAppReducer,
+    HomePage: HomePageReducer,
     [appApi.reducerPath]: appApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -37,7 +44,9 @@ const rootAction = {
   TaskEditModal: TaskEditModalAction,
   SignOutModal: signOutModalActions,
   CalendarApp: CalendarAppAction,
-  AddCategoryModal: addCategoryModalActions,
+  HomePage: HomePageAction,
+  AddAndUpdateCategoryModal: addCategoryModalActions,
+  DeleteCategoryModal: DeleteCategoryModalAction,
 };
 
 export function useAppAction() {

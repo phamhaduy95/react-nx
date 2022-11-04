@@ -28,8 +28,8 @@ export const appRouter = createBrowserRouter(
         <Route path="settings" element={<></>} />
       </Route>
       <Route path="login" element={<LoginPage />} />
-      <Route path='sign-up' element={<SignUpPage/>}/>
-      <Route path='test' element={<TestPage/>}/>
+      <Route path="sign-up" element={<SignUpPage />} />
+      <Route path="test" element={<TestPage />} />
       <Route path="*" element={<NotFoundPage />}></Route>
     </>
   )

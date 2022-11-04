@@ -1,15 +1,15 @@
 $arrow-size: 0.5rem;
 
 .ToolTips__Trigger {
-  width: max-content;
+  width: fit-content;
 
   @at-root .Tooltips__Popup {
-    width: 15em;
+    width: max-content;
     font-family: var(--phDuylib-font-family);
-    font-size: var(--phDuylib-font-size-med);
+    font-size: var(--phDuylib-font-size-sml);
     background-color: hsla(210, 10%, 25%, 0.5);
     color: hsl(0, 0%, 95%);
-    padding: 1em;
+    padding: 0.5em 0.75em;
     border-radius: 5px;
   }
 }

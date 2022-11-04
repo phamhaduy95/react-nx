@@ -31,6 +31,7 @@
     @at-root .CheckBox__Label {
       margin-left: 0.5em;
       margin-right: 0.5em;
+      transition: transform 0.1s ease;
     }
   }
   &.selected {
@@ -44,9 +45,15 @@
     }
   }
 
-  &:hover:not(.selected) {
-    .CheckBox__Box {
-      border: 1px solid var(--phDuylib-primary-color);
+  &:hover {
+    .CheckBox__Label {
+      transform: translateX(0.25em);
+    }
+    &:not(.selected) {
+      .CheckBox__Box {
+        border: 1px solid var(--phDuylib-primary-color);
+        background-color: hsla(210, 80%, 90%, 0.5);
+      }
     }
   }
 
@@ -55,6 +62,9 @@
     .CheckBox__Box {
       border: 1px solid var(--phDuylib-primary-color);
       background-color: hsla(210, 80%, 90%, 0.5);
+    }
+    .CheckBox__Label {
+      transform: translateX(0.2em);
     }
   }
 }

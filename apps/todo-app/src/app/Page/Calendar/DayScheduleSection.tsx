@@ -15,6 +15,7 @@ import {
   convertDayScheduleDataFromReduxToProps,
   convertTaskDataIntoReduxState,
 } from '../../../redux/appApi/utils';
+import { ModalType } from 'apps/todo-app/src/redux';
 
 export function DayScheduleSection() {
   const dispatch = useAppDispatch();
@@ -29,8 +30,6 @@ export function DayScheduleSection() {
   const filterOption = useAppSelector(
     (state) => state.CalendarApp.taskFilterOptions
   );
-  console.log(reduxData);
-  console.log(filterOption);
   const data: DayScheduleProps['data'] = useMemo(() => {
     if (reduxData) {
       const filterPredicate =
@@ -50,13 +49,13 @@ export function DayScheduleSection() {
   const handleTaskSelect: NonNullable<DayScheduleProps['onTaskSelect']> =
     useCallback((task) => {
       const taskRedux = convertTaskDataIntoReduxState(task);
-      
+      dispatch(action.AppModal.openModal(ModalType.addAndUpdateTask));
       dispatch(action.TaskEditModal.editTask(taskRedux));
     }, []);
   const handleDateSelect: NonNullable<DayScheduleProps['onDateSelect']> =
     useCallback((date) => {
       const startDate = date.toString();
-     
+      dispatch(action.AppModal.openModal(ModalType.addAndUpdateTask));
       dispatch(action.TaskEditModal.addTask({ startTime: startDate }));
     }, []);
 

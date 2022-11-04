@@ -1,19 +1,14 @@
-import { convertTaskDataIntoReduxState } from 'apps/todo-app/src/redux';
-import dayjs from 'dayjs';
+import {
+  convertTaskDataIntoReduxState,
+  ModalType,
+} from 'apps/todo-app/src/redux';
 import { useCallback, useMemo } from 'react';
 import { shallowEqual } from 'react-redux';
-import {
-  useAppAction,
-  useAppDispatch,
-  useAppSelector,
-} from '../../../redux/rootStore';
-import { appApi } from '../../../redux/appApi/appApi';
+import { createPredicateFunctionFromFilterOptions } from '../../../redux/CalendarApp/utils';
 import { convertWeekScheduleDataFromReduxToProps } from '../../../redux/appApi/utils';
-import { createPredicateFunctionFromFilterOptions } from '../../../redux/CalendarApp';
-import {
-  WeekSchedule,
-  WeekScheduleProps,
-} from '../../../components/WeekSchedule/WeekSchedule';
+import { WeekScheduleProps, WeekSchedule } from '../../../components';
+import { appApi } from '../../../redux/appApi/appApi';
+import { useAppAction, useAppDispatch, useAppSelector } from '../../../redux';
 
 export function WeekScheduleSection() {
   const dispatch = useAppDispatch();
@@ -51,11 +46,13 @@ export function WeekScheduleSection() {
   const handleTaskSelect: NonNullable<WeekScheduleProps['onTaskSelect']> =
     useCallback((task) => {
       const taskRedux = convertTaskDataIntoReduxState(task);
+      dispatch(action.AppModal.openModal(ModalType.addAndUpdateTask));
       dispatch(action.TaskEditModal.editTask(taskRedux));
     }, []);
   const handleDateSelect: NonNullable<WeekScheduleProps['onDateSelect']> =
     useCallback((date) => {
       const startDate = date.toISOString();
+      dispatch(action.AppModal.openModal(ModalType.addAndUpdateTask));
       dispatch(action.TaskEditModal.addTask({ startTime: startDate }));
     }, []);
 

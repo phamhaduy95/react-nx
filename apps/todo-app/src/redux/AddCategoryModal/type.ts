@@ -2,9 +2,9 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { ReduxCategoryData } from '../types';
 
 export type AddCategoryModalState = {
-  data: Omit<ReduxCategoryData,"categoryId">;
+  type :"add"|"update",
+  data: ReduxCategoryData;
   errorMessage: ErrorsMessage;
-  isOpen: boolean;
 };
 
 export type ErrorsMessage = {
@@ -18,3 +18,4 @@ export type UpdateCategoryDataAction = PayloadAction<
 >;
 export type UpdateErrorMessageAction = PayloadAction<Partial<ErrorsMessage>>;
 export type ToggleModalOpenAction = PayloadAction<boolean>;
+export type UpdateCategoryAction = PayloadAction<ReduxCategoryData>;

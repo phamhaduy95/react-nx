@@ -8,22 +8,32 @@ export interface SideBarItemProps {
   label: React.ReactNode;
   disabled?: boolean;
   value?: string;
+  isSelected?: boolean;
   onSelected?: (value: string) => void;
-  type?:"button"|"nav";
+  type?: 'button' | 'nav';
 }
 
 const defaultProps: Required<SideBarItemProps> = {
   Icon: <></>,
-  label: "",
+  label: '',
   value: '',
   disabled: false,
-  type:"nav",
+  type: 'nav',
+  isSelected: false,
   onSelected(value) {},
 };
 
 export function SideBarItem(props: SideBarItemProps) {
   const newProps = { ...defaultProps, ...props };
-  const { Icon, label, disabled, value, onSelected,type } = newProps;
+  const {
+    Icon,
+    label,
+    disabled,
+    value,
+    onSelected,
+    type,
+    isSelected: selectSignal,
+  } = newProps;
   const id = useGenerateUUID();
   const action = useSideBarStore((state) => state.action);
   const isSelected = useSideBarStore((state) => state.selectedItem?.id === id);
@@ -35,12 +45,18 @@ export function SideBarItem(props: SideBarItemProps) {
     };
   }, []);
 
+  
   useEffect(() => {
     action.updateItemState(id, { value, disabled });
   }, [value, disabled]);
 
+  useEffect(()=>{
+    if (selectSignal)
+    action.selectItem({id});
+  },[selectSignal])
+
   const handleSelectItem = (e: React.MouseEvent) => {
-    if (type === "nav"){
+    if (type === 'nav') {
       action.selectItem({ id });
     }
     onSelected(value);

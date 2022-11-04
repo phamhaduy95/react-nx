@@ -9,58 +9,89 @@ import {
 import { useAppAction, useAppDispatch, useAppSelector } from '../../redux';
 import CloseIcon from '@mui/icons-material/Close';
 import { shallowEqual } from 'react-redux';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { validateCategoryData } from './categoryDataValidation';
 import './CategoryModal.scss';
+import { appApi } from '../../redux/appApi/appApi';
 
 export function AddAndUpdateCategoryModal() {
   const action = useAppAction();
   const dispatch = useAppDispatch();
   const categoryData = useAppSelector(
-    (state) => state.AddCategoryModal.data,
+    (state) => state.AddAndUpdateCategoryModal.data,
     shallowEqual
   );
   const errorMessages = useAppSelector(
-    (state) => state.AddCategoryModal.errorMessage,
+    (state) => state.AddAndUpdateCategoryModal.errorMessage,
     shallowEqual
   );
+ 
 
-  const closeModalSignal = () => {
-    dispatch(action.AppModal.closeModal());
-  };
+  const type = useAppSelector((state) => state.AddAndUpdateCategoryModal.type);
+
+  const [addCategory] = appApi.useAddCategoryMutation({
+    fixedCacheKey: 'shared-add-category',
+  });
+
+  const [updateCategory] = appApi.useUpdateCategoryMutation({
+    fixedCacheKey: 'shared-update-category',
+  });
 
   const handleNameInputChange = useCallback((value: string) => {
-    dispatch(action.AddCategoryModal.updateCategoryData({ name: value }));
+    dispatch(
+      action.AddAndUpdateCategoryModal.updateCategoryData({ name: value })
+    );
   }, []);
 
   const handleColorInputChange = (e: React.FormEvent) => {
     const target = e.target as HTMLInputElement;
     const value = target.value;
-    dispatch(action.AddCategoryModal.updateCategoryData({ color: value }));
+    dispatch(
+      action.AddAndUpdateCategoryModal.updateCategoryData({ color: value })
+    );
   };
 
   const handleDescriptionInputChange = (e: React.FormEvent) => {
     const target = e.target as HTMLTextAreaElement;
     const value = target.value;
     dispatch(
-      action.AddCategoryModal.updateCategoryData({ description: value })
+      action.AddAndUpdateCategoryModal.updateCategoryData({
+        description: value,
+      })
     );
   };
-  const handleClickToClear = () => {
-    dispatch(action.AddCategoryModal.clearCategoryData());
-    dispatch(action.AddCategoryModal.clearErrorMessage());
+
+  const closeModalSignal = () => {
+    dispatch(action.AppModal.closeModal());
   };
 
   const handleSubmit = async () => {
     const { result, error } = await validateCategoryData(categoryData);
     if (result) {
+      switch (type) {
+        case 'add':
+          const { categoryId, ...data } = categoryData;
+          await addCategory(data);
+          break;
+        case 'update':
+          await updateCategory(categoryData);
+          break;
+      }
     }
+    dispatch(action.AddAndUpdateCategoryModal.updateErrorMessage(error));
+  };
+
+  const handleClickToClear = () => {
+    dispatch(action.AddAndUpdateCategoryModal.clearCategoryData());
+    dispatch(action.AddAndUpdateCategoryModal.clearErrorMessage());
   };
 
   return (
     <>
       <ModalHeader className="AppModal__Header">
-        <span className="AppModal__Title">Add Category</span>
+        <span className="AppModal__Title">
+          {type === 'add' ? 'Add Category' : 'Update Category'}
+        </span>
         <div className="AppModal__HeaderControl">
           <IconButton
             className="AppModal__CloseButton"
@@ -76,6 +107,8 @@ export function AddAndUpdateCategoryModal() {
           className="AppModal__NameInput"
           label="categoryName"
           onValueChange={handleNameInputChange}
+          value={categoryData.name}
+          error={errorMessages.name}
         />
         <div className="AppModal__ColorPicker">
           <label className="AppModal__Label">color</label>
@@ -85,6 +118,7 @@ export function AddAndUpdateCategoryModal() {
             value={categoryData.color}
             onChange={handleColorInputChange}
           />
+          <span className="AppModal__ErrorMessage">{errorMessages.color}</span>
         </div>
         <div className="AppModal__Description">
           <label className="AppModal__Label">description</label>
@@ -93,11 +127,14 @@ export function AddAndUpdateCategoryModal() {
             value={categoryData.description}
             onChange={handleDescriptionInputChange}
           />
+          <span className="AppModal__ErrorMessage">
+            {errorMessages.description}
+          </span>
         </div>
       </ModalBody>
       <ModalFooter className="AppModal__Footer">
         <Button className="AppModal__SubmitButton" onClick={handleSubmit}>
-          Add
+          {type === 'add' ? 'Add' : 'Update'}
         </Button>
         <Button
           className="AppModal__CancelButton"

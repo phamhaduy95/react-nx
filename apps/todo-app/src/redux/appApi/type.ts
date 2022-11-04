@@ -1,17 +1,12 @@
 import { TaskDataType } from '../../type/model';
+import { ReduxCategoryData } from '../types';
 
-/* #region  categoryAPi */
-export type ReduxCategoryData = {
-  categoryId: string;
-  name: string;
-};
 
-export type ResponseCategoryData = {
-  categoryId: string;
-  name: string;
-  userId: string;
-};
+export type ResponseCategoryData = ReduxCategoryData;
 
+export type UpdateCategoryArgs = Partial<ReduxCategoryData> & {categoryId:string};
+
+export type AddCategoryArgs = Omit<ReduxCategoryData,"categoryId">;
 /* #endregion */
 
 /* #region  taskApi */
@@ -19,6 +14,7 @@ export type ReduxTaskData = Omit<TaskDataType, 'startTime' | 'endTime'> & {
   startTime: string;
   endTime: string;
 };
+
 
 export type GetMonthScheduleDataArg = { month: number; year: number };
 

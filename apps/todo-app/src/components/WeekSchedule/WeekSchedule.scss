@@ -1,4 +1,3 @@
-@import '../sharedStyle';
 @import '../_utils.scss';
 
 $indicator-cell-width: clamp(25px, calc(25px + 2vw), 50px);
@@ -47,7 +46,7 @@ $indicator-cell-width: clamp(25px, calc(25px + 2vw), 50px);
       @at-root .WeekSchedule__WeekOverViewRow {
         display: flex;
         width: 100%;
-        height: 12em;
+        height: 10em;
         border-bottom: var(--phDuylib-border);
 
         > .WeekSchedule__WeekOverViewRow__TextIndicator {

@@ -32,7 +32,7 @@ const stringMaxMessage: StringLocale['max'] = (a) => ({
 const schema: SchemaOf<CategorySchema> = object().shape({
   name: string().required(requiredMessage).max(50, stringMaxMessage),
   color: string().required(requiredMessage),
-  description: string().defined().max(150, stringMaxMessage),
+  description: string().defined().max(200, stringMaxMessage),
 });
 
 export async function validateCategoryData(taskData: CategorySchema) {

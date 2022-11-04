@@ -23,7 +23,6 @@ export function recalculatePopupPosition(
     popupEl,
     placement
   );
-  debugger;
 
   const firstCheck = checkPopupPositionAppropriate(popupEl, initialPos);
   if (firstCheck.result) {

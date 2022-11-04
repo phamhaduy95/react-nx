@@ -1,86 +1,100 @@
-import {
-  SideBar,
-  SideBarItem,
-  SideBarItemList,
-  SideBarItemProps,
-} from '@phduylib/my-component';
+import { SideBarItemProps, ToolTips, IconButton } from '@phduylib/my-component';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import './HomePage.scss';
-import { Outlet, redirect, useNavigate } from 'react-router-dom';
-import { useCallback, useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { memo, useCallback, useEffect } from 'react';
 import { appApi } from '../../../redux/appApi/appApi';
 import { useAppAction, useAppDispatch } from '../../../redux';
 import { SignOutModal } from 'apps/todo-app/src/components/SignOutModal/SignOutModal';
+import MenuIcon from '@mui/icons-material/Menu';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { HomPageSideBar } from './HomePageSideBar';
+import './HomePage.scss';
+import { HomePageSideDrawer } from './HomePageSideDrawer';
 
+export const NavItems = () => [
+  {
+    value: 'Today',
+    Icon: <SettingsOutlinedIcon />,
+  },
+  {
+    value: 'Calendar',
+    Icon: <EventAvailableOutlinedIcon />,
+  },
+  {
+    value: 'User',
+    Icon: <AccountCircleIcon />,
+  },
+];
 
 export function HomePage() {
   const navigate = useNavigate();
   const action = useAppAction();
   const dispatch = useAppDispatch();
-  const [authenticate,] = appApi.useAuthenticateMutation();
-  useEffect(()=>{
-      authenticate(undefined).unwrap().catch(e=>{
-        navigate("login");
-      });
-  },[]);
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname === '/') {
+      navigate('today');
+    }
+  }, []);
 
+  const [authenticate] = appApi.useAuthenticateMutation();
+  useEffect(() => {
+    authenticate(undefined)
+      .unwrap()
+      .catch((e) => {
+        navigate('login');
+      });
+  }, []);
 
   const handleItemSelect: NonNullable<SideBarItemProps['onSelected']> =
     useCallback((value) => {
       navigate(value.toLowerCase());
     }, []);
 
-  const handleSelectLogOut:NonNullable<SideBarItemProps['onSelected']> =()=>{
+  const handleSelectLogOut = useCallback(() => {
     dispatch(action.SignOutModal.toggleOpen(true));
-  }
+  }, []);
 
   return (
     <div className="HomePage">
-      <SideBar
-        className="HomePage__SideBar"
-        BranchIcon={<></>}
-        BranchText={'CalendarApp'}
-      >
-        <SideBarItemList divider>
-          <SideBarItem
-            value="Today"
-            label="Today"
-            Icon={<SettingsOutlinedIcon />}
-            onSelected={handleItemSelect}
-          />
-          <SideBarItem
-            value="Calendar"
-            label="Calendar"
-            Icon={<EventAvailableOutlinedIcon />}
-            onSelected={handleItemSelect}
-          />
-          <SideBarItem
-            value="Settings"
-            label="Settings"
-            Icon={<SettingsOutlinedIcon />}
-            onSelected={handleItemSelect}
-          />
-        </SideBarItemList>
-        <SideBarItemList>
-          <SideBarItem
-            value="log out"
-            label="log out"
-            Icon={<LogoutOutlinedIcon />}
-            type="button"
-            onSelected={handleSelectLogOut}
-          ></SideBarItem>
-        </SideBarItemList>
-      </SideBar>
+      <HomPageSideBar
+        onselectLogOut={handleSelectLogOut}
+        onselectNavItem={handleItemSelect}
+      />
+      <HomePageSideDrawer
+        onselectLogOut={handleSelectLogOut}
+        onselectNavItem={handleItemSelect}
+      />
       <div className="HomePage__View">
-        <div className='HomePage__HeaderBar'>
-            
-
-        </div>
-        <Outlet/>
+        <HomePageNavBar />
+        <Outlet />
       </div>
-      <SignOutModal/>
+      <SignOutModal />
     </div>
   );
 }
+
+const HomePageNavBar = memo(() => {
+  const action = useAppAction();
+  const dispatch = useAppDispatch();
+  const handleClickToOpenSideDrawer = () => {
+    dispatch(action.HomePage.toggleDrawer(true));
+  };
+
+  return (
+    <div className="HomePage__NavBar">
+      <div className="NavBar__MenuIconContainer">
+        <ToolTips
+          text="Menu"
+          className="Menu__Tooltips"
+          placement="bottom-center"
+        >
+          <IconButton onClick={handleClickToOpenSideDrawer} variant="secondary">
+            <MenuIcon />
+          </IconButton>
+        </ToolTips>
+      </div>
+    </div>
+  );
+});

@@ -1,5 +1,5 @@
 import { TaskDataType } from '../type/model';
-export * from "./AppModal/type";
+export * from './AppModal/type';
 
 export type ReduxTaskData = Omit<TaskDataType, 'startTime' | 'endTime'> & {
   startTime: string;
@@ -10,7 +10,7 @@ export type ReduxCategoryData = {
   name: string;
   categoryId: string;
   color: string;
-  description:string;
+  description: string;
 };
 
 export type ReduxUserData = {

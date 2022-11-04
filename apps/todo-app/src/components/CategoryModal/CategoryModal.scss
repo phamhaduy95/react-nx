@@ -1,17 +1,15 @@
 $gap-between-input: 0.5rem;
-@import '../sharedStyle.scss';
-@import '../utils.scss';
 .AppModal {
   > .Modal__Dialog {
     @at-root .AppModal__Body {
-        .AppModal__Label {
-            margin-bottom: 0.5em;
-            margin-left: 0.5em;
-            display: block;
-            font-size: var(--phDuylib-font-size-sml);
-          }
-      
-        @at-root .AppModal__ColorPicker {
+      .AppModal__Label {
+        margin-bottom: 0.5em;
+        margin-left: 0.5em;
+        display: block;
+        font-size: var(--phDuylib-font-size-sml);
+      }
+
+      @at-root .AppModal__ColorPicker {
         width: 90%;
         margin: 0 auto 1em auto;
         > input {
@@ -42,6 +40,54 @@ $gap-between-input: 0.5rem;
           &:focus-visible {
             outline: none;
             box-shadow: 0 0 2px 2px hsla(220, 80%, 50%, 0.8);
+          }
+        }
+      }
+
+      &.ManageCategoryModal__Body {
+        display: flex;
+        max-height: 25em;
+        overflow-y: auto;
+        padding: 0.5em;
+        
+        @at-root .ManageCategoriesModal__Message{
+            font-style: italic;
+        }
+
+        @at-root .CategoryModal__CategoryCard {
+          padding: 1em;
+          display: flex;
+          margin-bottom: 1em;
+          @at-root .CategoryCard__CategoryData {
+            display: flex;
+            flex-direction: column;
+            font-size: var(--phDuylib-font-size-med);
+            overflow-x: hidden;
+            @at-root .CategoryCard__CategoryName {
+              font-size: 1.1em;
+              line-height: 1.5;
+              font-weight: 600;
+              margin-bottom: 0.5em;
+              overflow-x: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+            @at-root .CategoryCard__CategoryDescription {
+              margin-left: 1em;
+              line-height: 1.2;
+              font-size: var(--phDuylib-font-size-sml);
+              overflow-x: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+          }
+
+          @at-root .CategoryCard__ButtonBox {
+            margin-left: auto;
+            display: flex;
+            @at-root .CategoryCard__EditButton {
+              margin-right: 0.5em;
+            }
           }
         }
       }

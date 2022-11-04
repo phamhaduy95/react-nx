@@ -12,6 +12,7 @@ import {
   SelectProps,
   TextField,
   TextFieldProps,
+  ToolTips,
 } from '@phduylib/my-component';
 import {
   useAppDispatch,
@@ -105,13 +106,20 @@ export function AddAndUpdateTaskModal() {
   };
 
   const DeleteTaskButton = type === 'update' && (
-    <IconButton
-      className="TaskEditModal__DeleteTaskButton"
-      onClick={handleDeleteButtonClick}
-      variant="secondary"
+    <ToolTips
+      enterDelay={100}
+      leaveDelay={100}
+      placement="bottom-center"
+      text="delete task"
     >
-      <DeleteForeverIcon />
-    </IconButton>
+      <IconButton
+        className="TaskEditModal__DeleteTaskButton"
+        onClick={handleDeleteButtonClick}
+        variant="secondary"
+      >
+        <DeleteForeverIcon />
+      </IconButton>
+    </ToolTips>
   );
 
   const renderSelectOptions: () => JSX.Element[] = () => {

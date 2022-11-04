@@ -1,6 +1,5 @@
 $gap-between-input: 0.5rem;
-@import '../sharedStyle.scss';
-@import '../utils.scss';
+@import "../../app/mediaQuery.scss";
 .AppModal {
   > .Modal__Dialog {
     width: 30em;
@@ -11,6 +10,11 @@ $gap-between-input: 0.5rem;
     background-color: white;
     padding: 1em 0.5em;
     font-family: 'Inter', sans-serif;
+    @include media-breakpoint-down($sm){
+      width: min(25em,95vw);
+      
+    }
+
 
     > .AppModal__Header {
       position: relative;
@@ -19,11 +23,11 @@ $gap-between-input: 0.5rem;
       display: flex;
 
       @at-root .AppModal__Title {
-        font-size: 1.5rem;
+        font-size: 1.5em;
         font-weight: 560;
         text-align: center;
         user-select: none;
-        margin-left: 1.5rem;
+        margin-left: 1.5em;
       }
 
     }
@@ -40,7 +44,7 @@ $gap-between-input: 0.5rem;
     > .AppModal__Footer {
       display: flex;
       width: 95%;
-      margin: 0.25rem auto;
+      margin: 0.25em auto;
      
     }
   }

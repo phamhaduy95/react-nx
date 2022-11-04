@@ -21,7 +21,7 @@ export const Primary: ComponentStory<typeof DropDown> = (args) => {
   return (
     <GlobalStyleProvider>
     <Container>
-      <DropDown label="Item List">
+      <DropDown triggerEL="Item List">
         <DropDownItem>Item 1</DropDownItem>
         <DropDownItem disabled>Item 2</DropDownItem>
         <DropDownItem>Item 3</DropDownItem>
@@ -39,4 +39,6 @@ export const Primary: ComponentStory<typeof DropDown> = (args) => {
     </GlobalStyleProvider>
   );
 };
-Primary.args = {};
+Primary.args = {
+    
+};
