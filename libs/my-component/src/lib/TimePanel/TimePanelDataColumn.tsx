@@ -1,20 +1,20 @@
+import { memo } from 'react';
 import {
   ScrollableDataColumn,
   ScrollableDataColumnProps,
-} from '@phduylib/my-component';
-import { memo } from 'react';
+} from '../ScrollableDataColumn';
 
 type Props = {
   className: string;
   dataSet: ScrollableDataColumnProps['dataSet'];
   numberShowedItem: number;
   onSelect: ScrollableDataColumnProps['onSelect'];
-  value: number|undefined;
+  value: number | undefined;
 };
 
-export const TimePanelDataColumn = memo((props: Props)=> {
+export const TimePanelDataColumn = memo((props: Props) => {
   const { className, dataSet, numberShowedItem, onSelect, value } = props;
-  let newValue = value === undefined?null:value;
+  let newValue = value === undefined ? null : value;
 
   return (
     <ScrollableDataColumn

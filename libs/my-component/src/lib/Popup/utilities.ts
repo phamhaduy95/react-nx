@@ -1,16 +1,9 @@
-import { PaddingProps } from '@mui/system';
 import { PopupPositionCalculator } from './PopupPositionCalculator';
 import { Placement, Position } from './types';
 type Error = 'bottom' | 'top' | 'left' | 'right';
 
-export function getClientPositionOfElement(element: HTMLElement) {
-  const { top, left } = element.getBoundingClientRect();
-  return { top, left };
-}
-export function getSizeOf(element: HTMLElement) {
-  const { width, height } = element.getBoundingClientRect();
-  return { width, height };
-}
+
+
 
 export function recalculatePopupPosition(
   triggerEl: HTMLElement,

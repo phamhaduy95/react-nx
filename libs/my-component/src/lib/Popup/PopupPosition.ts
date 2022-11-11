@@ -1,5 +1,3 @@
-import { getClientPositionOfElement, getSizeOf } from './utilities';
-
 type ElementPosition = {
   top: number;
   left: number;
@@ -160,4 +158,15 @@ export class RightBottomPopupPosition extends PopupPosition {
   protected override calculateLeftCoordinate(): number {
     return this.triggerPosition().left + this.triggerSize().width;
   }
+}
+
+
+export function getClientPositionOfElement(element: HTMLElement) {
+  const { top, left } = element.getBoundingClientRect();
+  return { top, left };
+}
+
+export function getSizeOf(element: HTMLElement) {
+  const { width, height } = element.getBoundingClientRect();
+  return { width, height };
 }
