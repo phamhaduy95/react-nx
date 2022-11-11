@@ -1,14 +1,14 @@
 import "./Pagination.scss";
 import PaginationContextProvider from "./PaginationContextProvider";
 import createViewForPagination from "./createViewForPagination";
-import { ReactComponent as PrevArrowIcon } from "./arrow-left.svg";
-import { ReactComponent as NextArrowIcon } from "./arrow-right.svg";
+import  PrevArrowIcon  from "./arrow-left.svg";
+import  NextArrowIcon from "./arrow-right.svg";
 import { usePaginationContext } from "./PaginationContextProvider";
 import { PaginationState } from "./PaginationReducer";
 import { useEffect } from "react";
 
 // TODO: fixed problem with wrong number placement when maxNumber changed. It is wrong when maxNumber = 6, siblingCount=0, boundaryCount=0, two number 5 exist 
-type PaginationProps = {
+export type PaginationProps = {
   maxNumber: number;
   className?: string;
   /** number of showed indices on the left or on the right of the active index */
@@ -73,7 +73,7 @@ function WrappedPagination(props: PaginationProps) {
   );
 }
 
-function Pagination(props: PaginationProps) {
+export function Pagination(props: PaginationProps) {
   let { maxNumber, disabled } = props;
   disabled = disabled === undefined ? false : disabled;
   const initialState: PaginationState = {
@@ -88,4 +88,4 @@ function Pagination(props: PaginationProps) {
   );
 }
 
-export default Pagination;
+
