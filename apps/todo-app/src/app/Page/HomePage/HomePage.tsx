@@ -11,6 +11,9 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { HomPageSideBar } from './HomePageSideBar';
 import './HomePage.scss';
 import { HomePageSideDrawer } from './HomePageSideDrawer';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
+import { useUserAuthenticate } from '../../hooks';
+import { HomePageNavBar } from './HomePageNavBar';
 
 export const NavItems = () => [
   {
@@ -22,7 +25,7 @@ export const NavItems = () => [
     Icon: <EventAvailableOutlinedIcon />,
   },
   {
-    value: 'User',
+    value: 'Account',
     Icon: <AccountCircleIcon />,
   },
 ];
@@ -38,14 +41,7 @@ export function HomePage() {
     }
   }, []);
 
-  const [authenticate] = appApi.useAuthenticateMutation();
-  useEffect(() => {
-    authenticate(undefined)
-      .unwrap()
-      .catch((e) => {
-        navigate('login');
-      });
-  }, []);
+  useUserAuthenticate();
 
   const handleItemSelect: NonNullable<SideBarItemProps['onSelected']> =
     useCallback((value) => {
@@ -75,26 +71,5 @@ export function HomePage() {
   );
 }
 
-const HomePageNavBar = memo(() => {
-  const action = useAppAction();
-  const dispatch = useAppDispatch();
-  const handleClickToOpenSideDrawer = () => {
-    dispatch(action.HomePage.toggleDrawer(true));
-  };
 
-  return (
-    <div className="HomePage__NavBar">
-      <div className="NavBar__MenuIconContainer">
-        <ToolTips
-          text="Menu"
-          className="Menu__Tooltips"
-          placement="bottom-center"
-        >
-          <IconButton onClick={handleClickToOpenSideDrawer} variant="secondary">
-            <MenuIcon />
-          </IconButton>
-        </ToolTips>
-      </div>
-    </div>
-  );
-});
+

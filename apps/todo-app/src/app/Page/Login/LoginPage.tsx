@@ -1,4 +1,4 @@
-import { TextField,LoadingButton } from '@phduylib/my-component';
+import { TextField, LoadingButton } from '@phduylib/my-component';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import { appApi } from 'apps/todo-app/src/redux/appApi';
 import { useEffect } from 'react';
@@ -10,6 +10,8 @@ import {
 } from './LoginPageStoreProvider';
 import { validateLoginData } from './loginValidation';
 import './LoginPage.scss';
+import { useUserAuthenticate } from '../../hooks';
+import { useCheckLogin } from './util';
 
 export function LoginPage() {
   return (
@@ -28,12 +30,10 @@ function WrappedLoginPage() {
     (state) => state.errorMessage,
     shallow
   );
-
+  useCheckLogin();
   useEffect(() => {
     if (!signInResult.isError) return;
     const error = signInResult.error as FetchBaseQueryError;
-
-    console.log(error);
     switch (error.status) {
       case 'FETCH_ERROR': {
         action.updateErrorMessage({
@@ -55,6 +55,7 @@ function WrappedLoginPage() {
   useEffect(() => {
     if (!signInResult.isSuccess) return;
     navigate('/');
+    signInResult.reset();
   }, [signInResult]);
 
   const submitButtonText = signInResult.isLoading ? 'Signing in...' : 'Sign In';

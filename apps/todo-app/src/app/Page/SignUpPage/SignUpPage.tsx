@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import './SignUpPage.scss';
 import { appApi } from 'apps/todo-app/src/redux/appApi';
 import { useEffect } from 'react';
+import { useUserAuthenticate } from '../../hooks';
 export function SignUpPage() {
   return (
     <SignUpPageStoreProvider>
@@ -24,9 +25,12 @@ function WrappedSignUpPage() {
     (state) => state.errorMessage,
     shallow
   );
+  useUserAuthenticate();
+
   const signUpData = useSignUpPageStore((state) => state.signUpData, shallow);
   const action = useSignUpPageStore((state) => state.action);
   const [signUp, signUpResult] = appApi.useSignUpMutation();
+  
 
   useEffect(() => {
     if (!signUpResult.isError) return;
