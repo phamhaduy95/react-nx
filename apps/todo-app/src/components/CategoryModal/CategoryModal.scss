@@ -1,4 +1,5 @@
 $gap-between-input: 0.5rem;
+@import '../../app/mediaQuery.scss';
 .AppModal {
   > .Modal__Dialog {
     @at-root .AppModal__Body {
@@ -49,9 +50,9 @@ $gap-between-input: 0.5rem;
         max-height: 25em;
         overflow-y: auto;
         padding: 0.5em;
-        
-        @at-root .ManageCategoriesModal__Message{
-            font-style: italic;
+
+        @at-root .ManageCategoriesModal__Message {
+          font-style: italic;
         }
 
         @at-root .CategoryModal__CategoryCard {
@@ -90,6 +91,14 @@ $gap-between-input: 0.5rem;
             }
           }
         }
+      }
+    }
+
+    @at-root .ManageCategoryModal__ReturnButton {
+      display: none;
+      @include media-breakpoint-down($lg) {
+          display: block;
+          margin-left:auto;
       }
     }
   }

@@ -1,6 +1,8 @@
 import {
+  Button,
   IconButton,
   ModalBody,
+  ModalFooter,
   ModalHeader,
   ToolTips,
 } from '@phduylib/my-component';
@@ -43,6 +45,10 @@ export function ManageCategoriesModal() {
     });
   };
 
+  const handleClickToReturn = () => {
+    dispatch(action.AppModal.openModal(ModalType.filterCategory));
+  };
+
   return (
     <>
       <ModalHeader className="AppModal__Header ">
@@ -60,6 +66,15 @@ export function ManageCategoriesModal() {
       <ModalBody className="AppModal__Body ManageCategoryModal__Body">
         {renderCategoryCards()}
       </ModalBody>
+      <ModalFooter>
+        <Button
+          className="ManageCategoryModal__ReturnButton"
+          type="outlined"
+          onClick={handleClickToReturn}
+        >
+          Return
+        </Button>
+      </ModalFooter>
     </>
   );
 }
