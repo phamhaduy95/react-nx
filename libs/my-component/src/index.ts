@@ -7,7 +7,6 @@ export * from './lib/ToggleGroup';
 export * from './lib/Slider/DualRangeSlider';
 export * from './lib/Slider/RangeSlider';
 export * from './lib/Tooltips';
-export * from './lib/ScrollableDataColumn';
 export * from './lib/Select';
 export * from './lib/DatePicker';
 export * from './lib/TimePicker';
@@ -31,3 +30,4 @@ export * from './lib/CheckBox';
 export * from './lib/Button';
 export * from './lib/LoadingSpinner';
 export * from './lib/GlobalStyleProvider';
+export * from "./lib/Collapsible"
