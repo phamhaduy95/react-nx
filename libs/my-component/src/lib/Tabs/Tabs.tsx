@@ -4,6 +4,7 @@ import { pickTabContentAndTabTriggerArrayFromChildren } from './TabPanel';
 import { TabStoreProvider } from './TabStoreProvider';
 import './Tabs.scss';
 import { TabList } from './TabList';
+import { GlobalStyleProvider } from '../GlobalStyleProvider';
 
 type TabContainerProps = {
   className?: string;
@@ -12,9 +13,11 @@ type TabContainerProps = {
 
 export function TabContainer(props: TabContainerProps) {
   return (
-    <TabStoreProvider>
-      <WrappedTabContainer {...props} />
-    </TabStoreProvider>
+    <GlobalStyleProvider>
+      <TabStoreProvider>
+        <WrappedTabContainer {...props} />
+      </TabStoreProvider>
+    </GlobalStyleProvider>
   );
 }
 
