@@ -21,14 +21,16 @@ export const apiV3 = apiV2.injectEndpoints({
                 url:"signout",
                 method:"POST",
                 credentials:"include",
-            })
+            }),
+            invalidatesTags:[{type:"Users",id:"sign-in"}]
         }),
-        authenticate:build.mutation<UserData,undefined>({
+        authenticate:build.query<UserData,string>({
             query:(arg)=>({
                 url:"authenticate",
-                method:"POST",
                 credentials:"include",
-            })
+            }),
+            keepUnusedDataFor:60,
+            providesTags: [{type:"Users",id:"sign-in"}]
         }),
         signUp:build.mutation<ServerResponseType,SignUpModel>({
             query:(arg)=> ({
@@ -42,6 +44,7 @@ export const apiV3 = apiV2.injectEndpoints({
                     client:"browser",
                 },
             }),
+            invalidatesTags:[{type:"Users",id:"sign-in"}]
         })
 
     }),
