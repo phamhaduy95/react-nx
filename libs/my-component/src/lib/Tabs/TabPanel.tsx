@@ -10,6 +10,13 @@ type TabPanelProps = {
   disabled?: boolean;
 };
 
+//
+// TODO: implement closable tab.
+// TODO: implement movable tab.
+//  ? should i expose tab content and tab trigger as callable component ?   
+//
+
+
 export function TabPanel(props: TabPanelProps) {
   return <></>;
 }

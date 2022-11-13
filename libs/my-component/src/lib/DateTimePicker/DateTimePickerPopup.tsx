@@ -1,7 +1,6 @@
-import React, { memo, useCallback, useEffect } from 'react';
+import React, { memo, useCallback } from 'react';
 import PopupElement from '../Popup/PopupElement';
 import { TimePanel, TimePanelProps } from '../TimePanel';
-import { extractTimeFromDate } from '../utils/dateTime';
 import { DateTimePickerProps } from './DateTimePicker';
 import { DatePanelProps } from '../DatePanelSingle/DatePanelSingle';
 import { CalendarProps } from '../Calendar/Calendar';
@@ -9,6 +8,7 @@ import { useDateTimePickerStore } from './DateTimePickerStoreProvider';
 import { checkIsClickOnElement, isElementFocus } from '../utils/utils';
 import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import { Button } from '../Button';
+import { extractTimeFromDate } from '../TimePanel/utils';
 
 interface DateTimePickerPopupProps {
   triggerRef: React.MutableRefObject<HTMLElement | null>;

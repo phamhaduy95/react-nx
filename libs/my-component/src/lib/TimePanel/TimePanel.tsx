@@ -1,10 +1,9 @@
 import { TimePanelDataColumn } from './TimePanelDataColumn';
-import { useColumnDataGenerator, getDefaultTimeValue } from './utils';
+import { useColumnDataGenerator, getDefaultTimeValue, extractTimeFromDate } from './utils';
 import classNames from 'classnames';
 import { useCallback, useEffect, useMemo } from 'react';
 import './TimePanel.scss';
 import { range } from '../utils/range';
-import { extractTimeFromDate } from '../utils/dateTime';
 import dayjs from 'dayjs';
 import { Time } from './types';
 import {
