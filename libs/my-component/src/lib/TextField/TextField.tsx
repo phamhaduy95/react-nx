@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React, {
   HTMLInputTypeAttribute,
+  memo,
   useEffect,
   useRef,
   useState,
@@ -23,7 +24,7 @@ export type TextFieldProps = {
   addOnBefore?: React.ReactNode | null;
   addOnAfter?: React.ReactNode | null;
   suffix?: React.ReactNode | null;
-  onValueChange?: (value: string) => void;
+  onValueChange?: (value: string,name?:string) => void;
   onInput?: (e: React.FormEvent) => void;
   onEnterPressed?: (value: string) => void;
   onChange?: (e: React.FormEvent) => void;
@@ -70,7 +71,7 @@ const defaultProps: Required<TextFieldProps> = {
   typeable: true,
 };
 
-export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
+export const TextField = memo(React.forwardRef<HTMLDivElement, TextFieldProps>(
   (props, ref) => {
     const newProps = { ...defaultProps, ...props };
     const {
@@ -106,9 +107,12 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
     const [inputValue, setInputValue] = useState('');
 
     useEffect(() => {
-      onValueChange(value.toString());
       setInputValue(value.toString());
     }, [value]);
+
+    useEffect(()=>{
+       onValueChange(inputValue,name)   
+    },[inputValue])
 
     useEffectSkipFirstRender(() => {
       if (!autoFocusWhenChanged) return;
@@ -170,7 +174,6 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
       const target = e.target as HTMLInputElement;
       const value = target.value;
       setInputValue(value);
-      onValueChange(value);
     };
 
     const handleEnterPress = (e: React.KeyboardEvent) => {
@@ -214,6 +217,6 @@ export const TextField = React.forwardRef<HTMLDivElement, TextFieldProps>(
       </GlobalStyleProvider>
     );
   }
-);
+));
 
 export default TextField;
