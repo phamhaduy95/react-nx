@@ -14,6 +14,11 @@ import { LoginPage } from './Page/Login/LoginPage';
 import { NotFoundPage } from './Page/NotFoundPage';
 import { SignUpPage } from './Page/SignUpPage/SignUpPage';
 import { TestPage } from './Page/TestPage/TestPage';
+import {
+  UserPageAccountSettings,
+  UserPage,
+  UserPageSecurity,
+} from './Page/User';
 
 export const appRouter = createBrowserRouter(
   createRoutesFromElements(
@@ -25,7 +30,13 @@ export const appRouter = createBrowserRouter(
           <Route path="week" element={<WeekScheduleSection />} />
           <Route path="day" element={<DayScheduleSection />} />
         </Route>
-        <Route path="settings" element={<></>} />
+        <Route path="account" element={<UserPage />}>
+          <Route
+            path="account-settings"
+            element={<UserPageAccountSettings />}
+          />
+          <Route path="password" element={<UserPageSecurity />} />
+        </Route>
       </Route>
       <Route path="login" element={<LoginPage />} />
       <Route path="sign-up" element={<SignUpPage />} />
