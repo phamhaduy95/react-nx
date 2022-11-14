@@ -1,12 +1,13 @@
 import { TaskDataType } from '../../type/model';
-import { ReduxCategoryData } from '../types';
-
+import { ReduxCategoryData, ReduxUserData } from '../types';
 
 export type ResponseCategoryData = ReduxCategoryData;
 
-export type UpdateCategoryArgs = Partial<ReduxCategoryData> & {categoryId:string};
+export type UpdateCategoryArgs = Partial<ReduxCategoryData> & {
+  categoryId: string;
+};
 
-export type AddCategoryArgs = Omit<ReduxCategoryData,"categoryId">;
+export type AddCategoryArgs = Omit<ReduxCategoryData, 'categoryId'>;
 /* #endregion */
 
 /* #region  taskApi */
@@ -14,7 +15,6 @@ export type ReduxTaskData = Omit<TaskDataType, 'startTime' | 'endTime'> & {
   startTime: string;
   endTime: string;
 };
-
 
 export type GetMonthScheduleDataArg = { month: number; year: number };
 
@@ -61,14 +61,22 @@ export type LoginModel = {
 };
 
 export type SignUpModel = {
-  userName: string,
-  email:string,
-  password: string,
-}
-
-export type UserData = {
-  name:string,
-  email:string,
-}
+  userName: string;
+  email: string;
+  password: string;
+};
 
 /* #endregion */
+
+export type UpdateUserArg = Partial<ReduxUserData>;
+
+export type ChangePasswordArg = {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
+
+export type ChangeEmailArg = {
+  newEmail: string;
+  password: string;
+};

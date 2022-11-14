@@ -14,7 +14,12 @@ export type ReduxCategoryData = {
 };
 
 export type ReduxUserData = {
-  id: string;
+  id:string,
   userName: string;
   email: string;
+  phoneNumber: string;
+  firstName: string;
+  lastName: string;
+  organization: string;
+  address: string;
 };

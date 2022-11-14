@@ -1,3 +1,3 @@
-import { apiV3 } from './loginApi';
+import { apiV4 } from './userApi';
 
-export const appApi = apiV3;
+export const appApi = apiV4;
