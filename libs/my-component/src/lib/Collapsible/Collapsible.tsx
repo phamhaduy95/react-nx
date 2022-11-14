@@ -31,10 +31,7 @@ export function Collapsible(props: CollapsibleProps) {
   );
   const { children, direction, showed,className } = newProps;
   const ref = useRef(null);
-
   useControlElementCollapsingState(ref,newProps);
-
-
   const makeShowed = () => {
     if (showed) return "showed";
     return "";

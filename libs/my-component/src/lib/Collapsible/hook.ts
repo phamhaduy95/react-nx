@@ -6,15 +6,31 @@ export function useControlElementCollapsingState(
   props: Required<CollapsibleProps>
 ) {
   const { showed, direction } = props;
+
   useEffect(() => {
     const el = ref.current;
     if (el === null) return;
     if (showed) {
+      const callback = () => {
+        el.style.maxHeight = 'max-content';
+      };
       setElementToMaxSize(el, direction);
-      return;
+      el.addEventListener('transitionend', callback);
+      return () => {
+        el.removeEventListener('transitionend', callback);
+      };
     }
-    setElementToMinSize(el, direction);
-  }, [showed,direction]);
+
+    setElementToMaxSize(el, direction);
+    const timeout = setTimeout(() => {
+      setElementToMinSize(el, direction);
+      clearTimeout(timeout);
+    }, 2);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [showed, direction]);
 }
 
 function setElementToMaxSize(
