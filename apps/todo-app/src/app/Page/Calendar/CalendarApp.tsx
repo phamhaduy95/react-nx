@@ -64,11 +64,21 @@ export function CalendarApp() {
     dispatch(action.AppModal.openModal(ModalType.filterCategory));
   };
 
+  const handleAddTaskButtonClick = () => {
+    dispatch(action.AppModal.openModal(ModalType.addAndUpdateTask));
+    dispatch(action.TaskEditModal.addTask({}));
+  };
+
   return (
     <>
       <div className="CalendarApp">
         <div className="CalendarApp__SideBox">
-          <Button className="CalendarApp__AddButton">Add Task</Button>
+          <Button
+            className="CalendarApp__AddButton"
+            onClick={handleAddTaskButtonClick}
+          >
+            Add Task
+          </Button>
           <CalendarAppCategoryFilterBox />
         </div>
         <div className="CalendarApp__Content">
@@ -101,7 +111,7 @@ export function CalendarApp() {
           </div>
         </div>
       </div>
-      <AppModal />
+
     </>
   );
 }

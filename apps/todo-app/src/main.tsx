@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
 import { appRouter } from './app/AppRouter';
 import { AppStyleProvider } from './AppStyleProvider';
+import { AppModal } from './components';
 import { rootStore } from './redux/rootStore';
 
 const root = ReactDOM.createRoot(
@@ -13,6 +14,7 @@ root.render(
   <AppStyleProvider>
     <Provider store={rootStore}>
       <RouterProvider router={appRouter} />
+      <AppModal />
     </Provider>
   </AppStyleProvider>
 );
