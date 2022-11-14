@@ -17,10 +17,6 @@ import { HomePageNavBar } from './HomePageNavBar';
 
 export const NavItems = () => [
   {
-    value: 'Today',
-    Icon: <SettingsOutlinedIcon />,
-  },
-  {
     value: 'Calendar',
     Icon: <EventAvailableOutlinedIcon />,
   },
@@ -37,7 +33,7 @@ export function HomePage() {
   const location = useLocation();
   useEffect(() => {
     if (location.pathname === '/') {
-      navigate('today');
+      navigate('calendar');
     }
   }, []);
 
@@ -70,6 +66,3 @@ export function HomePage() {
     </div>
   );
 }
-
-
-

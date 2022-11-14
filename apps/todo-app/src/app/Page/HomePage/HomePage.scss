@@ -40,6 +40,8 @@
     @at-root .HomePage__NavBar {
       position: sticky;
       top: 0;
+      display: flex;
+      align-items: center;
       z-index: 5;
       width: 100%;
       min-height: 3.7em;
@@ -56,10 +58,42 @@
           display: inline-block;
         }
       }
+      @at-root .NavBar__NotificationButton {
+        margin-left: auto;
+        margin-right: 0.5em;
+        > .DropDown__Trigger {
+          width: max-content;
+          padding: 0;
+          border: none;
+          border-radius: 50%;
+          svg {
+            width: 1.8rem;
+            height: 1.8rem;
+          }
+          box-shadow: none;
+        }
+      }
+      @at-root .NavBar__UserImage {
+        > .DropDown__Trigger {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: max-content;
+          padding: 0;
+          border: none;
+          border-radius: 50%;
+          > img {
+            cursor: pointer;
+            border-radius: 50%;
+            width: 2.5rem;
+            height: 2.5rem;
+          }
+        }
+      }
     }
   }
 }
 
 .ToolTips__Trigger.Menu__Tooltips {
-    z-index: 100;
+  z-index: 100;
 }

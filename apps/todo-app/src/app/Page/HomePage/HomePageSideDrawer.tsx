@@ -67,11 +67,9 @@ export const HomePageSideDrawer = memo((props: HomePageSideBarProps) => {
       <div className="SideDrawer__Header">
         <span className="SideDrawer__HeaderTitle">CalendarApp</span>
         <span className="SideDrawer__CloseIconContainer">
-          <ToolTips text="close" placement="bottom-center" leaveDelay={0}>
-            <IconButton variant="secondary" onClick={handleCloseIconClick}>
-              <Close />
-            </IconButton>
-          </ToolTips>
+          <IconButton variant="secondary" onClick={handleCloseIconClick}>
+            <Close />
+          </IconButton>
         </span>
       </div>
       <div className="SideDrawer__Content">
