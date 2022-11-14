@@ -11,7 +11,7 @@ import {GlobalStyleProvider} from '../GlobalStyleProvider';
 export interface SelectProps {
   className?: string;
   children: JSX.Element[] | JSX.Element;
-  onSelect?: (value: string) => void;
+  onSelect?: (value: string,name?:string) => void;
   label?: TextFieldProps['label'];
   helperText?: TextFieldProps['helperText'];
   error?: string | false;
@@ -19,6 +19,7 @@ export interface SelectProps {
   autoWidth?: boolean;
   defaultValue?: string;
   onPopupToggle?: (isOpen: boolean) => void;
+  name?:string,
 }
 
 // change select interface.
@@ -33,6 +34,7 @@ const defaultPropsValue: Required<SelectProps> = {
   success: false,
   autoWidth: false,
   defaultValue: '',
+  name:"",
   onPopupToggle(isOpen) {},
 };
 
@@ -57,6 +59,7 @@ function WrappedSelect(props: SelectProps) {
     success,
     defaultValue,
     onPopupToggle,
+    name
   } = newProps;
   const textFieldRef = useRef<any>(null);
   const IndexedItems = giveIndexToSelectOptions(children);
@@ -71,6 +74,7 @@ function WrappedSelect(props: SelectProps) {
     action.selectItemByValue(value);
   }, [defaultValue]);
 
+
   return (
     <GlobalStyleProvider>
       <div className={rootClassName}>
@@ -81,6 +85,7 @@ function WrappedSelect(props: SelectProps) {
           error={error}
           ref={textFieldRef}
           onSelect={onSelect}
+          name={name}
         />
         <SelectPopup targetRef={textFieldRef} onPopupToggle={onPopupToggle}>
           {IndexedItems}

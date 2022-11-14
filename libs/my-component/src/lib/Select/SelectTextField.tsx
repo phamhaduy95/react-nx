@@ -10,14 +10,15 @@ type SelectTextFieldProps = {
   helperText: TextFieldProps['helperText'];
   onSelect: Required<SelectProps>['onSelect'];
   error:TextFieldProps["error"],
-  success:TextFieldProps["success"]
+  success:TextFieldProps["success"],
+  name:Required<SelectProps>["name"],
 };
 
 export const SelectTextField = forwardRef<
   HTMLInputElement | null,
   SelectTextFieldProps
 >((props, ref) => {
-  const { helperText, label, onSelect,success,error } = props;
+  const { helperText, label, onSelect,success,error,name } = props;
   const action = useSelectStore((state) => state.action);
   const selectedItem = useSelectStore(
     (state) => {
@@ -35,7 +36,7 @@ export const SelectTextField = forwardRef<
         : selectedItem.value === undefined
         ? ''
         : selectedItem.value;
-    onSelect(value);
+    onSelect(value,name);
   }, [selectedItem?.value]);
 
   const IconField = () => {
