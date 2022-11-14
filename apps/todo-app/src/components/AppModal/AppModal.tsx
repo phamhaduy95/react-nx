@@ -128,11 +128,27 @@ export function AppModal() {
       case ModalType.deleteCategory:
         return <DeleteCategoryModal />;
       case ModalType.filterCategory:
-        return <CategoryFilterModal/>
+        return <CategoryFilterModal />;
       default:
         return <></>;
     }
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const key = e.key;
+      switch (key) {
+        case 'Escape': {
+          dispatch(action.AppModal.closeModal());
+          return;
+        }
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   return (
     <Modal
