@@ -7,6 +7,7 @@ export function useEffectSkipFirstRender(callback:Function,dependencyArray:NonNu
     },[])
     useEffect(()=>{
         if (!firstRender) return;
-        callback();  
+       const cleanup = callback();
+       return cleanup;  
     },[...dependencyArray])
 }
