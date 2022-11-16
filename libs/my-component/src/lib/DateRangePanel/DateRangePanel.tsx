@@ -97,7 +97,6 @@ function WrappedElement(props: DateRangePanelProps) {
       <Calendar
         CellComponent={(props) => <DateRangePanelDateCell {...props} />}
         className="DatePanelSingle__Calendar"
-        selectable
         dateValue={showedMonth}
         disabledDate={disabledDate}
       />

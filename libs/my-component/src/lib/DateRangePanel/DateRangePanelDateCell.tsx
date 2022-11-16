@@ -32,12 +32,15 @@ export const DateRangePanelDateCell=memo((props: CalendarDateCellProps)=> {
     return checkIsDateInRange(date, { startDate, endDate });
   });
 
+  const isToday = dayjs().isSame(data.date,"date");
+
   const className = classNames('Calendar__Table__DateCell', {
     blurred: !isDayWithinMonth,
     disabled: isDisabled,
     [`is-end-date`]: isEndDate,
     [`is-start-date`]: isStartDate,
     [`is-date-in-range`]: isDateInRange,
+    [`is-today`]:isToday
   });
 
 

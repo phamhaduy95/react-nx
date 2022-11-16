@@ -1,19 +1,17 @@
 @import '../_utils.scss';
-@import '../_sharedStyle.scss';
-@import '../_mediaQuery.scss';
 
 .DateRangePanel {
   display: flex;
   flex-direction: column;
   width: max-content;
-  max-width: 310px;
-  max-height: 360px;
+  max-width: 20em;
+  height: max-content;
+  font-size: var(--phDuylib-font-size-med);
   > .Calendar {
     width: 100%;
     max-width: unset;
-    height: 100%;
     max-height: unset;
-    border: none;
+    flex-grow: 1;
     .Calendar__Table__DateCell {
       &.is-start-date,
       &.is-end-date {

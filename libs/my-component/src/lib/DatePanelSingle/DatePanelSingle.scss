@@ -15,17 +15,6 @@
     max-height: unset;
     height: 80%;
     flex-grow: 1;
-    .Calendar__Table__DateCell {
-      &.selected {
-        color: white;
-        z-index: 2;
-        &::before {
-          background-color: var(--phDuylib-primary-color);
-          visibility: visible;
-          z-index: -1;
-        }
-      }
-    }
   }
   @at-root .DatePanelSingle__Action {
     display: flex;

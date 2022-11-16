@@ -52,7 +52,6 @@ function WrappedDatePanelSingle(props: DatePanelProps) {
     className,
     disabledDate,
     onSubmit,
-    onClickToSelect,
     actionEnabled,
     onClear,
   } = newProps;
@@ -106,7 +105,6 @@ function WrappedDatePanelSingle(props: DatePanelProps) {
       <Calendar
         CellComponent={CellComponent}
         className="DatePanelSingle__Calendar"
-        selectable
         dateValue={selectedDate}
         disabledDate={disabledDate}
       />
