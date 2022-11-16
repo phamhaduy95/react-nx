@@ -4,8 +4,8 @@ import { CalendarProps } from './Calendar';
 
 type SharedData = {
   disabledDate: NonNullable<CalendarProps['disabledDate']>;
-  selectable: NonNullable<CalendarProps['selectable']>;
   CellComponent: NonNullable<CalendarProps['CellComponent']>;
+
 };
 type ContextValue = SharedData | null;
 
@@ -16,14 +16,13 @@ type Props = {
 } & SharedData;
 
 export function CalendarSharedDataContextProvider(props: Props) {
-  const { children, disabledDate, selectable, CellComponent } = props;
+  const { children, disabledDate, CellComponent } = props;
   const sharedData = useMemo(
     () => ({
       disabledDate,
-      selectable,
       CellComponent,
     }),
-    [disabledDate, selectable]
+    [disabledDate]
   );
   return <context.Provider value={sharedData}>{children}</context.Provider>;
 }
@@ -31,8 +30,8 @@ export function CalendarSharedDataContextProvider(props: Props) {
 export function extractSharedDataFromProps(
   props: Required<CalendarProps>
 ): SharedData {
-  const { disabledDate, selectable, CellComponent } = props;
-  return { disabledDate, selectable, CellComponent };
+  const { disabledDate, CellComponent } = props;
+  return { disabledDate, CellComponent };
 }
 
 export function useCalendarSharedData() {

@@ -14,9 +14,9 @@ import {
   CalendarStoreProvider,
   useCalendarStore,
 } from './CalendarStoreProvider';
-import { useStore } from 'zustand';
 import shallow from 'zustand/shallow';
-import {GlobalStyleProvider} from '../GlobalStyleProvider';
+import { GlobalStyleProvider } from '../GlobalStyleProvider';
+import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 
 function getDateString(year: number, month: number) {
   const date = dayjs().year(year).month(month);
@@ -25,24 +25,26 @@ function getDateString(year: number, month: number) {
 
 export interface CalendarProps {
   className?: string;
-  selectable?: boolean;
   disabledDate?: (currentDate: Date) => boolean;
   CellComponent?: (
     props: CalendarDateCellProps & { key: string | number }
   ) => JSX.Element;
   dateValue?: Date | null;
+  selectable?: boolean;
+  onDateSelect?: (date: Date | null) => void;
 }
 
 const defaultCalendarProps: Required<CalendarProps> = {
   className: '',
-  selectable: false,
   disabledDate(currentDate) {
     return false;
   },
   CellComponent(props) {
     return <CalendarDateCell {...props} />;
   },
+  selectable: false,
   dateValue: new Date(Date.now()),
+  onDateSelect(date) {},
 };
 
 export function Calendar(props: CalendarProps) {
@@ -61,10 +63,10 @@ export function Calendar(props: CalendarProps) {
 
 function WrappedCalendar(props: CalendarProps) {
   const newProps = { ...defaultCalendarProps, ...props };
-  const { dateValue } = newProps;
-  const store = useCalendarStore();
-  const action = useStore(store, (state) => state.action);
-  const currentMonth = useStore(store, (state) => state.currentMonth, shallow);
+  const { dateValue, selectable, onDateSelect } = newProps;
+  const selectedDate = useCalendarStore((state) => state.selectedDate);
+  const action = useCalendarStore((state) => state.action);
+  const currentMonth = useCalendarStore((state) => state.currentMonth, shallow);
   const { year, month } = currentMonth;
 
   useEffect(() => {
@@ -73,6 +75,14 @@ function WrappedCalendar(props: CalendarProps) {
     const year = dateValue.getFullYear();
     action.selectNewMonth({ year, month });
   }, [dateValue?.getMonth(), dateValue?.getFullYear()]);
+
+  useEffect(() => {
+    action.toggleSelectable(selectable);
+  }, [selectable]);
+
+  useEffectSkipFirstRender(() => {
+    onDateSelect(selectedDate);
+  }, [selectedDate]);
 
   const calendarData = useGenerateCalendarData(year, month);
   const CalendarRows = useMemo(() => {

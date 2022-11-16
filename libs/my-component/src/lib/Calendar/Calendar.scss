@@ -82,7 +82,7 @@
     @at-root .Calendar_Table {
       width: 100%;
       flex-grow: 1;
-      gap:0.2em;
+      gap: 0.2em;
       @at-root .Calendar__Table__HeaderRow {
         th {
           padding: 0.5em 0;
@@ -104,6 +104,15 @@
               color: var(--phDuylib-secondary-color);
             }
 
+            &.is-today {
+              z-index: 2;
+              &::before {
+                background-color: var(--phDuylib-secondary-color);
+                visibility: visible;
+                z-index: -1;
+              }
+            }
+
             &.selected {
               color: white;
               z-index: 2;
@@ -111,6 +120,13 @@
                 background-color: var(--phDuylib-primary-color);
                 visibility: visible;
                 z-index: -1;
+              }
+              &.is-today {
+                &::before {
+                  background-color: var(--phDuylib-primary-color-active);
+                  visibility: visible;
+                  z-index: -1;
+                }
               }
             }
 
