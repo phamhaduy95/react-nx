@@ -1,0 +1,67 @@
+.Switch {
+  caret-color: transparent;
+  width: 3rem;
+  height: 1.5rem;
+  border: none;
+  border-radius: 1.5rem;
+  background-color: var(--phDuylib-secondary-color);
+  position: relative;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+
+  &.is-checked {
+    background-color: var(--phDuylib-primary-color);
+  }
+
+  &.is-disabled {
+    background-color: hsla(0, 0%, 60%);
+    opacity: 0.5;
+  }
+
+  > .Switch_Thumb {
+    border-radius: 1rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: white;
+    border: 1px solid var(--phDuylib-secondary-color);
+    width: 1.5rem;
+    height: 100%;
+    z-index: 1;
+
+    &.do-animation {
+      animation: thumbMove 200ms linear 0s 1 reverse;
+      animation-fill-mode: forwards;
+
+      &.checked {
+        animation-direction: normal;
+      }
+
+      &.unchecked {
+        animation-direction: reverse;
+      }
+    }
+  }
+
+  &:focus-visible {
+    outline: none;
+
+    > .Switch_Thumb {
+      box-shadow: 0 0 1px 5px hsla(220, 60%, 50%, 0.7);
+    }
+  }
+}
+
+@keyframes thumbMove {
+  0% {
+    transform: translateX(-1%);
+  }
+
+  50% {
+    width: 2rem;
+  }
+
+  100% {
+    transform: translateX(101%);
+  }
+}
