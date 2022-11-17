@@ -1,18 +1,36 @@
-import { MutableRefObject, useEffect } from 'react';
+import { MutableRefObject, useEffect, useState } from 'react';
 import { CollapsibleProps } from './Collapsible';
+import { useEffectSkipFirstRender } from '../../../../../apps/todo-app/src/utils/hooks';
 
 export function useControlElementCollapsingState(
   ref: MutableRefObject<HTMLElement | null>,
   props: Required<CollapsibleProps>
 ) {
   const { showed, direction } = props;
+  const [firstRender, setFirstRender] = useState(true);
+
+  useEffect(() => {
+    setFirstRender(false);
+  }, []);
+
+  // * reset size of element to normal when new direction is set.
+  useEffectSkipFirstRender(() => {
+    const el = ref.current;
+    if (el === null) return;
+    setElementToMaxSize(el, 'horizontal');
+    setElementToMaxSize(el, 'vertical');
+  }, [direction]);
 
   useEffect(() => {
     const el = ref.current;
     if (el === null) return;
     if (showed) {
       const callback = () => {
-        el.style.maxHeight = 'max-content';
+        if (direction === 'vertical') {
+          el.style.maxHeight = 'max-content';
+        } else {
+          el.style.maxWidth = 'max-content';
+        }
       };
       setElementToMaxSize(el, direction);
       el.addEventListener('transitionend', callback);
@@ -20,7 +38,10 @@ export function useControlElementCollapsingState(
         el.removeEventListener('transitionend', callback);
       };
     }
-
+    if (firstRender) {
+      setElementToMinSize(el, direction);
+      return;
+    }
     setElementToMaxSize(el, direction);
     const timeout = setTimeout(() => {
       setElementToMinSize(el, direction);
