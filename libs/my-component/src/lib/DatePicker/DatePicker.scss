@@ -15,16 +15,15 @@ $text-color: hsl(0, 0%, 20%);
       @include centerElement();
       @include setChildElementsSize(1.5rem, 1.5rem);
       > svg {
-        fill: $text-color;
+        fill: var(--phDuylib-text-color);
       }
     }
   }
   @at-root .DatePicker__Popup {
     background-color: white;
-    border: $border;
+    border: var(--phDuylib-border);
     border-radius: 5px;
     > .DatePanelSingle {
-      
       > .Calendar {
         border: none;
       }

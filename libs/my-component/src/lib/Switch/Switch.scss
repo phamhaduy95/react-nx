@@ -16,6 +16,7 @@
   &.is-disabled {
     background-color: hsla(0, 0%, 60%);
     opacity: 0.5;
+    cursor: not-allowed;
   }
 
   > .Switch_Thumb {

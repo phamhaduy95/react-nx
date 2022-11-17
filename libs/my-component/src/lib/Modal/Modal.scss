@@ -49,7 +49,7 @@ $transitionDuration: 0.1s;
     min-width: 30vw;
     border-radius: 4px;
     color: var(--phDuylib-text-color);
-    background-color: var(--phDuylib-secondary-color-hover);
+    background-color: white;
     font-size: var(--phDuylib-font-size-med);
     box-shadow: var(--phDuylib-box-shadow-popup);
     transition: transform $transitionDuration ease-in $transitionDuration,

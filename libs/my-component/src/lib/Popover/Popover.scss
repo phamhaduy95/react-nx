@@ -1,21 +1,21 @@
-.Popover{
-    position: fixed;
-    transition: opacity 0.15s ease-in;
-    width: max-content;
-    max-height: 100vh;
-    max-width: 100vw;
-    overflow: auto;
-    isolation: isolate;
-    z-index: 100;
-    box-shadow: var(--phDuylib-box-shadow-popup);
-    border: var(--phDuylib-border);
-    &:not(.is-open) {
-        visibility: collapse;
-        opacity: 0;
-    }
-    
-    &.is-open {
-        visibility: visible;
-        opacity: 1;
-    }
+.Popover {
+  position: fixed;
+  transition: opacity 0.15s ease-in;
+  width: max-content;
+  max-height: 100vh;
+  max-width: 100vw;
+  overflow: auto;
+  isolation: isolate;
+  z-index: 100;
+  box-shadow: var(--phDuylib-box-shadow-popup);
+  border: var(--phDuylib-border);
+  &:not(.is-open) {
+    visibility: collapse;
+    opacity: 0;
+  }
+
+  &.is-open {
+    visibility: visible;
+    opacity: 1;
+  }
 }
