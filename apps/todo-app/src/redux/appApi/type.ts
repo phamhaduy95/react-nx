@@ -55,13 +55,13 @@ export type ReduxWeekScheduleState = {
 
 /* #region  loginApi */
 
-export type LoginModel = {
+export type LoginArg = {
   email: string;
   password: string;
 };
 
-export type SignUpModel = {
-  userName: string;
+export type SignUpArg = {
+  displayName: string;
   email: string;
   password: string;
 };

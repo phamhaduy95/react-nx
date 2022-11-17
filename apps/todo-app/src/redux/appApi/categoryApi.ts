@@ -1,7 +1,11 @@
 import { url } from 'inspector';
 import { ReduxCategoryData } from '../types';
 import { baseApi } from './baseApi';
-import { ResponseCategoryData, UpdateCategoryArgs, AddCategoryArgs } from './type';
+import {
+  ResponseCategoryData,
+  UpdateCategoryArgs,
+  AddCategoryArgs,
+} from './type';
 
 export const apiV1 = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -24,7 +28,7 @@ export const apiV1 = baseApi.injectEndpoints({
         return result;
       },
       providesTags: (result, error, arg) => {
-       return [{ type: 'Categories', id: 'List' }];
+        return [{ type: 'Categories', id: 'List' }, { type: 'Categories' }];
       },
     }),
     getCategoryById: build.query<ReduxCategoryData, string>({
@@ -44,6 +48,7 @@ export const apiV1 = baseApi.injectEndpoints({
 
       providesTags: (result, error, arg) => [
         { type: 'Categories', id: `${arg}` },
+        { type: 'Categories' },
       ],
     }),
     addCategory: build.mutation<Response, AddCategoryArgs>({
@@ -80,8 +85,9 @@ export const apiV1 = baseApi.injectEndpoints({
         credentials: 'include',
       }),
       invalidatesTags: (result, error, arg) => [
-        {type:"Categories",id:"List"},
+        { type: 'Categories', id: 'List' },
         { type: 'Categories', id: `${arg.categoryId}` },
+        
       ],
     }),
   }),

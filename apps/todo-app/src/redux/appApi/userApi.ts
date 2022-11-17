@@ -8,7 +8,7 @@ export const apiV4 = apiV3.injectEndpoints({
         url: 'user-data',
         method: 'PUT',
         body: (() => {
-          const { id, email, ...userData } = arg;
+          const { email, ...userData } = arg;
           return userData;
         })(),
         credentials: 'include',

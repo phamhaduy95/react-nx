@@ -37,6 +37,7 @@ export const apiV2 = apiV1.injectEndpoints({
           },
         };
       },
+      providesTags: [{ type: 'Tasks' }],
     }),
 
     getMonthScheduleData: build.query<
@@ -53,7 +54,7 @@ export const apiV2 = apiV1.injectEndpoints({
         credentials: 'include',
       }),
       keepUnusedDataFor: 1,
-      providesTags: (result, error, arg) => [{ type: 'Tasks', id: `Month` }],
+      providesTags: [{ type: 'Tasks', id: `Month` }, { type: 'Tasks' }],
       // transform response data;
       transformResponse(
         response: ReduxTaskData[],
@@ -82,7 +83,7 @@ export const apiV2 = apiV1.injectEndpoints({
           offset: -new Date().getTimezoneOffset(),
         },
       }),
-      providesTags: (result, error, arg) => [{ type: 'Tasks', id: `Day` }],
+      providesTags: [{ type: 'Tasks', id: `Day` }, { type: 'Tasks' }],
       transformResponse(
         response: ReduxTaskData[],
         meta,
@@ -118,7 +119,7 @@ export const apiV2 = apiV1.injectEndpoints({
           tasks: response,
         };
       },
-      providesTags: (result, error, arg) => [{ type: 'Tasks', id: 'Week' }],
+      providesTags: [{ type: 'Tasks', id: 'Week' }, { type: 'Tasks' }],
 
       keepUnusedDataFor: 1,
     }),
@@ -202,11 +203,7 @@ export const apiV2 = apiV1.injectEndpoints({
           startTime: arg.startTime,
         } as ReduxTaskData,
       }),
-      invalidatesTags: (result, error, arg) => [
-        // { type: 'Tasks', id: 'Month' },
-        // { type: 'Tasks', id: 'Day' },
-        // { type: 'Tasks', id: 'Week' },
-      ],
+
       async onQueryStarted(arg, api) {
         const { queryFulfilled, dispatch, getState } = api;
         const rootState = getState() as RootState;
@@ -254,9 +251,7 @@ export const apiV2 = apiV1.injectEndpoints({
       }),
       invalidatesTags: (result, error, arg) => [
         { type: 'Tasks', id: `${arg}` },
-        { type: 'Tasks', id: 'Month' },
-        { type: 'Tasks', id: 'Day' },
-        { type: 'Tasks', id: 'Week' },
+        { type: 'Tasks' },
       ],
     }),
   }),
