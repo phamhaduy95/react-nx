@@ -7,8 +7,8 @@ function createErrorFlagsFromValidationError(error: any) {
     email: false,
     password: false,
     confirmPassword: false,
-    userName: false,
-    connection:false,
+    displayName: false,
+    connection: false,
   };
   const errors = error.errors as ErrorObject[];
   for (let error of errors) {
@@ -82,7 +82,7 @@ const schema: SchemaOf<SignUpData> = object().shape({
       }
     )
     .required(requiredMessage),
-  userName: string()
+  displayName: string()
     .max(20, maxStrLengthMessage)
     .matches(/[A-Za-z]+/, letterRequiredMessage)
     .required(requiredMessage),

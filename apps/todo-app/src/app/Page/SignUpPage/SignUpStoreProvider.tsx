@@ -20,13 +20,13 @@ const context = createContext<ContextValueType>(null);
 const initialErrorMessage: ErrorsMessage = Object.freeze({
   email: false,
   password: false,
-  userName: false,
+  displayName: false,
   confirmPassword: false,
-  connection:false,
+  connection: false,
 });
 
 const initialLoginData: SignUpData = Object.freeze({
-  userName: '',
+  displayName: '',
   email: '',
   confirmPassword: '',
   password: '',

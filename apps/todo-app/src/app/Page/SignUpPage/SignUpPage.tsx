@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 import './SignUpPage.scss';
 import { appApi } from 'apps/todo-app/src/redux/appApi';
 import { useEffect } from 'react';
-import { useUserAuthenticate } from '../../hooks';
 export function SignUpPage() {
   return (
     <SignUpPageStoreProvider>
@@ -25,12 +24,10 @@ function WrappedSignUpPage() {
     (state) => state.errorMessage,
     shallow
   );
-  useUserAuthenticate();
 
   const signUpData = useSignUpPageStore((state) => state.signUpData, shallow);
   const action = useSignUpPageStore((state) => state.action);
   const [signUp, signUpResult] = appApi.useSignUpMutation();
-  
 
   useEffect(() => {
     if (!signUpResult.isError) return;
@@ -48,8 +45,10 @@ function WrappedSignUpPage() {
   }, [signUpResult]);
 
   useEffect(() => {
-    if (!signUpResult.isSuccess) return;
-    navigate('/');
+    if (signUpResult.isSuccess) {
+      signUpResult.reset();
+      navigate('/');
+    }
   }, [signUpResult]);
 
   const connectionErrMessage = errorMessages.connection
@@ -57,7 +56,7 @@ function WrappedSignUpPage() {
     : '';
 
   const handleNameInput = (value: string) => {
-    action.updateLoginData({ userName: value });
+    action.updateLoginData({ displayName: value });
   };
 
   const handleEmailInput = (value: string) => {
@@ -71,6 +70,7 @@ function WrappedSignUpPage() {
   const handleConfirmPasswordInput = (value: string) => {
     action.updateLoginData({ confirmPassword: value });
   };
+
 
   const handleSubmitButtonClick = async () => {
     const { result, error } = await validateSignUpData(signUpData);
@@ -96,9 +96,9 @@ function WrappedSignUpPage() {
           className="SignUpForm__Input"
           label="user Name"
           placeHolder={'PhamVanA'}
-          value={signUpData.userName}
+          value={signUpData.displayName}
           onValueChange={handleNameInput}
-          error={errorMessages.userName}
+          error={errorMessages.displayName}
         />
         <TextField
           className="SignUpForm__Input"
