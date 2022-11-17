@@ -1,12 +1,12 @@
 export type SignUpData = {
-    userName:string;
+    displayName:string;
     email:string,
     password:string,
     confirmPassword:string,
 }
 
 export type ErrorsMessage = {
-    userName:string|false,
+    displayName:string|false,
     email:string|false,
     password:string|false,
     confirmPassword:string|false,

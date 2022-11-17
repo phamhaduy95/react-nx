@@ -5,7 +5,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from '@phduylib/my-component';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useAppAction, useAppDispatch, useAppSelector } from '../../redux';
 import './SignOutModal.scss';
 import CloseIcon from '@mui/icons-material/Close';
@@ -18,7 +18,7 @@ export function SignOutModal() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isOpen = useAppSelector((state) => state.SignOutModal.isOpen);
-  const [signOut] = appApi.useSignOutMutation();
+  const [signOut, result] = appApi.useSignOutMutation();
 
   const handleModalOpen = useCallback((isOpen: boolean) => {
     dispatch(action.SignOutModal.toggleOpen(isOpen));
@@ -29,10 +29,16 @@ export function SignOutModal() {
   };
 
   const handleSignOut = async () => {
-    const result = await signOut(undefined);
-    dispatch(action.SignOutModal.toggleOpen(false));
-    navigate('/login');
+    await signOut(undefined);
   };
+
+  useEffect(() => {
+    if (result.isSuccess) {
+      dispatch(action.SignOutModal.toggleOpen(false));
+      result.reset();
+      navigate('/login');
+    }
+  }, [result]);
 
   return (
     <Modal className="SignOutModal" isOpen={isOpen} onToggle={handleModalOpen}>
