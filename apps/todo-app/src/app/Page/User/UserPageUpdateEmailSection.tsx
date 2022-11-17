@@ -19,7 +19,12 @@ const defaultInput: UserEmailInput = Object.freeze({
   password: '',
 });
 
-export const UserPageUpdateEmailSection = memo(() => {
+type Props = {
+  email?:string;
+}
+
+export const UserPageUpdateEmailSection = memo((props:Props) => {
+  const {email} = props;
   const action = useAppAction();
   const dispatch = useAppDispatch();
   const [isExpanded, setExpanded] = useState(false);
@@ -72,7 +77,7 @@ export const UserPageUpdateEmailSection = memo(() => {
       <div className="UserPage__SecuritySection">
         <div className="SecuritySection__DataDisplayBox">
           <p className="SecuritySection__Label">Email Address</p>
-          <p className="SecuritySection__Text">www.guest@gmail.com</p>
+          <p className="SecuritySection__Text">{email}</p>
         </div>
         <Button
           className="UserPage__Security__ConfirmButton"

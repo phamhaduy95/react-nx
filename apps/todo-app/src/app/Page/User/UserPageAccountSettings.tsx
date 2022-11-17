@@ -19,7 +19,7 @@ const defaultUserData: ReduxUserData = Object.freeze({
   lastName: '',
   organization: '',
   phoneNumber: '',
-  userName: '',
+  displayName: '',
 });
 
 export function UserPageAccountSettings() {
@@ -53,7 +53,7 @@ function UserPageUserAvatar(props: Props) {
         <img src={userImg} />
       </div>
       <div className="UserPage__AvatarControlBox">
-        <p className="UserPage__UserName">{userData.userName}</p>
+        <p className="UserPage__UserName">{userData.displayName}</p>
         <div className="UserPage__AvatarButtonBox">
           <Button variant="primary">Change Avatar</Button>
           <Button variant="secondary" type="outlined">
@@ -113,8 +113,8 @@ function UserPageAccountDataSection(props: Props) {
       <div className="UserPage__AccountDataInputs">
         <TextField
           label="username"
-          name="userName"
-          value={userData.userName}
+          name="displayName"
+          value={userData.displayName}
           onValueChange={handleTextFieldValueChange}
         />
         <TextField
