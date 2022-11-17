@@ -39,6 +39,8 @@ function WrappedWeekSchedule(props: WeekScheduleProps) {
   useEffect(() => {
     action.updateWeekTaskData(data.range, data.tasks);
   }, [data]);
+
+
   const weekDayTimeLines = useMemo(() => {
     return renderWeekDayTimeLines();
   }, []);

@@ -29,7 +29,7 @@ export function WeekScheduleTimeLine(props: WeekScheduleTimeLineProps) {
     return range(0, 23).map((e) => {
       return <WeekScheduleTimeFrame date={currDate} hour={e} key={e} />;
     });
-  }, []);
+  }, [currDate]);
 
   const tasks = useWeekScheduleStore((state) => state.tasks);
   const showedTasks = useMemo(
