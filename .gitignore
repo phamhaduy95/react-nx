@@ -8,6 +8,7 @@
 # dependencies
 node_modules
 
+
 # IDEs and editors
 /.idea
 .project
@@ -30,7 +31,12 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
-
+*.prod.*
 # System Files
 .DS_Store
 Thumbs.db
+
+
+#remove folder
+cmdlet
+/libs/material-component

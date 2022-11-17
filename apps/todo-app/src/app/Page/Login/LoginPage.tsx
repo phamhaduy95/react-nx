@@ -10,8 +10,6 @@ import {
 } from './LoginPageStoreProvider';
 import { validateLoginData } from './loginValidation';
 import './LoginPage.scss';
-import { useUserAuthenticate } from '../../hooks';
-import { useCheckLogin } from './util';
 
 export function LoginPage() {
   return (
@@ -30,7 +28,7 @@ function WrappedLoginPage() {
     (state) => state.errorMessage,
     shallow
   );
-  useCheckLogin();
+
   useEffect(() => {
     if (!signInResult.isError) return;
     const error = signInResult.error as FetchBaseQueryError;
@@ -53,9 +51,10 @@ function WrappedLoginPage() {
   }, [signInResult]);
 
   useEffect(() => {
-    if (!signInResult.isSuccess) return;
-    navigate('/');
-    signInResult.reset();
+    if (signInResult.isSuccess) {
+      signInResult.reset();
+      navigate('/');
+    }
   }, [signInResult]);
 
   const submitButtonText = signInResult.isLoading ? 'Signing in...' : 'Sign In';
