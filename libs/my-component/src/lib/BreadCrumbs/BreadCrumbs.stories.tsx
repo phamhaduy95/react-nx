@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import BreadCrumbsItem from './BreadCrumbItem';
 import { BreadCrumbs } from './BreadCrumbs';
 
 export default {
@@ -6,15 +7,14 @@ export default {
   title: 'my-component/BreadCrumbs',
 } as ComponentMeta<typeof BreadCrumbs>;
 
-
-const items = ["Home","About","Product","Author"]
-const children = items.map((item,i)=>{
-  return <BreadCrumbs.Item index={i}>
-          <a href="#">{item}</a>
-          </BreadCrumbs.Item>
-})
-
-
+const items = ['Home', 'About', 'Product', 'Author', 'Section1', 'Work'];
+const children = items.map((item, i) => {
+  return (
+    <BreadCrumbsItem value={item} key={i}>
+      <a href="#">{item}</a>
+    </BreadCrumbsItem>
+  );
+});
 
 const Template: ComponentStory<typeof BreadCrumbs> = (args) => (
   <BreadCrumbs {...args}>{args.children}</BreadCrumbs>
@@ -22,8 +22,9 @@ const Template: ComponentStory<typeof BreadCrumbs> = (args) => (
 
 export const Primary = Template.bind({});
 Primary.args = {
-  maxItem: 2,
-  separator: '/',
   children: children,
-  onChange:()=>{console.log("onchange")}
+  maxItems: 4,
+  itemsAfterCollapse: 2,
+  itemsBeforeCollapse: 1,
+  separator: '/',
 };

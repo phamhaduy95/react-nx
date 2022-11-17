@@ -1,18 +1,47 @@
 .BreadCrumbs {
-    display: flex;
+  display: flex;
+  align-items: center;
+  caret-color: transparent;
+  color: var(--phDuylib-text-color);
 
-    @at-root .BreadCrumbs_Separator{
-        margin-right: 0.5rem;
-        
+  @at-root .BreadCrumbs__Separator {
+    margin-right: 0.5rem;
+  }
+  @at-root .BreadCrumbs__CollapsedIcon {
+    margin: 0 0.5em;
+    cursor: pointer;
+    display: flex;
+    width: max-content;
+    padding-top: 0.4em;
+    height: 1.2em;
+    display: flex;
+    align-items: center;
+    font-size: 0.8em;
+    font-weight: 500;
+    transition: background-color 0.15s ease;
+    &:focus-visible {
+      outline: none;
+      background-color: var(--phDuylib-secondary-color-hover);
     }
-    @at-root .BreadCrumbs_ExpansibleNotation{
-        margin: 0 0.5em;
-        cursor: pointer;
-        &:hover{
-            background-color: hsl(0, 0%, 80%);
-        }
+
+    &:hover {
+      background-color: var(--phDuylib-secondary-color-hover);
     }
-    @at-root .BreadCrumbs_Item {
-        margin-right: 0.5rem;
+  }
+  @at-root .BreadCrumbs__Item {
+    margin-right: 0.5rem;
+    > a {
+      all: unset;
     }
+
+    &:not(.is-active) {
+      cursor: pointer;
+      color: hsl(0, 0%, 50%);
+      &:focus-visible,
+      &:focus-within,
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
 }
