@@ -1,80 +1,92 @@
-$size: 2rem;
+$size: 2em;
 
 .Pagination {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .Pagination-default {
-    width: auto;
+  width: auto;
+  caret-color: transparent;
 
-    @at-root .Pagination__Icon {
-
-        &.Previous {
-            margin-right: 0.5rem;
-        }
-
-        &.Next {
-            margin-left: 0.5rem;
-        }
+  @at-root .Pagination__Icon {
+    > svg {
+      width: 0.8em;
+      height: 0.8em;
+    }
+    &.Previous {
+      margin-right: 0.5em;
     }
 
-    @at-root .Pagination__Item {
-        width: $size;
-        height: $size;
-        border-radius: 50%;
-        border: none;
-        margin-right: 0.5rem;
-        position: relative;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1em;
-        &:hover{
-            background-color: hsl(0, 0%, 85%);
-        }
-
-        &.Active {
-            background-color: hsla(221, 100%, 50%, 0.89);
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        cursor: pointer;
-
-        >* {
-            opacity: 0;
-            width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-        }
+    &.Next {
+      margin-left: 0.5em;
     }
-    @at-root .Pagination__Divider{
-        cursor: context-menu ;
-        margin-right:  0.5rem;
-        width:  $size;
-    
-        text-align: center;
-    }
-    @at-root .Pagination__Icon{
-        cursor: pointer;
-        width: 2rem;
-        height: 2rem;
-        border: none;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        &.Previous  {
-            margin-right: 0.5rem;
-        }
-        
-        &:hover{
-            background-color: hsl(0, 0%, 85%);
-            
-        }
+  }
+
+  @at-root .Pagination__Item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    cursor: pointer;
+    width: $size;
+    height: $size;
+    border: none;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    font-size: 1em;
+    transition: background-color 0.1s ease-in-out, transform 0.1s;
+    &:hover {
+      background-color: var(--phDuylib-secondary-color);
     }
 
-    
+    &.is-active {
+      background-color: var(--phDuylib-primary-color);
+      color: var(--phDuylib-text-color-dark);
+    }
+
+    &:focus-visible:not(.is-active) {
+      outline: none;
+      background-color: var(--phDuylib-secondary-color);
+      transform: translateY(-5%);
+    }
+
+    > * {
+      opacity: 0;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+  }
+  @at-root .Pagination__Divider {
+    color: var(--phDuylib-text-color);
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    margin: 0.5em;
+    width: 1.5em;
+    padding-top: 0.5em;
+    height: 1em;
+    > svg {
+      width: 0.8em;
+    }
+  }
+  @at-root .Pagination__Icon {
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &.Previous {
+      margin-right: 0.5rem;
+    }
+
+    &:hover {
+      background-color: hsl(0, 0%, 85%);
+    }
+  }
 }

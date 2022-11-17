@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { PaginationContext, usePaginationContext } from './PaginationContextProvider';
+import classNames from 'classnames';
+import { usePaginationStore } from './PaginationStore';
 
 type PaginationItemProps = {
   index: number;
@@ -7,21 +7,19 @@ type PaginationItemProps = {
 
 export default function PaginationItem(props: PaginationItemProps) {
   let { index } = props;
-
-  const { state, action } = usePaginationContext();
-  const { selectedItem,disabled } = state;
-  function toggleActive() {
-    if (selectedItem === index) return "Active";
-    return "";
-  }
+  const action = usePaginationStore((state) => state.action);
+  const isActive = usePaginationStore((state) => state.currentIndex === index);
+  const rootClassName = classNames('Pagination__Item', {
+    ['is-active']: isActive,
+  });
 
   function handleClick(event: React.MouseEvent) {
     event.preventDefault();
-    action.selectNew(index);
+    action.moveToNew(index);
   }
 
   return (
-    <button className={`Pagination__Item ${toggleActive()}`} disabled={disabled} onClick={handleClick}>
+    <button  className={rootClassName} onClick={handleClick} >
       {index}
     </button>
   );

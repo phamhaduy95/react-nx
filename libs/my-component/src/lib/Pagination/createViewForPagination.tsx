@@ -1,48 +1,6 @@
-import Pagination3dot from "./Pagination3dot";
-import PaginationItem from "./PaginationItem";
+import { Pagination3dot } from './Pagination3dot';
+import PaginationItem from './PaginationItem';
 const threeDot = Pagination3dot;
-
-// function createView(
-//   itemList: JSX.Element[],
-//   siblingCount: number,
-//   boundaryCount: number,
-//   active: number
-// ): JSX.Element[] {
-
-//   let breakpoint = 2 * (siblingCount + boundaryCount) + 3;
-
-//   let count = itemList.length;
-//   if (count <= breakpoint) {
-//     return itemList;
-//   }
-
-//   let pivot1 = siblingCount + boundaryCount + 1;
-//   let pivot2 = count - siblingCount - boundaryCount - 1;
-
-//   if (active <= pivot1) {
-//     let leftPart = itemList.slice(0, boundaryCount + siblingCount + 3);
-//     let rightPart = itemList.slice(count - boundaryCount, count);
-//     return [...leftPart, threeDot(), ...rightPart];
-//   }
-
-//   if (active < pivot2) {
-//     let leftPart = itemList.slice(0, boundaryCount);
-//     let rightPart = itemList.slice(count - boundaryCount, count);
-//     let middlePart = itemList.slice(
-//       active - siblingCount,
-//       active + siblingCount + 1
-//     );
-//     return [...leftPart, threeDot(), ...middlePart, threeDot(), ...rightPart];
-//   }
-
-//   /** the last  */
-//   let rightPart = itemList.slice(
-//     count - boundaryCount - siblingCount - 3,
-//     count
-//   );
-//   let leftPart = itemList.slice(0, boundaryCount);
-//   return [...leftPart, threeDot(), ...rightPart];
-// }
 
 /**
  * As the pagination index can be very large (for example 100). Its is not feasible to have all
@@ -65,7 +23,7 @@ export default function createViewForPagination(
   boundaryCount: number,
   active: number
 ) {
-  // maxNumber +=1;  
+  // maxNumber +=1;
   /** the breakpoint is the minimum number of pagination below which the pagination dont need to transform into shorter format. For example when breakpoint is 7 while maximum pagination index is 5 then we have [ 1 2 3 4 5 ] */
   let breakpoint = 2 * (siblingCount + boundaryCount) + 3;
   // 3 here means 3 pagination numbers which always be showed.These three are minimum index (0) , maximum index and the active index.
@@ -75,7 +33,7 @@ export default function createViewForPagination(
   }
 
   /** pivot1 and pivot2 is two breakpoints at which the presentation of the pagination will be changed accordingly to the value of active index. */
-  let pivot1 = 1+ siblingCount + boundaryCount + 1;
+  let pivot1 = 1 + siblingCount + boundaryCount + 1;
   let pivot2 = maxNumber - siblingCount - boundaryCount;
 
   /** when active index is smaller or equal to pivot1, we slit the array of pagination numbers
@@ -91,7 +49,7 @@ export default function createViewForPagination(
   /** when active index is in between the pivot1 and the pivot2, we need to slit the array of pagination numbers into three parts. Each part is separated by the three dot notation. The middle part consists of active index which is in between some adjacent sibling indices.
    */
   if (active < pivot2) {
-    let leftPart = createPaginationItems(1, boundaryCount+1);
+    let leftPart = createPaginationItems(1, boundaryCount + 1);
     let rightPart = createPaginationItems(maxNumber - boundaryCount, maxNumber);
     let middlePart = createPaginationItems(
       active - siblingCount,
@@ -104,7 +62,7 @@ export default function createViewForPagination(
     maxNumber - boundaryCount - siblingCount - 3,
     maxNumber
   );
-  let leftPart = createPaginationItems(1, boundaryCount+1);
+  let leftPart = createPaginationItems(1, boundaryCount + 1);
   return [...leftPart, threeDot(), ...rightPart];
 }
 
