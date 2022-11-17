@@ -9,6 +9,7 @@ import { giveIndexForBreadCrumbsItem } from './BreadCrumbItem';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { BreadCrumbsSeparator } from './BreadCrumbsSeparator';
 import classNames from 'classnames';
+import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 
 export type BreadCrumbsProps = {
   children: JSX.Element[] | JSX.Element;
@@ -18,9 +19,10 @@ export type BreadCrumbsProps = {
   itemsBeforeCollapse?: number;
   maxItems?: number;
   separator?: string;
+  onExpanded?: (isExpanded: boolean) => void;
 };
 
-const defaultProps: Required<BreadCrumbsProps> = {
+const defaultProps: Required<BreadCrumbsProps> = Object.freeze({
   children: <></>,
   className: '',
   maxItems: 3,
@@ -28,7 +30,8 @@ const defaultProps: Required<BreadCrumbsProps> = {
   collapsed: false,
   itemsAfterCollapse: 1,
   itemsBeforeCollapse: 1,
-};
+  onExpanded() {},
+});
 
 export function BreadCrumbs(props: BreadCrumbsProps) {
   return (
@@ -41,7 +44,7 @@ export function BreadCrumbs(props: BreadCrumbsProps) {
 function WrappedBreadCrumbs(props: BreadCrumbsProps) {
   const newProps = { ...defaultProps, ...props };
   const action = useBreadCrumbsStore((state) => state.action);
-  const { children, className, separator, collapsed } = newProps;
+  const { children, className, separator, collapsed, onExpanded } = newProps;
   const isExpanded = useBreadCrumbsStore((state) => state.isExpanded);
   const indexedItems = giveIndexForBreadCrumbsItem(children);
   const itemsWithSeparator = addSeparatorToItem(indexedItems, separator);
@@ -54,6 +57,10 @@ function WrappedBreadCrumbs(props: BreadCrumbsProps) {
   useEffect(() => {
     action.toggleExpand(!collapsed);
   }, [collapsed]);
+
+  useEffectSkipFirstRender(() => {
+    onExpanded(isExpanded);
+  }, [isExpanded]);
 
   const rootClassName = classNames('BreadCrumbs', className);
 
