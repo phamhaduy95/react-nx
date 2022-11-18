@@ -5,6 +5,7 @@
     "chart": "libs/chart",
     "material-component": "libs/material-component",
     "my-component": "libs/my-component",
+    "portfolio": "apps/portfolio",
     "test-lib": "apps/test-lib",
     "todo-app": "apps/todo-app"
   }
