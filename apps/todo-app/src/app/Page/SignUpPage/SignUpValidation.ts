@@ -65,11 +65,11 @@ const confirmPasswordCheckMessage: MixedLocale['required'] = (a) => ({
 });
 
 const schema: SchemaOf<SignUpData> = object().shape({
-  email: string().required(requiredMessage).email(emailCheckMessage),
+  email: string().email(emailCheckMessage).required(requiredMessage),
   password: string()
     .matches(/[A-Z]+/, upperCaseRequiredMessage)
     .matches(/[1-9]+/, numberRequiredMessage)
-    .matches(/[!@#$%^&*(),.?":{}|<>]/, specialCharacterRequiredMessage)
+    .matches(/[!@#$%^&*(),.?":{}|<>]+/, specialCharacterRequiredMessage)
     .min(8, minStrLengthMessage)
     .required(requiredMessage),
   confirmPassword: string()
@@ -83,8 +83,8 @@ const schema: SchemaOf<SignUpData> = object().shape({
     )
     .required(requiredMessage),
   displayName: string()
-    .max(20, maxStrLengthMessage)
     .matches(/[A-Za-z]+/, letterRequiredMessage)
+    .max(20, maxStrLengthMessage)
     .required(requiredMessage),
 });
 
