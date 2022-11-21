@@ -110,7 +110,7 @@ export const TextField = memo(React.forwardRef<HTMLDivElement, TextFieldProps>(
       setInputValue(value.toString());
     }, [value]);
 
-    useEffect(()=>{
+    useEffectSkipFirstRender(()=>{
        onValueChange(inputValue,name)   
     },[inputValue])
 
