@@ -8,10 +8,18 @@ export function useUserAuthenticate() {
   const response = appApi.useAuthenticateQuery('', {});
 
   useLayoutEffect(() => {
-    const error = response.error as FetchBaseQueryError;
-    if (error) {
-      navigate('/login');
-      return;
+    const { isError } = response;
+    if (isError) {
+      const error = response.error as FetchBaseQueryError;
+      switch (error.status) {
+        case 'FETCH_ERROR':
+          navigate('/fail-connection');
+          return;
+        case 401: {
+          navigate('/login');
+          return;
+        }
+      }
     }
   }, [response]);
   return response;

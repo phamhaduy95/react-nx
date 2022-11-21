@@ -1,0 +1,24 @@
+.FailedConnectionPage{
+    position: relative;
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    font-family: "Inter",sans-serif;
+    font-size: var(--phDuylib-font-size-big); 
+    >.PageContent{
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        margin: 15vh auto auto auto;
+        > img {
+            margin: 0 auto 2em auto;
+            width: 250px;
+            height: 250px;
+        }
+        > p {
+           text-align: center;
+           font-size: 1.5em;
+           font-weight: 600;
+        }
+    }
+}

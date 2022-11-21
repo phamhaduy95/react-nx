@@ -9,6 +9,7 @@ import {
   MonthScheduleSection,
   WeekScheduleSection,
 } from './Page/Calendar';
+import FailedConnectionPage from './Page/FailedConnectionPage/FailedConnectionPage';
 import { HomePage } from './Page/HomePage/HomePage';
 import { LoginPage } from './Page/Login/LoginPage';
 import { NotFoundPage } from './Page/NotFoundPage';
@@ -41,6 +42,7 @@ export const appRouter = createBrowserRouter(
       <Route path="login" element={<LoginPage />} />
       <Route path="sign-up" element={<SignUpPage />} />
       <Route path="test" element={<TestPage />} />
+      <Route path="fail-connection" element={<FailedConnectionPage />} />
       <Route path="*" element={<NotFoundPage />}></Route>
     </>
   )
