@@ -9,25 +9,29 @@
   caret-color: transparent;
   > .SignUpForm {
     display: flex;
-    padding: 1.5rem 2rem;
     flex-direction: column;
     width: 450px;
+    @include media-breakpoint-down($sm) {
+      width: 90vw;
+    }
     height: max-content;
-    margin: 50px auto 0 auto;
+    padding: 1.5rem 2rem;
     border-radius: 5px;
+    margin: 50px auto 0 auto;
     background-color: white;
 
     > .SignUpForm__Title {
-      margin-bottom: 1.5rem;
-      font-size: 1.6rem;
-      font-weight: 600;
       align-self: center;
+      margin-bottom: 1.5em;
+      font-size: 1.6em;
+      font-weight: 600;
     }
     > .SignUpForm__Input {
-      margin: 0 auto 0.75rem auto;
       width: 90%;
+      margin: 0 auto 0.75em auto;
+
       .TextField__Label {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.5em;
         font-weight: 500;
       }
       .TextField__HelperText {
@@ -42,7 +46,7 @@
         border-radius: unset;
 
         > .TextField__Input {
-          font-size: 1.2rem;
+          font-size: 1.2em;
           caret-color: auto;
         }
 
@@ -67,7 +71,7 @@
     }
     > .SignUpForm__ConnectionErrorMessage {
       color: hsla(0, 80%, 50%, 0.9);
-      font-size: 0.85rem;
+      font-size: 0.85em;
     }
 
     > .SignUpForm__ButtonBox {
@@ -77,7 +81,7 @@
 
       > .SignUpForm__SubmitButton {
         margin-left: auto;
-        }
+      }
 
       > .SignUpForm__ClearButton {
         margin-left: 1rem;
