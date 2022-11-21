@@ -23,8 +23,8 @@ const initialErrorMessage: LoginErrorsMessage = Object.freeze({
 });
 
 const initialLoginData: LoginData = Object.freeze({
-  email: '',
-  password: '',
+  email: 'guest@mail.com',
+  password: 'guest',
 });
 
 export function LoginPageStoreProvider(props: { children: JSX.Element }) {
