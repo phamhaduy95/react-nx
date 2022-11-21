@@ -1,6 +1,7 @@
 import { MutableRefObject, useEffect, useState } from 'react';
+import { useEffectSkipFirstRender } from '../utils/useEffectSkipFirstRender';
 import { CollapsibleProps } from './Collapsible';
-import { useEffectSkipFirstRender } from '../../../../../apps/todo-app/src/utils/hooks';
+
 
 export function useControlElementCollapsingState(
   ref: MutableRefObject<HTMLElement | null>,
