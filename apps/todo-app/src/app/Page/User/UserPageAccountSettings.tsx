@@ -10,6 +10,7 @@ import { UserPageSectionDivider } from './UserPageSectionDivider';
 import { appApi } from 'apps/todo-app/src/redux/appApi';
 import { ModalType, ReduxUserData } from '../../../redux/types';
 import { useAppAction, useAppDispatch } from 'apps/todo-app/src/redux';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 
 const defaultUserData: ReduxUserData = Object.freeze({
   id: '',
@@ -84,6 +85,13 @@ function UserPageAccountDataSection(props: Props) {
     const { isError, isSuccess } = result;
     if (isError) {
       dispatch(action.AppModal.openModal(ModalType.error));
+      const error = result.error as FetchBaseQueryError;
+      switch (error.status) {
+        case 'FETCH_ERROR': {
+          dispatch(action.AppModal.updateMessages(['cannot connect to server']));
+          break;
+        }
+      }
       result.reset();
       return;
     }

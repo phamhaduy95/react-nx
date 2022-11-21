@@ -53,11 +53,25 @@ export const UserPageUpdatePasswordSection = memo(() => {
 
     if (isError) {
       dispatch(action.AppModal.openModal(ModalType.error));
-      if (error.status === 400) {
-        setInputErrors((prev) => ({
-          ...prev,
-          oldPassword: 'incorrect password',
-        }));
+      switch (error.status) {
+        case 400: {
+          setInputErrors((prev) => ({
+            ...prev,
+            oldPassword: 'incorrect password',
+          }));
+          break;
+        }
+        case "FETCH_ERROR":{
+          dispatch(action.AppModal.openModal(ModalType.error));
+          dispatch(action.AppModal.updateMessages(["cannot connect to server"]));
+          break;
+        }
+        case 403:{
+          dispatch(action.AppModal.openModal(ModalType.error));
+          const data = error.data as any;
+          dispatch(action.AppModal.updateMessages(data.message));
+          break;
+        }
       }
       result.reset();
       return;

@@ -20,11 +20,11 @@ const defaultInput: UserEmailInput = Object.freeze({
 });
 
 type Props = {
-  email?:string;
-}
+  email?: string;
+};
 
-export const UserPageUpdateEmailSection = memo((props:Props) => {
-  const {email} = props;
+export const UserPageUpdateEmailSection = memo((props: Props) => {
+  const { email } = props;
   const action = useAppAction();
   const dispatch = useAppDispatch();
   const [isExpanded, setExpanded] = useState(false);
@@ -41,12 +41,21 @@ export const UserPageUpdateEmailSection = memo((props:Props) => {
     const { isError, isSuccess } = result;
     if (isError) {
       const error = result.error as FetchBaseQueryError;
-      if (error.status === 400) {
-        const data = error.data as Partial<ErrorMessage<UserEmailInput>>;
-        setErrors((prev) => ({ ...prev, ...data }));
+      switch (error.status) {
+        case 400: {
+          const data = error.data as Partial<ErrorMessage<UserEmailInput>>;
+          setErrors((prev) => ({ ...prev, ...data }));
+          dispatch(action.AppModal.openModal(ModalType.error));
+          return;
+        }
+        case 403: {
+          const data = error.data as any;
+          const message = data.message;
+          console.log(message);
+          dispatch(action.AppModal.openModal(ModalType.error));
+          dispatch(action.AppModal.updateMessages(message));
+        }
       }
-      dispatch(action.AppModal.openModal(ModalType.error));
-      return;
     }
     if (isSuccess) {
       dispatch(action.AppModal.openModal(ModalType.success));
