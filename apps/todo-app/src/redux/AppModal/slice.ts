@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { UpdateMessagesAction } from './type';
 import {
   AppModalState,
   ModalType,
@@ -10,6 +11,7 @@ const initialState: AppModalState = {
   isOpen: false,
   modalType: ModalType.none,
   closeOnClickOutside: true,
+  messages: [],
 };
 
 const slice = createSlice({
@@ -17,9 +19,10 @@ const slice = createSlice({
   initialState: initialState,
   reducers: {
     openModal: (state, action: ToggleModalOpenAction) => {
-      const  modalType  = action.payload;
+      const type = action.payload;
       state.isOpen = true;
-      state.modalType = modalType;
+      state.modalType = type;
+      state.messages = [];
     },
     toggleCloseOnClickOutside: (
       state,
@@ -31,6 +34,10 @@ const slice = createSlice({
     closeModal: (state) => {
       state.isOpen = false;
       state.closeOnClickOutside = false;
+    },
+    updateMessages: (state, action: UpdateMessagesAction) => {
+      const message = action.payload;
+      state.messages = message;
     },
   },
 });

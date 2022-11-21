@@ -5,16 +5,30 @@ import {
   ModalFooter,
   ModalHeader,
 } from '@phduylib/my-component';
-import { useAppAction, useAppDispatch } from '../../redux';
+import { useAppAction, useAppDispatch, useAppSelector } from '../../redux';
 import CloseIcon from '@mui/icons-material/Close';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import './NotificationModal.scss';
+import shallow from 'zustand/shallow';
 
 export function ErrorModal() {
   const dispatch = useAppDispatch();
   const action = useAppAction();
   const closeSignal = () => {
     dispatch(action.AppModal.closeModal());
+  };
+
+  const messages = useAppSelector((state) => state.AppModal.messages, shallow);
+  const renderMessage = () => {
+    if (messages.length === 0)
+      return <span className="AppModal__Message --Error">Error!</span>;
+    return messages.map((m, i) => {
+      return (
+        <span className="AppModal__Message --Error" key={i}>
+          {m}
+        </span>
+      );
+    });
   };
 
   return (
@@ -35,7 +49,7 @@ export function ErrorModal() {
         <div className="AppModal__ErrorIcon">
           <ErrorOutlineIcon />
         </div>
-        <span className="AppModal__Message --Error">Error!</span>
+        {renderMessage()}
       </ModalBody>
       <ModalFooter className="AppModal__Footer">
         <Button className="AppModal__SubmitButton" onClick={closeSignal}>

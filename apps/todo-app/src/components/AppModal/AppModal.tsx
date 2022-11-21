@@ -16,6 +16,7 @@ import { AddAndUpdateCategoryModal } from '../CategoryModal/AddAndUpdateCategory
 import { ManageCategoriesModal } from '../CategoryModal';
 import { DeleteCategoryModal } from '../CategoryModal/DeleteCategoryModal';
 import CategoryFilterModal from '../CategoryFilterModal/CategoryFilterModal';
+import { useRegisterResultToModal } from './useRegisterResultToModal';
 
 export function AppModal() {
   const action = useAppAction();
@@ -54,60 +55,13 @@ export function AppModal() {
     fixedCacheKey: 'shared-delete-category',
   });
 
-  useEffect(() => {
-    if (
-      updateResult.isLoading ||
-      addResult.isLoading ||
-      deleteResult.isLoading ||
-      addCategoryResult.isLoading ||
-      updateCategoryResult.isLoading ||
-      deleteCategoryResult.isLoading
-    ) {
-      dispatch(action.AppModal.openModal(ModalType.loading));
-      return;
-    }
-    if (
-      updateResult.isSuccess ||
-      addResult.isSuccess ||
-      deleteResult.isSuccess ||
-      addCategoryResult.isSuccess ||
-      updateCategoryResult.isSuccess ||
-      deleteCategoryResult.isSuccess
-    ) {
-      dispatch(action.AppModal.openModal(ModalType.success));
-      return;
-    }
-    if (
-      updateResult.isError ||
-      addResult.isError ||
-      deleteResult.isError ||
-      addCategoryResult.isError ||
-      updateCategoryResult.isError ||
-      deleteCategoryResult.isError
-    ) {
-      dispatch(action.AppModal.openModal(ModalType.error));
-      return;
-    }
-  }, [
-    updateResult,
-    addResult,
-    deleteResult,
-    addCategoryResult,
-    updateCategoryResult,
-    deleteCategoryResult,
-  ]);
 
-  useEffect(() => {
-    if (isOpen) {
-      updateResult.reset();
-      addResult.reset();
-      deleteResult.reset();
-      addCategoryResult.reset();
-      updateCategoryResult.reset();
-      deleteCategoryResult.reset();
-    }
-    dispatch(action.AppModal.toggleCloseOnClickOutside(true));
-  }, [isOpen]);
+  useRegisterResultToModal(updateResult);
+  useRegisterResultToModal(addResult);
+  useRegisterResultToModal(deleteResult);
+  useRegisterResultToModal(addCategoryResult);
+  useRegisterResultToModal(updateCategoryResult);
+  useRegisterResultToModal(deleteCategoryResult);
 
   const renderModalContent = () => {
     switch (modalType) {
