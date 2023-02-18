@@ -1,5 +1,19 @@
 import { Omit } from "@reduxjs/toolkit/dist/tsHelpers";
 
+export const enum ModalType {
+  none = "none",
+  success = "success",
+  error = "error",
+  loading = "loading",
+  addAndUpdateTask = "addAndUpdateTask",
+  deleteTask = "deleteTask",
+  addAndUpdateCategory = "addAndUpdateCategory",
+  manageCategories = "manageCategories",
+  deleteCategory = "deleteCategory",
+  filterCategory = "filterCategory"
+}
+
+
 export type TaskDataType = {
     taskId: string;
     categoryId: string;

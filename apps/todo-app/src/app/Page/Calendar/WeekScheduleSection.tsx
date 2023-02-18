@@ -1,6 +1,5 @@
 import {
   convertTaskDataIntoReduxState,
-  ModalType,
 } from 'apps/todo-app/src/redux';
 import { useCallback, useMemo } from 'react';
 import { shallowEqual } from 'react-redux';
@@ -9,6 +8,7 @@ import { convertWeekScheduleDataFromReduxToProps } from '../../../redux/appApi/u
 import { WeekScheduleProps, WeekSchedule } from '../../../components';
 import { appApi } from '../../../redux/appApi/appApi';
 import { useAppAction, useAppDispatch, useAppSelector } from '../../../redux';
+import { ModalType } from 'apps/todo-app/src/type/model';
 
 export function WeekScheduleSection() {
   const dispatch = useAppDispatch();

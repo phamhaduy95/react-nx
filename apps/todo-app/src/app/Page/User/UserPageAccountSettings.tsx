@@ -8,9 +8,10 @@ import {
 } from '@phduylib/my-component';
 import { UserPageSectionDivider } from './UserPageSectionDivider';
 import { appApi } from 'apps/todo-app/src/redux/appApi';
-import { ModalType, ReduxUserData } from '../../../redux/types';
+import { ReduxUserData } from '../../../redux/types';
 import { useAppAction, useAppDispatch } from 'apps/todo-app/src/redux';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
+import { ModalType } from 'apps/todo-app/src/type/model';
 
 const defaultUserData: ReduxUserData = Object.freeze({
   id: '',

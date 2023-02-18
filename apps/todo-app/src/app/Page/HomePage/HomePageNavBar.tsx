@@ -5,7 +5,6 @@ import {
   ToolTips,
 } from '@phduylib/my-component';
 import {
-  ModalType,
   useAppAction,
   useAppDispatch,
 } from 'apps/todo-app/src/redux';

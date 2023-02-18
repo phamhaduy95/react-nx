@@ -4,5 +4,5 @@
 import { EnvironmentType } from "./type";
 
 export const environment:EnvironmentType = {
-  apiURL: "http://localhost:5113/api",
+  apiURL: "http://localhost:88/api",
 };

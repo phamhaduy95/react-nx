@@ -1,5 +1,4 @@
 import {
-  ModalType,
   useAppAction,
   useAppDispatch,
 } from 'apps/todo-app/src/redux';
@@ -18,6 +17,7 @@ import {
   LoadingButton,
   TextField,
 } from '@phduylib/my-component';
+import { ModalType } from 'apps/todo-app/src/type/model';
 
 const defaultErrorMessage: ErrorMessage<PasswordInput> = Object.freeze({
   confirmPassword: false,

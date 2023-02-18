@@ -9,10 +9,11 @@ import {
 import { useAppAction, useAppDispatch, useAppSelector } from '../../redux';
 import CloseIcon from '@mui/icons-material/Close';
 import { shallowEqual } from 'react-redux';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { validateCategoryData } from './categoryDataValidation';
 import './CategoryModal.scss';
 import { appApi } from '../../redux/appApi/appApi';
+
 
 export function AddAndUpdateCategoryModal() {
   const action = useAppAction();
@@ -25,16 +26,14 @@ export function AddAndUpdateCategoryModal() {
     (state) => state.AddAndUpdateCategoryModal.errorMessage,
     shallowEqual
   );
- 
 
   const type = useAppSelector((state) => state.AddAndUpdateCategoryModal.type);
 
   const [addCategory] = appApi.useAddCategoryMutation({
-    fixedCacheKey: 'shared-add-category',
+    fixedCacheKey: 'shared',
   });
-
   const [updateCategory] = appApi.useUpdateCategoryMutation({
-    fixedCacheKey: 'shared-update-category',
+    fixedCacheKey: 'shared',
   });
 
   const handleNameInputChange = useCallback((value: string) => {
@@ -61,7 +60,7 @@ export function AddAndUpdateCategoryModal() {
     );
   };
 
-  const closeModalSignal = () => {
+  const handleUserCloseModal = () => {
     dispatch(action.AppModal.closeModal());
   };
 
@@ -95,7 +94,7 @@ export function AddAndUpdateCategoryModal() {
         <div className="AppModal__HeaderControl">
           <IconButton
             className="AppModal__CloseButton"
-            onClick={closeModalSignal}
+            onClick={handleUserCloseModal}
             variant="secondary"
           >
             <CloseIcon />

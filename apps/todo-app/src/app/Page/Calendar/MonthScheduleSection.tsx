@@ -15,7 +15,8 @@ import {
   MonthScheduleProps,
 } from '../../../components/MonthSchedule/MonthSchedule';
 import { createPredicateFunctionFromFilterOptions } from '../../../redux/CalendarApp';
-import { ModalType } from 'apps/todo-app/src/redux';
+import { ModalType } from 'apps/todo-app/src/type/model';
+
 
 export function MonthScheduleSection() {
   const dispatch = useAppDispatch();

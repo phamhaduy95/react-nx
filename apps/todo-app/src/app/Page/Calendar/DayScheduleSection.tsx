@@ -15,7 +15,8 @@ import {
   convertDayScheduleDataFromReduxToProps,
   convertTaskDataIntoReduxState,
 } from '../../../redux/appApi/utils';
-import { ModalType } from 'apps/todo-app/src/redux';
+import { ModalType } from 'apps/todo-app/src/type/model';
+
 
 export function DayScheduleSection() {
   const dispatch = useAppDispatch();

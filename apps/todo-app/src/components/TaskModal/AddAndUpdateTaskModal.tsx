@@ -18,7 +18,6 @@ import {
   useAppDispatch,
   useAppAction,
   useAppSelector,
-  ModalType,
 } from '../../redux';
 import CloseIcon from '@mui/icons-material/Close';
 import { appApi } from '../../redux/appApi';
@@ -27,43 +26,42 @@ import { validateTaskData } from './TaskDataValidation';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { convertTaskReduxDataIntoTaskDataInput } from './utils';
 import './TaskModal.scss';
+import { ModalType } from '../../type/model';
 
 export function AddAndUpdateTaskModal() {
   const dispatch = useAppDispatch();
   const action = useAppAction();
-  const closeModalSignal = () => {
-    dispatch(action.AppModal.closeModal());
-  };
+  
+  const errorsMessage = useAppSelector(
+    (state) => state.TaskEditModal.errorMessages,
+    shallowEqual
+  );
   const reduxTaskData = useAppSelector((state) => state.TaskEditModal.taskData);
   const type = useAppSelector((state) => state.TaskEditModal.type);
+  
+  const [updateTask, ] = appApi.useUpdateTaskMutation({fixedCacheKey:"shared"});
+  const [addTask] = appApi.useAddTaskMutation({fixedCacheKey:"shared"});
 
-  const [updateTask] = appApi.useUpdateTaskMutation({
-    fixedCacheKey: 'shared-update-task',
-  });
-  const [addTask] = appApi.useAddTaskMutation({
-    fixedCacheKey: 'shared-add-task',
-  });
   const { data: categories } = appApi.useGetAllForUserQuery(undefined, {});
 
   const taskData = useMemo(
     () => convertTaskReduxDataIntoTaskDataInput(reduxTaskData),
     [reduxTaskData]
   );
-
-  const errorsMessage = useAppSelector(
-    (state) => state.TaskEditModal.errorMessages,
-    shallowEqual
-  );
+  
+  const handleUserCloseModal = () => {
+    dispatch(action.AppModal.closeModal());
+  }; 
 
   const handleTitleInputChange: TextFieldProps['onValueChange'] = (value) => {
     dispatch(action.TaskEditModal.updateTaskData({ title: value }));
   };
 
-  const handleCategoryChange: SelectProps['onSelect'] = (value) => {
+  const handleCategoryInputChange: SelectProps['onSelect'] = (value) => {
     dispatch(action.TaskEditModal.updateTaskData({ categoryId: value }));
   };
 
-  const handleStartDateChange: DateTimeRangePickerProps['onStartTimeChange'] = (
+  const handleStartDateInputChange: DateTimeRangePickerProps['onStartTimeChange'] = (
     date
   ) => {
     const dateStr = date === null ? '' : date.toISOString();
@@ -92,7 +90,7 @@ export function AddAndUpdateTaskModal() {
     }
     dispatch(action.TaskEditModal.updateErrorMessage(error));
   };
-  const handleClear = () => {
+  const handleClearButtonClick = () => {
     dispatch(action.TaskEditModal.clearErrorMessage());
     dispatch(action.TaskEditModal.clearTaskData());
   };
@@ -135,24 +133,24 @@ export function AddAndUpdateTaskModal() {
     });
   };
 
-  const renderTitle = () => {
+  function renderModalTitle() {
     switch (type) {
       case 'update':
         return 'Update Task';
       case 'add':
         return 'Add Task';
     }
-  };
+  }
 
   return (
     <>
       <ModalHeader className="AppModal__Header">
-        <span className="AppModal__Title">{renderTitle()}</span>
+        <span className="AppModal__Title">{renderModalTitle()}</span>
         <div className="AppModal__HeaderControl">
           {DeleteTaskButton}
           <IconButton
             className="AppModal__CloseButton"
-            onClick={closeModalSignal}
+            onClick={handleUserCloseModal}
             variant="secondary"
           >
             <CloseIcon />
@@ -171,7 +169,7 @@ export function AddAndUpdateTaskModal() {
           className="AppModal__CategorySelect"
           label="category:"
           autoWidth
-          onSelect={handleCategoryChange}
+          onSelect={handleCategoryInputChange}
           defaultValue={taskData.categoryId}
           error={errorsMessage.categoryId}
         >
@@ -179,7 +177,7 @@ export function AddAndUpdateTaskModal() {
         </Select>
         <DateTimeRangePicker
           className="AppModal__DateTimeRange"
-          onStartTimeChange={handleStartDateChange}
+          onStartTimeChange={handleStartDateInputChange}
           onEndTimeChange={handleEndDateChange}
           startDate={taskData.startTime}
           endDate={taskData.endTime}
@@ -197,7 +195,7 @@ export function AddAndUpdateTaskModal() {
         </Button>
         <Button
           className="AppModal__ClearButton"
-          onClick={handleClear}
+          onClick={handleClearButtonClick}
           type="outlined"
         >
           Clear

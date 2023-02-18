@@ -8,11 +8,12 @@ import {
 } from '@phduylib/my-component';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAppAction, useAppDispatch } from '../../redux';
-import { ModalType, ReduxCategoryData } from '../../redux/types';
+import { ReduxCategoryData } from '../../redux/types';
 import { appApi } from '../../redux/appApi/appApi';
 import DeleteForever from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import './CategoryModal.scss';
+import { ModalType } from '../../type/model';
 
 const EmptyCategoriesArray: ReduxCategoryData[] = [];
 

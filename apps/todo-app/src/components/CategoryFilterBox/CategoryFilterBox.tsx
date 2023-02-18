@@ -7,7 +7,6 @@ import {
 } from '@phduylib/my-component';
 import React, { memo, useCallback, useState } from 'react';
 import {
-  ModalType,
   ReduxCategoryData,
   useAppAction,
   useAppDispatch,
@@ -15,6 +14,7 @@ import {
 import { appApi } from '../../redux/appApi';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import './CategoryFilterBox.scss';
+import { ModalType } from '../../type/model';
 
 const SHOW_LIMIT = 4;
 

@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
-import { ModalType, useAppAction, useAppDispatch, useAppSelector } from '../../redux';
+import { useAppAction, useAppDispatch, useAppSelector } from '../redux';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
+import { ModalType } from '../type/model';
+
 
 export function useRegisterResultToModal(result: any) {
   const action = useAppAction();
@@ -8,6 +10,7 @@ export function useRegisterResultToModal(result: any) {
   const isOpen = useAppSelector((state) => state.AppModal.isOpen);
   useEffect(() => {
     const { isLoading, isError, isSuccess } = result;
+    // console.table({isSuccess,isLoading, isError});
     if (isLoading) {
       dispatch(action.AppModal.openModal(ModalType.loading));
       return;

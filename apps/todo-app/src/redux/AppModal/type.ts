@@ -1,17 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-
-export enum ModalType {
-  none,
-  success,
-  error,
-  loading,
-  addAndUpdateTask,
-  deleteTask,
-  addAndUpdateCategory,
-  manageCategories,
-  deleteCategory,
-  filterCategory
-}
+import { ModalType } from '../../type/model';
 
 export type AppModalState = {
   isOpen: boolean;

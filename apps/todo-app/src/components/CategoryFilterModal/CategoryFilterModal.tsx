@@ -11,7 +11,6 @@ export default function CategoryFilterModal() {
     dispatch(action.AppModal.closeModal());
   };
 
-
   return (
     <>
       <ModalHeader className="AppModal__Header">

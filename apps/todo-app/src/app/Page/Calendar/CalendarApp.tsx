@@ -22,7 +22,8 @@ import { getDayString, getWeekString, getMonthString } from './utils';
 import { AppModal } from '../../../components/AppModal/AppModal';
 import classNames from 'classnames';
 import MenuIcon from '@mui/icons-material/Menu';
-import { ModalType } from 'apps/todo-app/src/redux';
+import { ModalType } from 'apps/todo-app/src/type/model';
+
 
 const calendarTypes = ['Month', 'Week', 'Day'];
 // Note: since the Redux toolkit integrate the immer lib for handling updating state, the state within redux store will be freezed so  that it cannot be altered or mutated. As the result, any future code which {use state should use  tactic copy.

@@ -15,10 +15,10 @@ export function DeleteTaskModal() {
   const dispatch = useAppDispatch();
   const taskId = useAppSelector((state) => state.TaskEditModal.taskData.taskId);
   const [deleteTask] = appApi.useDeleteTaskMutation({
-    fixedCacheKey: 'shared-delete-task',
+    fixedCacheKey: 'shared',
   });
 
-  const closeModalSignal = () => {
+  const handleUserCloseModal = () => {
     dispatch(action.AppModal.closeModal());
   };
 
@@ -29,6 +29,7 @@ export function DeleteTaskModal() {
   const handleCancelButtonClick = () => {
     dispatch(action.TaskEditModal.switchModalType('update'));
   };
+
   return (
     <>
       <ModalHeader className="AppModal__Header">
@@ -36,7 +37,7 @@ export function DeleteTaskModal() {
         <div className="AppModal__HeaderControl">
           <IconButton
             className="AppModal__CloseButton"
-            onClick={closeModalSignal}
+            onClick={handleUserCloseModal}
             variant="secondary"
           >
             <CloseIcon />

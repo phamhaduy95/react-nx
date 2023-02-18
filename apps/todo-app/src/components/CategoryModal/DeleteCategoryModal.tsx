@@ -5,11 +5,11 @@ import {
   ModalFooter,
   ModalHeader,
 } from '@phduylib/my-component';
-import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { ModalType, useAppAction, useAppDispatch } from '../../redux';
+import { useAppAction, useAppDispatch } from '../../redux';
 import { appApi } from '../../redux/appApi/appApi';
 import { useAppSelector } from '../../redux/rootStore';
+import { ModalType } from '../../type/model';
 
 export function DeleteCategoryModal() {
   const action = useAppAction();
@@ -18,16 +18,13 @@ export function DeleteCategoryModal() {
     (state) => state.DeleteCategoryModal.taskToDelete
   );
 
-  const [deleteCategory] = appApi.useDeleteCategoryMutation({
-    fixedCacheKey: 'shared-delete-category',
-  });
-
+  const [deleteCategory,] = appApi.useDeleteCategoryMutation({fixedCacheKey:"shared"});
   const closeModalSignal = () => {
     dispatch(action.AppModal.closeModal());
   };
 
-  const handleCancelClick = () => {
-    dispatch(action.AppModal.openModal(ModalType.manageCategories));
+  const handleCancelClickToGoBackToManageCategoryModal = () => {
+    dispatch(action.AppModal.openModal(ModalType.manageCategories)); 
   };
 
   const handleSubmitClick = async () => {
@@ -57,7 +54,7 @@ export function DeleteCategoryModal() {
         </Button>
         <Button
           className="AppModal__CancelButton"
-          onClick={handleCancelClick}
+          onClick={handleCancelClickToGoBackToManageCategoryModal}
           type="outlined"
         >
           Cancel

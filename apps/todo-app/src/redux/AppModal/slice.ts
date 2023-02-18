@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { ModalType } from '../../type/model';
 import { UpdateMessagesAction } from './type';
 import {
   AppModalState,
-  ModalType,
   ToggleModalOpenAction,
   ToggleCloseOnClickOutsideAction,
 } from './type';

@@ -7,7 +7,8 @@ import { LoadingButton } from '../../../../../../libs/my-component/src/lib/Butto
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import { Preview } from '@mui/icons-material';
 import { useAppAction, useAppDispatch } from '../../../redux/rootStore';
-import { ModalType } from 'apps/todo-app/src/redux';
+import { ModalType } from 'apps/todo-app/src/type/model';
+
 
 const defaultErrorMessage: ErrorMessage<UserEmailInput> = Object.freeze({
   newEmail: false,
