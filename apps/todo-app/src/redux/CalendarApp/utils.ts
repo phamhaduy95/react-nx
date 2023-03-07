@@ -55,7 +55,7 @@ export function createPredicateFunctionFromFilterOptions(
   const predicate = (task: ReduxTaskData) => {
     let result = false;
     for (let c of categories) {
-      if (c.categoryId === task.categoryId) {
+      if (c.categoryId === String(task.categoryId)) {
         result = true;
         break;
       }

@@ -53,6 +53,8 @@ $gap-between-input: 0.5rem;
 
         @at-root .ManageCategoriesModal__Message {
           font-style: italic;
+          text-align: center;
+          margin-top: 1em;
         }
 
         @at-root .CategoryModal__CategoryCard {

@@ -10,11 +10,12 @@ export type TaskDataInput = Omit<
 > & {
   startTime: Date | null;
   endTime: Date | null;
+  categoryId:string
 };
 
 export interface TaskDataSchema {
   title: string;
-  categoryId: string;
+  categoryId: string | null;
   startTime: Date | null;
   endTime: Date | null;
   description: string;

@@ -16,7 +16,7 @@ export const enum ModalType {
 
 export type TaskDataType = {
     taskId: string;
-    categoryId: string;
+    categoryId: string|null;
     title: string;
     userId:string;
     startTime: Date;

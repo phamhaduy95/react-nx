@@ -35,7 +35,7 @@ export function ManageCategoriesModal() {
     if (categories.length === 0)
       return (
         <div className="ManageCategoriesModal__Message">
-          There is no category
+          no category is found
         </div>
       );
 

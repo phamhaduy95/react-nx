@@ -44,6 +44,7 @@ export function AddAndUpdateTaskModal() {
 
   const { data: categories } = appApi.useGetAllForUserQuery(undefined, {});
 
+
   const taskData = useMemo(
     () => convertTaskReduxDataIntoTaskDataInput(reduxTaskData),
     [reduxTaskData]
@@ -88,6 +89,7 @@ export function AddAndUpdateTaskModal() {
       }
       return;
     }
+
     dispatch(action.TaskEditModal.updateErrorMessage(error));
   };
   const handleClearButtonClick = () => {
@@ -122,7 +124,7 @@ export function AddAndUpdateTaskModal() {
 
   const renderSelectOptions: () => JSX.Element[] = () => {
     if (categories === undefined) return [];
-    return categories.map((category, i) => {
+    const optionElements = categories.map((category, i) => {
       return (
         <SelectOption
           key={i}
@@ -131,6 +133,10 @@ export function AddAndUpdateTaskModal() {
         />
       );
     });
+    optionElements.push(
+      <SelectOption value="null" key={'null-category'} label="no category" />
+    );
+    return optionElements;
   };
 
   function renderModalTitle() {

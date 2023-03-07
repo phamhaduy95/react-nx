@@ -50,6 +50,7 @@ export function CategoryFilterBox() {
 
   const renderCategoryOptions = () => {
     if (categories === undefined) return;
+
     return categories.slice(0, SHOW_LIMIT).map((category, i) => {
       const { categoryId, name } = category;
       return (
@@ -99,6 +100,14 @@ export function CategoryFilterBox() {
           value="Check all"
           isSelected={isCheckAll}
           onSelected={handleClickCheckAll}
+        />
+        <CheckBox
+          className="CalendarApp__Category"
+          value={'null'}
+          label={'no category'}
+          key={'null-category'}
+          isSelected={isCheckAll}
+          onSelected={handelCategorySelect}
         />
         {renderCategoryOptions()}
         {renderMoreCategoryNotification()}
