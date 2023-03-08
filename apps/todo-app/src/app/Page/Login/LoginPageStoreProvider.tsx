@@ -1,13 +1,18 @@
+import { LoginSchema } from 'apps/todo-app/src/validation/loginValidation';
+import { ErrorMessage } from 'apps/todo-app/src/validation/types';
 import React, { createContext, useContext, useMemo } from 'react';
 import { createStore, StoreApi, useStore } from 'zustand';
-import { LoginData, LoginErrorsMessage } from './type';
+
+type LoginErrorMessage = ErrorMessage<LoginSchema> & {
+  connection: false | string;
+};
 
 type LoginPageState = {
-  loginData: LoginData;
-  errorMessage: LoginErrorsMessage;
+  loginData: LoginSchema;
+  errorMessage: LoginErrorMessage;
   action: {
-    updateLoginData: (data: Partial<LoginData>) => void;
-    updateErrorMessage: (error: Partial<LoginErrorsMessage>) => void;
+    updateLoginData: (data: Partial<LoginSchema>) => void;
+    updateErrorMessage: (error: Partial<LoginErrorMessage>) => void;
     clearErrorMessage: () => void;
   };
 };
@@ -16,13 +21,13 @@ type ContextValueType = StoreApi<LoginPageState> | null;
 
 const context = createContext<ContextValueType>(null);
 
-const initialErrorMessage: LoginErrorsMessage = Object.freeze({
+const initialErrorMessage: LoginErrorMessage = Object.freeze({
   email: false,
   password: false,
-  connection:false,
+  connection: false,
 });
 
-const initialLoginData: LoginData = Object.freeze({
+const initialLoginData: LoginSchema = Object.freeze({
   email: 'guest@mail.com',
   password: 'guest',
 });

@@ -10,10 +10,9 @@ import { useAppAction, useAppDispatch, useAppSelector } from '../../redux';
 import CloseIcon from '@mui/icons-material/Close';
 import { shallowEqual } from 'react-redux';
 import { useCallback } from 'react';
-import { validateCategoryData } from './categoryDataValidation';
 import './CategoryModal.scss';
 import { appApi } from '../../redux/appApi/appApi';
-
+import { validateCategoryData } from '../../validation/categoryDataValidation';
 
 export function AddAndUpdateCategoryModal() {
   const action = useAppAction();
@@ -65,7 +64,7 @@ export function AddAndUpdateCategoryModal() {
   };
 
   const handleSubmit = async () => {
-    const { result, error } = await validateCategoryData(categoryData);
+    const { result, errors } = await validateCategoryData(categoryData);
     if (result) {
       switch (type) {
         case 'add':
@@ -77,7 +76,7 @@ export function AddAndUpdateCategoryModal() {
           break;
       }
     }
-    dispatch(action.AddAndUpdateCategoryModal.updateErrorMessage(error));
+    dispatch(action.AddAndUpdateCategoryModal.updateErrorMessage(errors));
   };
 
   const handleClickToClear = () => {

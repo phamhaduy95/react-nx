@@ -8,8 +8,8 @@ import {
   LoginPageStoreProvider,
   useLoginPageStore,
 } from './LoginPageStoreProvider';
-import { validateLoginData } from './loginValidation';
 import './LoginPage.scss';
+import { validateLoginData } from 'apps/todo-app/src/validation/loginValidation';
 
 export function LoginPage() {
   return (
@@ -71,9 +71,9 @@ function WrappedLoginPage() {
   };
 
   const handleClickSignIn = async () => {
-    const { result, error } = await validateLoginData(loginData);
+    const { result, errors } = await validateLoginData(loginData);
     if (!result) {
-      action.updateErrorMessage(error);
+      action.updateErrorMessage(errors);
       return;
     }
     action.clearErrorMessage();

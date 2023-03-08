@@ -1,11 +1,13 @@
 import { Action, PayloadAction } from '@reduxjs/toolkit';
 import { ReduxTaskData } from 'apps/todo-app/src/redux/types';
-import { ErrorsMessage, TaskDataSchema } from '../../components/TaskModal';
+import { TaskDataSchema } from '../../validation/taskDataValidation';
+import { ErrorMessage } from '../../validation/types';
+
 
 export type TaskEditModalState = {
   type: 'update' | 'add';
   taskData: ReduxTaskData;
-  errorMessages: ErrorsMessage<TaskDataSchema>;
+  errorMessages: ErrorMessage<TaskDataSchema>;
 };
 
 export type SwitchModalTypeAction = PayloadAction<TaskEditModalState['type']>;

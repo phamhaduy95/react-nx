@@ -1,22 +1,2 @@
 import { TaskDataType } from '../../type/model';
 
-export type ErrorsMessage<T> = {
-  [key in keyof T]: string | false;
-};
-
-export type TaskDataInput = Omit<
-  TaskDataType,
-  'startTime' | 'endTime' | 'userId' | 'taskId'
-> & {
-  startTime: Date | null;
-  endTime: Date | null;
-  categoryId:string
-};
-
-export interface TaskDataSchema {
-  title: string;
-  categoryId: string | null;
-  startTime: Date | null;
-  endTime: Date | null;
-  description: string;
-}

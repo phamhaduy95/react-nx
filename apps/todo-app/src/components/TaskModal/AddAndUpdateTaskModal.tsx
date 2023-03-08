@@ -14,45 +14,42 @@ import {
   TextFieldProps,
   ToolTips,
 } from '@phduylib/my-component';
-import {
-  useAppDispatch,
-  useAppAction,
-  useAppSelector,
-} from '../../redux';
+import { useAppDispatch, useAppAction, useAppSelector } from '../../redux';
 import CloseIcon from '@mui/icons-material/Close';
 import { appApi } from '../../redux/appApi';
 import { shallowEqual } from 'react-redux';
-import { validateTaskData } from './TaskDataValidation';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { convertTaskReduxDataIntoTaskDataInput } from './utils';
 import './TaskModal.scss';
 import { ModalType } from '../../type/model';
+import { validateTaskData } from '../../validation';
 
 export function AddAndUpdateTaskModal() {
   const dispatch = useAppDispatch();
   const action = useAppAction();
-  
+
   const errorsMessage = useAppSelector(
     (state) => state.TaskEditModal.errorMessages,
     shallowEqual
   );
   const reduxTaskData = useAppSelector((state) => state.TaskEditModal.taskData);
   const type = useAppSelector((state) => state.TaskEditModal.type);
-  
-  const [updateTask, ] = appApi.useUpdateTaskMutation({fixedCacheKey:"shared"});
-  const [addTask] = appApi.useAddTaskMutation({fixedCacheKey:"shared"});
+
+  const [updateTask] = appApi.useUpdateTaskMutation({
+    fixedCacheKey: 'shared',
+  });
+  const [addTask] = appApi.useAddTaskMutation({ fixedCacheKey: 'shared' });
 
   const { data: categories } = appApi.useGetAllForUserQuery(undefined, {});
-
 
   const taskData = useMemo(
     () => convertTaskReduxDataIntoTaskDataInput(reduxTaskData),
     [reduxTaskData]
   );
-  
+
   const handleUserCloseModal = () => {
     dispatch(action.AppModal.closeModal());
-  }; 
+  };
 
   const handleTitleInputChange: TextFieldProps['onValueChange'] = (value) => {
     dispatch(action.TaskEditModal.updateTaskData({ title: value }));
@@ -62,12 +59,11 @@ export function AddAndUpdateTaskModal() {
     dispatch(action.TaskEditModal.updateTaskData({ categoryId: value }));
   };
 
-  const handleStartDateInputChange: DateTimeRangePickerProps['onStartTimeChange'] = (
-    date
-  ) => {
-    const dateStr = date === null ? '' : date.toISOString();
-    dispatch(action.TaskEditModal.updateTaskData({ startTime: dateStr }));
-  };
+  const handleStartDateInputChange: DateTimeRangePickerProps['onStartTimeChange'] =
+    (date) => {
+      const dateStr = date === null ? '' : date.toISOString();
+      dispatch(action.TaskEditModal.updateTaskData({ startTime: dateStr }));
+    };
 
   const handleEndDateChange: DateTimeRangePickerProps['onStartTimeChange'] = (
     date
@@ -77,7 +73,7 @@ export function AddAndUpdateTaskModal() {
   };
 
   const handleFormSubmit = async () => {
-    const { result, error } = await validateTaskData(taskData);
+    const { result, errors } = await validateTaskData(taskData);
     if (result) {
       switch (type) {
         case 'add':
@@ -90,7 +86,7 @@ export function AddAndUpdateTaskModal() {
       return;
     }
 
-    dispatch(action.TaskEditModal.updateErrorMessage(error));
+    dispatch(action.TaskEditModal.updateErrorMessage(errors));
   };
   const handleClearButtonClick = () => {
     dispatch(action.TaskEditModal.clearErrorMessage());

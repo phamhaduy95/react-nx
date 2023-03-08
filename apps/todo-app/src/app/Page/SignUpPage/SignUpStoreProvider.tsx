@@ -1,13 +1,16 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import { createStore, StoreApi, useStore } from 'zustand';
-import { SignUpData, ErrorsMessage } from './type';
+import { SignUpSchema } from '../../../validation/signupValidation';
+import { ErrorMessage } from '../User/validation';
+
+type SignUpErrorMessage = ErrorMessage<SignUpSchema & { connection: false }>;
 
 type SignUpState = {
-  signUpData: SignUpData;
-  errorMessage: ErrorsMessage;
+  signUpData: SignUpSchema;
+  errorMessage: SignUpErrorMessage;
   action: {
-    updateLoginData: (data: Partial<SignUpData>) => void;
-    updateErrorMessage: (error: Partial<ErrorsMessage>) => void;
+    updateLoginData: (data: Partial<SignUpSchema>) => void;
+    updateErrorMessage: (error: Partial<SignUpErrorMessage>) => void;
     clearErrorMessage: () => void;
     clearSignUpData: () => void;
   };
@@ -17,7 +20,7 @@ type ContextValueType = StoreApi<SignUpState> | null;
 
 const context = createContext<ContextValueType>(null);
 
-const initialErrorMessage: ErrorsMessage = Object.freeze({
+const initialErrorMessage: SignUpErrorMessage = Object.freeze({
   email: false,
   password: false,
   displayName: false,
@@ -25,7 +28,7 @@ const initialErrorMessage: ErrorsMessage = Object.freeze({
   connection: false,
 });
 
-const initialLoginData: SignUpData = Object.freeze({
+const initialLoginData: SignUpSchema = Object.freeze({
   displayName: '',
   email: '',
   confirmPassword: '',

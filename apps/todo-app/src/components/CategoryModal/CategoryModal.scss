@@ -99,8 +99,8 @@ $gap-between-input: 0.5rem;
     @at-root .ManageCategoryModal__ReturnButton {
       display: none;
       @include media-breakpoint-down($lg) {
-          display: block;
-          margin-left:auto;
+        display: block;
+        margin-left: auto;
       }
     }
   }

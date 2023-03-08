@@ -4,12 +4,12 @@ import {
   useSignUpPageStore,
 } from './SignUpStoreProvider';
 import shallow from 'zustand/shallow';
-import { validateSignUpData } from './SignUpValidation';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import { useNavigate } from 'react-router-dom';
 import './SignUpPage.scss';
 import { appApi } from 'apps/todo-app/src/redux/appApi';
 import { useEffect } from 'react';
+import { validateSignUpData } from 'apps/todo-app/src/validation/signupValidation';
 export function SignUpPage() {
   return (
     <SignUpPageStoreProvider>
@@ -71,16 +71,15 @@ function WrappedSignUpPage() {
     action.updateLoginData({ confirmPassword: value });
   };
 
-
   const handleSubmitButtonClick = async () => {
-    const { result, error } = await validateSignUpData(signUpData);
+    const { result, errors } = await validateSignUpData(signUpData);
 
     if (result) {
       action.clearErrorMessage();
       signUp(signUpData);
       return;
     }
-    action.updateErrorMessage(error);
+    action.updateErrorMessage(errors);
   };
 
   const handleClearButtonClick = () => {
