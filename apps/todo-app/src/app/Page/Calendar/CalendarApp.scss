@@ -2,6 +2,7 @@
 
 .CalendarApp {
   max-width: 1400px;
+  min-height: 52em;
   display: flex;
   width: 95%;
   padding: 1em;
@@ -81,7 +82,7 @@
       }
     }
 
-    @at-root .CalendarApp__CategoryFilterBox {
+    @at-root .CalendarApp__CategoryFilterSideBar {
       @at-root .CalendarApp__CategoriesList {
         margin-top: 1.25em;
         display: flex;

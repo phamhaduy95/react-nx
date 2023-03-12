@@ -1,16 +1,9 @@
-
 import { CategoryFilterBox } from '../../../components/CategoryFilterBox';
 
-export function CalendarAppCategoryFilterBox() {
+export function CategoryFilterSideBar() {
   return (
-    <div className="CalendarApp__CategoryFilterBox">
+    <div className="CalendarApp__CategoryFilterSideBar">
       <CategoryFilterBox />
     </div>
   );
 }
-
-
-
-
-
-

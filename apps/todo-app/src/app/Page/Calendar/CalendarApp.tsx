@@ -9,7 +9,7 @@ import {
 } from '@phduylib/my-component';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import './CalendarApp.scss';
-import { CalendarAppCategoryFilterBox } from './CalendarAppCategoryFilterBox';
+import { CategoryFilterSideBar } from './CategoryFilterSideBar';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import {
@@ -19,11 +19,9 @@ import {
 } from '../../../redux/rootStore';
 import { CalendarAppState } from 'apps/todo-app/src/redux/CalendarApp';
 import { getDayString, getWeekString, getMonthString } from './utils';
-import { AppModal } from '../../../components/AppModal/AppModal';
 import classNames from 'classnames';
 import MenuIcon from '@mui/icons-material/Menu';
 import { ModalType } from 'apps/todo-app/src/type/model';
-
 
 const calendarTypes = ['Month', 'Week', 'Day'];
 // Note: since the Redux toolkit integrate the immer lib for handling updating state, the state within redux store will be freezed so  that it cannot be altered or mutated. As the result, any future code which {use state should use  tactic copy.
@@ -80,7 +78,7 @@ export function CalendarApp() {
           >
             Add Task
           </Button>
-          <CalendarAppCategoryFilterBox />
+          <CategoryFilterSideBar />
         </div>
         <div className="CalendarApp__Content">
           <div className="CalendarApp__Control">
@@ -98,7 +96,7 @@ export function CalendarApp() {
                 </IconButton>
               </ToolTips>
             </div>
-            <NavigationButton mode="regular-viewport" />
+            <NavigationPanel mode="regular-viewport" />
             <ToggleGroup
               onChange={handleToggleSelect}
               className="CalendarApp__ToggleGroup"
@@ -106,18 +104,17 @@ export function CalendarApp() {
               {renderToggleItems()}
             </ToggleGroup>
           </div>
-          <NavigationButton mode="small-viewport" />
+          <NavigationPanel mode="small-viewport" />
           <div className="CalendarApp__View">
             <Outlet />
           </div>
         </div>
       </div>
-
     </>
   );
 }
 
-function CalendarDateString() {
+function CurrentDateText() {
   const dayStr = useAppSelector((state) => {
     const { currentCalendarType, dateArgs } = state.CalendarApp;
     switch (currentCalendarType) {
@@ -137,7 +134,7 @@ type NavigationButtonProps = {
   mode: 'small-viewport' | 'regular-viewport';
 };
 
-function NavigationButton(props: NavigationButtonProps) {
+function NavigationPanel(props: NavigationButtonProps) {
   const { mode } = props;
   const action = useAppAction();
   const dispatch = useAppDispatch();
@@ -183,14 +180,14 @@ function NavigationButton(props: NavigationButtonProps) {
         <div className={rootClassName}>
           {PreviousButton}
           {NextButton}
-          <CalendarDateString />
+          <CurrentDateText />
         </div>
       </>
     );
   return (
     <div className={rootClassName}>
       {PreviousButton}
-      <CalendarDateString />
+      <CurrentDateText />
       {NextButton}
     </div>
   );
