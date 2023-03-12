@@ -1,12 +1,11 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { appApi } from '../redux/appApi';
 
 export function useUserAuthenticate() {
   const navigate = useNavigate();
   const response = appApi.useAuthenticateQuery('', {});
-
   useLayoutEffect(() => {
     const { isError } = response;
     if (isError) {
@@ -22,5 +21,6 @@ export function useUserAuthenticate() {
       }
     }
   }, [response]);
-  return response;
+
+  return { isLoading: response.isLoading || response.isFetching };
 }

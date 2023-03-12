@@ -26,7 +26,7 @@ export function DayScheduleSection() {
     shallowEqual
   );
 
-  const { data: reduxData } = appApi.useGetDayScheduleDataQuery(dayArg);
+  const { data: reduxData, isLoading,isFetching } = appApi.useGetDayScheduleDataQuery(dayArg);
 
   const filterOption = useAppSelector(
     (state) => state.CalendarApp.taskFilterOptions
@@ -67,5 +67,5 @@ export function DayScheduleSection() {
       onTaskSelect={handleTaskSelect}
       onDateSelect={handleDateSelect}
     />
-  );
+    );
 }

@@ -1,19 +1,17 @@
-import { SideBarItemProps, ToolTips, IconButton } from '@phduylib/my-component';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import { SideBarItemProps } from '@phduylib/my-component';
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { memo, useCallback, useEffect } from 'react';
-import { appApi } from '../../../redux/appApi/appApi';
+import { useCallback, useEffect } from 'react';
 import { useAppAction, useAppDispatch } from '../../../redux';
 import { SignOutModal } from 'apps/todo-app/src/components/SignOutModal/SignOutModal';
-import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { HomPageSideBar } from './HomePageSideBar';
 import './HomePage.scss';
 import { HomePageSideDrawer } from './HomePageSideDrawer';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import { useUserAuthenticate } from '../../hooks';
 import { HomePageNavBar } from './HomePageNavBar';
+import { LoadingScreen } from '../LoadingScreen/LoadingScreen';
+
 
 export const NavItems = () => [
   {
@@ -37,8 +35,9 @@ export function HomePage() {
     }
   }, []);
 
-  useUserAuthenticate();
-
+  const { isLoading } = useUserAuthenticate();
+  
+  
   const handleItemSelect: NonNullable<SideBarItemProps['onSelected']> =
     useCallback((value) => {
       navigate(value.toLowerCase());
@@ -48,6 +47,7 @@ export function HomePage() {
     dispatch(action.SignOutModal.toggleOpen(true));
   }, []);
 
+  if (!isLoading) 
   return (
     <div className="HomePage">
       <HomPageSideBar
@@ -60,9 +60,10 @@ export function HomePage() {
       />
       <div className="HomePage__View">
         <HomePageNavBar />
-        <Outlet />
+        <Outlet/>
       </div>
       <SignOutModal />
     </div>
   );
+  return <LoadingScreen/>
 }
