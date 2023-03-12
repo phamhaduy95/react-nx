@@ -1,24 +1,25 @@
 import {
   Button,
+  LoadingButton,
   Modal,
   ModalBody,
   ModalFooter,
   ModalHeader,
 } from '@phduylib/my-component';
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useAppAction, useAppDispatch, useAppSelector } from '../../redux';
 import './SignOutModal.scss';
 import CloseIcon from '@mui/icons-material/Close';
 import { appApi } from '../../redux/appApi/appApi';
-import { useNavigate } from 'react-router-dom';
 import { IconButton } from '../../../../../libs/my-component/src/lib/Button/IconButton';
+import { useNavigate } from 'react-router-dom';
 
 export function SignOutModal() {
   const action = useAppAction();
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isOpen = useAppSelector((state) => state.SignOutModal.isOpen);
   const [signOut, result] = appApi.useSignOutMutation();
+  const navigate = useNavigate();
 
   const handleModalOpen = useCallback((isOpen: boolean) => {
     dispatch(action.SignOutModal.toggleOpen(isOpen));
@@ -28,17 +29,21 @@ export function SignOutModal() {
     dispatch(action.SignOutModal.toggleOpen(false));
   };
 
-  const handleSignOut = async () => {
-    await signOut(undefined);
+  const handleSignOut = () => {
+    signOut(undefined)
+
+  
   };
 
-  useEffect(() => {
-    if (result.isSuccess) {
+  useEffect(()=>{
+    if (result.isSuccess){
       dispatch(action.SignOutModal.toggleOpen(false));
       result.reset();
-      navigate('/login');
+      navigate("/login");
     }
-  }, [result]);
+
+  },[result.isSuccess])
+  
 
   return (
     <Modal className="SignOutModal" isOpen={isOpen} onToggle={handleModalOpen}>
@@ -56,9 +61,13 @@ export function SignOutModal() {
         <p className="SignOutModal__Message">Do you want to sign out?</p>
       </ModalBody>
       <ModalFooter>
-        <Button className="SignOutModal__SubmitButton" onClick={handleSignOut}>
+        <LoadingButton
+          onClick={handleSignOut}
+          isLoading={result.isLoading}
+          className="SignOutModal__SubmitButton"
+        >
           Sign Out
-        </Button>
+        </LoadingButton>
         <Button
           className="SignOutModal__CancelButton"
           onClick={handleCloseModal}

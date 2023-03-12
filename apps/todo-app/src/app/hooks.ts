@@ -22,5 +22,5 @@ export function useUserAuthenticate() {
     }
   }, [response]);
 
-  return { isLoading: response.isLoading || response.isFetching };
+  return { isLoading: response.isLoading,isFetching:response.isFetching};
 }

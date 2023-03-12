@@ -75,8 +75,10 @@ export function AddAndUpdateTaskModal() {
   const handleFormSubmit = async () => {
     const { result, errors } = await validateTaskData(taskData);
     if (result) {
+  
       switch (type) {
         case 'add':
+   
           addTask(reduxTaskData);
           break;
         case 'update':

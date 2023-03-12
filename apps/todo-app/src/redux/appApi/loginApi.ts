@@ -23,7 +23,7 @@ export const apiV3 = apiV2.injectEndpoints({
         method: 'POST',
         credentials: 'include',
       }),
-      invalidatesTags: [{ type: 'Users', id: 'sign-in' }],
+      // invalidatesTags: [{ type: 'Users', id: 'sign-in' }],
     }),
     authenticate: build.query<ReduxUserData, string>({
       query: (arg) => ({
