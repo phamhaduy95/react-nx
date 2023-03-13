@@ -37,6 +37,7 @@ export const apiV2 = apiV1.injectEndpoints({
           },
         };
       },
+      keepUnusedDataFor: 1,
       providesTags: [{ type: 'Tasks' }],
     }),
 
@@ -53,8 +54,8 @@ export const apiV2 = apiV1.injectEndpoints({
         },
         credentials: 'include',
       }),
-      keepUnusedDataFor: 1,
       providesTags: [{ type: 'Tasks', id: `Month` }, { type: 'Tasks' }],
+
       // transform response data;
       transformResponse(
         response: ReduxTaskData[],
@@ -140,55 +141,10 @@ export const apiV2 = apiV1.injectEndpoints({
       }),
       invalidatesTags: (result, error, arg) => [
         { type: 'Tasks', id: `${arg.taskId}` },
-        // { type: 'Tasks', id: 'Month' },
-        // { type: 'Tasks', id: 'Day' },
-        // { type: 'Tasks', id: 'Week' },
+        { type: 'Tasks', id: 'Month' },
+        { type: 'Tasks', id: 'Day' },
+        { type: 'Tasks', id: 'Week' },
       ],
-      async onQueryStarted(arg, api) {
-        const { queryFulfilled, getState, dispatch } = api;
-        const rootState = getState() as RootState;
-        const dateArgs = rootState.CalendarApp.dateArgs;
-        const taskId = arg.taskId;
-        try {
-          const response = await queryFulfilled;
-
-          const dayArg = dateArgs.dateArg;
-          dispatch(
-            apiV2.util.updateQueryData(
-              'getDayScheduleData',
-              dayArg,
-              (draft) => {
-                const index = draft.tasks.findIndex((e) => e.taskId === taskId);
-                if (index === -1) return;
-                const taskToUpdate = draft.tasks[index];
-                draft.tasks[index] = { ...taskToUpdate, ...arg };
-              }
-            )
-          );
-          const monthArg = dateArgs.monthArg;
-          dispatch(
-            apiV2.util.updateQueryData(
-              'getMonthScheduleData',
-              monthArg,
-              (draft) => {
-                const index = draft.tasks.findIndex((e) => e.taskId === taskId);
-                if (index === -1) return;
-                const taskToUpdate = draft.tasks[index];
-                draft.tasks[index] = { ...taskToUpdate, ...arg };
-              }
-            )
-          );
-          const week = dateArgs.weekArg;
-          dispatch(
-            apiV2.util.updateQueryData('getWeekScheduleData', week, (draft) => {
-              const index = draft.tasks.findIndex((e) => e.taskId === taskId);
-              if (index === -1) return;
-              const taskToUpdate = draft.tasks[index];
-              draft.tasks[index] = { ...taskToUpdate, ...arg };
-            })
-          );
-        } catch (e) {}
-      },
     }),
     addTask: build.mutation<AddTaskResponse, Omit<ReduxTaskData, 'taskId'>>({
       query: (arg) => ({
@@ -249,6 +205,7 @@ export const apiV2 = apiV1.injectEndpoints({
         method: 'DELETE',
         credentials: 'include',
       }),
+
       invalidatesTags: (result, error, arg) => [
         { type: 'Tasks', id: `${arg}` },
         { type: 'Tasks' },
