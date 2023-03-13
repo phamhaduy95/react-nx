@@ -17,7 +17,6 @@ import {
 import { createPredicateFunctionFromFilterOptions } from '../../../redux/CalendarApp';
 import { ModalType } from 'apps/todo-app/src/type/model';
 
-
 export function MonthScheduleSection() {
   const dispatch = useAppDispatch();
   const action = useAppAction();
@@ -25,14 +24,22 @@ export function MonthScheduleSection() {
     (state) => state.CalendarApp.dateArgs.monthArg,
     shallowEqual
   );
+  const dateArg = useMemo(
+    () => new Date(monthArg.year, monthArg.month - 1),
+    [monthArg]
+  );
 
   const filterOptions = useAppSelector(
     (state) => state.CalendarApp.taskFilterOptions
   );
 
-  const { data: reduxData } = appApi.useGetMonthScheduleDataQuery(monthArg);
+  const {
+    data: reduxData,
+    isFetching,
+    isLoading,
+  } = appApi.useGetMonthScheduleDataQuery(monthArg);
 
-  const data: MonthScheduleProps['data'] = useMemo(() => {
+  const tasksList: MonthScheduleProps['tasksList'] = useMemo(() => {
     if (reduxData) {
       const filterFunction =
         createPredicateFunctionFromFilterOptions(filterOptions);
@@ -40,13 +47,9 @@ export function MonthScheduleSection() {
         filterFunction(task)
       );
       const newData: typeof reduxData = { ...reduxData, tasks: filteredTasks };
-      return convertMonthScheduleDataFromReduxToProps(newData);
+      return convertMonthScheduleDataFromReduxToProps(newData).tasks;
     }
-
-    return {
-      month: new Date(monthArg.year, monthArg.month - 1),
-      tasks: [],
-    };
+    return [];
   }, [reduxData, filterOptions]);
 
   const handleTaskSelect: NonNullable<MonthScheduleProps['onTaskSelect']> =
@@ -65,7 +68,9 @@ export function MonthScheduleSection() {
   return (
     <MonthSchedule
       className="CalendarApp__MonthSchedule"
-      data={data}
+      isLoading={isLoading || isFetching}
+      tasksList={tasksList}
+      date={dateArg}
       onTaskSelect={handleTaskSelect}
       onDateSelect={handleDateSelect}
     />

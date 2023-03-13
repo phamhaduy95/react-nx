@@ -41,7 +41,7 @@ export function WeekScheduleSection() {
       },
       tasks: [],
     };
-  }, [reduxData, filterOptions]);
+  }, [reduxData, filterOptions,weekArg]);
 
   const handleTaskSelect: NonNullable<WeekScheduleProps['onTaskSelect']> =
     useCallback((task) => {

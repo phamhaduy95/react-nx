@@ -18,25 +18,23 @@ const generateTask = (
     title: `task ${count}`,
     startTime: startDate,
     endTime: dayjs(startDate).add(length, unit).toDate(),
-    userId:"c0e86673-bce3-4608-8c32-06763581e952",
+    userId: 'c0e86673-bce3-4608-8c32-06763581e952',
   };
 };
 
 export function getMonthScheduleDataSample() {
   const firstDateOfMonth = dayjs().startOf('month').hour(0).minute(0);
 
-  const data: MonthScheduleProps['data'] = {
-    month: dayjs().toDate(),
-    tasks: [
-      generateTask(firstDateOfMonth.add(1, 'day').toDate(), 25, 'hour'),
-      generateTask(firstDateOfMonth.add(3, 'day').toDate(), 300, 'minute'),
-      generateTask(firstDateOfMonth.toDate(), 5, 'hour'),
-      generateTask(firstDateOfMonth.toDate(), 24 * 5, 'hour'),
-      generateTask(firstDateOfMonth.add(28, 'hour').toDate(), 2, 'hour'),
-    ],
-  };
+  const month = dayjs().toDate();
+  const tasks = [
+    generateTask(firstDateOfMonth.add(1, 'day').toDate(), 25, 'hour'),
+    generateTask(firstDateOfMonth.add(3, 'day').toDate(), 300, 'minute'),
+    generateTask(firstDateOfMonth.toDate(), 5, 'hour'),
+    generateTask(firstDateOfMonth.toDate(), 24 * 5, 'hour'),
+    generateTask(firstDateOfMonth.add(28, 'hour').toDate(), 2, 'hour'),
+  ];
 
-  return data;
+  return { date: month, tasks };
 }
 
 export function MonthScheduleExample() {
@@ -49,10 +47,12 @@ export function MonthScheduleExample() {
     console.log(date);
   };
   return (
-    <MonthSchedule
-      data={data}
-      onDateSelect={handleDateSelect}
-      onTaskSelect={handleSelectTask}
-    />
+    // <MonthSchedule
+    // isLoading={false}
+
+    //   onDateSelect={handleDateSelect}
+    //   onTaskSelect={handleSelectTask}
+    // />
+    <></>
   );
 }

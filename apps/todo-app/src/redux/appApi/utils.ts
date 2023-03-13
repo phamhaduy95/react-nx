@@ -2,7 +2,12 @@ import { DayScheduleProps } from '../../components/DaySchedule';
 import { MonthScheduleProps } from '../../components/MonthSchedule';
 import { WeekScheduleProps } from '../../components/WeekSchedule';
 import { TaskDataType } from '../../type/model';
-import { ReduxDayScheduleState, ReduxMonthScheduleState, ReduxTaskData, ReduxWeekScheduleState } from './type';
+import {
+  ReduxDayScheduleState,
+  ReduxMonthScheduleState,
+  ReduxTaskData,
+  ReduxWeekScheduleState,
+} from './type';
 
 export function convertTaskDataIntoReduxState(
   taskData: TaskDataType
@@ -50,19 +55,22 @@ export function covertDayScheduleDataFromPropsToRedux(
 
 export function convertMonthScheduleDataFromReduxToProps(
   data: ReduxMonthScheduleState
-): MonthScheduleProps['data'] {
+) {
   const newTaskList = data.tasks.map((e) =>
     convertTaskDataReduxIntoTaskData(e)
   );
   return {
     month: new Date(data.month),
-
     tasks: newTaskList,
   };
 }
+type MonthScheduleData = {
+  tasks: MonthScheduleProps['tasksList'];
+  month: MonthScheduleProps['date'];
+};
 
 export function convertMonthScheduleDataFromPropsToRedux(
-  data: MonthScheduleProps['data']
+  data: MonthScheduleData
 ): ReduxMonthScheduleState {
   const reduxTaskList = data.tasks.map((e) => convertTaskDataIntoReduxState(e));
   return {
