@@ -12,7 +12,7 @@ type ItemDataType = {
 type SelectState = {
   itemList: ItemDataType[];
   highLightedItem: { id: string } | null;
-  selectedItem: { id: string } | null;
+  selectedItem: { id: string }[];
   isPopupOpen: boolean;
   action: {
     togglePopup: (isOpen: boolean) => void;
@@ -20,8 +20,8 @@ type SelectState = {
       id: string,
       itemState: Partial<Omit<ItemDataType, 'id'>>
     ) => void;
-    selectItem: (item: { id: string } | null) => void;
-    selectItemByValue: (value: string | null) => void;
+    selectItem: (item: { id: string }) => void;
+    selectItemByValue: (value: string) => void;
     highlightNext: () => void;
     highlightPrev: () => void;
     highlightOne: (id: ItemDataType['id'] | null) => void;
@@ -46,15 +46,17 @@ export function SelectStoreProvider(props: Props) {
     const store = createStore<SelectState>((set) => ({
       itemList: [],
       highLightedItem: null,
-      selectedItem: null,
+      selectedItem: [],
       isPopupOpen: false,
       action: {
         togglePopup(isOpen) {
-          set((state) => ({ isPopupOpen: isOpen }));
+          set(() => ({ isPopupOpen: isOpen }));
         },
         selectItem(item) {
           set((state) => {
-            return { selectedItem: item };
+            const selectedItem = [...state.selectedItem];
+            selectedItem.push({ id: item.id });
+            return { selectedItem };
           });
         },
         updateItemState(id, itemState) {
@@ -69,10 +71,10 @@ export function SelectStoreProvider(props: Props) {
         },
         selectItemByValue(value) {
           set((state) => {
-            if (value === null) return { selectedItem: null };
+            if (value === null) return { selectedItem: [] };
             const item = state.itemList.find((item) => item.value === value);
             if (item === undefined) return {};
-            return { selectedItem: { id: item.id } };
+            return { selectedItem: [{ id: item.id }] };
           });
         },
 
@@ -144,7 +146,7 @@ export function SelectStoreProvider(props: Props) {
           });
         },
         highlightOne(id) {
-          set((state) => {
+          set(() => {
             if (id === null)
               return {
                 highLightedItem: null,
@@ -170,15 +172,4 @@ export function useSelectStore<U>(
   if (value === null) throw new Error('ToggleGroupStore context is null');
   const { store } = value;
   return useStore(store, selector, equalFunc);
-}
-
-function updateItemStateWithinItemList(
-  id: string,
-  itemList: SelectState['itemList'],
-  newState: Partial<Omit<SelectState['itemList'][number], 'id'>>
-) {
-  const index = itemList.findIndex((e) => e.id === id);
-  if (index === -1) return;
-  const itemToUpdate = { ...itemList[index], ...newState };
-  itemList[index] = itemToUpdate;
 }
